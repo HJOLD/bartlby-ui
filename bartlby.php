@@ -1,4 +1,5 @@
 <?
+
 $cfgfile="/storage/SF.NET/BARTLBY/bartlby/bartlby.cfg";
 //$btl=bartlby_open();
 //$info=bartlby_get_info($btl);
