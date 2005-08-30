@@ -60,5 +60,45 @@ class BartlbyUi {
 		//var_dump($servers);
 		return $servers;
 	}
+	function GetSVCMap($state) {
+		for($x=0; $x<$this->info[services]; $x++) {
+			$svc=bartlby_get_service($this->CFG, $x);
+			if(!is_array($servers[$svc[server_id]])) {
+				$servers[$svc[server_id]]=array();
+			}
+			if($svc[current_state] == $state) {
+				array_push($servers[$svc[server_id]], $svc);
+			}
+			
+		}
+		ksort($servers);
+		return $servers;	
+	}
+	function getColor($state) {
+		switch($state) {
+			case 0: return "green"; break;
+			case 1: return "orange"; break;
+			case 2: return "red"; break;
+			case 3: return "yellow"; break;
+			case 6: return "blue"; break;
+				
+			
+		}
+	}
+
+
+	function getState($state) {
+		switch($state) {
+			case 0: return "OK"; break;
+			case 1: return "WARNING"; break;
+			case 2: return "CRITICAL"; break;
+			case 3: return "UNKOWN"; break;
+			case 4: return "INFO"; break;
+			case 5: return "TRIGGER"; break;
+			case 6: return "FLAPPING"; break;
+				
+			
+		}
+	}
 }
 ?>

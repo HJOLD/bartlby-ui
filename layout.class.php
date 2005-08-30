@@ -27,22 +27,22 @@ class Layout {
 		$this->OUT .= "<html>
 		<head>
 		<style>
-		td {font-family:verdana; border: outset 404040 1px; padding:2; font-size:12px; color:000000; background-color:c2cbcf}
-		td.none {font-family:verdana; border: outset 404040 0px; padding:2; font-size:12px; color:000000; }
-		td.header { padding: 4; border: outset 404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:7eaec5}
-		td.header1 { padding: 4; border: outset 404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:c2cbcf}
+		td {font-family:verdana;  padding:2; font-size:12px; color:000000; background-color:c2cbcf}
+		td.none {font-family:verdana; border: dotted #404040 0px; padding:2; font-size:12px; color:#000000; }
+		td.header { padding: 4; border: dotted #404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#7eaec5}
+		td.header1 { padding: 4; border: dotted #404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#c2cbcf}
 		
 		
-		td.red { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:F83838}
-		td.green { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:33FF00}
-		td.orange { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:FFFF00}
-		td.blue { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:ACACAC}
-		td.yellow { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:ACACAC}
+		td.red { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#F83838}
+		td.green { padding: 4;   border: outset white 1px; text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#33FF00}
+		td.orange { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#FFFF00}
+		td.blue { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#ACACAC}
+		td.yellow { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#ACACAC}
 		
 		td.black {  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:c2cbcf}
 		
-		a {font-family:verdana; font-size:12px; color:0A246A}
-		a.mine {font-family:verdana; font-size:12px; color:ffffff}
+		a {font-family:verdana; font-size:12px; color:#0A246A}
+		a.mine {font-family:verdana; font-size:12px; color:#ffffff}
 		input { font-family: verdana; font-size:12px;}
 		select { font-family: verdana; font-size:12px;}
 		</style>
