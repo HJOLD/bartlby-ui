@@ -71,12 +71,15 @@
 	$bar=$prozent_float . "% Ok - $prozent_crit_float % Critical";
 
 	for($x=0; $x<$service_sum; $x++) {
+		
 		$svc=bartlby_get_service($btl->CFG, $x);
+		
 		$qck[$svc[server_name]][$svc[last_state]]++;	
 		$qck[$svc[server_name]][10]=$svc[server_id];
 	}
 	
 	while(list($k, $v)=each($qck)) {
+		
 		if($k != $last_qck) {
 			$cl="green";
 			$STATE="UP";
