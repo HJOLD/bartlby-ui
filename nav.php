@@ -276,7 +276,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 1,
 					'class'=>'header',
-					'show'=>'Poseidon Right Managment'
+					'show'=>'Your self ;)'
 					)
 			)
 		)

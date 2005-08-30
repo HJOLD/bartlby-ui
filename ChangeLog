@@ -1,3 +1,18 @@
+2005-08-30 21:32  hjanuschka
+
+	* bartlby_action.php, nav.php, services.php, images/diabled.png,
+	  images/enabled.png, images/notrigger.png, images/trigger.png:
+	  files for services.php and rudimentary version of bartlby_action
+
+2005-08-30 21:31  hjanuschka
+
+	* bartlby-ui.class.php, layout.class.php, start.php: Services.php
+	  added ;)
+
+2005-08-30 20:27  hjanuschka
+
+	* ChangeLog, overview.php: [no log message]
+
 2005-08-29 00:27  hjanuschka
 
 	* 1.php, ChangeLog, bartlby-ui.class.php, config.php, error.php,

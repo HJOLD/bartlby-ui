@@ -23,7 +23,7 @@
 class Layout {
 	var $OUT;
 	function Layout($scr='') {
-		//$this->DisplayHelp(array(0=>"INFO|" . date("d.m.Y h:i", time())));
+		
 		$this->OUT .= "<html>
 		<head>
 		<style>
@@ -132,8 +132,9 @@ class Layout {
 			$this->OUT .= "<br><br>
 			<center>
 			<table><tr><td>
-			Bartlby ( Service Monitoring) v01<br>
-			hjanuschka 2005
+			( Service Monitoring ) UI<br>
+			bartlby-team © 2005<br>
+			<a href='http://bartlby.sourceforge.net'>bartlby.sourceforge.net</A>
 			</td></tr></table>
 			";
 		}

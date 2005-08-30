@@ -39,10 +39,14 @@ class BartlbyUi {
 			$svc=bartlby_get_service($this->CFG, $x);
 			if($svc[server_id] == $server_id) {
 				if($svc[last_state] == 2) {
-					return false;	
+					$svcs_crit++;
 				}	
+				$svcs_ges++;
 			}
 			
+		}
+		if($svcs_ges == $svcs_crit) {
+			return false;
 		}
 		return true;
 	}
@@ -60,13 +64,14 @@ class BartlbyUi {
 		//var_dump($servers);
 		return $servers;
 	}
-	function GetSVCMap($state) {
+	function GetSVCMap($state=false) {
 		for($x=0; $x<$this->info[services]; $x++) {
 			$svc=bartlby_get_service($this->CFG, $x);
 			if(!is_array($servers[$svc[server_id]])) {
 				$servers[$svc[server_id]]=array();
 			}
-			if($svc[current_state] == $state) {
+			if($svc[current_state] == $state || $state == false) {
+				
 				array_push($servers[$svc[server_id]], $svc);
 			}
 			

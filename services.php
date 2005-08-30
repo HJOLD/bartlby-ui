@@ -10,6 +10,7 @@
 	$btl=new BartlbyUi($Bartlby_CONF);
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 	
+	$layout->DisplayHelp(array(0=>"INFO|A detailed list of all services bartlby is monitoring"));
 	
 	
 	
@@ -46,6 +47,9 @@
 		);
 		while(list($k, $servs) = each($map)) {
 			$displayed_servers++;
+			if($_GET[server_id] && $_GET[server_id] != $k) {
+				continue;	
+			}
 			for($x=0; $x<count($servs); $x++) {
 				$displayed_services++;
 				$svc_color=$btl->getColor($servs[$x][current_state]);
