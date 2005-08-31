@@ -307,7 +307,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 1,
 					'class'=>'red',
-					'show'=>'<a  target=main href=reload.php?cmd=3|0|0|a|\\n>Settings changed!! reload!!</A>'
+					'show'=>'<a  target=main href=reload.php>Settings changed!! reload!!</A>'
 					)
 			)
 		)

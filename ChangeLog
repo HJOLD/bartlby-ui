@@ -1,3 +1,14 @@
+2005-08-30 22:16  hjanuschka
+
+	* help.php, images/critical.gif, images/info.gif, images/ok.gif,
+	  images/warning.gif: help frame added
+
+2005-08-30 22:15  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, layout.class.php, nav.php,
+	  overview.php, services.php, start.php: fixed ui.class isServerUp
+	  function
+
 2005-08-30 21:32  hjanuschka
 
 	* bartlby_action.php, nav.php, services.php, images/diabled.png,
