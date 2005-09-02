@@ -9,6 +9,10 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout->Table("100%");
 
+function dnl($i) {
+	return sprintf("%02d", $i);
+}
+
 $layout->Tr(
 	$layout->Td(
 			Array(
@@ -25,6 +29,21 @@ $layout->Tr(
 
 
 switch($_GET[action]) {
+	case 'delete_service':
+		$del = bartlby_delete_service($btl->CFG, $_GET[service_id]);
+		$msg .= "Del:" . $del  . "<br>";
+		echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+	break;
+	case 'modify_service':
+		if($_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
+			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout]);
+			
+			$msg .=" Updated :" . $ads . "\n";
+			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+		} else {
+			$msg = "Missing Parameter";	
+		}
+	break;
 	case 'add_service': 
 		if($_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
 						//&bartlby_config, &server_id, &plugin,&service_name,&plugin_arguments,&notify_enabled,&hour_from,&hour_to,
@@ -32,8 +51,6 @@ switch($_GET[action]) {
 						//&min_to,&check_interva	l, &service_type,&service_var,&service_passive_timeout
 			$msg ="Server: " . $_GET[service_server];
 			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, substr($_GET[service_time_from], 0, 2), substr($_GET[service_time_to], 0, 2), substr($_GET[service_time_from], 3, 2), substr($_GET[service_time_to], 3, 2),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout]);
-			echo "<pre>";
-			var_dump($_GET);
 			$msg .= "Added ($ads)<br>";
 			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
 		} else {

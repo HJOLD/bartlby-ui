@@ -64,6 +64,14 @@ class BartlbyUi {
 		//var_dump($servers);
 		return $servers;
 	}
+	function GetServices() {
+		$ar=array();
+		for($x=0; $x<$this->info[services]; $x++) {	
+			$svc=bartlby_get_service($this->CFG, $x);
+			array_push($ar, $svc);
+		}
+		return $ar;
+	}
 	function GetSVCMap($state=false) {
 		for($x=0; $x<$this->info[services]; $x++) {
 			$svc=bartlby_get_service($this->CFG, $x);

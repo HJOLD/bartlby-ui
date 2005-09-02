@@ -1,3 +1,11 @@
+2005-09-02 04:20  hjanuschka
+
+	* add_service.php, grpstr.php: files for add service ui
+
+2005-09-02 04:19  hjanuschka
+
+	* ChangeLog, bartlby_action.php: add_service added
+
 2005-08-31 22:06  hjanuschka
 
 	* add_server.php, delete_server.php, logout.php, modify_server.php,
