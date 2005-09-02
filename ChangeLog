@@ -1,3 +1,13 @@
+2005-08-31 22:06  hjanuschka
+
+	* add_server.php, delete_server.php, logout.php, modify_server.php,
+	  server_list.php: and here are the files for server managment
+
+2005-08-31 22:05  hjanuschka
+
+	* ChangeLog, bartlby_action.php, nav.php, start.php: add, modify,
+	  delete server is now available threw ui
+
 2005-08-30 22:16  hjanuschka
 
 	* help.php, images/critical.gif, images/info.gif, images/ok.gif,
