@@ -2,10 +2,10 @@
 class BartlbyUi {
 	function BartlbyUi($cfg) {
 		$this->CFG=$cfg;
-		$this->perform_auth();
 		//Check if bartlby is running :-)
 		$this->info=@bartlby_get_info($this->CFG);
 		
+		$this->perform_auth();
 		if(!$this->info) {
 			$this->redirectError("BARTLBY::NOT::RUNNING");
 			exit(1);
@@ -21,18 +21,41 @@ class BartlbyUi {
 	}
 	
 	function perform_auth() {
-		if (!isset($_SERVER['PHP_AUTH_USER'])) {
-       			Header("WWW-Authenticate: Basic realm=\"My Realm\"");
-       			Header("HTTP/1.0 401 Unauthorized");
-       			
-       			exit;
-       		} else {
-   			$this->user=$_SERVER['PHP_AUTH_USER'];
-  		}	
+		$wrks=$this->GetWorker();
+		$auted=0;
+		while(list($k, $v) = each($wrks)) {
+			$v1=bartlby_get_worker_by_id($this->CFG, $v[worker_id]);
+			if($_SERVER[PHP_AUTH_USER] == $v1[name] && $_SERVER[PHP_AUTH_PW] == $v1[password]) {
+				$auted=1;
+			}
+		}
+		
+		if ($auted==0) { 
+			
+	      		 header("WWW-Authenticate: Basic realm=\"Bartlby Config Admin\"");	
+	      		 Header("HTTP/1.0 401 Unauthorized");
+			 echo "BAD LOGIN $_SERVER[PHP_AUTH_USER]/$_SERVER[PHP_AUTH_PW]";
+			 exit;
+		} else {
+			$this->user=$_SERVER[PHP_AUTH_USER];
+			$this->pw=$_SERVER[PHP_AUTH_PW];
+			$this->user_id=$auted;
+			
+			
+		}
 	}
 	function redirectError($msg) {
 		//header("Location: error.php?msg=" . $msg);	
 		echo "<script>parent.location.href='error.php?msg=$msg';</script>";
+	}
+	function findSHMPlace($svcid) {
+		for($x=0; $x<$this->info[services]; $x++) {
+			$svc=bartlby_get_service($this->CFG, $x);
+			if($svc[service_id] == $svcid) {
+				return $x;
+			}	
+		}
+		return -1;	
 	}
 	function isServerUp($server_id) {
 		for($x=0; $x<$this->info[services]; $x++) {
@@ -52,6 +75,15 @@ class BartlbyUi {
 	}
 	function ServiceCount() {
 		return $this->info[services];	
+	}
+	function GetWorker() {
+		$r=array();
+		for($x=0; $x<$this->info[workers]; $x++) {
+			$wrk=bartlby_get_worker($this->CFG, $x);
+			//$r[$wrk[worker_id]]=$wrk[name];
+			array_push($r, $wrk);
+		}	
+		return $r;
 	}
 	function GetServers() {
 		

@@ -1,3 +1,13 @@
+2005-09-03 00:47  hjanuschka
+
+	* delete_service.php, modify_service.php, service_list.php: files
+	  for service_delete service_add
+
+2005-09-03 00:47  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, bartlby_action.php: added
+	  service_delete, service_modify
+
 2005-09-02 04:20  hjanuschka
 
 	* add_service.php, grpstr.php: files for add service ui

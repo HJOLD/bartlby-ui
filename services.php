@@ -69,9 +69,9 @@
 				}
 				
 				if($servs[$x][service_active] == 1) {
-					$check = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=disable_service'><img src='images/enabled.png' alt='Disable Checks for this Service' border=0></A>";
+					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.png' alt='Disable Checks for this Service' border=0></A>";
 				} else {
-					$check = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=enable_service'><img src='images/diabled.png' alt='Enable  Checks for this Service' border=0></A>";
+					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_service'><img src='images/diabled.png' alt='Enable  Checks for this Service' border=0></A>";
 				}
 				
 				/* if($servs[$x][server_enabled] == 1) {

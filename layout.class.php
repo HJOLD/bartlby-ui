@@ -136,6 +136,7 @@ class Layout {
 			bartlby-team © 2005<br>
 			<a href='http://bartlby.sourceforge.net'>bartlby.sourceforge.net</A>
 			</td></tr></table>
+			
 			";
 		}
 		if(preg_match("/lynx/i", getenv("HTTP_USER_AGENT"))) {

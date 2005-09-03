@@ -29,6 +29,67 @@ $layout->Tr(
 
 
 switch($_GET[action]) {
+	case 'disable_service':
+	case 'enable_service':
+		$idx=$btl->findSHMPlace($_GET[service_id]);
+		$msg = $idx;
+		$cur=bartlbe_toggle_service_active($btl->CFG, $idx);
+		$msg = "Service is: " . $cur;
+	break;
+	case 'disable_notify':
+	case 'enable_notify':
+		$idx=$btl->findSHMPlace($_GET[service_id]);
+		$msg = $idx;
+		$cur=bartlbe_toggle_service_notify($btl->CFG, $idx);
+		$msg = "Service is: " . $cur;
+	break;
+	
+	case 'reload':
+		bartlby_reload($btl->CFG);
+		while(1) {
+			$x++;
+			$i = @bartlby_get_info($btl->CFG);
+			flush();
+			
+			if($i[do_reload] == 0) {
+				$msg = "Done";
+				echo "<script>parent.l.document.location.href='nav.php'</script>";
+				break;	
+			}
+		}
+	break;
+	case 'delete_worker':
+		if($_GET[worker_id]) {
+			$d=bartlby_delete_worker($btl->CFG, $_GET[worker_id]);
+			$msg = "Deleted: $d\n";
+			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+
+		} else {
+			$msg = "Missing Param";	
+		}
+	break;
+	case 'modify_worker':
+		if($_GET[worker_id] && $_GET[worker_name]) {
+			$msg = "wa:" .  $_GET[worker_active] . "\n";
+			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $_GET[worker_services], $_GET[worker_notifys], $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
+			$msg .= "Mod: " . $add;
+			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+
+		} else {
+			$msg = "Missing Param";	
+		}
+	break;
+	case 'add_worker':
+	
+		if($_GET[worker_name] && $_GET[worker_mail]) {
+			$msg = "wa:" .  $_GET[worker_active] . "\n";
+			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $_GET[worker_services], $_GET[worker_notifys], $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
+			$msg .= "ADD: " . $add;
+			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+		} else {
+			$msg = "Missing Parameter";	
+		}
+	break;
 	case 'delete_service':
 		$del = bartlby_delete_service($btl->CFG, $_GET[service_id]);
 		$msg .= "Del:" . $del  . "<br>";

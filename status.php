@@ -1,4 +1,3 @@
-
 <?
 	include "config.php";
 	include "layout.class.php";
@@ -16,7 +15,7 @@
 					0=>Array(
 						'colspan'=> 12,
 						'class'=>'header',
-						'show'=>'Core Information'
+						'show'=>'Core Information (<i>Logged in as:</i><b>' . $btl->user . '</b>)'
 						)
 				)
 			)
@@ -34,7 +33,7 @@
 				6=>"Running:",
 				7=>"<b>" . $info[current_running],
 				8=>"Datalib:",
-				9=>"<b>" . $lib[Name] . "-" . $lib[Version],
+				9=>"<b>" . $lib[Name] . "-" . $lib[Version] . "<br><font size=1></font>",
 				10=>"Version:",
 				11=>"<b>" . $btl->getRelease()
 				

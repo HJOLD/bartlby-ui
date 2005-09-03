@@ -247,27 +247,9 @@ $layout->Tr(
 
 
 
-$layout->Tr(
-	$layout->Td(
-		Array(
-			0=>"<a href='active_workers.php' target=main>Active Workers</a>"
-			
-			
-		)
-	)
-);
 
 
 
-$layout->Tr(
-	$layout->Td(
-		Array(
-			0=>"<a href='user_list.php?script=notify_group1.php' target=main>Notify Details</a>"
-			
-			
-		)
-	)
-);
 
 
 $layout->Tr(
@@ -307,7 +289,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 1,
 					'class'=>'red',
-					'show'=>'<a  target=main href=reload.php>Settings changed!! reload!!</A>'
+					'show'=>'<a  target=main href=bartlby_action.php?action=reload>Settings changed!! reload!!</A>'
 					)
 			)
 		)
