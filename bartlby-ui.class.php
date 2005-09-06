@@ -5,11 +5,12 @@ class BartlbyUi {
 		//Check if bartlby is running :-)
 		$this->info=@bartlby_get_info($this->CFG);
 		
-		$this->perform_auth();
+		
 		if(!$this->info) {
 			$this->redirectError("BARTLBY::NOT::RUNNING");
 			exit(1);
 		} 
+		$this->perform_auth();
 		$this->release=$this->info[version];
 		
 	}
@@ -116,7 +117,7 @@ class BartlbyUi {
 			}
 			
 		}
-		ksort($servers);
+		@ksort($servers);
 		return $servers;	
 	}
 	function getColor($state) {

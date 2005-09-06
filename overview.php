@@ -13,7 +13,7 @@
 	$servers=$btl->GetServers();
 	$hosts_sum=count($servers);
 	
-	while(list($k,$v)=each($servers)) {
+	while(list($k,$v)=@each($servers)) {
 		$x=$k;
 		if($btl->isServerUp($x)) {
 			$hosts_up++;	
@@ -23,6 +23,7 @@
 			
 		}
 	}
+	
 	$service_sum=$btl->ServiceCount();
 	
 	$services_critical=0;
@@ -44,7 +45,11 @@
 				
 		}	
 	}
-	$criticals=(($service_sum-$services_ok) * 100 / $service_sum);
+	if($service_sum == 0) {
+		$criticals=100;
+	} else {
+		$criticals=(($service_sum-$services_ok) * 100 / $service_sum);
+	}
 
 	$proz=100-$criticals;
 	
@@ -78,7 +83,7 @@
 		$qck[$svc[server_name]][10]=$svc[server_id];
 	}
 	
-	while(list($k, $v)=each($qck)) {
+	while(list($k, $v)=@each($qck)) {
 		
 		if($k != $last_qck) {
 			$cl="green";
@@ -161,6 +166,7 @@
 						<td class=none>(<a href='services.php?service_state=1'>View</A>)Warning:<font color=orange> $services_warning</font></td>
 						<td class=none>(<a href='services.php?service_state=2'>View</A>)Critical:<font color=red> $services_critical</font></td>
 					</tr>
+					
 					
 					</table>
 				"),

@@ -46,7 +46,7 @@ closedir($dh);
 
 $servs=$btl->GetServers();
 $optind=0;
-while(list($k, $v) = each($servs)) {
+while(list($k, $v) = @each($servs)) {
 	$sr=bartlby_get_server_by_id($btl->CFG, $k);
 	$servers[$optind][c]="";
 	$servers[$optind][v]=$k;	

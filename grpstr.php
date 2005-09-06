@@ -18,7 +18,7 @@ $layout->OUT .= "<script>
 				f=eval('document.fm1.s_'+x+'.value');
 				
 				if(e.options[e.selectedIndex].value != -1) {
-					fstr += f + '-' + e.options[e.selectedIndex].value + '|';
+					fstr += f + '=' + e.options[e.selectedIndex].value + '|';
 				}
 				//alert(e.options[e.selectedIndex].value);
 				//va=e.options[e.selectedIndex].value;
@@ -83,15 +83,15 @@ while(list($k, $servs) = each($map)) {
 		$ibox[2][s]=0;
 		$ibox[3][s]=0;
 		
-		if(strpos($h, $servs[$x][service_id] . "-0")) {
+		if(strpos($h, $servs[$x][service_id] . "=0")) {
 			$ibox[1][s]=1;
 		}
 		
-		if(strpos($h, $servs[$x][service_id] . "-1")) {
+		if(strpos($h, $servs[$x][service_id] . "=1")) {
 			$ibox[2][s]=1;	
 		}
 		
-		if(strpos($h, $servs[$x][service_id] . "-2")) {
+		if(strpos($h, $servs[$x][service_id] . "=2")) {
 			$ibox[3][s]=1;
 				
 		}

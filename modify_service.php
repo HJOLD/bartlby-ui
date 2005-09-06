@@ -9,8 +9,41 @@ $layout= new Layout();
 function dnl($i) {
 	return sprintf("%02d", $i);
 }
+if($_GET[service_id] == "") {
+	$layout->Form("fm1", "bartlby_action.php");
+	$layout->Table("100%");
+	$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>Array(
+					'colspan'=> 2,
+					'class'=>'header',
+					'show'=>'Modify Service'
+					)
+			)
+		)
 
-$defaults=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+	);
+	
+	$layout->Tr(
+		$layout->Td(
+			array(
+				0=>'you have choosen a server',
+				1=>'<input type=button value=back onClick="javascript:history.back();">'
+				
+			)
+		)
+	);
+	
+	$layout->TableEnd();
+	$layout->FormEnd();
+	$layout->display();
+	exit(1);
+	
+	
+} else {
+	$defaults=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);	
+}
 
 //Types
 
@@ -62,11 +95,11 @@ closedir($dh);
 $servs=$btl->GetServers();
 $optind=0;
 while(list($k, $v) = each($servs)) {
-	$sr=bartlby_get_server_by_id($btl->CFG, $k);
+	//$sr=bartlby_get_server_by_id($btl->CFG, $k);
 	
 	$servers[$optind][c]="";
 	$servers[$optind][v]=$k;	
-	$servers[$optind][k]=$sr[server_name];
+	$servers[$optind][k]=$v;
 	if($defaults[server_id] == $k) {
 		$servers[$optind][s]=1;	
 	}

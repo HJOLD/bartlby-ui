@@ -22,16 +22,33 @@ $layout->Tr(
 		)
 
 );
-$servs=$btl->GetServices();
+$map = $btl->GetSVCMap();
 $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);
 
-while(list($k, $v) = each($servs)) {
-	$v1=bartlby_get_service_by_id($btl->CFG, $v[service_id]);
-	$servers[$optind][c]="";
-	$servers[$optind][v]=$v1[service_id];	
-	$servers[$optind][k]=$v1[server_name] . "/" . $v1[service_name];
-	$optind++;
+while(list($k, $servs) = @each($map)) {
+	$displayed_servers++;
+	
+	for($x=0; $x<count($servs); $x++) {
+		//$v1=bartlby_get_service_by_id($btl->CFG, $servs[$x][service_id]);
+		
+		if($x == 0) {
+			//$isup=$btl->isServerUp($v1[server_id]);
+			//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
+			$servers[$optind][c]="";
+			$servers[$optind][v]="";	
+			$servers[$optind][k]="[&nbsp;&nbsp;]&raquo;" . $servs[$x][server_name] . "&laquo;";
+			$optind++;
+		} else {
+			
+		}
+		$state=$btl->getState($v1[current_state]);
+		$servers[$optind][c]="";
+		$servers[$optind][v]=$servs[$x][service_id];	
+		$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
+		
+		$optind++;
+	}
 }
 
 

@@ -70,8 +70,16 @@ switch($_GET[action]) {
 	break;
 	case 'modify_worker':
 		if($_GET[worker_id] && $_GET[worker_name]) {
+			for($x=0;$x<count($_GET[worker_services]); $x++) {
+				$svcstr .="" . $_GET[worker_services][$x] . "|";	
+			}
+			$svcstr = "|"  . $svcstr;
+			for($x=0;$x<count($_GET[notify]); $x++) {
+				$notifystr .="" . $_GET[notify][$x] . "|";	
+			}
+			
 			$msg = "wa:" .  $_GET[worker_active] . "\n";
-			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $_GET[worker_services], $_GET[worker_notifys], $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
+			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
 			$msg .= "Mod: " . $add;
 			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
 
@@ -83,9 +91,22 @@ switch($_GET[action]) {
 	
 		if($_GET[worker_name] && $_GET[worker_mail]) {
 			$msg = "wa:" .  $_GET[worker_active] . "\n";
-			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $_GET[worker_services], $_GET[worker_notifys], $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
+			
+			for($x=0;$x<count($_GET[worker_services]); $x++) {
+				$svcstr .="" . $_GET[worker_services][$x] . "|";	
+			}
+			if($svcstr != "") {
+				$svcstr = "|"  . $svcstr;
+			}
+			
+			for($x=0;$x<count($_GET[notify]); $x++) {
+				$notifystr .="" . $_GET[notify][$x] . "|";	
+			}
+			
+			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
 			$msg .= "ADD: " . $add;
 			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+			
 		} else {
 			$msg = "Missing Parameter";	
 		}
@@ -96,7 +117,8 @@ switch($_GET[action]) {
 		echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
 	break;
 	case 'modify_service':
-		if($_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
+	
+		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
 			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout]);
 			
 			$msg .=" Updated :" . $ads . "\n";

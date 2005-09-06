@@ -26,11 +26,14 @@ $servs=$btl->GetServers();
 $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);
 
-while(list($k, $v) = each($servs)) {
-	$sr=bartlby_get_server_by_id($btl->CFG, $k);
+while(list($k, $v) = @each($servs)) {
+	//$sr=bartlby_get_server_by_id($btl->CFG, $k);
+	
+	//$isup=$btl->isServerUp($k);
+	//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
 	$servers[$optind][c]="";
 	$servers[$optind][v]=$k;	
-	$servers[$optind][k]=$sr[server_name];
+	$servers[$optind][k]="[&nbsp;&nbsp;] &raquo;" . $v;
 	$optind++;
 }
 

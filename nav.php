@@ -280,6 +280,27 @@ $layout->Tr(
 	)
 );
 
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>Array(
+					'colspan'=> 1,
+					'class'=>'header',
+					'show'=>'Help'
+					)
+			)
+		)
+
+);
+$layout->Tr(
+	$layout->Td(
+		Array(
+			0=>"<a href='api.phps' target=main>PHP Api</a>"
+			
+			
+		)
+	)
+);
 if($_GET[r] == 1) {
 
 
@@ -297,6 +318,7 @@ $layout->Tr(
 );
 
 }
+
 
 $layout->TableEnd();
 $layout->display("no");

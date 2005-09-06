@@ -45,7 +45,7 @@
 				)
 			)
 		);
-		while(list($k, $servs) = each($map)) {
+		while(list($k, $servs) = @each($map)) {
 			$displayed_servers++;
 			if($_GET[server_id] && $_GET[server_id] != $k) {
 				continue;	

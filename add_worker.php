@@ -7,6 +7,36 @@ $btl=new BartlbyUi($Bartlby_CONF);
 $layout= new Layout();
 
 
+
+$map = $btl->GetSVCMap();
+$optind=0;
+while(list($k, $servs) = @each($map)) {
+
+	for($x=0; $x<count($servs); $x++) {
+		//$v1=bartlby_get_service_by_id($btl->CFG, $servs[$x][service_id]);
+		
+		if($x == 0) {
+			//$isup=$btl->isServerUp($v1[server_id]);
+			//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
+			$servers[$optind][c]="";
+			$servers[$optind][v]="";	
+			$servers[$optind][k]="[ $isup ]&raquo;" . $servs[$x][server_name] . "&laquo;";
+			$optind++;
+		} else {
+			
+		}
+		//$state=$btl->getState($v1[current_state]);
+		$servers[$optind][c]="";
+		$servers[$optind][v]=$servs[$x][service_id];	
+		$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
+		
+		$optind++;
+	}
+}
+
+
+
+
 $act[0][c]="";
 $act[0][v]="0";
 $act[0][k]="Inactive";
@@ -73,19 +103,23 @@ $layout->Tr(
 		)
 	)
 );
+
+
+
 $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Services:",
-			1=>$layout->Field("worker_services", "text", "")
+			1=>$layout->DropDown("worker_services[]", $servers, "multiple")
 		)
 	)
 );
+
 $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Notifys:",
-			1=>$layout->Field("worker_notifys", "text", "")
+			1=>"<input type=checkbox value=0 name=notify[]><font color=green>OK</font><input value=1 type=checkbox name=notify[]><font color=orange>Warning</font><input value=2 type=checkbox name=notify[]><font color=red>Critical</font>" 
 		)
 	)
 );

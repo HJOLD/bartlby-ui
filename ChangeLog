@@ -1,3 +1,15 @@
+2005-09-04 01:03  hjanuschka
+
+	* add_worker.php, delete_worker.php, modify_worker.php,
+	  user_list.php: worker management (add, delete, modify)
+
+2005-09-04 01:03  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, bartlby_action.php,
+	  layout.class.php, nav.php, overview.php, services.php,
+	  status.php: authentication against SHM Users toggle service
+	  notify/active
+
 2005-09-03 00:47  hjanuschka
 
 	* delete_service.php, modify_service.php, service_list.php: files
