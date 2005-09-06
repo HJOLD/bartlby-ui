@@ -27,13 +27,13 @@ $layout->OUT .= "<script>
 			}
 			
 			
-			window.opener.document.forms[\"fm1\"].service_var.value=fstr.substring(0, fstr.length-1);
+			window.opener.document.forms[\"fm1\"].service_var.value='|' + fstr.substring(0, fstr.length-1) + '|';
 		 	window.close();
 		}
 		</script>
 ";
 
-$layout->Form("fm1", "poseidon_action.php");
+$layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
 
@@ -83,15 +83,15 @@ while(list($k, $servs) = each($map)) {
 		$ibox[2][s]=0;
 		$ibox[3][s]=0;
 		
-		if(strpos($h, $servs[$x][service_id] . "=0")) {
+		if(strstr((string)$h, (string)$servs[$x][service_id] . "=0")) {
 			$ibox[1][s]=1;
 		}
 		
-		if(strpos($h, $servs[$x][service_id] . "=1")) {
+		if(strstr((string)$h, (string)$servs[$x][service_id] . "=1")) {
 			$ibox[2][s]=1;	
 		}
 		
-		if(strpos($h, $servs[$x][service_id] . "=2")) {
+		if(strstr((string)$h, (string)$servs[$x][service_id] . "=2")) {
 			$ibox[3][s]=1;
 				
 		}

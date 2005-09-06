@@ -269,6 +269,7 @@ $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Group definition",
+			
 			1=>$layout->Field("service_var", "hidden", $defaults[service_var]) . "<a href='javascript:GrpChk();'>Open Group selector</A>"
 			
 		)

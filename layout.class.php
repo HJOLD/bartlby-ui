@@ -22,8 +22,13 @@
 #////////////////////////////////////////////
 class Layout {
 	var $OUT;
+	function microtime_float()
+	{
+   		list($usec, $sec) = explode(" ", microtime());
+   		return ((float)$usec + (float)$sec);
+	}
 	function Layout($scr='') {
-		
+		$this->start_time=$this->microtime_float();
 		$this->OUT .= "<html>
 		<head>
 		<style>
@@ -127,7 +132,8 @@ class Layout {
 	}
 	
 	function display($cr="") {
-		
+		$this->end_time=$this->microtime_float();
+		$diff=$this->end_time-$this->start_time;
 		if (!$cr) {
 			$this->OUT .= "<br><br>
 			<center>
@@ -135,6 +141,8 @@ class Layout {
 			( Service Monitoring ) UI<br>
 			bartlby-team © 2005<br>
 			<a href='http://bartlby.sourceforge.net'>bartlby.sourceforge.net</A>
+			<br>
+			$diff seconds
 			</td></tr></table>
 			
 			";

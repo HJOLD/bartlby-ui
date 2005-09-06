@@ -1,3 +1,15 @@
+2005-09-06 23:01  hjanuschka
+
+	* api.phps: [no log message]
+
+2005-09-06 23:00  hjanuschka
+
+	* ChangeLog, add_service.php, add_worker.php, bartlby-ui.class.php,
+	  bartlby_action.php, grpstr.php, modify_service.php,
+	  modify_worker.php, nav.php, overview.php, server_list.php,
+	  service_list.php, services.php, start.php, user_list.php: add/mod
+	  worker -> services select dropdown, notify level checkboxes
+
 2005-09-04 01:03  hjanuschka
 
 	* add_worker.php, delete_worker.php, modify_worker.php,
