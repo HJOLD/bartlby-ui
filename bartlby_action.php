@@ -73,11 +73,15 @@ switch($_GET[action]) {
 			for($x=0;$x<count($_GET[worker_services]); $x++) {
 				$svcstr .="" . $_GET[worker_services][$x] . "|";	
 			}
-			$svcstr = "|"  . $svcstr;
+			if($svcstr != "") {
+				$svcstr = "|"  . $svcstr;
+			}
 			for($x=0;$x<count($_GET[notify]); $x++) {
 				$notifystr .="" . $_GET[notify][$x] . "|";	
 			}
-			
+			if($notifystr != "") {
+				$notifystr = "|" . $notifystr;
+			}
 			$msg = "wa:" .  $_GET[worker_active] . "\n";
 			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
 			$msg .= "Mod: " . $add;
@@ -98,7 +102,9 @@ switch($_GET[action]) {
 			if($svcstr != "") {
 				$svcstr = "|"  . $svcstr;
 			}
-			
+			if($notifystr != "") {
+				$notifystr = "|" . $notifystr;
+			}
 			for($x=0;$x<count($_GET[notify]); $x++) {
 				$notifystr .="" . $_GET[notify][$x] . "|";	
 			}

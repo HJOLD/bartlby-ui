@@ -1,3 +1,8 @@
+2005-09-06 23:48  hjanuschka
+
+	* ChangeLog, grpstr.php, layout.class.php, modify_service.php: ui
+	  speed up
+
 2005-09-06 23:01  hjanuschka
 
 	* api.phps: [no log message]

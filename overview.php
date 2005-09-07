@@ -93,24 +93,24 @@
 				$STATE="DOWN";
 			}
 			$quick_view .= "<tr>";
-			$quick_view .= "<td class=$cl><i><a href='services.php?server_id=" . $qck[$k][10] . "'>$k</A></i></td>";
-			$quick_view .= "<td class=$cl>$STATE</td>";
+			$quick_view .= "<td class=$cl><font size=1><i><a href='services.php?server_id=" . $qck[$k][10] . "'><font size=1>$k</A></i></td>";
+			$quick_view .= "<td class=$cl><font size=1>$STATE</td>";
 			$quick_view .= "<td class=$cl><table width=100%>";
 			
 			
 			if($qck[$k][0]) {
-				$qo="<tr><td class=green>" . $qck[$k][0] . " OK's</td></tr>";
+				$qo="<tr><td class=green><font size=1>" . $qck[$k][0] . " OK's</td></tr>";
 			}
 			if($qck[$k][1]) {
-				$qw="<tr><td class=orange>" . $qck[$k][1] . " Warnings</td></tr>";
+				$qw="<tr><td class=orange><font size=1>" . $qck[$k][1] . " Warnings</td></tr>";
 			}
 			
 			if($qck[$k][2]) {
-				$qc="<tr><td class=red>" . $qck[$k][2] . " Criticals</td></tr>";
+				$qc="<tr><td class=red><font size=1>" . $qck[$k][2] . " Criticals</td></tr>";
 			}
 			
 			if($qck[$k][3]) {
-				$qk="<tr><td class=yellow>" . $qck[$k][3] . " Unkown</td></tr>";
+				$qk="<tr><td class=yellow><font size=1>" . $qck[$k][3] . " Unkown</td></tr>";
 			}
 					
 				$quick_view .= "$qo";

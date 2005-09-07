@@ -134,6 +134,9 @@ class Layout {
 	function display($cr="") {
 		$this->end_time=$this->microtime_float();
 		$diff=$this->end_time-$this->start_time;
+		$source_file=$_SERVER[SCRIPT_URI];
+		$source_file=str_replace(".php", ".phps",$source_file);
+		$bname=basename($source_file);
 		if (!$cr) {
 			$this->OUT .= "<br><br>
 			<center>
@@ -142,10 +145,12 @@ class Layout {
 			bartlby-team © 2005<br>
 			<a href='http://bartlby.sourceforge.net'>bartlby.sourceforge.net</A>
 			<br>
-			$diff seconds
+			$diff seconds<br>
+			Source: <a href='$bname'>$bname</A>
 			</td></tr></table>
 			
 			";
+			
 		}
 		if(preg_match("/lynx/i", getenv("HTTP_USER_AGENT"))) {
 			$this->OUT=preg_replace("/<img .*>/", "",$this->OUT);	
