@@ -114,7 +114,15 @@ $layout->Tr(
 		)
 	);
 
-
+$layout->Tr(
+		$layout->Td(
+			Array(
+				0=>"<a href='server_list.php?script=install_pkg.php' target=main>Install Package</a>"
+				
+				
+			)
+		)
+	);
 
 $layout->Tr(
 	$layout->Td(

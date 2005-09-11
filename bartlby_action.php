@@ -29,6 +29,56 @@ $layout->Tr(
 
 
 switch($_GET[action]) {
+	case 'install_package':
+		$msg = "Installing package '$_GET[package_name]' on Server:  $_GET[server_id]<br>";
+		$fp=@fopen("pkgs/" . $_GET[package_name], "r");
+		if($fp) {
+			while(!feof($fp)) {
+				$bf .= fgets($fp, 1024);	
+			}
+			$re=unserialize($bf);
+			fclose($fp);
+			for($x=0; $x<count($re); $x++) {
+				$msg .= "Installing Service: <b>" . $re[$x][service_name] . "</b><br>";	
+				
+				$tfrom=dnl($re[$x][hour_from]) . ":" . dnl($re[$x][min_from]) . ":00";
+				$tto=dnl($re[$x][hour_to]) . ":" . dnl($re[$x][min_to]) . ":00";
+				
+				$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
+				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
+				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
+				$ads=bartlby_add_service($btl->CFG, $_GET[server_id], $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout]);
+				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
+				
+
+			}
+			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
+		} else {
+			$msg = "fopen failed()!!<br>";	
+		}
+	break;
+	case 'create_package':
+		$pkg=array();
+		$msg = "Creating package: " . $_GET[package_name] . "<br>";
+		for($x=0; $x<$btl->info[services]; $x++) {
+			$svc=bartlby_get_service($btl->CFG, $x);
+			if($svc[server_id] == $_GET[server_id]) {
+				$msg .="Add service: " . $svc[service_name] . "<br>";
+				array_push($pkg, $svc);
+			}
+			
+		}
+		$save=serialize($pkg);
+		$fp=@fopen("pkgs/" . $_GET[package_name], "w");
+		if($fp) {
+			fwrite($fp, $save);
+			fclose($fp);
+		} else {
+			$msg .= "save failed";	
+		}
+		
+	break;
+	
 	case 'disable_service':
 	case 'enable_service':
 		$idx=$btl->findSHMPlace($_GET[service_id]);

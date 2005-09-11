@@ -57,7 +57,7 @@
 				if($x == 0) {
 					$server_color="header";
 					
-					$SERVER=$servs[$x][server_name];
+					$SERVER=$servs[$x][server_name] . "<br><a href='package_create.php?action=create_package&server_id="  . $servs[$x][server_id] . "'><font size=1>create package</a>";
 				} else {
 					$server_color="black";
 					$SERVER="&nbsp;";
