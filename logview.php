@@ -8,20 +8,29 @@
 	
 	$layout->Table("100%");
 	
-	$logf=bartlby_config($btl->CFG, "logfile");
+	$ch_time=time();
+	if($_GET[l]) {
+		$tt=explode(".",$_GET[l]);
+		//var_dump($tt);
+		$ch_time=mktime(0,0,0,$tt[1],$tt[2],$tt[0]);	
+	}
+	
+	$logf=bartlby_config($btl->CFG, "logfile") . date(".Y.m.d", $ch_time);
+	$svcid=$_GET[service_id];
 	$layout->Tr(
 		$layout->Td(
 				Array(
 					0=>Array(
 						'colspan'=> 3,
 						'class'=>'header',
-						'show'=>'Logfile'
+						'show'=>"<a href='logview.php?service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>"
 						)
 				)
 			)
 
 	);
-	$fl=file($logf);
+	$fl=@file($logf);
+	
 	while(list($k, $v)=@each($fl)) {
 		$info_array=explode(";",$v);
 		
@@ -36,7 +45,7 @@
 			}
 			
 			
-			$outline = $tmp[2] . " changed to " . $btl->getState($tmp[1]);
+			$outline = $tmp[2] . " changed to " . $btl->getState($tmp[1]) . "(" . $tmp[3] . ")";
 			$stcheck=$tmp[1];
 		} else if($log_detail_o[1] == "NOT") {
 			$tmp=explode("|", $log_detail_o[2]);
