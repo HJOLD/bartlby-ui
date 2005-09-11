@@ -1,3 +1,9 @@
+2005-09-07 21:34  hjanuschka
+
+	* ChangeLog, bartlby_action.php, layout.class.php,
+	  modify_worker.php, overview.php: performance output at the end of
+	  each page modify worker check default checkboxes
+
 2005-09-06 23:48  hjanuschka
 
 	* ChangeLog, grpstr.php, layout.class.php, modify_service.php: ui

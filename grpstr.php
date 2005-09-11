@@ -95,6 +95,7 @@ while(list($k, $servs) = each($map)) {
 			$ibox[3][s]=1;
 				
 		}
+		echo $servs[$x][service_id]  . "=" . $servs[$x][current_state]  . "/" . $h . "<br>";
 		echo "<pre>";
 		
 		$class="header1";
