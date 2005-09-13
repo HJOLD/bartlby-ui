@@ -88,7 +88,10 @@
 				} else {
 					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_notify'><img src='images/trigger.png' alt='Enable Notifications for this Service' border=0></A>";
 				}
-		
+				
+				
+				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'>view comments</A><br>";
+				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
 				
 				
 				$layout->Tr(
@@ -115,7 +118,7 @@
 							   ),						
 							4=>array(
 								"class"=>"header1",
-								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1>View Log</A> <br> $notifys $check</font>"
+								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1>View Log</A> <br> $notifys $check $comments</font>"
 							   ),
 							5=>array(
 								"width"=>300,

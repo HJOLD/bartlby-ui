@@ -29,6 +29,19 @@ $layout->Tr(
 
 
 switch($_GET[action]) {
+	case 'add_comment':
+		$fp=@fopen("comments/" . (int)$_GET[service_id], "a+");
+		if(!$fp) {
+			$msg = "Fopen failed ( comments/" . (int)$_GET[service_id] . ")";	
+		} else {
+			fwrite($fp, $btl->user . "|" . time() . "|" . str_replace("\n", " ", nl2br($_GET[comment])) . "\n");
+			fclose($fp);
+			$msg .= "comment stored!";	
+		}
+		
+	
+	break;
+	
 	case 'install_package':
 		$msg = "Installing package '$_GET[package_name]' on Server:  $_GET[server_id]<br>";
 		$fp=@fopen("pkgs/" . $_GET[package_name], "r");

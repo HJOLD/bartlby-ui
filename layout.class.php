@@ -107,6 +107,10 @@ class Layout {
 		$this->OUT .= "</form>\n";	
 	}
 	
+	function TextArea($name, $def, $height=7, $width=100) {
+		return "<textarea name='$name' cols=$width rows=$height>$def</textarea>\n";
+	}
+	
 	function Field($name, $type='text', $value='',$L='', $chkBox='', $help = array()) {
 		$n="name='$name'";
 		if($help) {

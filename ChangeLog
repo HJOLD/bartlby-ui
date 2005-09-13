@@ -1,3 +1,26 @@
+2005-09-12 00:28  hjanuschka
+
+	* install_pkg.php, package_create.php: package managment files ;-)
+
+2005-09-12 00:27  hjanuschka
+
+	* bartlby_action.php, nav.php, services.php: you now can create
+	  packages(sets of services) out of servers wich can be installed
+	  on servers
+
+2005-09-11 23:43  hjanuschka
+
+	* logview.php: speed ups ;-)
+
+2005-09-11 11:21  hjanuschka
+
+	* logview.php, images/critical.png, images/info.png, images/ok.png,
+	  images/warning.png: files for logview
+
+2005-09-11 11:21  hjanuschka
+
+	* ChangeLog, grpstr.php: logview added ;-)
+
 2005-09-07 21:34  hjanuschka
 
 	* ChangeLog, bartlby_action.php, layout.class.php,

@@ -9,11 +9,21 @@
 	$layout->Table("100%");
 	$lib=bartlby_lib_info($btl->CFG);
 	
+	$base_dir=bartlby_config($btl->CFG, "basedir");
+	$cdump="";
+	if(!$base_dir) {
+		$cdump="Basedir not set!!";	
+	} else {
+		if(file_exists($base_dir . "/core")) {
+			$cdump="coredump found";	
+		}
+	}
+	
 	$layout->Tr(
 		$layout->Td(
 				Array(
 					0=>Array(
-						'colspan'=> 12,
+						'colspan'=> 13,
 						'class'=>'header',
 						'show'=>'Core Information (<i>Logged in as:</i><b>' . $btl->user . '</b>)'
 						)
@@ -35,7 +45,8 @@
 				8=>"Datalib:",
 				9=>"<b>" . $lib[Name] . "-" . $lib[Version] . "<br><font size=1></font>",
 				10=>"Version:",
-				11=>"<b>" . $btl->getRelease()
+				11=>"<b>" . $btl->getRelease(),
+				12=>"<font color=red>$cdump</font>"
 				
 			)
 		)
