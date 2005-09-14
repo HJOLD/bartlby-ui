@@ -165,11 +165,12 @@ switch($_GET[action]) {
 			if($svcstr != "") {
 				$svcstr = "|"  . $svcstr;
 			}
-			if($notifystr != "") {
-				$notifystr = "|" . $notifystr;
-			}
+			
 			for($x=0;$x<count($_GET[notify]); $x++) {
 				$notifystr .="" . $_GET[notify][$x] . "|";	
+			}
+			if($notifystr != "") {
+				$notifystr = "|" . $notifystr;
 			}
 			
 			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);

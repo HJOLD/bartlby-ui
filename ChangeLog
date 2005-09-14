@@ -1,3 +1,14 @@
+2005-09-13 22:54  hjanuschka
+
+	* execv.php: plugin help can now be view'd via web ui
+
+2005-09-13 22:13  hjanuschka
+
+	* ChangeLog, bartlby_action.php, layout.class.php, services.php,
+	  status.php, view_comments.php: layout: added TextArea Method
+	  action: added 'add_comment' view_comments -> view comments via
+	  ui, and store comments on a per service basis
+
 2005-09-12 00:28  hjanuschka
 
 	* install_pkg.php, package_create.php: package managment files ;-)
