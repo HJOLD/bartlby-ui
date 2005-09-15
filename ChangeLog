@@ -1,3 +1,8 @@
+2005-09-15 00:04  hjanuschka
+
+	* ChangeLog, bartlby_action.php: action: add_worker missing front |
+	  in notify str disables OK warnings per default fixed
+
 2005-09-13 22:54  hjanuschka
 
 	* execv.php: plugin help can now be view'd via web ui
