@@ -136,11 +136,15 @@ class Layout {
 	}
 	
 	function display($cr="") {
+				
 		$this->end_time=$this->microtime_float();
 		$diff=$this->end_time-$this->start_time;
 		$source_file=$_SERVER[SCRIPT_URI];
 		$source_file=str_replace(".php", ".phps",$source_file);
 		$bname=basename($source_file);
+		
+		
+		
 		if (!$cr) {
 			$this->OUT .= "<br><br>
 			<center>
@@ -150,7 +154,8 @@ class Layout {
 			<a href='http://bartlby.sourceforge.net'>bartlby.sourceforge.net</A>
 			<br>
 			$diff seconds<br>
-			Source: <a href='$bname'>$bname</A>
+			Source: <a href='$bname'>$bname</A><br>
+			" . $bmode . "
 			</td></tr></table>
 			
 			";

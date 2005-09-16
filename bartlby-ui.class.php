@@ -1,6 +1,14 @@
 <?
+
+
+
 class BartlbyUi {
+	
 	function BartlbyUi($cfg) {
+		
+		if(!function_exists("bartlby_version")) {
+			dl("bartlby.so");	
+		}					
 		$this->CFG=$cfg;
 		//Check if bartlby is running :-)
 		$this->info=@bartlby_get_info($this->CFG);
