@@ -155,7 +155,7 @@ class Layout {
 			<br>
 			$diff seconds<br>
 			Source: <a href='$bname'>$bname</A><br>
-			" . $bmode . "
+			" . phpversion() . "
 			</td></tr></table>
 			
 			";

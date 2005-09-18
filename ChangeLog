@@ -1,3 +1,8 @@
+2005-09-16 23:09  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, config.php, layout.class.php:
+	  php5 support compile as shared dl();
+
 2005-09-16 00:09  hjanuschka
 
 	* ChangeLog, error.php: error page :-)

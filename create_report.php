@@ -4,24 +4,18 @@ include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
-$layout= new Layout();
 
-$layout= new Layout();
-$layout->Form("fm1", $_GET[script]);
-$layout->Table("100%");
-$layout->DisplayHelp(array(0=>"INFO|Pick a service From the Dropdown List"));
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Select a Server'
-					)
-			)
-		)
+$ibox[0][c]="green";
+$ibox[0][v]=0;
+$ibox[0][s]=1;	
+$ibox[0][k]="OK";
+$ibox[1][c]="orange";        
+$ibox[1][v]=1;	  
+$ibox[1][k]="Warning";
+$ibox[2][c]="red";        
+$ibox[2][v]=2;	  
+$ibox[2][k]="Critical";
 
-);
 $map = $btl->GetSVCMap();
 $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);
@@ -52,12 +46,63 @@ while(list($k, $servs) = @each($map)) {
 }
 
 
+$layout= new Layout();
+
+$layout= new Layout();
+$layout->Form("fm1", "report.php");
+$layout->Table("100%");
 
 $layout->Tr(
 	$layout->Td(
 			Array(
-				0=>"Server:",
-				1=>$layout->DropDown("service_id", $servers)
+				0=>Array(
+					'colspan'=> 2,
+					'class'=>'header',
+					'show'=>'Report'
+					)
+			)
+		)
+
+);
+
+
+
+
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Start Date:",
+				1=>$layout->Field("report_start", "text", date("d.m.Y",time()-86800)) 
+			)
+		)
+
+);
+
+
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"End Date:",
+				1=>$layout->Field("report_end", "text", date("d.m.Y",time())) 
+			)
+		)
+
+);
+
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Assume Initial State:",
+				1=>$layout->DropDown("report_init", $ibox)
+			)
+		)
+
+);
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Service:",
+				1=>$layout->DropDown("report_service", $servers)
 			)
 		)
 
@@ -69,7 +114,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->")
+					'show'=>$layout->Field("Subm", "submit", "next->") . $layout->Field("server_id", "hidden", $_GET[server_id])
 					)
 			)
 		)
