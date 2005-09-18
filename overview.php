@@ -10,6 +10,18 @@
 	$layout->Table("100%");
 	$lib=bartlby_lib_info($btl->CFG);
 	
+	
+	$is_repl_on=bartlby_config($btl->CFG, "replication");
+	$repl = "<hr noshade>Replication enabled: <b>$is_repl_on</b><br>";
+	if($is_repl_on == "true") {
+			$repl_cnt=bartlby_config($btl->CFG, "replicate_cnt");
+			$repl .="Replicating to $repl_cnt Servers every " . bartlby_config($btl->CFG, "replication_intervall") . "<br>";
+			for($x=1; $x<=$repl_cnt; $x++) {
+				$repl .= str_repeat("&nbsp;", 20) . " Server:" . bartlby_config($btl->CFG, "replicate[" . $x . "]") . "<br>";	
+			}
+			$repl .= "Last Replication was on:" . date("d.m.Y H:i:s", $btl->info[last_replication]) . "<br>";
+	}
+	
 	$servers=$btl->GetServers();
 	$hosts_sum=count($servers);
 	
@@ -145,6 +157,7 @@
 			)
 
 	);
+	
 	$layout->Tr(
 	$layout->Td(
 			Array(
@@ -166,6 +179,12 @@
 						<td class=none>(<a href='services.php?service_state=1'>View</A>)Warning:<font color=orange> $services_warning</font></td>
 						<td class=none>(<a href='services.php?service_state=2'>View</A>)Critical:<font color=red> $services_critical</font></td>
 					</tr>
+					<tr>
+						<td colspan=3>
+						$repl
+						</td>
+					</tr>
+					
 					
 					
 					</table>
@@ -192,6 +211,8 @@
 					<td colspan=3><b>Quick View</b></td>
 				</tr>
 				$quick_view
+				
+				
 				</table>
 				
 				"
