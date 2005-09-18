@@ -10,6 +10,12 @@
 	$lib=bartlby_lib_info($btl->CFG);
 	
 	$base_dir=bartlby_config($btl->CFG, "basedir");
+	$mode=bartlby_config($btl->CFG, "i_am_a_slave");
+	if(!$mode) {
+		$vmode="MASTER";	
+	} else {
+		$vmode="SLAVE<br>dont change anything";	
+	}
 	$cdump="";
 	if(!$base_dir) {
 		$cdump="Basedir not set!!";	
@@ -23,7 +29,7 @@
 		$layout->Td(
 				Array(
 					0=>Array(
-						'colspan'=> 13,
+						'colspan'=> 15,
 						'class'=>'header',
 						'show'=>'Core Information (<i>Logged in as:</i><b>' . $btl->user . '</b>)'
 						)
@@ -46,7 +52,9 @@
 				9=>"<b>" . $lib[Name] . "-" . $lib[Version] . "<br><font size=1></font>",
 				10=>"Version:",
 				11=>"<b>" . $btl->getRelease(),
-				12=>"<font color=red>$cdump</font>"
+				12=>"Mode",
+				13=>"<b>" . $vmode . "</b>",
+				14=>"<font color=red>$cdump</font>"
 				
 			)
 		)

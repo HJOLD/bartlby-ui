@@ -1,3 +1,7 @@
+2005-09-18 07:04  hjanuschka
+
+	* ChangeLog, overview.php: replication roll up
+
 2005-09-18 02:53  hjanuschka
 
 	* bartlby-ui.class.php, report.php: human readable time diff
