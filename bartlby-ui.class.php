@@ -154,5 +154,20 @@ class BartlbyUi {
 			
 		}
 	}
+	function intervall($sek) {
+		// http://faq-php.de/q/q-code-intervall.html
+    		$i = sprintf('%d Day%s, %d Hour%s,'.
+            		' %d Minute%s und %d Second%s',
+            		$sek / 86400,
+            		floor($sek / 86400) != 1 ? 's':'',
+            		$sek / 3600 % 24,
+            		floor($sek / 3600 % 24) != 1 ? 's':'',
+            		$sek / 60 % 60,
+            		floor($sek / 60 % 60) != 1 ? 's':'',
+            		$sek % 60,
+            		floor($sek % 60) != 1 ? 's':''
+         	);
+    		return $i;
+	}
 }
 ?>

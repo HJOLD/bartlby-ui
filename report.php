@@ -142,7 +142,7 @@ if(!$_GET[report_service] || !$log_mask) {
 			
 			$out .= "<tr>";
 			$out .= "<td width=200 class='" . $btl->getColor($state) . "'>State:  " . $btl->getState($state) . "</td>";
-			$out .= "<td>Time:  " . $time . " seconds</td>";
+			$out .= "<td>Time:  " . $btl->intervall($time) . " seconds</td>";
 			$out .= "<td>Percent:  <b>" . round($perc,2) . "</b> seconds</td>";
 			$out .= "</tr>";
 		}
