@@ -135,6 +135,9 @@ if(!$_GET[report_service] || !$log_mask) {
 		$out .= "<td colspan=3 class=header>Service Time</td>";
 		
 		$hun=$svc[0]+$svc[1]+$svc[2];
+		$flash[0]="0";
+		$flash[1]="0";
+		$flash[2]="0";
 		while(list($state, $time) = @each($svc)) {
 			
 			$perc =   (($hun-$time) * 100 / $hun);
@@ -144,8 +147,38 @@ if(!$_GET[report_service] || !$log_mask) {
 			$out .= "<td width=200 class='" . $btl->getColor($state) . "'>State:  " . $btl->getState($state) . "</td>";
 			$out .= "<td>Time:  " . $btl->intervall($time) . " seconds</td>";
 			$out .= "<td>Percent:  <b>" . round($perc,2) . "</b> seconds</td>";
+			
+			$flash[$state]=$perc;
+			
 			$out .= "</tr>";
 		}
+		
+		for($x=0; $x<3; $x++) {
+			$nstate= $x+1;
+			$rstr .= "&text_" . $nstate . "=" . $btl->getState($x) . "&value_" . $nstate . "=" . $flash[$x];	
+		}
+		
+		$out .= "<tr>";
+		
+			$out .= '<td colspan=2 align=center>
+			
+				<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
+					codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" 
+					width="350" 
+					height="250" 
+					id="pie" 
+					align="middle">
+				<param name="wmode" value="transparent">
+				<param name="allowScriptAccess" value="sameDomain" />
+				<param name="movie" value="flash/pie.swf?a=' . $rstr . '" />
+				<param name="quality" value="high" />
+				<embed src="flash/pie.swf?a=' . $rstr . '" quality="high" width="350" height="250" name="pie" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent"/>
+				</object>
+				<br>
+				<!--http://actionscript.org/showMovie.php?id=483-->
+			</td>';
+		
+		$out .= "</tr>";
 		$out .= "</table>";
 		
 		$out .= "<table width=100%>";

@@ -1,3 +1,8 @@
+2005-09-24 00:18  hjanuschka
+
+	* ChangeLog, logview.php, report.php, services.php, flash/pie.fla,
+	  flash/pie.html, flash/pie.swf: initial import
+
 2005-09-18 13:29  hjanuschka
 
 	* ChangeLog, bartlby-ui.class.php, status.php: version bump warning
