@@ -18,6 +18,7 @@
 			$layout->Td(
 				Array(
 					0=>array(
+						
 						'show'=>"Host",
 						'class'=>"header"
 					   ),
@@ -39,6 +40,7 @@
 						"show"=>"Service"
 					   ),
 					5=>array(
+						
 						"class"=>"header",
 						"show"=>"Service Text"
 					   )
@@ -98,7 +100,7 @@
 					$layout->Td(
 						Array(
 							0=>array(
-								"width"=>200,
+								"width"=>100,
 								'show'=>$SERVER,
 								'class'=>$server_color
 							   ),
@@ -109,21 +111,24 @@
 								'class'=>$svc_color
 							   ),
 							2=>array(
+								"width"=>50,
 								"class"=>$class,
 								"show"=>"<font size=1>" . date("d.m.y h:i:s", $servs[$x][last_check])
 							   ),
 							3=>array(
+								"width"=>50,
 								"class"=>$class,
 								"show"=>"<font size=1>" .  date("d.m.y h:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
 							   ),						
 							4=>array(
+								"width"=>100,
 								"class"=>"header1",
 								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1>View Log</A> <br> $notifys $check $comments</font>"
 							   ),
 							5=>array(
 								"width"=>300,
 								"class"=>$class,
-								"show"=>nl2br($servs[$x][new_server_text])
+								"show"=>str_replace( "\\dbr", "<br>",nl2br($servs[$x][new_server_text]))
 							   )
 						)
 					)

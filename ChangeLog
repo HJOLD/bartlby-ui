@@ -1,3 +1,8 @@
+2005-09-18 13:29  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, status.php: version bump warning
+	  in slave mode dump hosts in master mode
+
 2005-09-18 07:04  hjanuschka
 
 	* ChangeLog, overview.php: replication roll up

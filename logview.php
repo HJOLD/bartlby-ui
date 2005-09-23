@@ -45,7 +45,7 @@
 			}
 			
 			
-			$outline = $tmp[2] . " changed to " . $btl->getState($tmp[1]) . "(" . $tmp[3] . ")";
+			$outline = $tmp[2] . " changed to " . $btl->getState($tmp[1]) . "<br>" . $tmp[3] . "<br>";
 			$stcheck=$tmp[1];
 		} else if($log_detail_o[1] == "NOT") {
 			$tmp=explode("|", $log_detail_o[2]);
@@ -87,7 +87,7 @@
 						),
 					2=>Array(
 						'class'=>'header1',
-						'show'=>"$outline"
+						'show'=>str_replace( "\\dbr", "<br>",$outline)
 						),
 				)
 			)

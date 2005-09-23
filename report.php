@@ -135,7 +135,7 @@ if(!$_GET[report_service] || !$log_mask) {
 		$out .= "<td colspan=3 class=header>Service Time</td>";
 		
 		$hun=$svc[0]+$svc[1]+$svc[2];
-		while(list($state, $time) = each($svc)) {
+		while(list($state, $time) = @each($svc)) {
 			
 			$perc =   (($hun-$time) * 100 / $hun);
 			$perc =100-$perc;
@@ -151,7 +151,7 @@ if(!$_GET[report_service] || !$log_mask) {
 		$out .= "<table width=100%>";
 		$out .= "<td colspan=2 class=header>Notifications:</td>";
 		$hun=$daycnt;
-		while(list($worker, $dd) = each($notify)) {
+		while(list($worker, $dd) = @each($notify)) {
 			
 			
 			
@@ -161,9 +161,9 @@ if(!$_GET[report_service] || !$log_mask) {
 			$out .= "<td>";
 			
 			
-			while(list($trigger, $dd1) = each($dd)) {
+			while(list($trigger, $dd1) = @each($dd)) {
 				$out .=	"<i>" . $trigger . "</i><br>";
-				while(list($k, $ts) = each($dd1)) {
+				while(list($k, $ts) = @each($dd1)) {
 					$out .= "&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp; "  . date("d.m.Y H:i:s", $ts[0]) . " (<font color='" . $btl->getColor($ts[1]) . "'>" . $btl->getState($ts[1]) . "</font>)<br>";
 				}
 			}
