@@ -37,6 +37,30 @@ while(list($k, $servs) = @each($map)) {
 		$optind++;
 	}
 }
+$optind=0;
+$plgs=bartlby_config($btl->CFG, "trigger_dir");
+$dh=opendir($plgs);
+while ($file = readdir ($dh)) { 
+   if ($file != "." && $file != "..") { 
+   	clearstatcache();
+   	if(is_executable($plgs . "/" . $file) && !is_dir($plgs . "/" . $file)) {
+   		
+       		$triggers[$optind][c]="";
+       		$triggers[$optind][v]=$file;
+       		$triggers[$optind][k]=$file;
+       		/*if($defaults[plugin] == $file) {
+       			$plugins[$optind][s]=1;	
+       		}*/
+       		
+       		if(strstr((string)$defaults[enabled_triggers],"|" . $file . "|")) {
+			$triggers[$optind][s]=1;	
+		}
+       		
+       		$optind++;
+       	}
+   } 
+}
+closedir($dh); 
 
 $act[0][c]="";
 $act[0][v]="0";
@@ -118,6 +142,7 @@ $layout->Tr(
 		)
 	)
 );
+
 if(strstr((string)$defaults[notify_levels], "|0|")) {
 	$chk0="checked";	
 }
@@ -132,6 +157,15 @@ $layout->Tr(
 		array(
 			0=>"Notifys:",
 			1=>"<input type=checkbox value=0 name=notify[] $chk0><font color=green>OK</font><input value=1 type=checkbox name=notify[] $chk1><font color=orange>Warning</font><input value=2 type=checkbox name=notify[] $chk2><font color=red>Critical</font>" 
+		)
+	)
+);
+
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Triggers:",
+			1=>$layout->DropDown("worker_triggers[]", $triggers, "multiple")
 		)
 	)
 );

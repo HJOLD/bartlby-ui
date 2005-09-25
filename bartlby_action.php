@@ -145,8 +145,16 @@ switch($_GET[action]) {
 			if($notifystr != "") {
 				$notifystr = "|" . $notifystr;
 			}
+			$triggerstr="";
+			for($x=0;$x<count($_GET[worker_triggers]); $x++) {
+				$triggerstr .="" . $_GET[worker_triggers][$x] . "|";	
+			}
+			if($triggerstr != "") {
+				$triggerstr = "|" . $triggerstr;
+			}
+			
 			$msg = "wa:" .  $_GET[worker_active] . "\n";
-			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
+			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password], $triggerstr);
 			$msg .= "Mod: " . $add;
 			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
 
@@ -172,8 +180,16 @@ switch($_GET[action]) {
 			if($notifystr != "") {
 				$notifystr = "|" . $notifystr;
 			}
+			$triggerstr="";
+			for($x=0;$x<count($_GET[worker_triggers]); $x++) {
+				$triggerstr .="" . $_GET[worker_triggers][$x] . "|";	
+			}
+			if($triggerstr != "") {
+				$triggerstr = "|" . $triggerstr;
+			}
 			
-			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password]);
+			
+			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password], $triggerstr);
 			$msg .= "ADD: " . $add;
 			echo "<script>parent.l.document.location.href='nav.php?r=1'</script>";
 			

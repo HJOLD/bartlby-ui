@@ -6,6 +6,26 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 
+$optind=0;
+$plgs=bartlby_config($btl->CFG, "trigger_dir");
+$dh=opendir($plgs);
+while ($file = readdir ($dh)) { 
+   if ($file != "." && $file != "..") { 
+   	clearstatcache();
+   	if(is_executable($plgs . "/" . $file) && !is_dir($plgs . "/" . $file)) {
+   		
+       		$triggers[$optind][c]="";
+       		$triggers[$optind][v]=$file;
+       		$triggers[$optind][k]=$file;
+       		/*if($defaults[plugin] == $file) {
+       			$plugins[$optind][s]=1;	
+       		}*/
+       		
+       		$optind++;
+       	}
+   } 
+}
+closedir($dh); 
 
 
 $map = $btl->GetSVCMap();
@@ -123,8 +143,15 @@ $layout->Tr(
 		)
 	)
 );
-
-
+//$_GET[worker_triggers]
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Triggers:",
+			1=>$layout->DropDown("worker_triggers[]", $triggers, "multiple")
+		)
+	)
+);
 
 $layout->Tr(
 	$layout->Td(

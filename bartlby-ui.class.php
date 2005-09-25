@@ -89,6 +89,7 @@ class BartlbyUi {
 		$r=array();
 		for($x=0; $x<$this->info[workers]; $x++) {
 			$wrk=bartlby_get_worker($this->CFG, $x);
+			
 			//$r[$wrk[worker_id]]=$wrk[name];
 			array_push($r, $wrk);
 		}	
