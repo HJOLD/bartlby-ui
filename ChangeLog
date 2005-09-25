@@ -1,3 +1,9 @@
+2005-09-25 18:31  hjanuschka
+
+	* ChangeLog, add_worker.php, bartlby-ui.class.php,
+	  bartlby_action.php, modify_worker.php: add/modify worker ->
+	  trigger enable disable
+
 2005-09-24 00:45  hjanuschka
 
 	* ChangeLog, report.php, flash/pie.fla, flash/pie.swf: fixed the

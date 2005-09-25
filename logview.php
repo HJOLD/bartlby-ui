@@ -29,8 +29,8 @@
 			)
 
 	);
-	$fl=@file($logf);
-	
+	$fla=@file($logf);
+	$fl=@array_reverse($fla);
 	while(list($k, $v)=@each($fl)) {
 		$info_array=explode(";",$v);
 		

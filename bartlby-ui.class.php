@@ -4,7 +4,7 @@
 
 class BartlbyUi {
 	
-	function BartlbyUi($cfg) {
+	function BartlbyUi($cfg, $auth=true) {
 		
 		if(!function_exists("bartlby_version")) {
 			dl("bartlby.so");	
@@ -14,11 +14,11 @@ class BartlbyUi {
 		$this->info=@bartlby_get_info($this->CFG);
 		
 		
-		if(!$this->info) {
+		if(!$this->info && $auth == true) {
 			$this->redirectError("BARTLBY::NOT::RUNNING");
 			exit(1);
 		} 
-		$this->perform_auth();
+		$this->perform_auth($auth);
 		$this->release=$this->info[version];
 		
 	}
@@ -26,16 +26,20 @@ class BartlbyUi {
 		return $this->release;	
 	}
 	function getInfo() {
-		return bartlby_get_info($this->CFG);	
+		return @bartlby_get_info($this->CFG);	
 	}
 	
-	function perform_auth() {
+	function perform_auth($a=true) {
 		$wrks=$this->GetWorker();
 		$auted=0;
-		while(list($k, $v) = each($wrks)) {
-			//$v1=bartlby_get_worker_by_id($this->CFG, $v[worker_id]);
-			if($_SERVER[PHP_AUTH_USER] == $v[name] && $_SERVER[PHP_AUTH_PW] == $v[password]) {
-				$auted=1;
+		if($a==false) {
+			$auted=1;
+		} else {
+			while(list($k, $v) = each($wrks)) {
+				//$v1=bartlby_get_worker_by_id($this->CFG, $v[worker_id]);
+				if($_SERVER[PHP_AUTH_USER] == $v[name] && $_SERVER[PHP_AUTH_PW] == $v[password]) {
+					$auted=1;
+				}
 			}
 		}
 		

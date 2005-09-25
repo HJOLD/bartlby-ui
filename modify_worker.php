@@ -24,7 +24,7 @@ while(list($k, $servs) = @each($map)) {
 		} else {
 			
 		}
-		$state=$btl->getState($v1[current_state]);
+		$state=$btl->getState($servs[$x][current_state]);
 		$servers[$optind][c]="";
 		$servers[$optind][v]=$servs[$x][service_id];	
 		$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
