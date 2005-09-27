@@ -21,7 +21,11 @@
 		$cdump="Basedir not set!!";	
 	} else {
 		if(file_exists($base_dir . "/core")) {
-			$cdump="coredump found";	
+			$app=popen("file $base_dir/core|awk '{print \$NF}'", "r");
+			$app_n=fgets($app, 1024);
+			
+			pclose($app);
+			$cdump="cdump by: $app_n";	
 		}
 	}
 	

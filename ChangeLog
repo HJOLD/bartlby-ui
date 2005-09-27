@@ -1,3 +1,8 @@
+2005-09-25 21:51  hjanuschka
+
+	* ChangeLog, add_worker.php, bartlby-ui.class.php, img.php,
+	  logview.php, modify_worker.php: img added
+
 2005-09-25 18:31  hjanuschka
 
 	* ChangeLog, add_worker.php, bartlby-ui.class.php,
