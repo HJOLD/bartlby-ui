@@ -5,7 +5,7 @@
 	$btl=new BartlbyUi($Bartlby_CONF);
 	$info=$btl->getInfo();
 	$layout= new Layout();
-	
+	$layout->Form("fm1", "logview.php");
 	$layout->Table("100%");
 	
 	$ch_time=time();
@@ -23,15 +23,30 @@
 					0=>Array(
 						'colspan'=> 3,
 						'class'=>'header',
-						'show'=>"<a href='logview.php?service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>"
+						'show'=>"<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>"
 						)
 				)
 			)
 
 	);
+	$layout->Tr(
+		$layout->Td(
+				Array(
+					0=>array("colspan" => 3, 
+						"show" => "Filter:" . $layout->Field("bartlby_filter", "text", $_GET["bartlby_filter"]) . $layout->Field("bartlby_sub", "submit", "Filter")
+					)
+				)
+			)
+
+		);
 	$fla=@file($logf);
 	$fl=@array_reverse($fla);
 	while(list($k, $v)=@each($fl)) {
+		if($_GET["bartlby_filter"]) {
+			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
+				continue;
+			}
+		}
 		$info_array=explode(";",$v);
 		
 		$log_detail_o=explode("@", $info_array[2]);
@@ -72,7 +87,9 @@
 			case 5: $img="trigger.png"; break;
 			case 6: $img="flapping.gif"; break;
 		}
+
 		
+				
 		$layout->Tr(
 		$layout->Td(
 				Array(
@@ -95,6 +112,7 @@
 		);
 	}
 	$layout->TableEnd();
+	$layout->FormEnd();
 	$layout->display("no");
 	
 ?>
