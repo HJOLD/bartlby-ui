@@ -70,7 +70,7 @@ while(1){
 	ncurses_color_set(4);
 	// border the main window
 	ncurses_attron(NCURSES_A_REVERSE);
-	ncurses_mvaddstr(0,1,"($k) bartlby\t" . date("d.m.Y H:i:s", time()) . " /" . $start_from . "-" . $btl->info[services]);
+	ncurses_mvaddstr(0,1,"($k) bartlby -> " . $btl->getRelease() . "\t" . date("d.m.Y H:i:s", time()) . " /" . $start_from . "-" . $btl->info[services]);
 	
 	ncurses_attroff(NCURSES_A_REVERSE);
 
