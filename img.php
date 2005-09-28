@@ -105,9 +105,12 @@ function drawRating($rating, $cl=array(), $ok, $crit, $warn, $info=array()) {
    	if(!is_array($info)) {
    		$image = imagecreate(50,30);
    	} else {
-   		$image = imagecreate(102,80);
+   		$image = imagecreate(102,110);
    	}
-	$back = ImageColorAllocate($image,255,255,255);
+	$back = ImageColorAllocate($image,194,203,207);
+	$green = ImageColorAllocate($image,0,255,0);
+	$orange = ImageColorAllocate($image,255,255,0);
+	$red = ImageColorAllocate($image,255,0,0);
    	$font = ImageColorAllocate($image,0,0,0);
    	$border = ImageColorAllocate($image,0,0,0);
    
@@ -116,6 +119,9 @@ function drawRating($rating, $cl=array(), $ok, $crit, $warn, $info=array()) {
   	$fill = ImageColorAllocate($image,$cl[0],$cl[1],$cl[2]);
   	  
   if(is_array($info)) { 
+   	 $okp = imagecreatefrompng("./images/ok.png");
+   	 $wkp = imagecreatefrompng("./images/warning.png");
+   	 $ckp = imagecreatefrompng("./images/critical.png");
    	 
   	 $a=explode("(", $info[version]);
   	 $mv=$a[0];
@@ -123,18 +129,35 @@ function drawRating($rating, $cl=array(), $ok, $crit, $warn, $info=array()) {
   	 imagestring($image, 2, 5,0, $mv,$font); 
   	 
   	 ImageFilledRectangle($image,0,20,101,15,$back);
-  	 ImageFilledRectangle($image,1,21,$rating,15,$fill);
+  	 ImageFilledRectangle($image,1,20,$rating,15,$fill);
   	 ImageRectangle($image,0,20,101,15,$border);
   	 imagestring($image, 2, 20,21, "$rating % OK",$font); 
-  	 imagestring($image, 2, 5,36, "$crit Critical",$font); 
+  	 /*imagestring($image, 2, 5,36, "$crit Critical",$font); 
   	 imagestring($image, 2, 5,46, "$warn Warning",$font); 
   	 imagestring($image, 2, 5,56, "$ok OK",$font); 
   	 imagestring($image, 2, 5,66, "running: " . $info[current_running],$font); 
+  	 */
+  	 imagecopy($image, $okp, 2,35,0,0,20,20);
+  	 imagecopy($image, $wkp, 2,55,0,0,20,20);
+  	 imagecopy($image, $ckp, 2,75,0,0,20,20);
+  	 
+  	 shadow_s($image, 2, 25,40, "$ok OK",$green, $font); 
+  	 shadow_s($image, 2, 25,60, "$warn Warning",$orange, $font); 
+  	 shadow_s($image, 2, 25,80, "$crit Critical",$red, $font); 
+  	 shadow_s($image, 2, 3,95, "running: " . $info[current_running],$font, $font); 
   } else {
   	imagestring($image, 2, 5,5, "Bartlby",$fill); 
   	imagestring($image, 2, 5,15, "Down!",$fill); 
   }
    imagePNG($image);
    imagedestroy($image);
+}
+
+function shadow_s($i, $x, $y, $xx, $str, $c, $cc) {
+		 
+		 //imagestring($i, $x, $y,$xx+1, $str,$cc); 
+		 imagestring($i, $x, $y,$xx, $str,$c); 
+		 
+		 
 }
 ?>

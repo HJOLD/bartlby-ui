@@ -13,11 +13,11 @@ for($x=0; $x<count($_GET[msg])-1;$x++) {
 	$inf=explode("|", $_GET[msg][$x]);
 	
 	switch($inf[0]) {
-		case 'OK': $img="ok.gif"; break;
-		case 'WARN': $img="warning.gif"; break;
-		case 'CRIT': $img="critical.gif"; break;
-		case 'INFO': $img="info.gif"; break;	
-		case 'TRIG': $img="trigger.gif"; break;
+		case 'OK': $img="ok.png"; break;
+		case 'WARN': $img="warning.png"; break;
+		case 'CRIT': $img="critical.png"; break;
+		case 'INFO': $img="info.png"; break;	
+		case 'TRIG': $img="trigger.png"; break;
 		
 	}
 

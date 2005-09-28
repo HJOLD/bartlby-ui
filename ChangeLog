@@ -1,3 +1,16 @@
+2005-09-27 22:25  hjanuschka
+
+	* cli.php: [no log message]
+
+2005-09-27 21:47  hjanuschka
+
+	* logview.php: preg_match on logfile
+
+2005-09-27 20:20  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, cli.php, status.php: added cli
+	  monitor ;-)
+
 2005-09-25 21:51  hjanuschka
 
 	* ChangeLog, add_worker.php, bartlby-ui.class.php, img.php,

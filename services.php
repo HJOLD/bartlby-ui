@@ -71,13 +71,13 @@
 				}
 				
 				if($servs[$x][service_active] == 1) {
-					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.png' alt='Disable Checks for this Service' border=0></A>";
+					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.png' title='Disable Checks for this Service' border=0></A>";
 				} else {
-					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_service'><img src='images/diabled.png' alt='Enable  Checks for this Service' border=0></A>";
+					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_service'><img src='images/diabled.png' title='Enable  Checks for this Service' border=0></A>";
 				}
 				
 				/* if($servs[$x][server_enabled] == 1) {
-					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=disable_server'><img src='enabled.png' alt='Disable Checks for this Host' border=0></A>";
+					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=disable_server'><img src='enabled.png' title='Disable Checks for this Host' border=0></A>";
 				} else {
 					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=enable_server'><img src='diabled.png' alt='Enable  Checks for this Host' border=0></A>";
 				}
@@ -86,9 +86,9 @@
 				
 				
 				if($servs[$x][notify_enabled] == 1) {
-					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_notify'><img src='images/notrigger.png' alt='Disable Notifications for this Service' border=0></A>";
+					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_notify'><img src='images/notrigger.png' title='Disable Notifications for this Service' border=0></A>";
 				} else {
-					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_notify'><img src='images/trigger.png' alt='Enable Notifications for this Service' border=0></A>";
+					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_notify'><img src='images/trigger.png' title='Enable Notifications for this Service' border=0></A>";
 				}
 				
 				
@@ -123,7 +123,7 @@
 							4=>array(
 								"width"=>100,
 								"class"=>"header1",
-								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1>View Log</A> <br> $notifys $check $comments</font>"
+								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1><img src='images/icon_view.png' border=0></A> $comments</font>"
 							   ),
 							5=>array(
 								"width"=>300,

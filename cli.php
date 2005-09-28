@@ -63,7 +63,7 @@ while(1){
 			$start_from--;	
 		}
 	}
-	$map = $btl->GetSVCMap();
+	$map = @$btl->GetSVCMap();
 	$oks=0;
 	$warns=0;
 	$crits=0;	
