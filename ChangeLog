@@ -1,3 +1,11 @@
+2005-09-28 23:38  hjanuschka
+
+	* ChangeLog, cli.php, help.php, img.php, nav.php, services.php,
+	  images/critical.png, images/diabled.png, images/enabled.png,
+	  images/info.png, images/notrigger.png, images/ok.png,
+	  images/trigger.png, images/warning.png: new icons ;) img.php uses
+	  png icons now ;) removed gifs
+
 2005-09-27 22:25  hjanuschka
 
 	* cli.php: [no log message]
