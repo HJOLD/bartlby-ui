@@ -55,6 +55,12 @@ while(list($k, $v) = @each($servs)) {
 }
 
 $layout->OUT .= "<script>
+		function testPlg() {
+		plugin=document.fm1.service_plugin.options[document.fm1.service_plugin.selectedIndex].value;
+		server=document.fm1.service_server.options[document.fm1.service_server.selectedIndex].value;
+		plg_args=document.fm1.service_args.value;
+		window.open('check.php?server=' + server +  '&plugin=' + plugin + '&args=' + plg_args, 'chk','width=600, height=600, scrollbars=yes'); 
+		}
 		function showPlgHelp() {
 			plugin=document.fm1.service_plugin.options[document.fm1.service_plugin.selectedIndex].value;
 			window.open('execv.php?cmd='+plugin+' -h', 'plgwnd', 'width=600, height=600');
@@ -158,7 +164,7 @@ $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Plugin",
-			1=>$layout->DropDown("service_plugin", $plugins) .  " <a href='javascript:showPlgHelp();'>Show Help of Plugin</A>"
+			1=>$layout->DropDown("service_plugin", $plugins) .  " <a href='javascript:showPlgHelp();'>Show Help of Plugin</A>&nbsp;&nbsp;<a href='javascript:testPlg();'>Test It</A>"
 		)
 	)
 );

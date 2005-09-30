@@ -102,10 +102,11 @@ drawRating($prozent_float, $cl, $services_ok, $services_critical, $services_warn
 
 
 function drawRating($rating, $cl=array(), $ok, $crit, $warn, $info=array()) {
+	global $btl;
    	if(!is_array($info)) {
    		$image = imagecreate(50,30);
    	} else {
-   		$image = imagecreate(102,110);
+   		$image = imagecreate(102,120);
    	}
 	$back = ImageColorAllocate($image,194,203,207);
 	$green = ImageColorAllocate($image,0,255,0);
@@ -145,6 +146,8 @@ function drawRating($rating, $cl=array(), $ok, $crit, $warn, $info=array()) {
   	 shadow_s($image, 2, 25,60, "$warn Warning",$orange, $font); 
   	 shadow_s($image, 2, 25,80, "$crit Critical",$red, $font); 
   	 shadow_s($image, 2, 3,95, "running: " . $info[current_running],$font, $font); 
+  	 $timein=time()-$btl->info[startup_time];
+  	 shadow_s($image, 2, 3, 105, "Uptime: " . $timein, $font, $font);
   } else {
   	imagestring($image, 2, 5,5, "Bartlby",$fill); 
   	imagestring($image, 2, 5,15, "Down!",$fill); 

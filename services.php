@@ -113,12 +113,12 @@
 							2=>array(
 								"width"=>50,
 								"class"=>$class,
-								"show"=>"<font size=1>" . date("d.m.y h:i:s", $servs[$x][last_check])
+								"show"=>"<font size=1>" . date("d.m.y H:i:s", $servs[$x][last_check])
 							   ),
 							3=>array(
 								"width"=>50,
 								"class"=>$class,
-								"show"=>"<font size=1>" .  date("d.m.y h:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
+								"show"=>"<font size=1>" .  date("d.m.y H:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
 							   ),						
 							4=>array(
 								"width"=>100,

@@ -35,7 +35,7 @@
 					0=>Array(
 						'colspan'=> 15,
 						'class'=>'header',
-						'show'=>'Core Information (<i>Logged in as:</i><b>' . $btl->user . '</b>)'
+						'show'=>'Core Information (<i>Logged in as:</i><b>' . $btl->user . '</b>) Uptime: ' . $btl->intervall(time()-$btl->info[startup_time])
 						)
 				)
 			)
@@ -45,7 +45,7 @@
 	$layout->Td(
 			Array(
 				0=>"Time:",
-				1=>"<b>" . date("d.m.Y h:i:s"),
+				1=>"<b>" . date("d.m.Y H:i:s"),
 				2=>"Services:",
 				3=>"<b>" . $info[services],
 				4=>"Workers:",
