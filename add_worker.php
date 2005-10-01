@@ -65,6 +65,25 @@ $act[1][c]="";
 $act[1][v]="1";
 $act[1][k]="Active";
 
+$layout->OUT .= "<script>
+		function simulateTriggers() {
+			wname=document.fm1.worker_name.value;
+			wmail=document.fm1.worker_mail.value;
+			wicq=document.fm1.worker_icq.value;
+			TRR=document.fm1['worker_triggers[]'];
+			wstr='|';
+			for(x=0; x<=TRR.length-1; x++) {
+				
+				if(TRR.options[x].selected) {
+					wstr =  wstr +  TRR.options[x].value + '|';	
+				}
+				
+			}
+			window.open('trigger.php?user='+wname+'&mail='+wmail+'&icq='+wicq+'&trs=' + wstr, 'tr', 'width=600, height=600, scrollbars=yes');
+		}
+		</script>
+";
+
 $layout->DisplayHelp(array(0=>"INFO|Adding a new server to monitor cycle"));
 
 $layout->Form("fm1", "bartlby_action.php");
@@ -148,7 +167,7 @@ $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Triggers:",
-			1=>$layout->DropDown("worker_triggers[]", $triggers, "multiple")
+			1=>$layout->DropDown("worker_triggers[]", $triggers, "multiple") . " <a href='javascript:simulateTriggers();'>Simulate</A>"
 		)
 	)
 );
