@@ -8,7 +8,8 @@ class BartlbyUi {
 		
 		if(!function_exists("bartlby_version")) {
 			dl("bartlby.so");	
-		}					
+		}	
+		$this->BASE_URL=substr($_SERVER[SCRIPT_URI], 0, strrpos($_SERVER[SCRIPT_URI], "/")+1);				
 		$this->CFG=$cfg;
 		//Check if bartlby is running :-)
 		$this->info=@bartlby_get_info($this->CFG);

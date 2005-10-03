@@ -7,7 +7,7 @@
 <HTML>
 <HEAD>
 <TITLE>Bartlby</TITLE>
-
+<link rel="alternate" type="application/rss+xml" href="<?echo $btl->BASE_URL . "rss.php";?>" title="test">
 </HEAD>
 
 <frameset cols='10%,*' border='0' frameborder='0' framespacing='0'>

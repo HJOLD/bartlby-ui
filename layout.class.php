@@ -29,6 +29,7 @@ class Layout {
 	}
 	function Layout($scr='') {
 		$this->start_time=$this->microtime_float();
+		
 		$this->OUT .= "<html>
 		<head>
 		<style>
@@ -54,6 +55,8 @@ class Layout {
 		</head>
 		<body bgcolor=c2cbcf link=000000 text=000000 $scr>
 		";
+		
+		
 	
 	}
 
