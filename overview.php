@@ -2,12 +2,15 @@
 	include "config.php";
 	include "layout.class.php";
 	include "bartlby-ui.class.php";
+	
 	$btl=new BartlbyUi($Bartlby_CONF);
 	$info=$btl->getInfo();
 	$layout= new Layout();
 	$layout->DisplayHelp(array(0=>"WARN|Welcome to BartlbyUI",1=>"INFO|This is the help screen"));
 	$layout->MetaRefresh(30);
 	$layout->Table("100%");
+	
+	
 	$lib=bartlby_lib_info($btl->CFG);
 	
 	
@@ -158,6 +161,7 @@
 
 	);
 	
+	
 	$layout->Tr(
 	$layout->Td(
 			Array(
@@ -182,6 +186,9 @@
 					<tr>
 						<td colspan=3>
 						$repl
+						
+						
+						
 						</td>
 					</tr>
 					

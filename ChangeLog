@@ -1,3 +1,37 @@
+2005-10-03 22:50  hjanuschka
+
+	* bartlby-ui.class.php, layout.class.php, rss.php, start.php: rss
+	  feed of status added added rss to frameset img.php extended
+	  status.php uptime
+
+2005-10-01 03:03  hjanuschka
+
+	* add_worker.php, modify_worker.php, trigger.php: simulate trigger
+
+2005-10-01 01:59  hjanuschka
+
+	* add_service.php, check.php, img.php, modify_service.php,
+	  services.php, status.php: core uptime is display in status.php
+	  check.php added add/modify service run plugin on remote host
+
+2005-09-28 23:47  hjanuschka
+
+	* images/icon_view.png: initial
+
+2005-09-28 23:45  hjanuschka
+
+	* 1.php, ChangeLog, add_server.php, add_service.php,
+	  add_worker.php, api.phps, bartlby-ui.class.php,
+	  bartlby_action.php, cli.php, config.php, create_report.php,
+	  delete_server.php, delete_service.php, delete_worker.php,
+	  error.php, execv.php, grpstr.php, img.php, install_pkg.php,
+	  logout.php, logview.php, modify_server.php, modify_service.php,
+	  modify_worker.php, nav.php, overview.php, package_create.php,
+	  report.php, server_list.php, service_list.php, services.php,
+	  start.php, status.php, user_list.php, view_comments.php,
+	  flash/pie.html, html/bartlby.footer, html/bartlby.header:
+	  converted files to UNIX
+
 2005-09-28 23:38  hjanuschka
 
 	* ChangeLog, cli.php, help.php, img.php, nav.php, services.php,

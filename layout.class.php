@@ -38,7 +38,10 @@ class Layout {
 		td.header { padding: 4; border: dotted #404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#7eaec5}
 		td.header1 { padding: 4; border: dotted #404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#c2cbcf}
 		
-		
+		td.day {font-family:verdana;font-size:12px; background: white; color:black}
+		td.weekend {font-family:verdana;font-size:12px; background: white; color:orange}
+		td.head {font-family:verdana;font-size:12px; background: gray; color:white}
+
 		td.red { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#F83838}
 		td.green { padding: 4;   border: outset white 1px; text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#33FF00}
 		td.orange { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#FFFF00}

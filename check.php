@@ -22,6 +22,7 @@
 		
 		$estr=bartlby_encode($str);
 		fwrite($fp, $estr);
+		$vers=fread($fp, 1024);
 		$reply=fread($fp, 1024);
 		fclose($fp);
 		$dreply=bartlby_decode($reply);
@@ -39,7 +40,7 @@
 					0=>Array(
 						'colspan'=> 1,
 						'class'=>'header',
-						'show'=>"Check:&nbsp;<b>" . $server[server_name] . ":" . $server[client_port] . "/" . $server[service_name] . "</b>"
+						'show'=>"Check:&nbsp;<b>" . $server[server_name] . ":" . $server[client_port] . "/" . $server[service_name] . " Version: $vers</b>"
 						)
 				)
 			)

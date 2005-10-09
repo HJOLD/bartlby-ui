@@ -59,7 +59,7 @@
 				if($x == 0) {
 					$server_color="header";
 					
-					$SERVER=$servs[$x][server_name] . "<br><a href='package_create.php?action=create_package&server_id="  . $servs[$x][server_id] . "'><font size=1>create package</a>";
+					$SERVER=$servs[$x][server_name] . "<br><a href='package_create.php?action=create_package&server_id="  . $servs[$x][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
 				} else {
 					$server_color="black";
 					$SERVER="&nbsp;";
@@ -92,7 +92,7 @@
 				}
 				
 				
-				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'>view comments</A><br>";
+				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.png' border=0></A><br>";
 				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
 				
 				
