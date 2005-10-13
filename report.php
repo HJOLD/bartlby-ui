@@ -177,8 +177,7 @@ if(!$_GET[report_service] || !$log_mask) {
 				<br>
 				<!--http://actionscript.org/showMovie.php?id=483-->
 			</td>';
-		
-		$out .= "</tr>";
+				$out .= "</tr>";
 		$out .= "</table>";
 		
 		$out .= "<table width=100%>";

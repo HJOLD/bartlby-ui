@@ -27,7 +27,8 @@
 	
 	$servers=$btl->GetServers();
 	$hosts_sum=count($servers);
-	
+	$hosts_up=0;
+	$hosts_down=0;
 	while(list($k,$v)=@each($servers)) {
 		$x=$k;
 		if($btl->isServerUp($x)) {
