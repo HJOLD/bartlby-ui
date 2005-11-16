@@ -29,38 +29,6 @@ class Layout {
 	}
 	function Layout($scr='') {
 		$this->start_time=$this->microtime_float();
-		
-		$this->OUT .= "<html>
-		<head>
-		<style>
-		td {font-family:verdana;  padding:2; font-size:12px; color:000000; background-color:c2cbcf}
-		td.none {font-family:verdana; border: dotted #404040 0px; padding:2; font-size:12px; color:#000000; }
-		td.header { padding: 4; border: dotted #404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#7eaec5}
-		td.header1 { padding: 4; border: dotted #404040 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#c2cbcf}
-		
-		td.day {font-family:verdana;font-size:12px; background: white; color:black}
-		td.weekend {font-family:verdana;font-size:12px; background: white; color:orange}
-		td.head {font-family:verdana;font-size:12px; background: gray; color:white}
-
-		td.red { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#F83838}
-		td.green { padding: 4;   border: outset white 1px; text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#33FF00}
-		td.orange { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#FFFF00}
-		td.blue { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#ACACAC}
-		td.yellow { padding: 4; border: outset white 1px;  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:#ACACAC}
-		
-		td.black {  text-valign: middle;  font-family:verdana; font-size:12px; height:20px; color:000000; background-color:c2cbcf}
-		
-		a {font-family:verdana; font-size:12px; color:#0A246A}
-		a.mine {font-family:verdana; font-size:12px; color:#ffffff}
-		input { font-family: verdana; font-size:12px;}
-		select { font-family: verdana; font-size:12px;}
-		</style>
-		</head>
-		<body bgcolor=c2cbcf link=000000 text=000000 $scr>
-		";
-		
-		
-	
 	}
 
 	function Table($proz="100%") {
@@ -76,8 +44,9 @@ class Layout {
 		for($x=0; $x<=count($msg);$x++) {
 			$fin .= "msg[]=" . $msg[$x] . "&";
 		}
-		$this->OUT .= "<script>parent.unten.location.href='help.php?" . $fin . "';</script>";
+		//$this->OUT .= "<script>parent.unten.location.href='help.php?" . $fin . "';</script>";
 	}
+
 	function Td($data=array()) {
 		for($x=0;$x<count($data);$x++) {
 			$width="";
@@ -140,7 +109,9 @@ class Layout {
 		$r .= "</select>\n";
 		return $r;
 	}
-	
+	function setTitle($str) {
+		$this->BoxTitle=$str;
+	}
 	function display($cr="") {
 				
 		$this->end_time=$this->microtime_float();
@@ -150,66 +121,43 @@ class Layout {
 		$bname=basename($source_file);
 		
 		
-		
-		if (!$cr) {
-			$this->OUT .= "<br><br>
-			<center>
-			<table><tr><td>
-			( Service Monitoring ) UI<br>
-			bartlby-team © 2005<br>
-			<a href='http://bartlby.sourceforge.net'>bartlby.sourceforge.net</A>
-			<br>
-			$diff seconds<br>
-			Source: <a href='$bname'>$bname</A><br>
-			" . phpversion() . "
-			</td></tr></table>
-			
-			";
-			
+		$fp=fopen("template.html", "r");
+		while(!feof($fp)) {
+			$str=fgets($fp, 1024);
+			$o = str_replace("<!--BTUICONTENT-->",$this->OUT,$str);
+			$o = str_replace("<!--BTUIOUTSIDE-->",$this->OUTSIDE,$o);
+			$o = str_replace("<!--BTUIBOXTITLE-->",$this->BoxTitle,$o);
+			echo $o; 	
 		}
-		if(preg_match("/lynx/i", getenv("HTTP_USER_AGENT"))) {
-			$this->OUT=preg_replace("/<img .*>/", "",$this->OUT);	
-		}
-			echo $this->OUT;	
+		fclose($fp);
+			
 		
-		//echo $this->create_window("MXServer", $this->OUT  ,585,'center',"<center>","</center>");
-	}
-
-function create_window($title, $text, $width=100,$walign='left', $pre='',$post='') {
-		$r="
-		$pre
-		<table border=0  cellpadding=0 cellspacing=0>
-	<tr>
-		<td  style='padding:0px;border:0px;font-family:verdana; font-size:12px; color:ffffff'><img src='images/ps_export/images/corner_left_top.gif'></td>
-		<td  style='padding:0px;border:0px;background-repeat: repeat-x;background-image:url(images/ps_export/images/tile_top.gif);font-family:verdana; font-size:12px; color:ffffff' width='$width'>$title</td>
-		<td  style='padding:0px;border:0px;font-family:verdana; font-size:12px; color:ffffff'><img src='images/ps_export/images/corner_right_top.gif'></td>
-	</tr>
-	
-	<tr>
-		<td  style='padding:0px;border:0px;background-repeat: repeat-y;background-image:url(images/ps_export/images/tile_left.gif);font-family:verdana; font-size:12px; color:ffffff'>
-		<img src='images/ps_export/images/tile_left.gif'>
-		</td>
-		<td  align=$walign style='padding:0px;border:0px;background-image:url(images/ps_export/images/content_bg.gif);font-family:verdana; font-size:12px; color:000000' width='$width'>
-		$text
-		</td>
-		<td  style='padding:0px;border:0px;background-repeat: repeat-y;background-image:url(images/ps_export/images/tile_right.gif);font-family:verdana; font-size:12px; color:ffffff'>
-		</td>
-	</tr>
-	
-	<tr>
-		<td  style='padding:0px;border:0px;font-family:verdana; font-size:12px; color:ffffff'><img src='images/ps_export/images/corner_left_bottom.gif'></td>
-		<td  style='padding:0px;border:0px;background-repeat: repeat-x;background-image:url(images/ps_export/images/tile_bottom.gif);font-family:verdana; font-size:12px; color:ffffff' width='100'>&nbsp;</td>
-		<td  style='padding:0px;border:0px;font-family:verdana; font-size:12px; color:ffffff'><img src='images/ps_export/images/corner_right_bottom.gif'></td>
-	</tr>
-
-
-
-</table>
-		$post
-		
-		";
-		return $r;
 		
 	}
+	function create_box($title, $content) {
+		$rr .= '
+			<table class="nopad">
+				<tr>
+					<td class="box_left_corner_top">&nbsp;</td>
+					<td class="box_top_run">' . $title . '</td>
+					<td class="box_right_corner_top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="box_left_run">&nbsp;</td>
+					<td class="box_content">' . $content . '</td>
+					<td class="box_right_run">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="box_left_corner_bottom">&nbsp;</td>
+					<td class="box_bottom_run">&nbsp;</td>
+					<td class="box_right_corner_bottom">&nbsp;</td>
+				</tr>
+			</table>
+		';
+		return $rr;
+	}
+	function push_outside($content) {
+		$this->OUTSIDE .= $content;
+	}
+
 }
-

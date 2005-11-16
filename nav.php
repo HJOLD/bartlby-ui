@@ -13,7 +13,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Monitoring'
 					)
 			)
@@ -25,8 +25,7 @@ $layout->Tr(
 	$layout->Tr(
 		$layout->Td(
 			Array(
-				
-				0=>"<a href='overview.php' target=main> Overview</a>"
+				0=>array("valign"=>"top", "show"=>"<a class='nav' href='overview.php' target=main> Overview</a>", "class"=>"sub_nav")
 				
 			)
 		)
@@ -38,7 +37,7 @@ $layout->Tr(
 		$layout->Td(
 			Array(
 				
-				0=>"<a href='services.php' target=main>Services</a>"
+				0=>array("valign"=>"top", "show"=>"<a class='nav' href='services.php' target=main>Services</a>", "class"=>"sub_nav")
 				
 			)
 		)
@@ -52,7 +51,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Report/Logging'
 					)
 			)
@@ -95,7 +94,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Server-Admin'
 					)
 			)
@@ -155,7 +154,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Service-Admin'
 					)
 			)
@@ -207,7 +206,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Worker-Admin'
 					)
 			)
@@ -267,7 +266,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Your self ;)'
 					)
 			)
@@ -295,7 +294,7 @@ $layout->Tr(
 			Array(
 				0=>Array(
 					'colspan'=> 1,
-					'class'=>'header',
+					'class'=>'main_nav',
 					'show'=>'Help'
 					)
 			)

@@ -11,7 +11,7 @@
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 	
 	$layout->DisplayHelp(array(0=>"INFO|A detailed list of all services bartlby is monitoring"));
-	
+	$layout->setTitle("Services");
 	
 	
 	$layout->Tr(
@@ -67,7 +67,7 @@
 				}
 				$class="header1";
 				if($x % 2 == 1) {
-					$class="header";	
+					$class="header1";	
 				}
 				
 				if($servs[$x][service_active] == 1) {

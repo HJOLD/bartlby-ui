@@ -5,25 +5,14 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->setTitle("Modify Service");
 function dnl($i) {
 	return sprintf("%02d", $i);
 }
 if($_GET[service_id] == "") {
 	$layout->Form("fm1", "bartlby_action.php");
 	$layout->Table("100%");
-	$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Modify Service'
-					)
-			)
-		)
 
-	);
 	
 	$layout->Tr(
 		$layout->Td(
@@ -127,18 +116,7 @@ $layout->Table("100%");
 
 
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Add Service'
-					)
-			)
-		)
 
-);
 
 $layout->Tr(
 	$layout->Td(

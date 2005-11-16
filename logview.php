@@ -95,7 +95,7 @@
 				Array(
 					0=>Array(
 						'class'=>'header1',
-						'show'=>"$date"
+						'show'=>"<font size=1>$date</font>"
 						),
 					1=>Array(
 						'class'=>'header1',

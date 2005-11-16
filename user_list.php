@@ -6,22 +6,11 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 
-$layout= new Layout();
+$layout->setTitle("Select a  Worker");
 $layout->Form("fm1", $_GET[script]);
 $layout->Table("100%");
 $layout->DisplayHelp(array(0=>"INFO|Pick a service From the Dropdown List"));
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Select a Worker'
-					)
-			)
-		)
 
-);
 $servs=$btl->GetWorker();
 $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);

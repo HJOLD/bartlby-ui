@@ -20,21 +20,11 @@ $ibox[2][k]="Critical";
 $layout= new Layout();
 
 $layout= new Layout();
+$layout->setTitle("Report");
 $layout->Form("fm1", "report.php");
 $layout->Table("100%");
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 1,
-					'class'=>'header',
-					'show'=>'Report'
-					)
-			)
-		)
 
-);
 
 $log_mask=bartlby_config($btl->CFG, "logfile");
 

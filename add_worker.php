@@ -5,7 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->setTitle("Add Worker");
 $optind=0;
 $plgs=bartlby_config($btl->CFG, "trigger_dir");
 $dh=opendir($plgs);
@@ -89,18 +89,7 @@ $layout->DisplayHelp(array(0=>"INFO|Adding a new server to monitor cycle"));
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Add Worker'
-					)
-			)
-		)
 
-);
 
 $layout->Tr(
 	$layout->Td(

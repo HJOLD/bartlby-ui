@@ -5,7 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->setTitle("Modify Worker");
 $defaults=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 $map = $btl->GetSVCMap();
 $optind=0;
@@ -101,18 +101,7 @@ $layout->DisplayHelp(array(0=>"INFO|Adding a new server to monitor cycle"));
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Modify Worker'
-					)
-			)
-		)
 
-);
 
 $layout->Tr(
 	$layout->Td(

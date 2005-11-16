@@ -5,7 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->setTitle("Modify Server");
 
 
 $layout->DisplayHelp(array(0=>"INFO|Adding a new server to monitor cycle"));
@@ -15,18 +15,7 @@ $layout->Table("100%");
 
 $defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Add Server'
-					)
-			)
-		)
 
-);
 
 $layout->Tr(
 	$layout->Td(

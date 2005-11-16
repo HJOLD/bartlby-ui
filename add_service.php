@@ -6,7 +6,7 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 
-
+$layout->setTitle("Add Service");
 
 
 //Types
@@ -75,18 +75,6 @@ $layout->Table("100%");
 
 
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Add Service'
-					)
-			)
-		)
-
-);
 
 $layout->Tr(
 	$layout->Td(
