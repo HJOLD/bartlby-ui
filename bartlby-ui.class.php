@@ -175,5 +175,35 @@ class BartlbyUi {
          	);
     		return $i;
 	}
+	function installPackage($pkg, $server) {
+		$msg = "Installing package '$pkg' on Server:  $server<br>";
+		$fp=@fopen("pkgs/" . $pkg, "r");
+		if($fp) {
+			while(!feof($fp)) {
+				$bf .= fgets($fp, 1024);	
+			}
+			$re=unserialize($bf);
+			fclose($fp);
+			for($x=0; $x<count($re); $x++) {
+				$msg .= "Installing Service: <b>" . $re[$x][service_name] . "</b><br>";	
+				
+				$tfrom=dnl($re[$x][hour_from]) . ":" . dnl($re[$x][min_from]) . ":00";
+				$tto=dnl($re[$x][hour_to]) . ":" . dnl($re[$x][min_to]) . ":00";
+				
+				$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
+				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
+				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
+				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout]);
+				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
+				
+
+			}
+			$layout->OUT .= "<script>doReloadButton();</script>";
+		} else {
+			$msg = "fopen failed()!!<br>";	
+		}
+		
+		return $msg;	
+	}
 }
 ?>

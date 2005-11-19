@@ -70,8 +70,13 @@ class Layout {
 		return $r;
 	}
 	
-	function Tr($td) {
-		$this->OUT .= "<tr>\n$td\n</tr>\n";	
+	function Tr($td, $return = false) {
+		$data="<tr>\n$td\n</tr>\n";
+		if($return == true) {
+			return  $data;
+		} else {
+			$this->OUT .= $data;
+		}
 		
 	}
 	function Form($name,$action) {

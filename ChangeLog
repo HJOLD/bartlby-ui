@@ -1,3 +1,13 @@
+2005-11-17 00:52  hjanuschka
+
+	* ChangeLog, add_server.php, add_service.php, add_worker.php,
+	  bartlby_action.php, create_report.php, delete_server.php,
+	  delete_service.php, delete_worker.php, install_pkg.php,
+	  layout.class.php, logview.php, modify_server.php,
+	  modify_service.php, modify_worker.php, nav.php, overview.php,
+	  report.php, server_list.php, service_list.php, services.php,
+	  start.php, user_list.php: major redesign of UI
+
 2005-10-14 01:09  hjanuschka
 
 	* ChangeLog, overview.php, report.php: rollup

@@ -19,6 +19,15 @@ function dnl($i) {
 
 
 switch($_GET[action]) {
+	case 'delete_package':
+		unlink("pkgs/" . $_GET[package_name]);
+		$msg .= "Deleted!";
+	break;
+	case 'delete_package_ask':
+		$msg = 'Really want to delete Package `' . $_GET[package_name] . '\'<br>';
+		$msg .= "<input type=button value='yes' onClick=\"document.location.href='bartlby_action.php?action=delete_package&package_name=" . $_GET[package_name] . "'\">";
+	break;
+	
 	case 'add_comment':
 		$fp=@fopen("comments/" . (int)$_GET[service_id], "a+");
 		if(!$fp) {
@@ -31,9 +40,8 @@ switch($_GET[action]) {
 		
 	
 	break;
-	
-	case 'install_package':
-		$msg = "Installing package '$_GET[package_name]' on Server:  $_GET[server_id]<br>";
+	case 'uninstall_package':
+		$msg = "Removing package '$_GET[package_name]' from Server:  $_GET[server_id]<br>";
 		$fp=@fopen("pkgs/" . $_GET[package_name], "r");
 		if($fp) {
 			while(!feof($fp)) {
@@ -41,31 +49,39 @@ switch($_GET[action]) {
 			}
 			$re=unserialize($bf);
 			fclose($fp);
-			for($x=0; $x<count($re); $x++) {
-				$msg .= "Installing Service: <b>" . $re[$x][service_name] . "</b><br>";	
-				
-				$tfrom=dnl($re[$x][hour_from]) . ":" . dnl($re[$x][min_from]) . ":00";
-				$tto=dnl($re[$x][hour_to]) . ":" . dnl($re[$x][min_to]) . ":00";
-				
-				$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
-				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
-				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
-				$ads=bartlby_add_service($btl->CFG, $_GET[server_id], $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout]);
-				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
-				
-
+			for($y=0; $y<$btl->info[services]; $y++) {
+				$svc=bartlby_get_service($btl->CFG, $y);
+				if($svc[server_id] == $_GET[server_id]) {
+					for($x=0; $x<count($re); $x++) {
+						//echo "if($svc[service_name] == " . $re[$x][service_name] . " && $svc[plugin] == " . $re[$x][plugin] . " && $svc[plugin_arguments] == " . $re[$x][plugin_arguments] . " && $svc[check_intervall] ==  $re[$x][check_interval] && $svc[service_type] == $re[$x][service_type] && $svc[hour_from] == $re[$x][hour_from] && $svc[hour_to] == $re[$x][hour_to] && $svc[min_from] == $re[$x][min_from] && $svc[min_to] == $re[$x][min_to]) {<br>";
+						if($svc[service_name] == $re[$x][service_name] && $svc[plugin] == $re[$x][plugin] && $svc[plugin_arguments] == $re[$x][plugin_arguments] && $svc[check_interval] ==  $re[$x][check_interval] && $svc[service_type] == $re[$x][service_type] && $svc[hour_from] == $re[$x][hour_from] && $svc[hour_to] == $re[$x][hour_to] && $svc[min_from] == $re[$x][min_from] && $svc[min_to] == $re[$x][min_to]) {
+							
+							$msg .= "Removing Service: <b>" . $re[$x][service_name] . "</b><br>";	
+							$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
+							$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
+							$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
+							bartlby_delete_service($btl->CFG, $svc[service_id]);
+							$found++;
+						}
+					}
+				}
 			}
 			$layout->OUT .= "<script>doReloadButton();</script>";
 		} else {
 			$msg = "fopen failed()!!<br>";	
-		}
+		}		
+	break;
+	case 'install_package':
+		$msg = $btl->installPackage($_GET[package_name], $_GET[server_id]);
+		
 	break;
 	case 'create_package':
+	
 		$pkg=array();
 		$msg = "Creating package: " . $_GET[package_name] . "<br>";
 		for($x=0; $x<$btl->info[services]; $x++) {
 			$svc=bartlby_get_service($btl->CFG, $x);
-			if($svc[server_id] == $_GET[server_id]) {
+			if(in_array($svc[service_id], $_GET[services])) {
 				$msg .="Add service: " . $svc[service_name] . "<br>";
 				array_push($pkg, $svc);
 			}
@@ -242,9 +258,16 @@ switch($_GET[action]) {
 				$msg .= "Added Server (" . $_GET[server_name] . ") got ID: $add_server<br>";
 				//&bartlby_config, &server_id, &plugin,&service_name,&plugin_arguments,&notify_enabled,&hour_from,&hour_to,&min_from,
 				//&min_to,&check_interval, &service_type,&service_var,&service_passive_timeout
-				$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200);
-				$msg .=" Registered Service (INIT) -> ID: " . $add_service;
+				
 				$layout->DisplayHelp(array(0=>"CRIT|You should restart bartlby for applieng changes "));
+				
+				if($_GET[package_name] != "") {
+					$msg .= "<br>" . $btl->installPackage($_GET[package_name], $add_server);	
+				} else {
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200);
+					$msg .=" Registered Service (INIT) -> ID: " . $add_service;	
+				}
+				
 				$layout->OUT .= "<script>doReloadButton();</script>";
 			} else {
 				$msg = "Missing Parameter";	

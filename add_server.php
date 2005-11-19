@@ -14,6 +14,27 @@ $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
 
+$optind=0;
+//$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);
+$dhl=opendir("pkgs");
+$packages[$optind][c]="";
+$packages[$optind][v]="";	
+$packages[$optind][k]="--None--";
+$optind++;
+while($file = readdir($dhl)) {
+	//$sr=bartlby_get_server_by_id($btl->CFG, $k);
+	
+	//$isup=$btl->isServerUp($k);
+	//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
+	if(!is_dir("pkgs/" . $file)) {
+		$packages[$optind][c]="";
+		$packages[$optind][v]=$file;	
+		$packages[$optind][k]="&raquo;" . $file;
+		$optind++;
+	}
+}
+closedir($dhl);
+
 $layout->Tr(
 	$layout->Td(
 		array(
@@ -38,7 +59,15 @@ $layout->Tr(
 		)
 	)
 );
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Package:",
+				1=>$layout->DropDown("package_name", $packages) 
+			)
+		)
 
+);
 
 
 

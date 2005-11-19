@@ -10,21 +10,38 @@ $layout= new Layout();
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 $layout->DisplayHelp(array(0=>"INFO|Pick a Server From the Dropdown List"));
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Package Info'
-					)
-			)
-		)
+$layout->setTitle("Package Name");
 
-);
+$map = $btl->GetSVCMap();
+$optind=0;
+while(list($k, $servs) = @each($map)) {
 
-
-
+	for($x=0; $x<count($servs); $x++) {
+		//$v1=bartlby_get_service_by_id($btl->CFG, $servs[$x][service_id]);
+		
+		if($x == 0) {
+			//$isup=$btl->isServerUp($v1[server_id]);
+			//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
+			$servers[$optind][c]="";
+			$servers[$optind][v]="";	
+			$servers[$optind][k]="[ $isup ]&raquo;" . $servs[$x][server_name] . "&laquo;";
+			$optind++;
+		} else {
+			
+		}
+		$state=$btl->getState($servs[$x][current_state]);
+		$servers[$optind][c]="";
+		$servers[$optind][v]=$servs[$x][service_id];	
+		$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
+		
+		
+		if(strstr((string)$defaults[services],"|" . $servs[$x][service_id] . "|")) {
+			$servers[$optind][s]=1;	
+		}
+		
+		$optind++;
+	}
+}
 
 $layout->Tr(
 	$layout->Td(
@@ -34,6 +51,14 @@ $layout->Tr(
 			)
 		)
 
+);
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Services:",
+			1=>$layout->DropDown("services[]", $servers, "multiple")
+		)
+	)
 );
 
 $layout->Tr(

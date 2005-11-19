@@ -14,57 +14,20 @@
 	$layout->setTitle("Services");
 	
 	
-	$layout->Tr(
-			$layout->Td(
-				Array(
-					0=>array(
-						
-						'show'=>"Host",
-						'class'=>"header"
-					   ),
-					1=>array(
-						"show"=>"State",
-						'class'=>"header"
-					   ),
-					2=>array(
-						"class"=>"header",
-						"show"=>"Last Check"
-					   ),
-					3=>array(
-						"class"=>"header",
-						"show"=>"~ Next Check"
-					   ),
-												
-					4=>array(
-						"class"=>"header",
-						"show"=>"Service"
-					   ),
-					5=>array(
-						
-						"class"=>"header",
-						"show"=>"Service Text"
-					   )
-				)
-			)
-		);
+	
 		while(list($k, $servs) = @each($map)) {
 			$displayed_servers++;
 			if($_GET[server_id] && $_GET[server_id] != $k) {
 				continue;	
 			}
+			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " )"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
+			$cur_box_content = "<table class='service_table' cellpadding=2>";
 			for($x=0; $x<count($servs); $x++) {
 				$displayed_services++;
 				$svc_color=$btl->getColor($servs[$x][current_state]);
 				$svc_state=$btl->getState($servs[$x][current_state]);
-				if($x == 0) {
-					$server_color="header";
-					
-					$SERVER=$servs[$x][server_name] . "<br><a href='package_create.php?action=create_package&server_id="  . $servs[$x][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
-				} else {
-					$server_color="black";
-					$SERVER="&nbsp;";
-					
-				}
+				$server_color="black";
+				$SERVER="&nbsp;";
 				$class="header1";
 				if($x % 2 == 1) {
 					$class="header1";	
@@ -96,51 +59,49 @@
 				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
 				
 				
-				$layout->Tr(
+				$cur_box_content .= $layout->Tr(
 					$layout->Td(
 						Array(
+							
 							0=>array(
-								"width"=>100,
-								'show'=>$SERVER,
-								'class'=>$server_color
-							   ),
-							1=>array(
-								"width"=>100,
+								"width"=>70,
 								"align"=>"center",
 								"show"=>"<b><a href='services.php?service_state=" . $servs[$x][current_state] . "'>" . $svc_state . "</A></b>",
 								'class'=>$svc_color
 							   ),
-							2=>array(
-								"width"=>50,
+							1=>array(
+								"width"=>80,
 								"class"=>$class,
 								"show"=>"<font size=1>" . date("d.m.y H:i:s", $servs[$x][last_check])
 							   ),
-							3=>array(
-								"width"=>50,
+							2=>array(
+								"width"=>80,
 								"class"=>$class,
 								"show"=>"<font size=1>" .  date("d.m.y H:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
 							   ),						
-							4=>array(
+							3=>array(
 								"width"=>100,
 								"class"=>"header1",
 								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1><img src='images/icon_view.png' border=0></A> $comments</font>"
 							   ),
-							5=>array(
-								"width"=>300,
+							4=>array(
+								"width"=>450,
 								"class"=>$class,
 								"show"=>str_replace( "\\dbr", "<br>",nl2br($servs[$x][new_server_text]))
 							   )
 						)
 					)
-				);
+				, true);
 			}
+			$cur_box_content .= "</table>";
+			$layout->push_outside($layout->create_box($cur_box_title, $cur_box_content));
 	}
 	$layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
 					'colspan'=> 6,
-					'class'=>'header',
+					'class'=>'header1',
 					'show'=>"Matching Servers: $displayed_servers Matching Services: $displayed_services"
 					)
 			)
