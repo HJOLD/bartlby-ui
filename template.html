@@ -1,0 +1,253 @@
+<html>
+<head>
+<title>bartlby</title>
+<link rel="stylesheet" id="CSS" type="text/css" href="images/btl.css"></link>
+<script type="text/javascript" src="images/btl.js"></script>
+
+</head>
+
+<body leftmargin=0 topmargin=0>
+	<table width="100%" class="nopad">
+		<tr>
+			<td  class="bg_header"><a href='overview.php'><img border=0 src='images/btl-logo.png'></A>
+			<div class="reload" id="reload"><input type=button name="reload_button" value="reload" onClick="document.location.href='bartlby_action.php?action=reload';"></div>
+			</td>
+			
+		</tr>
+		<tr>
+			<td class="bg_body">
+				<table class="nopad">
+					<tr>
+						<td class="navi">
+							<table class="nopad">
+								<tr>
+									<td class="nav_main">Monitoring<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='overview.php' class="sub">Overview</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='services.php' class="sub">Services</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_main">Report/Logging<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='create_report.php' class="sub">Report/s</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='logview.php' class="sub">Logfile</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_main">Clients(s)<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='add_server.php' class="sub">Add</A><td>
+								</tr>
+								
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='server_list.php?script=modify_server.php' class="sub">Modify</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='server_list.php?script=delete_server.php' class="sub">Delete</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								
+								<tr>
+									<td class="nav_main">Packages<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='server_list.php?script=install_pkg.php' class="sub">Install</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='server_list.php?script=uninstall_pkg.php' class="sub">Uninstall</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='package_create.php' class="sub">Create</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='package_delete.php' class="sub">Delete</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_main">Services(s)<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='add_service.php' class="sub">Add</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='service_list.php?script=modify_service.php' class="sub">Modify</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='service_list.php?script=delete_service.php' class="sub">Delete</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_main">Worker(s)<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='add_worker.php' class="sub">Add</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='user_list.php?script=modify_worker.php' class="sub">Modify</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='user_list.php?script=delete_worker.php' class="sub">Delete</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_main">Session<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='logout.php' class="sub">Logout</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_main">Help<td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_sub"><a href='api.phps' class="sub">PHP-Api</A><td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td><a href="http://www.spreadfirefox.com/?q=affiliates&amp;id=0&amp;t=85"><img border="0" alt="Get Firefox!" title="Get Firefox!" src="http://sfx-images.mozilla.org/affiliates/Buttons/80x15/firefox_80x15.png"/></a></td>
+								</tr>
+								
+							</table>
+						</td>
+						<td class="content">
+							<table class="nopad">
+								<tr>
+									<td><!--BTUIOUTSIDE--></td>
+								</tr>
+								<tr>
+									<td>
+										<table class="nopad">
+											<tr>
+												<td class="box_left_corner_top">&nbsp;</td>
+												<td class="box_top_run"><!--BTUIBOXTITLE--></td>
+												<td class="box_right_corner_top">&nbsp;</td>
+											</tr>
+											<tr>
+												<td class="box_left_run">&nbsp;</td>
+												<td class="box_content"><!--BTUICONTENT--></td>
+												<td class="box_right_run">&nbsp;</td>
+											</tr>
+											<tr>
+												<td class="box_left_corner_bottom">&nbsp;</td>
+												<td class="box_bottom_run">&nbsp;</td>
+												<td class="box_right_corner_bottom">&nbsp;</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+									
+							</table>
+						</td>
+					</tr>
+				</table>			
+			</td>
+			
+		</tr>
+	</table>
+</body>
+</html>
