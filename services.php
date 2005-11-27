@@ -34,7 +34,7 @@
 				}
 				
 				if($servs[$x][service_active] == 1) {
-					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.png' title='Disable Checks for this Service' border=0></A>";
+					$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.png'  border=0></A>";
 				} else {
 					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_service'><img src='images/diabled.png' title='Enable  Checks for this Service' border=0></A>";
 				}
@@ -66,7 +66,7 @@
 							0=>array(
 								"width"=>70,
 								"align"=>"center",
-								"show"=>"<b><a href='services.php?service_state=" . $servs[$x][current_state] . "'>" . $svc_state . "</A></b>",
+								"show"=>"<b><a href='services.php?service_state=" . $servs[$x][current_state] . "'>" . $svc_state . "</A>(" . $servs[$x][service_threshold] . ")</b>",
 								'class'=>$svc_color
 							   ),
 							1=>array(
@@ -82,7 +82,7 @@
 							3=>array(
 								"width"=>100,
 								"class"=>"header1",
-								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "'><font size=1><img src='images/icon_view.png' border=0></A> $comments</font>"
+								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments</font>"
 							   ),
 							4=>array(
 								"width"=>450,
@@ -96,6 +96,40 @@
 			$cur_box_content .= "</table>";
 			$layout->push_outside($layout->create_box($cur_box_title, $cur_box_content));
 	}
+	$legend_content="<table class='nopad' width='100%'>
+		<tr>
+			
+			<td width=15><img src='images/diabled.png'></td>
+			<td align=left class='font2'>Service Check is disabled</td>
+			
+			
+			<td width=15><img src='images/notrigger.png'></td>
+			<td align=left class='font2'>Notifications are disabled</td>
+			
+			<td width=15><img src='images/icon_view.png'></td>
+			<td align=left class='font2'>View Logfile</td>
+			
+			
+			
+			
+		</tr>
+		<tr>
+			<td width=15><img src='images/enabled.png'></td>
+			<td align=left class='font2'>Service Check is enabled</td>
+			
+			<td width=15><img src='images/trigger.png'></td>
+			<td align=left class='font2'>Notifications are enabled</td>
+			
+			<td width=15><img src='images/icon_comments.png'></td>
+			<td align=left class='font2'>Comments</td>
+			
+			
+			
+		</tr>
+		
+	</table>";
+	
+	$layout->push_outside($layout->create_box("Legend", $legend_content));
 	$layout->Tr(
 	$layout->Td(
 			Array(

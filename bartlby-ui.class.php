@@ -163,7 +163,7 @@ class BartlbyUi {
 	function intervall($sek) {
 		// http://faq-php.de/q/q-code-intervall.html
     		$i = sprintf('%d Day%s, %d Hour%s,'.
-            		' %d Minute%s und %d Second%s',
+            		' %d Minute%s and %d Second%s',
             		$sek / 86400,
             		floor($sek / 86400) != 1 ? 's':'',
             		$sek / 3600 % 24,

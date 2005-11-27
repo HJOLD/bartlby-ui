@@ -199,7 +199,8 @@ $layout->Tr(
 	)
 );
 
-
+ $defaults[plugin_arguments]=str_replace("\n", "\\n",  $defaults[plugin_arguments]);
+ $defaults[plugin_arguments]=str_replace("\r", "\\r",  $defaults[plugin_arguments]);
 $layout->Tr(
 	$layout->Td(
 		array(

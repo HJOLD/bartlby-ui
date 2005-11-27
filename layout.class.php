@@ -79,8 +79,8 @@ class Layout {
 		}
 		
 	}
-	function Form($name,$action) {
-		$this->OUT .= "<form name='$name' action='$action' method=get>\n";	
+	function Form($name,$action, $method='GET') {
+		$this->OUT .= "<form name='$name' action='$action' method=$method>\n";	
 		
 	}
 	function FormEnd() {
@@ -132,6 +132,7 @@ class Layout {
 			$o = str_replace("<!--BTUICONTENT-->",$this->OUT,$str);
 			$o = str_replace("<!--BTUIOUTSIDE-->",$this->OUTSIDE,$o);
 			$o = str_replace("<!--BTUIBOXTITLE-->",$this->BoxTitle,$o);
+			$o = str_replace("<!--BTUITIME-->",round($diff,2),$o);
 			echo $o; 	
 		}
 		fclose($fp);

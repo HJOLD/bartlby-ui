@@ -13,8 +13,11 @@
 	
 	$arges=str_replace("\\\"", "\"", $_GET[args]);
 	$arges=str_replace("\\\\", "\\", $arges);
-	$server=bartlby_get_service($btl->CFG, $_GET[server]);	
-	@$fp=fsockopen($server[client_ip], $server[client_port], $errno, $errstr, 10);
+	$arges=str_replace("\n", "\\n", $arges);
+	$arges=str_replace("\r", "\\r", $arges);
+	$server=bartlby_get_server_by_id($btl->CFG, $_GET[server]);
+		
+	@$fp=fsockopen($server[server_ip], $server[server_port], $errno, $errstr, 10);
 	if(!$fp) {
 		$cmd_out = "$errstr ($errno)<br />\n";	
 	} else {
@@ -27,6 +30,7 @@
 		fclose($fp);
 		$dreply=bartlby_decode($reply);
 		$ex=explode("|", $dreply);
+		
 		$cmd_out = $ex[1];
 		$exi=$ex[0];
 		

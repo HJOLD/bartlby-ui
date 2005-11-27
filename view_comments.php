@@ -7,21 +7,15 @@ $btl=new BartlbyUi($Bartlby_CONF);
 $layout= new Layout();
 
 $layout= new Layout();
+
+$svc=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+
+$layout->setTitle("Comments on " . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name]);
+
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 $layout->DisplayHelp(array(0=>"INFO|Pick a service From the Dropdown List"));
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>"Comments on Service: $_GET[service_id]"
-					)
-			)
-		)
 
-);
 
 
 

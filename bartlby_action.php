@@ -3,9 +3,12 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 
-
+$act=$_GET[action];
+if($_POST[action]) {
+	$act=$_POST[action];	
+}
 $layout= new Layout();
-$layout->setTitle("Bartlby Action ($_GET[action])");
+$layout->setTitle("Bartlby Action ($act)");
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout->Table("100%");
@@ -18,7 +21,30 @@ function dnl($i) {
 
 
 
-switch($_GET[action]) {
+switch($act) {
+	case 'edit_cfg':
+		$new_cfg=$_POST["cfg_file"];
+		//Backup current
+		$backup_name=$btl->CFG . ".bak_" . date("d-m-Y_H_i_s");
+		$msg = "Backup made to `$backup_name'<br>";
+		copy($btl->CFG, $backup_name);
+		$fp=fopen($btl->CFG, "w");
+		fwrite($fp, $new_cfg);
+		fclose($fp);
+		$msg .= "Saved!!!<br>";
+	break;
+	case 'stop':
+		$base_dir=bartlby_config($btl->CFG, "basedir");
+		if(!$base_dir) {
+			$msg="basedir config not set";
+		} else {
+			$cmd="export BARTLBY_HOME='$base_dir'; cd \$BARTLBY_HOME; ./bartlby.startup stop 2>&1";
+		
+			$fp=popen($cmd, "r");
+			$msg=fgets($fp, 1024);
+			pclose($fp);	
+		}
+	break;
 	case 'delete_package':
 		unlink("pkgs/" . $_GET[package_name]);
 		$msg .= "Deleted!";
@@ -275,7 +301,7 @@ switch($_GET[action]) {
 	break;
 	
 	default:
-		$msg="Action not implemented ($_GET[action])";
+		$msg="Action not implemented ($act)";
 		
 	break;
 		
