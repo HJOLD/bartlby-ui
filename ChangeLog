@@ -1,3 +1,46 @@
+2005-11-27 03:05  hjanuschka
+
+	* edit_config.php: missing file
+
+2005-11-27 03:05  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, check.php, error.php,
+	  layout.class.php, modify_service.php, services.php,
+	  template.html, view_comments.php, images/btl.css: stop bartlby,
+	  start it if it is not running edit config file reload via menu
+
+2005-11-19 01:09  hjanuschka
+
+	* package_delete.php, template.html, uninstall_pkg.php,
+	  images/bartlby1-bar-green_01.png,
+	  images/bartlby1-bar-green_02.png,
+	  images/bartlby1-bar-green_04.png, images/bartlby1-bar-red_01.png,
+	  images/bartlby1-bar-red_02.png, images/bartlby1-bar-red_04.png,
+	  images/bartlby1-bar-yellow_01.png,
+	  images/bartlby1-bar-yellow_02.png,
+	  images/bartlby1-bar-yellow_04.png, images/bg_body.png,
+	  images/bg_header.png, images/box_01.png, images/box_02.png,
+	  images/box_04.png, images/box_06.png, images/box_08.png,
+	  images/box_09.png, images/box_10.png, images/box_11.png,
+	  images/box_15.png, images/box_16.png, images/box_17.png,
+	  images/box_21.png, images/box_22.png, images/box_23.png,
+	  images/box_bg.png, images/box_run_down.png,
+	  images/box_run_up.png, images/btl-logo.png, images/btl.css,
+	  images/btl.js, images/btn_main.png, images/btn_sub.png,
+	  images/header_bar.png, images/index.html,
+	  images/left_corner_down.png, images/left_corner_run.png,
+	  images/left_corner_up.png, images/right_corner_down.png,
+	  images/right_corner_run.png, images/right_corner_up.png,
+	  images/spacer.gif: missing files
+
+2005-11-19 01:08  hjanuschka
+
+	* ChangeLog, add_server.php, bartlby-ui.class.php,
+	  bartlby_action.php, layout.class.php, package_create.php,
+	  services.php: package managment extended
+	  (install,uninstall,create, delete) add server (install a package
+	  directly)
+
 2005-11-17 00:52  hjanuschka
 
 	* ChangeLog, add_server.php, add_service.php, add_worker.php,

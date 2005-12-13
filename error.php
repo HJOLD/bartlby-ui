@@ -14,6 +14,9 @@ $layout->OUT .= "<script>
 		function doStartup() {
 			document.location.href='error.php?msg=BARTLBY::START';	
 		}
+		function doSHMClean() {
+			document.location.href='error.php?msg=BARTLBY::SHMCLEAN';	
+		}
 		</script>
 ";
 	
@@ -22,6 +25,21 @@ $layout->OUT .= "<script>
 	
 	
 	switch ($_GET[msg]) {
+		case 'BARTLBY::LOGIN':
+			$omsg = "Login failed";
+		break;
+		case 'BARTLBY::SHMCLEAN';
+			
+			
+			$r=bartlby_shm_destroy($btl->CFG);
+			$omsg = "SHM cleaned($r)";
+			
+		break;
+		case 'BARTLBY::SHM::STALE':
+			$omsg .= "it looks that there is a shared memory segment set up, wich is assigned to this bartlby instance<br>";
+			$omsg .= "but the process is not found, or eather your  kernel doesnt have /proc/ FS support<br>";
+			$omsg .= "<input type=button value='remove shared memory segment' onClick='doSHMClean();'>";
+		break;
 		case 'BARTLBY::START':
 			//Set Env
 			//Call bartlby.startup start
@@ -34,6 +52,15 @@ $layout->OUT .= "<script>
 				$fp=popen($cmd, "r");
 				$omsg=fgets($fp, 1024);
 				pclose($fp);	
+				if(preg_match("/PIDFILE:.*exists/", $omsg)) {
+					$pid_file=bartlby_config($btl->CFG, "pidfile_dir");
+					$omsg .= "<br>retrying after pid file deletion (" . $pid_file . "/bartlby.pid)<br>";
+					unlink($pid_file . "/bartlby.pid");
+					$fp=popen($cmd, "r");
+					$omsg .= fgets($fp, 1024);
+					pclose($fp);	
+				}
+				
 			}
 		break;
 		case 'BARTLBY::NOT::RUNNING':

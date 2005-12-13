@@ -14,11 +14,26 @@ class BartlbyUi {
 		//Check if bartlby is running :-)
 		$this->info=@bartlby_get_info($this->CFG);
 		
-		
-		if(!$this->info && $auth == true) {
+		/*
+			Check if process is still here
+		*/
+		$pid_file=bartlby_config($this->CFG, "pidfile_dir");
+				
+		if((!$this->info && $auth == true) || !$pid_file) {
 			$this->redirectError("BARTLBY::NOT::RUNNING");
 			exit(1);
 		} 
+		
+		$pid_ar=file($pid_file . "/bartlby.pid");
+		$pid_is=implode($pid_ar, "");
+		
+		if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+			if(!file_exists("/proc/" . $pid_is . "/cmdline")) {
+				$this->redirectError("BARTLBY::SHM::STALE");
+				exit(1);
+			}
+		}
+		
 		$this->perform_auth($auth);
 		$this->release=$this->info[version];
 		
@@ -48,7 +63,7 @@ class BartlbyUi {
 			
 	      		 @header("WWW-Authenticate: Basic realm=\"Bartlby Config Admin\"");	
 	      		 @Header("HTTP/1.0 401 Unauthorized");
-			 echo "BAD LOGIN $_SERVER[PHP_AUTH_USER]/$_SERVER[PHP_AUTH_PW]\n";
+			 $this->redirectError("BARTLBY::LOGIN");
 			 exit;
 		} else {
 			$this->user=$_SERVER[PHP_AUTH_USER];

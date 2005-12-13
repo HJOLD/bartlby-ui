@@ -104,7 +104,7 @@
 						),
 					2=>Array(
 						'class'=>'header1',
-						'show'=>str_replace( "\\dbr", "<br>",$outline)
+						'show'=>str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", str_replace( "\\dbr", "<br>",$outline))
 						),
 				)
 			)
