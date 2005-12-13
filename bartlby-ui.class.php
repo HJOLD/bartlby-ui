@@ -24,8 +24,8 @@ class BartlbyUi {
 			exit(1);
 		} 
 		
-		$pid_ar=file($pid_file . "/bartlby.pid");
-		$pid_is=implode($pid_ar, "");
+		$pid_ar=@file($pid_file . "/bartlby.pid");
+		$pid_is=@implode($pid_ar, "");
 		
 		if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
 			if(!file_exists("/proc/" . $pid_is . "/cmdline")) {
@@ -51,6 +51,7 @@ class BartlbyUi {
 		if($a==false) {
 			$auted=1;
 		} else {
+			
 			while(list($k, $v) = each($wrks)) {
 				//$v1=bartlby_get_worker_by_id($this->CFG, $v[worker_id]);
 				if($_SERVER[PHP_AUTH_USER] == $v[name] && $_SERVER[PHP_AUTH_PW] == $v[password]) {
@@ -61,8 +62,13 @@ class BartlbyUi {
 		
 		if ($auted==0) { 
 			
+			
 	      		 @header("WWW-Authenticate: Basic realm=\"Bartlby Config Admin\"");	
 	      		 @Header("HTTP/1.0 401 Unauthorized");
+	      		
+			echo "<pre>";
+			 var_dump($wrks);
+			exit(1);
 			 $this->redirectError("BARTLBY::LOGIN");
 			 exit;
 		} else {
@@ -109,7 +115,10 @@ class BartlbyUi {
 		$r=array();
 		for($x=0; $x<$this->info[workers]; $x++) {
 			$wrk=bartlby_get_worker($this->CFG, $x);
-			
+			if($wrk[name] == "") {
+				$x=0;
+				continue;	
+			}
 			//$r[$wrk[worker_id]]=$wrk[name];
 			array_push($r, $wrk);
 		}	
