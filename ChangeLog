@@ -1,3 +1,13 @@
+2005-12-14 00:18  hjanuschka
+
+	* bartlby-ui.class.php: oops in restart code
+
+2005-12-13 23:25  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, error.php, logview.php: minor
+	  logview clean ups bartlby is running, refined now dead/zombie SHM
+	  are detected and can be fixed via UI
+
 2005-11-27 03:05  hjanuschka
 
 	* edit_config.php: missing file

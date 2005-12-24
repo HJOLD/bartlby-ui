@@ -51,7 +51,18 @@
 		
 		$log_detail_o=explode("@", $info_array[2]);
 		
-		if($log_detail_o[1] == "LOG") {
+		if($log_detail_o[1] == "PERF") {
+			$tmp=explode("|", $log_detail_o[2]);
+			
+			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
+				
+				continue;	
+			}
+			
+			
+			$outline = $tmp[2] . " Performance: " . $tmp[2];
+			$stcheck=6;
+		} else if($log_detail_o[1] == "LOG") {
 			$tmp=explode("|", $log_detail_o[2]);
 			
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
@@ -85,7 +96,7 @@
 			case 3: $img="info.png"; break;	
 			case 4: $img="info.png"; break;
 			case 5: $img="trigger.png"; break;
-			case 6: $img="flapping.gif"; break;
+			case 6: $img="perf.gif"; break;
 		}
 
 		
