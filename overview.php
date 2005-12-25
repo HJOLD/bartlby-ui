@@ -199,7 +199,7 @@
 	$health_content = "<table class='nopad'>
 		<tr>
 			<td class='bar_left_" . $color . "'>&nbsp;</td>
-			<td class='bar_middle_" . $color . "' style='width:" . $prozent_float*8.5 . "'>&nbsp;</td>
+			<td class='bar_middle_" . $color . "' style='width:" . $prozent_float*8.5 . "'></td>
 			<td class='bar_right_" . $color . "'>&nbsp;</td>
 			<td class='font2'>" . $prozent_float . "% OK</td>
 			

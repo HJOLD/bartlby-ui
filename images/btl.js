@@ -3,7 +3,7 @@ function doReloadButton() {
         obj.style.visibility = "visible";
 }
 
-var menuwidth='165px' //default menu width
+var menuwidth='250px' //default menu width
 var menubgcolor='999999'  //menu bgcolor
 var disappeardelay=250  //menu disappear speed onMouseout (in miliseconds)
 var hidemenu_onclick="yes" //hide menu when user clicks within menu?

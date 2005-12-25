@@ -24,7 +24,7 @@ $layout->setTitle("Report");
 $layout->Form("fm1", "report.php");
 $layout->Table("100%");
 
-
+$state_array=array();
 
 $log_mask=bartlby_config($btl->CFG, "logfile");
 
@@ -81,7 +81,8 @@ if(!$_GET[report_service] || !$log_mask) {
 					
 					$diff = $log_stamp - $last_mark;
 					//$out .= "State changed from " . $btl->getState($last_state) . " to " . $btl->getState($tmp[1]) . "<br>";	
-					//$out .= "Where " . $diff . " in " . $btl->getState($last_state) . "<br>"; 
+					//echo "Where " . $diff . " in " . $btl->getState($last_state) . "<br>"; 
+					array_push($state_array, array("start"=>$last_mark, "end"=>$log_stamp, "state"=>$last_state, "msg"=>$tmp[3]));
 					
 					$svc[$last_state] += $diff;
 					
@@ -129,18 +130,35 @@ if(!$_GET[report_service] || !$log_mask) {
 		$flash[1]="0";
 		$flash[2]="0";
 		while(list($state, $time) = @each($svc)) {
+			$out .= "<script>";
+			$out .= "menu_state" . $state . "=new Array();\n";
+			
+			$menu_counter=1;
+			
+			for($xy=0; $xy<count($state_array);$xy++) {
+				
+				if($state_array[$xy][state] == $state) {
+					
+					$out .= "menu_state" . $state . "[" . $menu_counter . "]='<font size=1>" . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][start]) . " - " . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][end]) . " (<i>" . ($state_array[$xy][end]-$state_array[$xy][start]) . "</i>)</font><br>';\n";
+					$menu_counter++;
+				}
+			}
+			$out .= "menu_state" . $state . "[0]='<font size=1>Average State Time: <b>" . $btl->intervall(round($time/($menu_counter),2))  . "</b></font><br>';\n";
+			$out .= "</script>\n";
 			
 			$perc =   (($hun-$time) * 100 / $hun);
 			$perc =100-$perc;
 			
 			$out .= "<tr>";
-			$out .= "<td width=200 class='" . $btl->getColor($state) . "'>State:  " . $btl->getState($state) . "</td>";
+			$out .= "<td width=200 class='" . $btl->getColor($state) . "'>State:  " . $btl->getState($state) . "<a href='#' onClick=\"return dropdownmenu(this, event, menu_state" . $state . ", '400px')\" onMouseout=\"delayhidemenu()\">X</A><br>";
+			
+			$out .= "</td>";
 			$out .= "<td>Time:  " . $btl->intervall($time) . " seconds</td>";
-			$out .= "<td>Percent:  <b>" . round($perc,2) . "</b> seconds</td>";
+			$out .= "<td>Percent:  <b>" . round($perc,2) . "</b>  seconds </td>";
 			
 			$flash[$state]=$perc;
 			
-			$out .= "</tr>";
+			
 		}
 		
 		for($x=0; $x<3; $x++) {
@@ -224,10 +242,8 @@ $layout->Tr(
 );
 
 
-
-
-
 $layout->TableEnd();
 
 $layout->FormEnd();
 $layout->display();
+
