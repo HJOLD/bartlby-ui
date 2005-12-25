@@ -40,6 +40,7 @@
 	
 	
 	
+	
 	$is_repl_on=bartlby_config($btl->CFG, "replication");
 	$repl = "Replication enabled:<font class='font2'> <b>$is_repl_on</b><br>";
 	if($is_repl_on == "true") {

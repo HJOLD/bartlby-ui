@@ -189,6 +189,15 @@ $layout->Tr(
 		)
 
 );
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service Timeout(TCP Stuff)",
+			1=>$layout->Field("service_check_timeout", "text", $defaults[service_check_timeout])
+			
+		)
+	)
+);
 
 $layout->Tr(
 	$layout->Td(

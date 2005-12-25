@@ -15,6 +15,7 @@
 	
 	
 	
+	
 		while(list($k, $servs) = @each($map)) {
 			$displayed_servers++;
 			if($_GET[server_id] && $_GET[server_id] != $k) {
@@ -23,6 +24,37 @@
 			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " )"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
 			$cur_box_content = "<table class='service_table' cellpadding=2>";
 			for($x=0; $x<count($servs); $x++) {
+				
+				
+				/*
+				echo "<script>var menu2558=new Array()
+			menu2558[0]='<a href=\"http://www.javascriptkit.com\">JavaScript Kit</a>'
+			menu2558[1]='<a href=\"http://www.freewarejava.com\">Freewarejava.com</a>'
+			menu2558[2]='<a href=\"http://codingforums.com\">Coding Forums</a>'
+			menu2558[3]='<a href=\"http://www.cssdrive.com\">CSS Drive</a>'
+
+			//Contents for menu 2, and so on
+			var menu2=new Array()
+			menu2[0]='<a href=\"http://cnn.com\">CNN</a>'
+			menu2[1]='<a href=\"http://msnbc.com\">MSNBC</a>'
+			menu2[2]='<a href=\"http://news.bbc.co.uk\">BBC News</a>'
+			</script>";*/
+			
+				$special_menu = "<a href='#' onClick=\"return dropdownmenu(this, event, menu" . $servs[$x][service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img src='images/icon_work1.png' border=0></A><br>";
+				$layout->OUT .= "<script>var menu" . $servs[$x][service_id] . "=new Array();</script>";
+				$special_counter=bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_cnt");
+				if($special_counter) {
+					$layout->OUT .= "<script>";
+					for($spc=1; $spc<=$special_counter; $spc++) {
+						$spc_real=$spc-1;
+						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . $spc_real . "]='" . str_replace("^", "=", bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_[" . $spc ."]")) . "';\n";
+					}
+					$layout->OUT .= "</script>";
+				} else {
+						$special_menu="";
+				}
+				
+				
 				$displayed_services++;
 				$svc_color=$btl->getColor($servs[$x][current_state]);
 				$svc_state=$btl->getState($servs[$x][current_state]);
@@ -55,7 +87,7 @@
 				}
 				
 				
-				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.png' border=0></A><br>";
+				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.png' border=0></A>";
 				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
 				
 				
@@ -80,9 +112,9 @@
 								"show"=>"<font size=1>" .  date("d.m.y H:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
 							   ),						
 							3=>array(
-								"width"=>100,
+								"width"=>120,
 								"class"=>"header1",
-								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments</font>"
+								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments $special_menu</font>"
 							   ),
 							4=>array(
 								"width"=>450,
