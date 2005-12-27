@@ -1,3 +1,24 @@
+2005-12-27 22:59  hjanuschka
+
+	* services.php: display addon menus in layer over special links
+
+2005-12-27 22:39  hjanuschka
+
+	* service_detail.php, services.php: added service_detail
+
+2005-12-26 00:01  hjanuschka
+
+	* overview.php, report.php, images/btl.js: special_addon report
+	  addon
+
+2005-12-25 13:57  hjanuschka
+
+	* ChangeLog, add_service.php, bartlby_action.php,
+	  modify_service.php, overview.php, services.php, images/btl.css,
+	  images/btl.js: service_check_timeout added to UI scritps
+	  (add/modify service) special addon dropdown added for displaying
+	  i.e.: RRD graphs right in the services.php (via config file)
+
 2005-12-24 18:54  hjanuschka
 
 	* ChangeLog, logview.php: performance interface

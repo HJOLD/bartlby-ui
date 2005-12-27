@@ -44,7 +44,7 @@ $info_box_title='Service Info';
 $core_content = "<table  width='100%'>
 	<tr>
 		<td width=150 class='font2'>Server:</td>
-		<td align=left >" . $defaults[server_name] . "</font></td> 
+		<td align=left >" . $defaults[server_name] . " ( IP: " . gethostbyname($defaults[client_ip]) . " Port: " . $defaults[client_port] . " )</font></td> 
 		<td>&nbsp;</td>     
 	</tr>
 	<tr>

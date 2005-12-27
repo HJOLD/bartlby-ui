@@ -291,7 +291,7 @@ switch($act) {
 				if($_GET[package_name] != "") {
 					$msg .= "<br>" . $btl->installPackage($_GET[package_name], $add_server);	
 				} else {
-					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200);
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20);
 					$msg .=" Registered Service (INIT) -> ID: " . $add_service;	
 				}
 				
