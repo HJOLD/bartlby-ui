@@ -4,7 +4,7 @@
 	include "bartlby-ui.class.php";
 
 	$layout= new Layout();
-	$layout->MetaRefresh();
+	$layout->MetaRefresh(240);
 	$layout->Table("100%");
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
@@ -114,7 +114,7 @@
 							3=>array(
 								"width"=>120,
 								"class"=>"header1",
-								"show"=>"<b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments $special_menu</font>"
+								"show"=>"<a href='service_detail.php?service_id=" . $servs[$x][service_id] . "'><b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments $special_menu</font>"
 							   ),
 							4=>array(
 								"width"=>450,
