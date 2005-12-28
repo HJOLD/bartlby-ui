@@ -16,7 +16,7 @@
 	} else {
 		$vmode="SLAVE<br>dont change anything";	
 	}
-	$info_box_title='Core Information<div class="clock">Time: ' . date("d.m.Y H:i:s") . '</div>';  
+	$info_box_title='Core Information<div class="clock" nowrap>Time: ' . date("d.m.Y H:i:s") . '</div>';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table class='nopad' width='100%'>
 		<tr>

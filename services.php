@@ -48,7 +48,7 @@
 					$fspc=0;
 					for($spc=0; $spc<$special_counter; $spc++) {
 						$spc_name=bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_[" . ($spc+1) ."]_name");
-						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . $fspc . "]='$spc_name';\n";
+						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . $fspc . "]='<br>$spc_name<br>';\n";
 						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . ($fspc+1) . "]='" . str_replace("^", "=", bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_[" . ($spc+1) ."]")) . "';\n";
 						$fspc++;
 						$fspc++;

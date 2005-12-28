@@ -186,7 +186,7 @@ if($defaults[service_type] == 3){
 //special_ui's
 $special_counter=bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_cnt");
 if($special_counter) {
-	$layout->OUT .= "<script>";
+	
 	for($spc=1; $spc<=$special_counter; $spc++) {
 		
 		$spc_name=bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]_name");
