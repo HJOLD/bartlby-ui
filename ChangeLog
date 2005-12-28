@@ -1,3 +1,8 @@
+2005-12-27 23:29  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, bartlby_action.php,
+	  service_detail.php: bartlby_action typos in install package
+
 2005-12-27 22:59  hjanuschka
 
 	* services.php: display addon menus in layer over special links
