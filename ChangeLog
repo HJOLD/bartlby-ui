@@ -1,3 +1,12 @@
+2005-12-28 22:40  hjanuschka
+
+	* overview.php, service_detail.php, services.php, images/btl.css:
+	  Minor IE issues fixed (transparent GIF's will follow)
+
+2005-12-28 14:25  hjanuschka
+
+	* ChangeLog, template.html: [no log message]
+
 2005-12-27 23:29  hjanuschka
 
 	* ChangeLog, bartlby-ui.class.php, bartlby_action.php,
