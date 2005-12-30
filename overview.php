@@ -4,12 +4,14 @@
 	include "bartlby-ui.class.php";
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
-	$info=$btl->getInfo();
+	
 	$layout= new Layout();
 	$layout->DisplayHelp(array(0=>"WARN|Welcome to BartlbyUI",1=>"INFO|This is the help screen"));
 	$layout->MetaRefresh(30);
 	$layout->Table("100%");
 	$lib=bartlby_lib_info($btl->CFG);
+	$info=$btl->info;
+	
 	$mode=bartlby_config($btl->CFG, "i_am_a_slave");
 	if(!$mode) {
 		$vmode="MASTER";	
@@ -52,42 +54,56 @@
 			$repl .= "Last Replication was on:" . date("d.m.Y H:i:s", $btl->info[last_replication]) . "<br></font>";
 	}
 	
-	$servers=$btl->GetServers();
+	$servers=$btl->GetSVCMap();
 	$hosts_sum=count($servers);
 	$hosts_up=0;
 	$hosts_down=0;
+	$services_critical=0;
+	$services_ok=0;
+	$services_warning=0;
+	$services_unkown=0;
+	
 	while(list($k,$v)=@each($servers)) {
 		$x=$k;
-		if($btl->isServerUp($x)) {
+		if($btl->isServerUp($x, $servers)) {
 			$hosts_up++;	
 		} else {
 			$hosts_down++;	
 			$hosts_a_down[$k]=1;
 			
 		}
+		for($y=0; $y<count($v); $y++) {
+			$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
+			$qck[$v[$y][server_name]][10]=$v[$y][server_id];
+			
+			
+			switch($v[$y][current_state]) {
+				case 0:
+					$services_ok++;
+				break;
+				case 1:
+					$services_warning++;
+				break;
+				case 2:
+					$services_critical++;
+				break;
+				
+				default:
+					$services_unkown++;
+				
+				
+			}	
+		}
+		
+		
 	}
 	
 	$service_sum=$btl->ServiceCount();
 	
-	$services_critical=0;
-	$services_ok=0;
-	$services_warning=0;
 	
-	for($x=0; $x<$service_sum; $x++) {
-		$svc=bartlby_get_service($btl->CFG, $x);
-		switch($svc[last_state]) {
-			case 0:
-				$services_ok++;
-			break;
-			case 1:
-				$services_warning++;
-			break;
-			case 2:
-				$services_critical++;
-			break;
-				
-		}	
-	}
+	
+	
+
 	if($service_sum == 0) {
 		$criticals=100;
 	} else {
@@ -118,6 +134,7 @@
 
 	$bar=$prozent_float . "% Ok - $prozent_crit_float % Critical";
 
+	/*
 	for($x=0; $x<$service_sum; $x++) {
 		
 		$svc=bartlby_get_service($btl->CFG, $x);
@@ -125,6 +142,9 @@
 		$qck[$svc[server_name]][$svc[last_state]]++;	
 		$qck[$svc[server_name]][10]=$svc[server_id];
 	}
+	
+	*/
+	
 	$quick_view = "<table class='nopad' width=100%>";
 	while(list($k, $v)=@each($qck)) {
 		
@@ -140,20 +160,28 @@
 			$quick_view .= "<td class=$cl><font size=1>$STATE</td>";
 			$quick_view .= "<td class=$cl><table width=100>";
 			
-			
+			$sf=false;
 			if($qck[$k][0]) {
+				$sf=true;
 				$qo="<tr><td class=green><font size=1>" . $qck[$k][0] . " OK's</td></tr>";
 			}
 			if($qck[$k][1]) {
+				$sf=true;
 				$qw="<tr><td class=orange><font size=1>" . $qck[$k][1] . " Warnings</td></tr>";
 			}
 			
 			if($qck[$k][2]) {
+				$sf=true;
 				$qc="<tr><td class=red><font size=1>" . $qck[$k][2] . " Criticals</td></tr>";
 			}
 			
 			if($qck[$k][3]) {
+				$sf=true;
 				$qk="<tr><td class=yellow><font size=1>" . $qck[$k][3] . " Unkown</td></tr>";
+			}
+			if($qck[$k][4]) {
+				$sf=true;
+				$qk="<tr><td ><font size=1>" . $qck[$k][4] . " Info</td></tr>";
 			}
 					
 				$quick_view .= "$qo";

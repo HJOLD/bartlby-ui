@@ -8,24 +8,48 @@
 	$layout->Table("100%");
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
+	
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 	
 	$layout->DisplayHelp(array(0=>"INFO|A detailed list of all services bartlby is monitoring"));
 	$layout->setTitle("Services");
 	
+	$display_serv=$_GET[server_id];
+	if(!$display_serv) {
+		while(list($k,$v) = each($map)) {
+		//	$display_serv=$k;
+			
+			break;	
+		}
+		reset($map);	
+	}
 	
-	
-	
+		
 		while(list($k, $servs) = @each($map)) {
 			$displayed_servers++;
-			if($_GET[server_id] && $_GET[server_id] != $k) {
+			
+			if($display_serv && $display_serv != $k) {
 				continue;	
 			}
-			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " )"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
+			$curp = $_GET[$k ."site"] > 0 ? $_GET[$k ."site"] : 1;
+			$perp=bartlby_config($btl->CFG, "services_per_page");
+			$forward_link=$btl->create_pagelinks("services.php?server_id=" . $_GET[server_id], count($servs), 5, $curp,$k ."site");
+			
+			
+			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " ) $forward_link"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
 			$cur_box_content = "<table class='service_table' cellpadding=2>";
-			for($x=0; $x<count($servs); $x++) {
+			
+			$d=0;
+			$skip_em=($curp*$perp)-$perp;
+			
+			for($x=$skip_em; $x<count($servs); $x++) {
 				
 				
+				if($d >= $perp) {
+					break;	
+				}
+				
+				$d++;
 				/*
 				echo "<script>var menu2558=new Array()
 			menu2558[0]='<a href=\"http://www.javascriptkit.com\">JavaScript Kit</a>'

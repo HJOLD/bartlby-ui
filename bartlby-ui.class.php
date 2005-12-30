@@ -1,4 +1,5 @@
 <?
+set_time_limit(0);
 
 
 
@@ -92,21 +93,13 @@ class BartlbyUi {
 		}
 		return -1;	
 	}
-	function isServerUp($server_id) {
-		for($x=0; $x<$this->info[services]; $x++) {
-			$svc=bartlby_get_service($this->CFG, $x);
-			if($svc[server_id] == $server_id) {
-				if($svc[last_state] == 2) {
-					$svcs_crit++;
-				}	
-				$svcs_ges++;
+	function isServerUp($server_id, &$map) {
+		for($x=0; $x<count($map[$server_id]); $x++) {
+			if($map[$server_id][$x][current_state] == 0) {
+				return true;
 			}
-			
 		}
-		if($svcs_ges == $svcs_crit) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 	function ServiceCount() {
 		return $this->info[services];	
@@ -144,19 +137,23 @@ class BartlbyUi {
 		return $ar;
 	}
 	function GetSVCMap($state=false) {
-		for($x=0; $x<$this->info[services]; $x++) {
-			$svc=bartlby_get_service($this->CFG, $x);
-			if(!is_array($servers[$svc[server_id]])) {
-				$servers[$svc[server_id]]=array();
-			}
-			if($svc[current_state] == $state || $state == false) {
-				
-				array_push($servers[$svc[server_id]], $svc);
-			}
+		$r=bartlby_svc_map($this->CFG);
+        
+        	
+        	//Re order map ;-)
+        	
+        	
+        	for($x=0; $x<count($r); $x++) {
+        		if(!is_array($map[$r[$x][server_id]])) {
+        			$map[$r[$x][server_id]] = array();
+        			
+        		}
+        		array_push($map[$r[$x][server_id]], $r[$x]);
+        	}
+        	@ksort($map);
+        	
+ 		return $map; 
 			
-		}
-		@ksort($servers);
-		return $servers;	
 	}
 	function getColor($state) {
 		switch($state) {
@@ -228,6 +225,45 @@ class BartlbyUi {
 		}
 		
 		return $msg;	
+	}
+	function create_pagelinks($link, $max, $hm=20, $curp, $si) {
+		
+		$pages       = 1;
+		
+		if ( ($max % $hm) == 0 ) {
+			$pages= $max / $hm;
+		} else {
+			$number = ($max / $hm);
+			$pages= ceil( $number);
+		}
+		
+		$currpage = $curp > 0 ? $curp : 1;
+	
+		if ($pages> 1) {
+			$first = "<a href='$link&" . $si . "=1'>&laquo;</a>";
+			for( $i = 0; $i <= $pages - 1; $i++ ) {
+				$times = $i+1;
+				if ($times == $curp) {
+					$pageline .= "&nbsp;<b>$times</b>";
+				} else {
+					if ($times < ($currpage - 5) and ($currpage >= 6))  {
+						$startdots = '&nbsp;...';
+						continue;
+					}
+					$pageline .= "&nbsp;<a href='$link&" . $si . "=$times'>$times</a>";
+					if ($times >= ($currpage + 5)) {
+						$enddots = '...&nbsp;';
+						break;
+					}
+				}
+			}
+			$last = "<a href='$link&" . $si . "=".$pages."'>&raquo;</a>";
+			$ret    = $first.$startdots.$pageline.'&nbsp;'.$enddots.$last;
+		} else {
+			$ret    = "Pages: 1";
+		}
+	
+		return $ret;
 	}
 }
 ?>
