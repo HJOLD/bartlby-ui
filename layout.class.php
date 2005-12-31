@@ -133,6 +133,7 @@ class Layout {
 			$o = str_replace("<!--BTUIOUTSIDE-->",$this->OUTSIDE,$o);
 			$o = str_replace("<!--BTUIBOXTITLE-->",$this->BoxTitle,$o);
 			$o = str_replace("<!--BTUITIME-->",round($diff,2),$o);
+			$o = str_replace("<!--SERVERTIME-->",date("d.m.Y H:i:s") ,$o);
 			echo $o; 	
 		}
 		fclose($fp);

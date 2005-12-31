@@ -38,6 +38,7 @@ if($defaults["service_active"]==1) {
 } else {
 	$serv_en="false";
 }
+//echo $defaults[last_notify_send] . "<br>";
 
 $info_box_title='Service Info';  
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
@@ -84,6 +85,7 @@ $core_content = "<table  width='100%'>
 	</tr>
 	<tr>
 		<td width=150 class='font2'>Last Notify Send:</td>
+		
 		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_notify_send]) . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
