@@ -22,12 +22,12 @@
 			$repl .= "Last Replication was on:" . date("d.m.Y H:i:s", $btl->info[last_replication]) . "<br>";
 	}
 	
-	$servers=$btl->GetServers();
+	$servers=$btl->GetSVCMap();
 	$hosts_sum=count($servers);
 	
 	while(list($k,$v)=@each($servers)) {
 		$x=$k;
-		if($btl->isServerUp($x)) {
+		if($btl->isServerUp($x, &$servers)) {
 			$hosts_up++;	
 		} else {
 			$hosts_down++;	

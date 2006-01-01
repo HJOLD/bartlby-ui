@@ -1,3 +1,25 @@
+2005-12-31 01:30  hjanuschka
+
+	* layout.class.php, service_detail.php, template.html: [no log
+	  message]
+
+2005-12-30 21:23  hjanuschka
+
+	* bartlby-ui.class.php, overview.php, services.php, template.html:
+	  after recoginezing that the UI is a bottleneck if service count
+	  is getting big fixed many lacks * moved getSVCMap to php
+	  extension * trimmed down the walk threws of the service list *
+	  services per page can be configured via cfg file
+	  (services_per_page)
+
+	  so overview.php (wich is the most intensive script) has 0.21
+	  seconds load time (on 191 Services)
+
+2005-12-29 22:24  hjanuschka
+
+	* ChangeLog, statistic.php, template.html: core_performance and
+	  statistik
+
 2005-12-28 22:40  hjanuschka
 
 	* overview.php, service_detail.php, services.php, images/btl.css:
