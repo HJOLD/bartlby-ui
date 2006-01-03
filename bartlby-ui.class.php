@@ -37,6 +37,39 @@ class BartlbyUi {
 		
 		$this->perform_auth($auth);
 		$this->release=$this->info[version];
+		$this->loadRights();
+		
+	}
+	function simpleRight($k, $v) {
+		if($this->rights[$k][0] == $v) {
+			return true;
+		} else {
+			return false;
+		}	
+	}
+	function loadRights() {
+		if(file_exists("rights/" . $this->user . ".dat")) {
+			$fa=file("rights/" . $this->user . ".dat");
+			while(list($k, $v) = each($fa)) {
+				$s1=explode("=", $v);
+				$this->rights[$s1[0]]=explode(",", trim($s1[1]));
+				
+			}
+			for($x=0; $x<count($this->rights[services]); $x++) {
+					settype($this->rights[services][$x], "integer");
+			}
+			for($x=0; $x<count($this->rights[servers]); $x++) {
+					settype($this->rights[servers][$x], "integer");
+			}
+		}
+		if(count($this->rights[servers])-1 == 0) {
+			$this->rights[servers]=null;
+		}
+		if(count($this->rights[services])-1 == 0) {
+			
+			$this->rights[services]=null;
+		}
+		
 		
 	}
 	function getRelease() {
@@ -119,7 +152,14 @@ class BartlbyUi {
 		
 		for($x=0; $x<$this->info[services]; $x++) {
 			$svc=bartlby_get_service($this->CFG, $x);
-			$servers[$svc[server_id]]=$svc[server_name];
+			
+			if(is_array($this->rights[servers])) {
+				if(in_array($svc[server_id], $this->rights[servers])) {
+					$servers[$svc[server_id]]=$svc[server_name];
+				}
+			} else {
+				$servers[$svc[server_id]]=$svc[server_name];
+			}
 			
 		}
 		
@@ -135,7 +175,10 @@ class BartlbyUi {
 		return $ar;
 	}
 	function GetSVCMap($state=false) {
-		$r=bartlby_svc_map($this->CFG);
+		//array(2555, 3191,2558)
+		
+		
+		$r=bartlby_svc_map($this->CFG, $this->rights[services], $this->rights[servers]);
         
         	
         	//Re order map ;-)

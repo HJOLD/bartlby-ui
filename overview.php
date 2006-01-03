@@ -62,6 +62,7 @@
 	$services_ok=0;
 	$services_warning=0;
 	$services_unkown=0;
+	$all_services=0;
 	
 	while(list($k,$v)=@each($servers)) {
 		$x=$k;
@@ -76,8 +77,9 @@
 			$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
 			$qck[$v[$y][server_name]][10]=$v[$y][server_id];
 			
-			
+			$all_services++;
 			switch($v[$y][current_state]) {
+
 				case 0:
 					$services_ok++;
 				break;
@@ -98,7 +100,7 @@
 		
 	}
 	
-	$service_sum=$btl->ServiceCount();
+	$service_sum=$all_services;
 	
 	
 	
@@ -163,21 +165,21 @@
 			$sf=false;
 			if($qck[$k][0]) {
 				$sf=true;
-				$qo="<tr><td class=green><font size=1>" . $qck[$k][0] . " OK's</td></tr>";
+				$qo="<tr><td class=green><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=0'>" . $qck[$k][0] . " OK's</A></td></tr>";
 			}
 			if($qck[$k][1]) {
 				$sf=true;
-				$qw="<tr><td class=orange><font size=1>" . $qck[$k][1] . " Warnings</td></tr>";
+				$qw="<tr><td class=orange><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=1'>" . $qck[$k][1] . " Warnings</A></td></tr>";
 			}
 			
 			if($qck[$k][2]) {
 				$sf=true;
-				$qc="<tr><td class=red><font size=1>" . $qck[$k][2] . " Criticals</td></tr>";
+				$qc="<tr><td class=red><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2'>" . $qck[$k][2] . " Criticals</A></td></tr>";
 			}
 			
 			if($qck[$k][3]) {
 				$sf=true;
-				$qk="<tr><td class=yellow><font size=1>" . $qck[$k][3] . " Unkown</td></tr>";
+				$qk="<tr><td class=yellow><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
 			}
 			if($qck[$k][4]) {
 				$sf=true;

@@ -9,7 +9,7 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 $layout->setTitle("Actions");
-$defaults=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
 $layout->Table("100%");
 
 

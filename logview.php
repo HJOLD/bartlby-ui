@@ -41,7 +41,26 @@
 		);
 	$fla=@file($logf);
 	$fl=@array_reverse($fla);
+	$lcounter=0;
+	
+	
+	$curp = $_GET["site"] > 0 ? $_GET["site"] : 1;
+	$perp=100;
+	$forward_link=$btl->create_pagelinks("logview.php?logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time), count($fl)-1, $perp, $curp,"site");
+	$skip_em=($curp*$perp)-$perp;
+	$skipped=0;
+	
+	$layout->setTitle($forward_link);	
+	
 	while(list($k, $v)=@each($fl)) {
+		if($skipped < $skip_em) {
+			$skipped++;
+			continue;	
+		}
+		if($lcounter > 100) {
+			break;	
+		}
+		$lcounter++;
 		if($_GET["bartlby_filter"]) {
 			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
 				continue;

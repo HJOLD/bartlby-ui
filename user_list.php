@@ -16,6 +16,12 @@ $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);
 
 while(list($k, $v) = @each($servs)) {
+	
+	if($v[name] != $btl->user) {
+		if(!$btl->simpleRight("be_admin", "true")) {
+			continue;	
+		}
+	}
 	$v1=bartlby_get_worker_by_id($btl->CFG, $v[worker_id]);
 	
 	$servers[$optind][c]="";

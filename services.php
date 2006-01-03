@@ -33,7 +33,7 @@
 			}
 			$curp = $_GET[$k ."site"] > 0 ? $_GET[$k ."site"] : 1;
 			$perp=bartlby_config($btl->CFG, "services_per_page");
-			$forward_link=$btl->create_pagelinks("services.php?server_id=" . $_GET[server_id], count($servs), 5, $curp,$k ."site");
+			$forward_link=$btl->create_pagelinks("services.php?expect_state=" . $_GET[expect_state] . "&server_id=" . $_GET[server_id], count($servs)-1, $perp, $curp,$k ."site");
 			
 			
 			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " ) $forward_link"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
@@ -48,7 +48,9 @@
 				if($d >= $perp) {
 					break;	
 				}
-				
+				if($_GET[expect_state] != "" && $servs[$x][current_state] != $_GET[expect_state]) {
+					continue;	
+				}
 				$d++;
 				/*
 				echo "<script>var menu2558=new Array()
@@ -126,7 +128,7 @@
 							0=>array(
 								"width"=>70,
 								"align"=>"center",
-								"show"=>"<b><a href='services.php?service_state=" . $servs[$x][current_state] . "'>" . $svc_state . "</A>(" . $servs[$x][service_threshold] . ")</b>",
+								"show"=>"<b><a href='services.php?expect_state=" . $servs[$x][current_state] . "'>" . $svc_state . "</A></b>",
 								'class'=>$svc_color
 							   ),
 							1=>array(
@@ -142,7 +144,7 @@
 							3=>array(
 								"width"=>120,
 								"class"=>"header1",
-								"show"=>"<a href='service_detail.php?service_id=" . $servs[$x][service_id] . "'><b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments $special_menu</font>"
+								"show"=>"<a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'><b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments $special_menu</font>"
 							   ),
 							4=>array(
 								"width"=>450,

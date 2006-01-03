@@ -29,6 +29,7 @@ switch($act) {
 		$msg = "Backup made to `$backup_name'<br>";
 		copy($btl->CFG, $backup_name);
 		$fp=fopen($btl->CFG, "w");
+		$new_cfg=str_replace("\r", "", $new_cfg);
 		fwrite($fp, $new_cfg);
 		fclose($fp);
 		$msg .= "Saved!!!<br>";
@@ -59,7 +60,7 @@ switch($act) {
 		if(!$fp) {
 			$msg = "Fopen failed ( comments/" . (int)$_GET[service_id] . ")";	
 		} else {
-			fwrite($fp, $btl->user . "|" . time() . "|" . str_replace("\n", " ", nl2br($_GET[comment])) . "\n");
+			fwrite($fp, $btl->user . "|" . time() . "|" . str_replace("\n", " ", nl2br($_GET[comment])) . "|" . str_replace("\n", " ", nl2br($_GET[subject])) . "\n");
 			fclose($fp);
 			$msg .= "comment stored!";	
 		}

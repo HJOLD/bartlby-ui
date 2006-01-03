@@ -46,7 +46,10 @@ while(1){
 	
 	if($k == 258) {
 		if($start_from+$lines-5 < $btl->info[services]) {
-			$start_from++;	
+			$start_from=$start_from+$lines;	
+		
+		} else {
+			$start_from=0;	
 		}
 		//echo $start_from;
 	}
@@ -60,7 +63,10 @@ while(1){
 	}
 	if($k == 259) {
 		if($start_from > 0) {
-			$start_from--;	
+			//$start_from--;	
+			$start_from=$start_from-$lines;	
+		} else {
+			$start_from=0;	
 		}
 	}
 	$map = @$btl->GetSVCMap();
