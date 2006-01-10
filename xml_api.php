@@ -36,7 +36,9 @@ function dnl($i) {
 				$function=$arr_vals[$x][value];
 			break;
 			case "PARAM":
-				array_push($params,$arr_vals[$x][value]); 
+				$o=$arr_vals[$x][value];
+				
+				array_push($params,$o); 
 			break;
 			case "USER":
 				$user=$arr_vals[$x][value];
@@ -47,6 +49,7 @@ function dnl($i) {
 		}	
 		
 	}
+	
 	//AUth Here
 	$wrks=$btl->GetWorker();
 	$auted=0;
@@ -62,7 +65,11 @@ function dnl($i) {
 			if(is_int($params[$x])) {
 				$e_str .= $params[$x] . ",";	
 			} else if(is_string($params[$x])) {
-				$e_str .= "\"" . $params[$x] . "\",";
+				$quote='"';
+				if(preg_match("/array\(.*/i", $params[$x])) {
+					$quote="";	
+				}
+				$e_str .=  $quote . $params[$x] . "" . $quote . ",";
 			}	
 		}
 		$e_str=substr($e_str, 0, -1) . ");";

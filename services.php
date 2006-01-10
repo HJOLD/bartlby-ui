@@ -36,7 +36,7 @@
 			$forward_link=$btl->create_pagelinks("services.php?expect_state=" . $_GET[expect_state] . "&server_id=" . $_GET[server_id], count($servs)-1, $perp, $curp,$k ."site");
 			
 			
-			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " ) $forward_link"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.png' border=0></a>";
+			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " ) $forward_link"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.gif' border=0></a>";
 			$cur_box_content = "<table class='service_table' cellpadding=2>";
 			
 			$d=0;
@@ -66,7 +66,7 @@
 			menu2[2]='<a href=\"http://news.bbc.co.uk\">BBC News</a>'
 			</script>";*/
 			
-				$special_menu = "<a href='#' onClick=\"return dropdownmenu(this, event, menu" . $servs[$x][service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img src='images/icon_work1.png' border=0></A><br>";
+				$special_menu = "<a href='#' onClick=\"return dropdownmenu(this, event, menu" . $servs[$x][service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img src='images/icon_work1.gif' border=0></A><br>";
 				$layout->OUT .= "<script>var menu" . $servs[$x][service_id] . "=new Array();</script>";
 				$special_counter=bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_cnt");
 				if($special_counter) {
@@ -96,28 +96,28 @@
 				}
 				
 				if($servs[$x][service_active] == 1) {
-					$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.png'  border=0></A>";
+					$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_service'><img src='images/enabled.gif'  border=0></A>";
 				} else {
-					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_service'><img src='images/diabled.png' title='Enable  Checks for this Service' border=0></A>";
+					$check = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_service'><img src='images/diabled.gif' title='Enable  Checks for this Service' border=0></A>";
 				}
 				
 				/* if($servs[$x][server_enabled] == 1) {
-					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=disable_server'><img src='enabled.png' title='Disable Checks for this Host' border=0></A>";
+					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=disable_server'><img src='enabled.gif' title='Disable Checks for this Host' border=0></A>";
 				} else {
-					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=enable_server'><img src='diabled.png' alt='Enable  Checks for this Host' border=0></A>";
+					$checkSRV = "<a href='poseidon_action.php?service_id=$servs[$x][service_id]&server_id=$servs[$x][server_id]&action=enable_server'><img src='diabled.gif' alt='Enable  Checks for this Host' border=0></A>";
 				}
 				*/
 				
 				
 				
 				if($servs[$x][notify_enabled] == 1) {
-					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_notify'><img src='images/notrigger.png' title='Disable Notifications for this Service' border=0></A>";
+					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=disable_notify'><img src='images/notrigger.gif' title='Disable Notifications for this Service' border=0></A>";
 				} else {
-					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_notify'><img src='images/trigger.png' title='Enable Notifications for this Service' border=0></A>";
+					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
 				}
 				
 				
-				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.png' border=0></A>";
+				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.gif' border=0></A>";
 				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
 				
 				
@@ -144,7 +144,7 @@
 							3=>array(
 								"width"=>120,
 								"class"=>"header1",
-								"show"=>"<a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'><b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments $special_menu</font>"
+								"show"=>"<a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'><b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments $special_menu</font>"
 							   ),
 							4=>array(
 								"width"=>450,
@@ -161,14 +161,14 @@
 	$legend_content="<table class='nopad' width='100%'>
 		<tr>
 			
-			<td width=15><img src='images/diabled.png'></td>
+			<td width=15><img src='images/diabled.gif'></td>
 			<td align=left class='font2'>Service Check is disabled</td>
 			
 			
-			<td width=15><img src='images/notrigger.png'></td>
+			<td width=15><img src='images/notrigger.gif'></td>
 			<td align=left class='font2'>Notifications are disabled</td>
 			
-			<td width=15><img src='images/icon_view.png'></td>
+			<td width=15><img src='images/icon_view.gif'></td>
 			<td align=left class='font2'>View Logfile</td>
 			
 			
@@ -176,13 +176,13 @@
 			
 		</tr>
 		<tr>
-			<td width=15><img src='images/enabled.png'></td>
+			<td width=15><img src='images/enabled.gif'></td>
 			<td align=left class='font2'>Service Check is enabled</td>
 			
-			<td width=15><img src='images/trigger.png'></td>
+			<td width=15><img src='images/trigger.gif'></td>
 			<td align=left class='font2'>Notifications are enabled</td>
 			
-			<td width=15><img src='images/icon_comments.png'></td>
+			<td width=15><img src='images/icon_comments.gif'></td>
 			<td align=left class='font2'>Comments</td>
 			
 			

@@ -41,6 +41,9 @@ class BartlbyUi {
 		
 	}
 	function simpleRight($k, $v) {
+		if(!is_array($this->rights[$k])) {
+				return true;
+		}
 		if($this->rights[$k][0] == $v) {
 			return true;
 		} else {
@@ -62,10 +65,11 @@ class BartlbyUi {
 					settype($this->rights[servers][$x], "integer");
 			}
 		}
-		if(count($this->rights[servers])-1 == 0) {
+		if($this->rights[servers][0] == 0) {
 			$this->rights[servers]=null;
 		}
-		if(count($this->rights[services])-1 == 0) {
+		
+		if($this->rights[services][0] == 0) {
 			
 			$this->rights[services]=null;
 		}
@@ -154,6 +158,7 @@ class BartlbyUi {
 			$svc=bartlby_get_service($this->CFG, $x);
 			
 			if(is_array($this->rights[servers])) {
+				
 				if(in_array($svc[server_id], $this->rights[servers])) {
 					$servers[$svc[server_id]]=$svc[server_name];
 				}
@@ -189,6 +194,7 @@ class BartlbyUi {
         			$map[$r[$x][server_id]] = array();
         			
         		}
+        		
         		array_push($map[$r[$x][server_id]], $r[$x]);
         	}
         	@ksort($map);

@@ -1,3 +1,22 @@
+2006-01-03 21:37  hjanuschka
+
+	* rights/admin.dat: right file for default admin user
+
+2006-01-03 21:34  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, cli.php, logview.php,
+	  overview.php, service_detail.php, services.php, template.html,
+	  user_list.php, view_comments.php, images/btl.css: stage 1 of a
+	  service-server per user right system implemented, via
+	  UI-DIR/rights/USER.dat (ini style file) admin threw ui will
+	  follow
+
+2006-01-01 17:27  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, img.php, xml.php, xml_api.php:
+	  added service_map XML all php-extension function's can be called
+	  via a xml-upload
+
 2005-12-31 01:30  hjanuschka
 
 	* layout.class.php, service_detail.php, template.html: [no log
@@ -163,8 +182,7 @@
 	  modify_worker.php, nav.php, overview.php, package_create.php,
 	  report.php, server_list.php, service_list.php, services.php,
 	  start.php, status.php, user_list.php, view_comments.php,
-	  flash/pie.html, html/bartlby.footer, html/bartlby.header:
-	  converted files to UNIX
+	  flash/pie.html: converted files to UNIX
 
 2005-09-28 23:38  hjanuschka
 
@@ -368,8 +386,8 @@
 
 	* 1.php, ChangeLog, bartlby-ui.class.php, config.php, error.php,
 	  layout.class.php, overview.php, start.php, status.php,
-	  html/bartlby.footer, html/bartlby.header, images/green.png,
-	  images/red.png, images/yellow.png: initial upload
+	  images/green.png, images/red.png, images/yellow.png: initial
+	  upload
 
 2005-08-28 15:45  hjanuschka
 

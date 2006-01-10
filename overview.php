@@ -225,17 +225,28 @@
 	$layout->push_outside($layout->create_box($tac_title, $tac_content));
 	
 	$health_title='System Health<div class="clock"></div>';  
-	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
-	$health_content = "<table class='nopad'>
+	$silverbar = "<table class='nopad'>
 		<tr>
-			<td class='bar_left_" . $color . "'>&nbsp;</td>
-			<td class='bar_middle_" . $color . "' style='width:" . $prozent_float*8.5 . "'></td>
-			<td class='bar_right_" . $color . "'>&nbsp;</td>
+			<td class='bar_left_silver'>&nbsp;</td>
+			<td class='bar_middle_silver' style='width:" . 100*7.3 . "'></td>
+			<td class='bar_right_silver'>&nbsp;</td>
 			<td class='font2'>" . $prozent_float . "% OK</td>
 			
 		</tr>
 		
 	</table>";
+	
+	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
+	$health_content = "<div style='position:relative; z-index:2; '> <table class='nopad'>
+		<tr>
+			<td  class='bar_left_" . $color . "'>&nbsp;</td>
+			<td class='bar_middle_" . $color . "' style='width:" . $prozent_float*7.3 . "'></td>
+			<td class='bar_right_" . $color . "'>&nbsp;</td>
+			<td class='font2'>&nbsp;</td>
+			
+		</tr>
+		
+	</table></div><div style='position:relative; z-index:1; top:-40px;'>$silverbar</div>";
 	$layout->push_outside($layout->create_box($health_title, $health_content));
 	
 

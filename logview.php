@@ -109,12 +109,12 @@
 		}
 		$date=$info_array[0];
 		switch($stcheck) {
-			case 0: $img="ok.png"; break;
-			case 1: $img="warning.png"; break;
-			case 2: $img="critical.png"; break;
-			case 3: $img="info.png"; break;	
-			case 4: $img="info.png"; break;
-			case 5: $img="trigger.png"; break;
+			case 0: $img="ok.gif"; break;
+			case 1: $img="warning.gif"; break;
+			case 2: $img="critical.gif"; break;
+			case 3: $img="info.gif"; break;	
+			case 4: $img="info.gif"; break;
+			case 5: $img="trigger.gif"; break;
 			case 6: $img="perf.gif"; break;
 		}
 
@@ -125,6 +125,7 @@
 				Array(
 					0=>Array(
 						'class'=>'header1',
+						
 						'show'=>"<font size=1>$date</font>"
 						),
 					1=>Array(
@@ -133,6 +134,7 @@
 						'show'=>"<img src='images/$img'>"
 						),
 					2=>Array(
+						'width'=>720,
 						'class'=>'header1',
 						'show'=>str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", str_replace( "\\dbr", "<br>",$outline))
 						),

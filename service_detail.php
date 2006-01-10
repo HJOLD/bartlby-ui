@@ -208,18 +208,18 @@ if($special_counter) {
 	
 }
 if($defaults[service_active] == 1) {
-	$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_service'><img src='images/enabled.png'  border=0></A>";
+	$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_service'><img src='images/enabled.gif'  border=0></A>";
 } else {
-	$check = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_service'><img src='images/diabled.png' title='Enable  Checks for this Service' border=0></A>";
+	$check = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_service'><img src='images/diabled.gif' title='Enable  Checks for this Service' border=0></A>";
 }
 if($defaults[notify_enabled] == 1) {
-	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_notify'><img src='images/notrigger.png' title='Disable Notifications for this Service' border=0></A>";
+	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_notify'><img src='images/notrigger.gif' title='Disable Notifications for this Service' border=0></A>";
 } else {
-	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify'><img src='images/trigger.png' title='Enable Notifications for this Service' border=0></A>";
+	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
 }
-$comments  ="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img src='images/icon_comments.png' border=0></A>";
+$comments  ="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img src='images/icon_comments.gif' border=0></A>";
 				
-$layout->OUT .="$notifys $check <a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  src='images/icon_view.png' border=0></A> $comments";
+$layout->OUT .="$notifys $check <a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments";
 $layout->TableEnd();
 
 $layout->display();
