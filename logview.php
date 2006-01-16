@@ -79,7 +79,7 @@
 			}
 			
 			
-			$outline = $tmp[2] . " Performance: " . $tmp[2];
+			$outline = "" . $tmp[1]  . "(" . $tmp[0] . ")";
 			$stcheck=6;
 		} else if($log_detail_o[1] == "LOG") {
 			$tmp=explode("|", $log_detail_o[2]);
@@ -115,7 +115,7 @@
 			case 3: $img="info.gif"; break;	
 			case 4: $img="info.gif"; break;
 			case 5: $img="trigger.gif"; break;
-			case 6: $img="perf.gif"; break;
+			case 6: $img="icon_stat.gif"; break;
 		}
 
 		
