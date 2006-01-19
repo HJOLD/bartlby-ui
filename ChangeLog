@@ -1,3 +1,35 @@
+2006-01-16 21:53  hjanuschka
+
+	* logview.php, template.html, images/bartlby1-first-aid.gif,
+	  images/icon_stat.gif: [no log message]
+
+2006-01-10 23:36  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, logview.php, overview.php,
+	  service_detail.php, services.php, template.html, xml_api.php,
+	  images/bartlby1-bar-green_01.gif,
+	  images/bartlby1-bar-green_02.gif,
+	  images/bartlby1-bar-green_04.gif, images/bartlby1-bar-red_01.gif,
+	  images/bartlby1-bar-red_02.gif, images/bartlby1-bar-red_04.gif,
+	  images/bartlby1-bar-silver_01.gif,
+	  images/bartlby1-bar-silver_02.gif,
+	  images/bartlby1-bar-silver_04.gif,
+	  images/bartlby1-bar-yellow_01.gif,
+	  images/bartlby1-bar-yellow_02.gif,
+	  images/bartlby1-bar-yellow_04.gif, images/bg_body.gif,
+	  images/bg_header.gif, images/box_bg.gif, images/box_run_down.gif,
+	  images/box_run_up.gif, images/btl-logo.gif, images/btl.css,
+	  images/btn_main.gif, images/btn_sub.gif, images/critical.gif,
+	  images/diabled.gif, images/enabled.gif, images/icon_comments.gif,
+	  images/icon_view.gif, images/icon_work.gif,
+	  images/icon_work1.gif, images/info.gif,
+	  images/left_corner_down.gif, images/left_corner_run.gif,
+	  images/left_corner_up.gif, images/notrigger.gif, images/ok.gif,
+	  images/right_corner_down.gif, images/right_corner_run.gif,
+	  images/right_corner_up.gif, images/trigger.gif,
+	  images/warning.gif: images are now gif for transparent bug work
+	  around in IE
+
 2006-01-03 21:37  hjanuschka
 
 	* rights/admin.dat: right file for default admin user

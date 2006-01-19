@@ -9,7 +9,7 @@ $layout->setTitle("Modify Service");
 function dnl($i) {
 	return sprintf("%02d", $i);
 }
-if($_GET[service_id] == "") {
+if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
 	$layout->Form("fm1", "bartlby_action.php");
 	$layout->Table("100%");
 

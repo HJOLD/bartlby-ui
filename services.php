@@ -66,7 +66,7 @@
 			menu2[2]='<a href=\"http://news.bbc.co.uk\">BBC News</a>'
 			</script>";*/
 			
-				$special_menu = "<a href='#' onClick=\"return dropdownmenu(this, event, menu" . $servs[$x][service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img src='images/icon_work1.gif' border=0></A><br>";
+				$special_menu = "<a href='#' onClick=\"return dropdownmenu(this, event, menu" . $servs[$x][service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img src='images/icon_work1.gif' border=0></A>";
 				$layout->OUT .= "<script>var menu" . $servs[$x][service_id] . "=new Array();</script>";
 				$special_counter=bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_cnt");
 				if($special_counter) {
@@ -115,7 +115,12 @@
 				} else {
 					$notifys = "<a href='bartlby_action.php?service_id=" . $servs[$x][service_id] . "&server_id=" . $servs[$x][server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
 				}
-				
+				if($servs[$x][is_downtime] == 1) {
+					
+					$downtime_ico="<img src='images/icon_work.gif' title='Service is in downtime (" . date("d.m.Y H:i:s", $servs[$x][downtime_from])  . "-" . date("d.m.Y H:i:s", $servs[$x][downtime_to]) . "): " . $servs[$x][downtime_notice] . "'>";	
+				} else {
+					$downtime_ico="&nbsp;";
+				}
 				
 				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.gif' border=0></A>";
 				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
@@ -126,10 +131,10 @@
 						Array(
 							
 							0=>array(
-								"width"=>70,
+								"width"=>58,
 								"align"=>"center",
-								"show"=>"<b><a href='services.php?expect_state=" . $servs[$x][current_state] . "'>" . $svc_state . "</A></b>",
-								'class'=>$svc_color
+								"show"=>"<b><a href='services.php?expect_state=" . $servs[$x][current_state] . "'><font style='font-size:9px;'>" . $svc_state . "</A></b>",
+								'class'=>$svc_color . "_img"
 							   ),
 							1=>array(
 								"width"=>80,
@@ -142,9 +147,9 @@
 								"show"=>"<font size=1>" .  date("d.m.y H:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
 							   ),						
 							3=>array(
-								"width"=>120,
+								"width"=>150,
 								"class"=>"header1",
-								"show"=>"<a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'><b>" . $servs[$x][service_name]  . " $working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments $special_menu</font>"
+								"show"=>"<a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'><b>" . $servs[$x][service_name]  . "$working_on $flap_pic</b><br>" . "<br> $notifys $check <a href='logview.php?service_id=" . $servs[$x][service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments $special_menu $downtime_ico</font>"
 							   ),
 							4=>array(
 								"width"=>450,

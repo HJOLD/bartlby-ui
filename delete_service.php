@@ -11,7 +11,27 @@ $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
 
+if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
+	$layout->Form("fm1", "bartlby_action.php");
+	$layout->Table("100%");
 
+	
+	$layout->Tr(
+		$layout->Td(
+			array(
+				0=>'you have choosen a server',
+				1=>'<input type=button value=back onClick="javascript:history.back();">'
+				
+			)
+		)
+	);
+	
+	$layout->TableEnd();
+	$layout->FormEnd();
+	$layout->display();
+	exit(1);
+	
+}
 
 
 $layout->Tr(

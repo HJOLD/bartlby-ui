@@ -40,6 +40,13 @@ td.header1 { font-size:12px; font-family:tahoma; }
 td.header { font-size:12px; font-family:tahoma; }
 
 
+td.red_img {     padding-top:18px; font-family:tahoma; font-size:10px; height:52px; color:#000000; background-image:url(bi-oc-red.gif);background-repeat: no-repeat;}
+td.green_img {     padding-top:18px; font-family:tahoma; font-size:10px; height:52px; color:#000000; background-image:url(bi-oc-green.gif);background-repeat: no-repeat;}
+td.orange_img {     padding-top:18px; font-family:tahoma; font-size:10px; height:52px; color:#000000; background-image:url(bi-oc-yellow.gif);background-repeat: no-repeat;}
+td.blue_img {     padding-top:18px; font-family:tahoma; font-size:10px; height:52px; color:#000000; background-image:url(bi-oc-silver.gif);background-repeat: no-repeat;}
+
+
+
 td.red { padding: 4;   text-valign: middle;  font-family:tahoma; font-size:12px; height:20px; color:000000; background-color:#F83838}
 td.green { padding: 4;   text-valign: middle;  font-family:tahoma; font-size:12px; height:20px; color:#000000; background-color:#33FF00}
 td.orange { padding: 4;   text-valign: middle;  font-family:tahoma; font-size:12px; height:20px; color:#000000; background-color:#FFFF00}

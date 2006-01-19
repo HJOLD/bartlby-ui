@@ -25,7 +25,7 @@ while(list($k, $servs) = @each($map)) {
 			//$isup=$btl->isServerUp($v1[server_id]);
 			//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
 			$servers[$optind][c]="";
-			$servers[$optind][v]="";	
+			$servers[$optind][v]="s" . $servs[$x][server_id];	
 			$servers[$optind][k]="[&nbsp;&nbsp;]&raquo;" . $servs[$x][server_name] . "&laquo;";
 			$optind++;
 		} else {

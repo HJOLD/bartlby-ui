@@ -22,6 +22,45 @@ function dnl($i) {
 
 
 switch($act) {
+	case 'delete_downtime':
+		if($_GET[downtime_id]) {
+			$rdt = bartlby_delete_downtime($btl->CFG, $_GET[downtime_id]);	
+			$msg = "Downtime: $rdt deleted";
+			$layout->OUT .= "<script>doReloadButton();</script>";
+		}
+	break;
+	case 'modify_downtime':
+		if($_GET[downtime_notice] && $_GET[downtime_from] && $_GET[downtime_to] && $_GET[downtime_type]) {
+			sscanf($_GET[downtime_from],"%d.%d.%d %d:%d", &$d, &$m, &$y, &$h, &$s);
+			$dfrom=mktime($h, $s, 0, $m, $d,$y);
+			sscanf($_GET[downtime_to],"%d.%d.%d %d:%d", &$d, &$m, &$y, &$h, &$s);
+			$dto=mktime($h, $s, 0, $m, $d,$y);
+			$clean_service=str_replace("s", "", $_GET[service_id]);
+			
+			$rdt=bartlby_modify_downtime($btl->CFG, $dfrom, $dto, $_GET[downtime_type], $_GET[downtime_notice], $clean_service, $_GET[downtime_id]);
+			$msg = "Downtime: $rdt modified";
+			$layout->OUT .= "<script>doReloadButton();</script>";
+		}
+	break;
+	case 'add_downtime':
+		if($_GET[downtime_notice] && $_GET[downtime_from] && $_GET[downtime_to] && $_GET[downtime_type]) {
+			$msg = $_GET[downtime_from];
+			sscanf($_GET[downtime_from],"%d.%d.%d %d:%d", &$d, &$m, &$y, &$h, &$s);
+			$dfrom=mktime($h, $s, 0, $m, $d,$y);
+			sscanf($_GET[downtime_to],"%d.%d.%d %d:%d", &$d, &$m, &$y, &$h, &$s);
+			$dto=mktime($h, $s, 0, $m, $d,$y);
+			
+			$clean_service=str_replace("s", "", $_GET[service_id]);
+			
+			$rdt=bartlby_add_downtime($btl->CFG, $dfrom, $dto, $_GET[downtime_type], $_GET[downtime_notice], $clean_service);
+			$msg = "Downtime: $rdt registered";
+			$layout->OUT .= "<script>doReloadButton();</script>";
+			
+		} else {
+			$msg = "Missing Param";	
+		}
+	break;
+	
 	case 'edit_cfg':
 		$new_cfg=$_POST["cfg_file"];
 		//Backup current
