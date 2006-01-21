@@ -15,9 +15,16 @@ $layout->Table("100%");
 
 
 if($_GET[service_id]{0} == 's') {
-	$dt_type="Server";	
+	$dt_type="Server";
+	$cl=str_replace("s", "", $_GET[service_id]);
+	$rr=bartlby_get_server_by_id($btl->CFG, $cl);
+	$lappend=$rr[server_name];
 	$dt_hidden=2;
 } else {
+	$rr=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+	
+	$lappend=$rr[server_name] . "/" . $rr[service_name];
+	
 	$dt_type="service";
 	$dt_hidden=1;
 }
@@ -57,7 +64,7 @@ $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>"Type",
-				1=>$dt_type
+				1=>$dt_type . $layout->Field("lappend", "hidden", $lappend)
 			)
 		)
 

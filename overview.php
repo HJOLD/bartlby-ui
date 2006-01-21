@@ -76,6 +76,10 @@
 		for($y=0; $y<count($v); $y++) {
 			$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
 			$qck[$v[$y][server_name]][10]=$v[$y][server_id];
+			if($v[$y][is_downtime] == 1) {
+				$qck[$v[$y][server_name]][downtime]++;
+			}
+			
 			
 			$all_services++;
 			switch($v[$y][current_state]) {
@@ -184,6 +188,9 @@
 			if($qck[$k][4]) {
 				$sf=true;
 				$qk="<tr><td ><font size=1>" . $qck[$k][4] . " Info</td></tr>";
+			}
+			if($qck[$k][downtime]) {
+				$qk="<tr><td ><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
 			}
 					
 				$quick_view .= "$qo";

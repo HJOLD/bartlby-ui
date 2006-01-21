@@ -20,7 +20,7 @@ for($x=0; $x<count($r); $x++) {
 	}
 	$dts[$optind][c]="";
 	$dts[$optind][v]=$r[$x][downtime_id];	
-	$dts[$optind][k]="(" . $dttype . ")" . date("d.m.Y H:i", $r[$x][downtime_from]) . "&nbsp;&nbsp;-&nbsp;&nbsp;" . date("d.m.Y H:i", $r[$x][downtime_to]);
+	$dts[$optind][k]=date("d.m.Y H:i", $r[$x][downtime_from]) . "&nbsp;&nbsp;-&nbsp;&nbsp;" . date("d.m.Y H:i", $r[$x][downtime_to]) . " " . $r[$x][downtime_notice];
 	$optind++;	
 }
 

@@ -5,7 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->setTemplate("nonav.html");
 
 $layout->OUT .= "<script>
 		function appl() {
@@ -55,15 +55,13 @@ $layout->Tr(
 
 $x=0;
 $ges=0;
-$map = $btl->GetSVCMap($_GET[service_state]);	
+$map = $btl->GetSVCMap();
+	
 while(list($k, $servs) = each($map)) {
 	
-	if($_GET[server_id] && $_GET[server_id] != $k) {
-		continue;	
-	}
+	
 	for($x=0; $x<count($servs); $x++) {
-	
-	
+		
 		$ibox[0][v]=-1;	
 		$ibox[0][k]="unused";
 		
@@ -95,14 +93,11 @@ while(list($k, $servs) = each($map)) {
 			$ibox[3][s]=1;
 				
 		}
-		echo $servs[$x][service_id]  . "=" . $servs[$x][current_state]  . "/" . $h . "<br>";
-		echo "<pre>";
+		
 		
 		$class="header1";
 		
-		if($svc % 2 == 1) {
-				$class="header";	
-		}
+		
 		$svc++;
 		
 		if($x == 0) {
@@ -136,7 +131,7 @@ while(list($k, $servs) = each($map)) {
 			);
 			
 		
-		$x++;
+		
 		$ges++;
 		
 	}

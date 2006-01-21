@@ -207,8 +207,9 @@ class BartlbyUi {
 			case 0: return "green"; break;
 			case 1: return "orange"; break;
 			case 2: return "red"; break;
-			case 3: return "yellow"; break;
-			case 6: return "blue"; break;
+			
+			default:
+				return "silver";
 				
 			
 		}

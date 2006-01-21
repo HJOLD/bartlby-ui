@@ -22,12 +22,17 @@
 #////////////////////////////////////////////
 class Layout {
 	var $OUT;
+	var $template_file;
 	function microtime_float()
 	{
    		list($usec, $sec) = explode(" ", microtime());
    		return ((float)$usec + (float)$sec);
 	}
+	function setTemplate($file) {
+		$this->template_file=$file;
+	}
 	function Layout($scr='') {
+		$this->template_file="template.html";
 		$this->start_time=$this->microtime_float();
 	}
 
@@ -126,7 +131,7 @@ class Layout {
 		$bname=basename($source_file);
 		
 		
-		$fp=fopen("template.html", "r");
+		$fp=fopen($this->template_file, "r");
 		while(!feof($fp)) {
 			$str=fgets($fp, 1024);
 			$o = str_replace("<!--BTUICONTENT-->",$this->OUT,$str);

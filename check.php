@@ -5,7 +5,8 @@
 	$btl=new BartlbyUi($Bartlby_CONF);
 	$info=$btl->getInfo();
 	$layout= new Layout();
-	$layout->MetaRefresh(10);
+	$layout->setTemplate("nonav.html");
+	
 	$layout->Table("100%");
 	$lib=bartlby_lib_info($btl->CFG);
 	$exi=-1;
@@ -24,15 +25,27 @@
 		$str=$_GET[plugin] . "| " . $arges . "|\n";
 		
 		$estr=bartlby_encode($str);
-		fwrite($fp, $estr);
+		
 		$vers=fread($fp, 1024);
+		
+		fwrite($fp, $estr);
+		
 		$reply=fread($fp, 1024);
-		fclose($fp);
+		
 		$dreply=bartlby_decode($reply);
+		
+		if(strncmp($dreply, "PERF: ", 6) == 0) {
+			$reply=fread($fp, 1024);
+			$dreply=bartlby_decode($reply);
+			
+			
+		}
+		
 		$ex=explode("|", $dreply);
 		
 		$cmd_out = $ex[1];
 		$exi=$ex[0];
+		fclose($fp);
 		
 	}
 	

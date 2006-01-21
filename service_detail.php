@@ -12,7 +12,6 @@ $layout->setTitle("Actions");
 $defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
 $layout->Table("100%");
 
-
 $svc_color=$btl->getColor($defaults[current_state]);
 $svc_state=$btl->getState($defaults[current_state]);
 
@@ -116,6 +115,34 @@ $core_content = "<table  width='100%'>
 	</tr>
 </table>";
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
+
+if($defaults[is_downtime] == 1) {
+	$info_box_title='Downtime';  
+	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
+	$core_content = "<table  width='100%'>
+		<tr>
+			<td width=150 class='font2'>From:</td>
+			<td>" . date("d.m.Y H:i", $defaults[downtime_from]) . "</td> 
+		</tr>
+		<tr>
+			<td width=150 class='font2'>To:</td>
+			<td>" . date("d.m.Y H:i", $defaults[downtime_from]) . "</td> 
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Left:</td>
+			<td>" . $btl->Intervall($defaults[downtime_to]-time()) . "</td> 
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Notice/Reason:</td>
+			<td>" . $defaults[downtime_notice] . "</td> 
+		</tr>
+		
+	</table>";
+	
+	
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
+}
 
 $info_box_title='Last Output';  
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'

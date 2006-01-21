@@ -52,7 +52,9 @@ switch($act) {
 			
 			$clean_service=str_replace("s", "", $_GET[service_id]);
 			
-			$rdt=bartlby_add_downtime($btl->CFG, $dfrom, $dto, $_GET[downtime_type], $_GET[downtime_notice], $clean_service);
+			$notice=$_GET[lappend] . " " . $_GET[downtime_notice];
+			
+			$rdt=bartlby_add_downtime($btl->CFG, $dfrom, $dto, $_GET[downtime_type], $notice, $clean_service);
 			$msg = "Downtime: $rdt registered";
 			$layout->OUT .= "<script>doReloadButton();</script>";
 			

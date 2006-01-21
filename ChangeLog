@@ -1,3 +1,13 @@
+2006-01-20 00:31  hjanuschka
+
+	* ChangeLog, add_downtime.php, bartlby_action.php,
+	  delete_downtime.php, delete_service.php, downtime_list.php,
+	  modify_downtime.php, modify_service.php, overview.php,
+	  service_list.php, services.php, template.html,
+	  images/bi-oc-green.gif, images/bi-oc-red.gif,
+	  images/bi-oc-silver.gif, images/bi-oc-yellow.gif, images/btl.css:
+	  downtime add/modify/delete some nicer icons on services.php
+
 2006-01-16 21:53  hjanuschka
 
 	* logview.php, template.html, images/bartlby1-first-aid.gif,
