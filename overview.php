@@ -62,6 +62,7 @@
 	$services_ok=0;
 	$services_warning=0;
 	$services_unkown=0;
+	$services_downtime=0;
 	$all_services=0;
 	
 	while(list($k,$v)=@each($servers)) {

@@ -27,6 +27,8 @@ switch($act) {
 			$rdt = bartlby_delete_downtime($btl->CFG, $_GET[downtime_id]);	
 			$layout->OUT .= "<script>doReloadButton();</script>";
 			
+		} else {
+			$act="missing_param";
 		}
 	break;
 	case 'modify_downtime':
@@ -38,8 +40,10 @@ switch($act) {
 			$clean_service=str_replace("s", "", $_GET[service_id]);
 			
 			$rdt=bartlby_modify_downtime($btl->CFG, $dfrom, $dto, $_GET[downtime_type], $_GET[downtime_notice], $clean_service, $_GET[downtime_id]);
-			$msg = "Downtime: $rdt modified";
+			
 			$layout->OUT .= "<script>doReloadButton();</script>";
+		} else {
+			$act="missing_param";
 		}
 	break;
 	case 'add_downtime':
@@ -58,29 +62,33 @@ switch($act) {
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
 			
-		} else {
-			$msg = "Missing Param";	
+		}  else {
+			$act="missing_param";
 		}
 	break;
 	
 	case 'edit_cfg':
-	
-		$new_cfg=$_POST["cfg_file"];
-		//Backup current
-		$backup_name=$btl->CFG . ".bak_" . date("d-m-Y_H_i_s");
-		$global_msg[backup_cfg]=$backup_name;
+		if($_POST["cfg_file"]) {
+			
+			$new_cfg=$_POST["cfg_file"];
+			//Backup current
+			$backup_name=$btl->CFG . ".bak_" . date("d-m-Y_H_i_s");
+			$global_msg[backup_cfg]=$backup_name;
 		
-		copy($btl->CFG, $backup_name);
-		$fp=fopen($btl->CFG, "w");
-		$new_cfg=str_replace("\r", "", $new_cfg);
-		fwrite($fp, $new_cfg);
-		fclose($fp);
+			copy($btl->CFG, $backup_name);
+			$fp=fopen($btl->CFG, "w");
+			$new_cfg=str_replace("\r", "", $new_cfg);
+			fwrite($fp, $new_cfg);
+			fclose($fp);
+		}  else {
+			$act="missing_param";
+		}
 		
 	break;
 	case 'stop':
 		$base_dir=bartlby_config($btl->CFG, "basedir");
 		if(!$base_dir) {
-			$msg="basedir config not set";
+			$act="missing_param";
 		} else {
 			$cmd="export BARTLBY_HOME='$base_dir'; cd \$BARTLBY_HOME; ./bartlby.startup stop 2>&1";
 		
@@ -90,8 +98,12 @@ switch($act) {
 		}
 	break;
 	case 'delete_package':
-		unlink("pkgs/" . $_GET[package_name]);
-		$msg .= "Deleted!";
+		if($_GET[package_name]) {
+			
+			unlink("pkgs/" . $_GET[package_name]);
+		} else {
+			$act="missing_param";
+		}
 	break;
 	case 'delete_package_ask':
 		
@@ -99,13 +111,18 @@ switch($act) {
 	break;
 	
 	case 'add_comment':
-		$fp=@fopen("comments/" . (int)$_GET[service_id], "a+");
-		if(!$fp) {
-			$msg = "Fopen failed ( comments/" . (int)$_GET[service_id] . ")";	
+		if($_GET[subject] && $_GET[comment]) {
+			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+			$fp=@fopen("comments/" . (int)$_GET[service_id], "a+");
+			if(!$fp) {
+				$act="missing_param";	
+			} else {
+				fwrite($fp, $btl->user . "|" . time() . "|" . str_replace("\n", " ", nl2br($_GET[comment])) . "|" . str_replace("\n", " ", nl2br($_GET[subject])) . "|" . implode(",", $_GET[notify]). "\n");
+				fclose($fp);
+				
+			}
 		} else {
-			fwrite($fp, $btl->user . "|" . time() . "|" . str_replace("\n", " ", nl2br($_GET[comment])) . "|" . str_replace("\n", " ", nl2br($_GET[subject])) . "\n");
-			fclose($fp);
-			$msg .= "comment stored!";	
+			$act="missing_param";
 		}
 		
 	
@@ -138,49 +155,68 @@ switch($act) {
 			}
 			$layout->OUT .= "<script>doReloadButton();</script>";
 		} else {
-			$global_msg["package"] = "fopen failed()!!<br>";	
+			$global_msg["package"] = "fopen failed()!!<br>";
+			$act="missing_param";	
 		}		
 	break;
 	case 'install_package':
-		$global_msg["package"] = $btl->installPackage($_GET[package_name], $_GET[server_id]);
+		if($_GET[package_name] && $_GET[server_id]) {
+			$global_msg["package"] = $btl->installPackage($_GET[package_name], $_GET[server_id]);
+		}  else {
+			$act="missing_param";
+		}
 		
 	break;
 	case 'create_package':
 		$global_msg[pkg_services]="";
 		$pkg=array();
-		//$msg = "Creating package: " . $_GET[package_name] . "<br>";
-		for($x=0; $x<$btl->info[services]; $x++) {
-			$svc=bartlby_get_service($btl->CFG, $x);
-			if(@in_array($svc[service_id], $_GET[services])) {
-				$global_msg[pkg_services] .="<li>" . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name];
-				array_push($pkg, $svc);
+		if($_GET[services]) {
+			//$msg = "Creating package: " . $_GET[package_name] . "<br>";
+			for($x=0; $x<$btl->info[services]; $x++) {
+				$svc=bartlby_get_service($btl->CFG, $x);
+				if(@in_array($svc[service_id], $_GET[services])) {
+					$global_msg[pkg_services] .="<li>" . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name];
+					array_push($pkg, $svc);
+				}
+				
 			}
-			
-		}
-		$save=serialize($pkg);
-		$fp=@fopen("pkgs/" . $_GET[package_name], "w");
-		if($fp) {
-			fwrite($fp, $save);
-			fclose($fp);
-		} else {
-			$msg .= "save failed";	
-		}
-		
+			$save=serialize($pkg);
+			$fp=@fopen("pkgs/" . $_GET[package_name], "w");
+			if($fp) {
+				fwrite($fp, $save);
+				fclose($fp);
+			} else {
+				$global_msg[pkg_services] = "save failed";	
+			}
+		} else {                                     
+		 	$act="missing_param";
+		 }                            
 	break;
 	
 	case 'disable_service':
 	case 'enable_service':
-		$idx=$btl->findSHMPlace($_GET[service_id]);
-		$msg = $idx;
-		$cur=bartlbe_toggle_service_active($btl->CFG, $idx);
-		$msg = "Service is: " . $cur;
+		if($_GET[service_id]) {
+			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+			$idx=$btl->findSHMPlace($_GET[service_id]);
+			
+			$cur=bartlbe_toggle_service_active($btl->CFG, $idx);
+			
+		} else {                                     
+		 	$act="missing_param";
+		}     
+		
 	break;
 	case 'disable_notify':
 	case 'enable_notify':
-		$idx=$btl->findSHMPlace($_GET[service_id]);
-		$msg = $idx;
-		$cur=bartlbe_toggle_service_notify($btl->CFG, $idx);
-		$msg = "Service is: " . $cur;
+		if($_GET[service_id]) {
+			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+			$idx=$btl->findSHMPlace($_GET[service_id]);
+			
+			$cur=bartlbe_toggle_service_notify($btl->CFG, $idx);
+			
+		}else {                                     
+		 	$act="missing_param";
+		 }     
 	break;
 	
 	case 'reload':
@@ -204,9 +240,9 @@ switch($act) {
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
 
-		} else {
-			$msg = "Missing Param";	
-		}
+		} else {                                     
+		 	$act="missing_param";
+		 }     
 	break;
 	case 'modify_worker':
 		if($_GET[worker_id] && $_GET[worker_name]) {
@@ -230,14 +266,13 @@ switch($act) {
 				$triggerstr = "|" . $triggerstr;
 			}
 			
-			$msg = "wa:" .  $_GET[worker_active] . "\n";
+			
 			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password], $triggerstr);
-			$msg .= "Mod: " . $add;
 			$layout->OUT .= "<script>doReloadButton();</script>";
 
-		} else {
-			$msg = "Missing Param";	
-		}
+		} else {                                     
+		 	$act="missing_param";
+		}     
 	break;
 	case 'add_worker':
 	
@@ -267,17 +302,21 @@ switch($act) {
 			
 			
 			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password], $triggerstr);
-			$msg .= "ADD: " . $add;
+			
 			$layout->OUT .= "<script>doReloadButton();</script>";
 			
-		} else {
-			$msg = "Missing Parameter";	
-		}
+		} else {                                     
+		 	$act="missing_param";
+		}     
 	break;
 	case 'delete_service':
-		$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
-		$del = bartlby_delete_service($btl->CFG, $_GET[service_id]);
-		$layout->OUT .= "<script>doReloadButton();</script>";
+		if($_GET[service_id]) {
+			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+			$del = bartlby_delete_service($btl->CFG, $_GET[service_id]);
+			$layout->OUT .= "<script>doReloadButton();</script>";
+		} else {                                     
+		 	$act="missing_param";
+		 }     
 	break;
 	case 'modify_service':
 	
@@ -287,9 +326,9 @@ switch($act) {
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
-		} else {
-			$msg = "Missing Parameter";	
-		}
+		} else {                                     
+		 	$act="missing_param";
+		}     
 	break;
 	case 'add_service': 
 		if($_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
@@ -301,9 +340,9 @@ switch($act) {
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
-		} else {
-			$msg = "Missing Parameter";	
-		}
+		} else {                                     
+		 	$act="missing_param";
+		}     
 	break;
 	
 	case 'delete_server':
@@ -313,18 +352,20 @@ switch($act) {
 			$s = bartlby_delete_server($btl->CFG, $_GET[server_id]);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
-		}
+		} else {                                     
+		 	$act="missing_param";
+		}     
 	break;
 	case 'modify_server':
 		if($_GET[server_id] && $_GET[server_name] && $_GET[server_port] && $_GET[server_ip]) {
 				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port]);
-				$msg .= "Modified: " . $mod_server . " --> " .   $_GET[server_id] . "<br>";
+				
 				$defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 				$layout->DisplayHelp(array(0=>"CRIT|You should restart bartlby for applieng changes "));
 				$layout->OUT .= "<script>doReloadButton();</script>";
-			} else {
-				$msg = "Missing Parameter";	
-			}
+		} else {                                     
+			$act="missing_param";
+		}     
 	break;
 	case 'add_server':
 			if($_GET[server_name] && $_GET[server_port] && $_GET[server_ip]) {
@@ -343,9 +384,9 @@ switch($act) {
 				}
 				
 				$layout->OUT .= "<script>doReloadButton();</script>";
-			} else {
-				$msg = "Missing Parameter";	
-			}
+			} else {                                     
+		 		$act="missing_param";
+			}     
 	break;
 	
 	default:
@@ -354,10 +395,8 @@ switch($act) {
 	break;
 		
 }
-$f=false;
-if($_POST[action]) {
-	$f=$_POST[action];
-}
+$f=$act;
+
 $msg=$btl->finScreen($f);
 $layout->Tr(
 	$layout->Td(
