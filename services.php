@@ -125,7 +125,10 @@
 				$comments  ="<a href='view_comments.php?service_id=" . $servs[$x][service_id] . "'><img src='images/icon_comments.gif' border=0></A>";
 				//$comments .="<a href='view_comments.php?service_id=" . $servs[$x][server_id] . "'>add comments</A><br>";
 				
-				
+				if($servs[$x][is_downtime] == 1) {
+					$svc_state="Downtime";
+					$svc_color="silver";	
+				}
 				$cur_box_content .= $layout->Tr(
 					$layout->Td(
 						Array(

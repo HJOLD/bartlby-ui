@@ -33,13 +33,15 @@ if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
 	
 }
 
+$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+$dlmsg=$btl->finScreen("delete_service1");
 
 $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
 					'colspan'=> 2,
-					'show'=>'Really want to service?'
+					'show'=>$dlmsg
 					)
 			)
 		)

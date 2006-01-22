@@ -77,6 +77,7 @@
 			$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
 			$qck[$v[$y][server_name]][10]=$v[$y][server_id];
 			if($v[$y][is_downtime] == 1) {
+				$qck[$v[$y][server_name]][$v[$y][current_state]]--;
 				$qck[$v[$y][server_name]][downtime]++;
 			}
 			
@@ -86,16 +87,32 @@
 
 				case 0:
 					$services_ok++;
+					if($v[$y][is_downtime] == 1) {
+						$services_ok--;
+						$services_downtime++;	
+					}
 				break;
 				case 1:
 					$services_warning++;
+					if($v[$y][is_downtime] == 1) {
+						$services_warning--;
+						$services_downtime++;	
+					}
 				break;
 				case 2:
 					$services_critical++;
+					if($v[$y][is_downtime] == 1) {
+						$services_critical--;
+						$services_downtime++;	
+					}
 				break;
 				
 				default:
 					$services_unkown++;
+					if($v[$y][is_downtime] == 1) {
+						$services_ok--;
+						$services_downtime++;	
+					}
 				
 				
 			}	
@@ -104,7 +121,7 @@
 		
 	}
 	
-	$service_sum=$all_services;
+	$service_sum=$all_services-$services_downtime;
 	
 	
 	
@@ -215,7 +232,7 @@
 	$tac_content = "<table class='nopad' width='100%'>
 		<tr>
 			<td colspan=2 class='font1'>Hosts:<font class='font2'>" . $hosts_sum . "</font></td>
-			<td colspan=3 align=left class='font1'>Services:<font class='font2'>" . $service_sum . "</font></td>
+			<td colspan=4 align=left class='font1'>Services:<font class='font2'>" . $service_sum . "</font></td>
 		</tr>
 		<tr>
 			<td class='font1'>Up:<font class='font2'>" . $hosts_up. "</font></td>
@@ -223,6 +240,7 @@
 			<td class='font1'>OK:<font class='font2'>" . $services_ok. "</font></td>
 			<td class='font1'>Warning:<font class='font2'>" . $services_warning. "</font></td>
 			<td class='font1'>Critical:<font class='font2'>" . $services_critical. "</font></td>
+			<td class='font1'>Downtime:<font class='font2'>" . $services_downtime. "</font></td>
 		</tr>
 		<tr>
 			<td class='font1' colspan=5>$repl</td>

@@ -1,0 +1,6 @@
+  <font size="2"><span style="font-family: Tahoma; font-weight: bold;">Modified Server<br /></span><span style="font-family: Tahoma;">Name: $_GET[server_name]<br />Ip: $_GET[server_ip]<br />Port: $_GET[server_port]<br /></span><span style="font-family: Tahoma; font-weight: bold;"></span><span style="font-family: Tahoma;"><br /><span style="font-weight: bold;">Next Steps:</span></span></font><br />
+        <ul>
+            <li>&nbsp;<font size="2"><span style="font-family: Tahoma;"><a href="bartlby_action.php?action=reload">Reload</a></span></font></li>
+        </ul>
+        <ul>         </ul>
+            <font size="2"><span style="font-family: Tahoma;"></span></font>

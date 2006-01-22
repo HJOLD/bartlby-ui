@@ -12,14 +12,16 @@ $layout->Table("100%");
 
 
 
+$global_msg=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 
+$dlmsg=$btl->finScreen("delete_worker1");
 
 $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
 					'colspan'=> 2,
-					'show'=>'Really want to Delete worker?'
+					'show'=>$dlmsg
 					)
 			)
 		)

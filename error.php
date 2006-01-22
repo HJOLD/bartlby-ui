@@ -62,6 +62,7 @@ $layout->OUT .= "<script>
 				}
 				
 			}
+			sleep(2);
 		break;
 		case 'BARTLBY::NOT::RUNNING':
 			$omsg = "Bartlby doesnt seem to be running<br><input type=button value='try to startup bartlby' onClick='doStartup();'>";
@@ -70,6 +71,8 @@ $layout->OUT .= "<script>
 		default:
 			$omsg="ERROR is undefined";	
 	}
+	
+	$omsg=$btl->FinScreen(str_replace("::", "_", $_GET[msg]));
 	
 	$layout->Tr(
 	$layout->Td(

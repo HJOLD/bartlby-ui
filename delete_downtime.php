@@ -13,13 +13,14 @@ $layout->Table("100%");
 
 
 
+$dlmsg=$btl->finScreen("delete_downtime1");
 
 $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
 					'colspan'=> 2,
-					'show'=>'Really want to delete downtime?'
+					'show'=>$dlmsg
 					)
 			)
 		)

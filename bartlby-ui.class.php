@@ -40,6 +40,31 @@ class BartlbyUi {
 		$this->loadRights();
 		
 	}
+	function finScreen($f=false) {
+		global $_GET,$global_msg;
+		
+		if($f==false) {
+			$f=$_GET[action];	
+		}
+		
+		if(file_exists("fin/" . $f)) {
+			$fp=fopen("fin/" . $f,"r");
+			while(!feof($fp)) {
+				$str=fgets($fp, 1024);
+				while(list($k, $v)=@each($_GET)) {
+					$str=str_replace("\$_GET[" . $k . "]", $v, $str);	
+				}
+				while(list($k, $v)=@each($global_msg)) {
+					$str=str_replace("\$global_msg[" . $k . "]", $v, $str);	
+				}
+				$r .= $str;
+			}
+			
+		} else {
+			return "message file: $f not found";	
+		}
+		return $r;
+	}
 	function simpleRight($k, $v) {
 		if(!is_array($this->rights[$k])) {
 				return true;

@@ -10,15 +10,16 @@ $layout->DisplayHelp(array(0=>"INFO|Confirm delete request?",1=>"CRIT|If you con
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
+$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 
-
+$dlmsg=$btl->finScreen("delete_server1");
 
 $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
 					'colspan'=> 2,
-					'show'=>'Really want to Delete server and all services?'
+					'show'=>$dlmsg
 					)
 			)
 		)
