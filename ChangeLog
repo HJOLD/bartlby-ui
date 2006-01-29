@@ -1,3 +1,39 @@
+2006-01-22 23:27  hjanuschka
+
+	* bartlby_action.php, index.php, overview.php, view_comments.php,
+	  fin/BARTLBY_SHM_STALE, fin/delete_server1, fin/disable_notify,
+	  fin/disable_service, fin/enable_notify, fin/enable_service,
+	  fin/missing_param, fin/modify_server, images/bartlby1-bg.jpg,
+	  images/bg_header.jpg, images/bi-oc-green.gif,
+	  images/bi-oc-red.gif, images/bi-oc-silver.gif,
+	  images/bi-oc-yellow.gif, images/black.gif, images/blue.gif,
+	  images/btl.css: layout fixes, finScreens, index.php (image
+	  preload)
+
+2006-01-22 02:32  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, delete_downtime.php,
+	  delete_server.php, delete_service.php, delete_worker.php,
+	  error.php, overview.php, services.php, fin/BARTLBY_LOGIN,
+	  fin/BARTLBY_NOT_RUNNING, fin/BARTLBY_SHMCLEAN,
+	  fin/BARTLBY_SHM_STALE, fin/BARTLBY_START, fin/add_downtime,
+	  fin/add_server, fin/add_service, fin/add_worker,
+	  fin/create_package, fin/delete_downtime, fin/delete_downtime1,
+	  fin/delete_package, fin/delete_package_ask, fin/delete_server,
+	  fin/delete_server1, fin/delete_service, fin/delete_service1,
+	  fin/delete_worker, fin/delete_worker1, fin/edit_cfg,
+	  fin/install_package, fin/modify_downtime, fin/modify_server,
+	  fin/modify_service, fin/modify_worker, fin/reload, fin/stop,
+	  fin/uninstall_package: finScreen
+
+2006-01-21 03:23  hjanuschka
+
+	* ChangeLog, add_downtime.php, bartlby-ui.class.php,
+	  bartlby_action.php, check.php, downtime_list.php, execv.php,
+	  grpstr.php, layout.class.php, locate_server.php, nonav.html,
+	  overview.php, service_detail.php, images/btl.css: [no log
+	  message]
+
 2006-01-20 00:31  hjanuschka
 
 	* ChangeLog, add_downtime.php, bartlby_action.php,

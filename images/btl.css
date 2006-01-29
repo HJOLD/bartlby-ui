@@ -83,6 +83,12 @@ td.bar_right_red {background-image: url(bartlby1-bar-red_04.gif); height:39px; w
 td.bar_middle_red {background-image: url(bartlby1-bar-red_02.gif); height:39px; width:4px; }
 
 
+td.red_box { padding-left:10px;    padding-top:3px; font-family:tahoma; font-size:10px; height:29px; color:#000000; background-image:url(s_red.gif);background-repeat: no-repeat;}
+td.green_box { padding-left:10px;    padding-top:3px; font-family:tahoma; font-size:10px; height:29px; color:#000000; background-image:url(s_green.gif);background-repeat: no-repeat;}
+td.yellow_box { padding-left:10px;    padding-top:3px; font-family:tahoma; font-size:10px; height:29px; color:#000000; background-image:url(s_yellow.gif);background-repeat: no-repeat;}
+td.silver_box { padding-left:10px;    padding-top:3px; font-family:tahoma; font-size:10px; height:29px; color:#000000; background-image:url(s_silver.gif);background-repeat: no-repeat;}
+
+
 
 
 #dropmenudiv{

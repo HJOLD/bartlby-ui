@@ -357,8 +357,8 @@ switch($act) {
 		}     
 	break;
 	case 'modify_server':
-		if($_GET[server_id] && $_GET[server_name] && $_GET[server_port] && $_GET[server_ip]) {
-				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port]);
+		if($_GET[server_id] && $_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
+				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon]);
 				
 				$defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 				$layout->DisplayHelp(array(0=>"CRIT|You should restart bartlby for applieng changes "));
@@ -368,9 +368,9 @@ switch($act) {
 		}     
 	break;
 	case 'add_server':
-			if($_GET[server_name] && $_GET[server_port] && $_GET[server_ip]) {
+			if($_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
 				
-				$add_server=bartlby_add_server($btl->CFG, $_GET[server_name], $_GET[server_ip], $_GET[server_port]);
+				$add_server=bartlby_add_server($btl->CFG, $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon]);
 				
 				$global_msg["package"]="";
 				$global_msg["init_service"]="";

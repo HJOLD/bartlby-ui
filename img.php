@@ -97,7 +97,7 @@
 	
 
 
-Header("Content-type: image/png");
+Header("Content-type: image/gif");
 drawRating($prozent_float, $cl, $services_ok, $services_critical, $services_warning, $btl->info);
 
 
@@ -120,9 +120,9 @@ function drawRating($rating, $cl=array(), $ok, $crit, $warn, $info=array()) {
   	$fill = ImageColorAllocate($image,$cl[0],$cl[1],$cl[2]);
   	  
   if(is_array($info)) { 
-   	 $okp = imagecreatefrompng("./images/ok.png");
-   	 $wkp = imagecreatefrompng("./images/warning.png");
-   	 $ckp = imagecreatefrompng("./images/critical.png");
+   	 $okp = imagecreatefromgif("./images/ok.gif");
+   	 $wkp = imagecreatefromgif("./images/warning.gif");
+   	 $ckp = imagecreatefromgif("./images/critical.gif");
    	 
   	 $a=explode("(", $info[version]);
   	 $mv=$a[0];

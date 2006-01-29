@@ -55,6 +55,7 @@
 	}
 	
 	$servers=$btl->GetSVCMap();
+	
 	$hosts_sum=count($servers);
 	$hosts_up=0;
 	$hosts_down=0;
@@ -74,9 +75,11 @@
 			$hosts_a_down[$k]=1;
 			
 		}
+		
 		for($y=0; $y<count($v); $y++) {
 			$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
 			$qck[$v[$y][server_name]][10]=$v[$y][server_id];
+			$qck[$v[$y][server_name]][server_icon]=$v[$y][server_icon];
 			if($v[$y][is_downtime] == 1) {
 				$qck[$v[$y][server_name]][$v[$y][current_state]]--;
 				$qck[$v[$y][server_name]][downtime]++;
@@ -180,35 +183,35 @@
 				$STATE="DOWN";
 			}
 			$quick_view .= "<tr>";
-			$quick_view .= "<td class=$cl><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "'>$k</A></td>";
+			$quick_view .= "<td class=$cl><img src='server_icons/" . $qck[$k][server_icon] . "'><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "'>$k</A></td>";
 			$quick_view .= "<td class=$cl><font size=1>$STATE</td>";
 			$quick_view .= "<td class=$cl><table width=100>";
 			
 			$sf=false;
 			if($qck[$k][0]) {
 				$sf=true;
-				$qo="<tr><td class=green><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=0'>" . $qck[$k][0] . " OK's</A></td></tr>";
+				$qo="<tr><td class=green_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=0'>" . $qck[$k][0] . " OK's</A></td></tr>";
 			}
 			if($qck[$k][1]) {
 				$sf=true;
-				$qw="<tr><td class=orange><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=1'>" . $qck[$k][1] . " Warnings</A></td></tr>";
+				$qw="<tr><td class=orange_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=1'>" . $qck[$k][1] . " Warnings</A></td></tr>";
 			}
 			
 			if($qck[$k][2]) {
 				$sf=true;
-				$qc="<tr><td class=red><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2'>" . $qck[$k][2] . " Criticals</A></td></tr>";
+				$qc="<tr><td class=red_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2'>" . $qck[$k][2] . " Criticals</A></td></tr>";
 			}
 			
 			if($qck[$k][3]) {
 				$sf=true;
-				$qk="<tr><td class=yellow><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
+				$qk="<tr><td class=yellow_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
 			}
 			if($qck[$k][4]) {
 				$sf=true;
-				$qk="<tr><td ><font size=1>" . $qck[$k][4] . " Info</td></tr>";
+				$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][4] . " Info</td></tr>";
 			}
 			if($qck[$k][downtime]) {
-				$qk="<tr><td ><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
+				$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
 			}
 					
 				$quick_view .= "$qo";

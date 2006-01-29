@@ -15,7 +15,27 @@ $layout->Table("100%");
 
 $defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 
-
+$optind=0;
+$dhl=opendir("server_icons");
+while($file = readdir($dhl)) {
+	//$sr=bartlby_get_server_by_id($btl->CFG, $k);
+	
+	//$isup=$btl->isServerUp($k);
+	//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
+	if(preg_match("/.*\.png/", $file)) {
+		
+		if($defaults[server_icon] == $file) {
+			
+			$server_icons[$optind][s]=1;
+		}
+		$server_icons[$optind][c]="";
+		$server_icons[$optind][v]=$file;	
+		$server_icons[$optind][k]="&raquo;" . $file;
+		$optind++;
+	}
+	
+}
+closedir($dhl);
 
 $layout->Tr(
 	$layout->Td(
@@ -41,7 +61,15 @@ $layout->Tr(
 		)
 	)
 );
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Icon:",
+				1=>$layout->DropDown("server_icon", $server_icons) 
+			)
+		)
 
+);
 
 
 
