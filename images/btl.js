@@ -127,3 +127,8 @@ clearTimeout(delayhide)
 
 if (hidemenu_onclick=="yes")
 document.onclick=hidemenu
+
+
+
+
+
