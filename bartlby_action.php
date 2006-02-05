@@ -388,7 +388,15 @@ switch($act) {
 		 		$act="missing_param";
 			}     
 	break;
+	case 'storeMap':
+		$st=$_POST[storeString];
+		$st=str_replace("\$", "\\$", $st);
+		$st=str_replace("\\'", "'", $st);
+		$fp=fopen("create_map.dat", "w");
+		fwrite($fp, $st);
+		fclose($fp);
 	
+	break;
 	default:
 		$msg="Action not implemented ($act)";
 		

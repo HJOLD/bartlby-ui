@@ -22,7 +22,7 @@ while($file = readdir($dhl)) {
 	
 	//$isup=$btl->isServerUp($k);
 	//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
-	if(preg_match("/.*\.png/", $file)) {
+	if(preg_match("/.*\.[png|gif]/", $file)) {
 		
 		if($defaults[server_icon] == $file) {
 			

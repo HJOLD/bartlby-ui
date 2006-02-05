@@ -43,7 +43,7 @@ while($file = readdir($dhl)) {
 	
 	//$isup=$btl->isServerUp($k);
 	//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
-	if(preg_match("/.*\.png/", $file)) {
+	if(preg_match("/.*\.[png|gif]/", $file)) {
 		$server_icons[$optind][c]="";
 		$server_icons[$optind][v]=$file;	
 		$server_icons[$optind][k]="&raquo;" . $file;

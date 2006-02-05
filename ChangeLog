@@ -1,3 +1,18 @@
+2006-02-02 23:15  hjanuschka
+
+	* nonav.html, images/btl.css, images/btl.js: rollup
+
+2006-01-29 16:52  hjanuschka
+
+	* ChangeLog, add_server.php, bartlby_action.php, img.php,
+	  modify_server.php, overview.php, fin/add_server,
+	  fin/modify_server, images/btl.css, images/s_green.gif,
+	  images/s_red.gif, images/s_silver.gif, images/s_yellow.gif,
+	  server_icons/black_box.png, server_icons/firewall.png,
+	  server_icons/preview.png, server_icons/rack_bsd.png,
+	  server_icons/rack_linux.png, server_icons/rack_windows.png,
+	  server_icons/switch.png, server_icons/wireless.png: server icon
+
 2006-01-22 23:27  hjanuschka
 
 	* bartlby_action.php, index.php, overview.php, view_comments.php,

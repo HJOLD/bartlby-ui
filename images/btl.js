@@ -1,3 +1,6 @@
+function openMap() {
+	window.open('create_map.php','','width=1024,height=786, scrollbar=yes, scrollbars=yes')
+}
 function doReloadButton() {
 	var obj = document.getElementById("reload");
         obj.style.visibility = "visible";
