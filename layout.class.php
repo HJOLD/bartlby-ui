@@ -23,6 +23,10 @@
 class Layout {
 	var $OUT;
 	var $template_file;
+	function set_menu($men) {
+		$this->OUT .= "<script>doToggle('" . $men . "');</script>";	
+		$this->menu_set=true;
+	}
 	function microtime_float()
 	{
    		list($usec, $sec) = explode(" ", microtime());
@@ -34,6 +38,7 @@ class Layout {
 	function Layout($scr='') {
 		$this->template_file="template.html";
 		$this->start_time=$this->microtime_float();
+		$this->menu_set=false;
 	}
 
 	function Table($proz="100%") {
@@ -123,7 +128,19 @@ class Layout {
 		$this->BoxTitle=$str;
 	}
 	function display($cr="") {
-				
+			
+		if($this->menu_set == false) {
+			$this->set_menu("core");	
+			$this->set_menu("main");
+			$this->set_menu("report");
+			$this->set_menu("services");
+			$this->set_menu("session");
+			$this->set_menu("client");
+			$this->set_menu("worker");
+			$this->set_menu("downtimes");
+			
+		}
+			
 		$this->end_time=$this->microtime_float();
 		$diff=$this->end_time-$this->start_time;
 		$source_file=$_SERVER[SCRIPT_URI];

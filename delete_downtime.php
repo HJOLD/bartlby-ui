@@ -6,7 +6,7 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 $layout->setTitle("Delete Downtime");
-
+$layout->set_menu("downtimes");
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 

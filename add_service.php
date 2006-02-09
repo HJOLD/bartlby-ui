@@ -27,7 +27,7 @@ $types[2][k]="Group";
 
 
 //Get plugins :))
-$layout->DisplayHelp(array(0=>"INFO|Add a service to an existing Server"));
+$layout->set_menu("services");
 $optind=0;
 $plgs=bartlby_config($btl->CFG, "agent_plugin_dir");
 $dh=opendir($plgs);

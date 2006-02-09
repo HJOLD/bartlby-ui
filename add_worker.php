@@ -5,6 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
+$layout->set_menu("worker");
 $layout->setTitle("Add Worker");
 $optind=0;
 $plgs=bartlby_config($btl->CFG, "trigger_dir");

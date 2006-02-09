@@ -5,8 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
-$layout= new Layout();
+$layout->set_menu("main");
 
 $svc=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 

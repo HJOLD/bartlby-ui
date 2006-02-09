@@ -9,7 +9,7 @@ $layout= new Layout();
 $layout= new Layout();
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
-$layout->DisplayHelp(array(0=>"INFO|Pick a Server From the Dropdown List"));
+$layout->set_menu("packages");
 $layout->setTitle("Package Name");
 
 $map = $btl->GetSVCMap();

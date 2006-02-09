@@ -8,7 +8,7 @@ $layout= new Layout();
 $layout->setTitle("Modify Server");
 
 
-$layout->DisplayHelp(array(0=>"INFO|Adding a new server to monitor cycle"));
+$layout->set_menu("client");
 
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");

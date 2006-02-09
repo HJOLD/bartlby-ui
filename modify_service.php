@@ -61,7 +61,7 @@ if($defaults[service_type] == 3) {
 
 
 //Get plugins :))
-$layout->DisplayHelp(array(0=>"INFO|Add a service to an existing Server"));
+$layout->set_menu("services");
 $optind=0;
 $plgs=bartlby_config($btl->CFG, "agent_plugin_dir");
 $dh=opendir($plgs);

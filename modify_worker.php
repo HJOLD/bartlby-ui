@@ -5,6 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
+$layout->set_menu("worker");
 $layout->setTitle("Modify Worker");
 $defaults=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 $map = $btl->GetSVCMap();

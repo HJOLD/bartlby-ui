@@ -48,7 +48,7 @@ $layout->OUT .= "<script>
 				$omsg="basedir config not set";
 			} else {
 				$cmd="export BARTLBY_HOME='$base_dir'; cd \$BARTLBY_HOME; ./bartlby.startup start 2>&1";
-			
+				
 				$fp=popen($cmd, "r");
 				$omsg=fgets($fp, 1024);
 				pclose($fp);	

@@ -8,6 +8,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
+$layout->set_menu("main");
 $layout->setTitle("Actions");
 $defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
 $layout->Table("100%");
@@ -44,7 +45,7 @@ $info_box_title='Service Info';
 $core_content = "<table  width='100%'>
 	<tr>
 		<td width=150 class='font2'>Server:</td>
-		<td align=left >" . $defaults[server_name] . " ( IP: " . gethostbyname($defaults[client_ip]) . " Port: " . $defaults[client_port] . " )</font></td> 
+		<td align=left ><a href='server_detail.php?server_id=" . $defaults[server_id]  . "'>" . $defaults[server_name] . "</A> ( IP: " . gethostbyname($defaults[client_ip]) . " Port: " . $defaults[client_port] . " )</font></td> 
 		<td>&nbsp;</td>     
 	</tr>
 	<tr>

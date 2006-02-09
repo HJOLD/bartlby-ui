@@ -1,3 +1,19 @@
+2006-02-05 22:32  hjanuschka
+
+	* create_map.php: forgott to cvs add create_map
+
+2006-02-05 22:32  hjanuschka
+
+	* server_icons/: server-sm-app.gif, server-sm-dev.gif,
+	  server-sm-fis.gif, server-sm-lin.gif, server-sm-new.gif,
+	  server-sm-win.gif: new server icons
+
+2006-02-05 22:31  hjanuschka
+
+	* ChangeLog, add_server.php, bartlby_action.php, modify_server.php,
+	  template.html, fin/storeMap, images/btl.js: first try out of
+	  network topology
+
 2006-02-02 23:15  hjanuschka
 
 	* nonav.html, images/btl.css, images/btl.js: rollup

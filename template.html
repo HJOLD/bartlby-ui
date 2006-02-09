@@ -5,6 +5,22 @@
 <link rel="stylesheet" id="CSS" type="text/css" href="images/btl.css"></link>
 <script type="text/javascript" src="images/btl.js"></script>
 
+<script>
+	function doToggle(elID) {
+		imgPlus='images/plus.gif';
+		imgMinus='images/minus.gif';
+		obj=document.getElementById(elID + "_sub");
+		obj.style.display=!(obj.style.display=="block")? "block" : "none";  
+		
+		
+		obji=document.getElementById(elID + "_plus");
+		cImg="images" + obji.src.substring(obji.src.lastIndexOf("/"), obji.src.length);
+		
+		
+		obji.src=!(cImg==imgMinus)? imgMinus : imgPlus;  
+		
+	}
+</script>
 </head>
 
 <body leftmargin=0 topmargin=0>
@@ -28,8 +44,10 @@
 						<td class="navi">
 							<table class="nopad">
 								<tr>
-									<td class="nav_main">Monitoring<td>
+								<td onClick="doToggle('main')" class="nav_main"><img id='main_plus' src='images/plus.gif' border=0> Monitoring <td>
 								</tr>
+							</table>
+							<table class="nopad" id="main_sub" style='display: none;'>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
@@ -47,12 +65,17 @@
 								</tr>
 								
 								
+								
+							</table>
+							<table class="nopad">
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
 								<tr>
-									<td class="nav_main">Report/Logging<td>
+									<td onClick="doToggle('report')" class="nav_main"><img id='report_plus' src='images/plus.gif' border=0> Log<td>
 								</tr>
+							</table>
+							<table class="nopad" id="report_sub" style='display: none;'>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
@@ -68,15 +91,20 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad">
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
 								<tr>
-									<td class="nav_main">Clients(s)<td>
+									<td onClick="doToggle('client')" class="nav_main"><img id='client_plus' src='images/plus.gif' border=0> Clients(s)<td>
 								</tr>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad" id="client_sub" style='display: none;'>
+								
 								<tr>
 									<td class="nav_sub"><a href='add_server.php' class="sub">Add</A><td>
 								</tr>
@@ -99,13 +127,16 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
-								
+							</table>
+							<table class="nopad">
 								<tr>
-									<td class="nav_main">Packages<td>
+									<td onClick="doToggle('packages')" class="nav_main"><img id='packages_plus' src='images/plus.gif' border=0> Packages<td>
 								</tr>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad" id="packages_sub" style='display: none;'>
 								<tr>
 									<td class="nav_sub"><a href='server_list.php?script=install_pkg.php' class="sub">Install</A><td>
 								</tr>
@@ -133,12 +164,16 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad">
 								<tr>
-									<td class="nav_main">Services(s)<td>
+									<td onClick="doToggle('services')" class="nav_main"><img id='services_plus' src='images/plus.gif' border=0> Services(s)<td>
 								</tr>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad" id='services_sub' style='display:none;'>
 								<tr>
 									<td class="nav_sub"><a href='add_service.php' class="sub">Add</A><td>
 								</tr>
@@ -166,9 +201,14 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad">
 								<tr>
-									<td class="nav_main">Downtime(s)<td>
+									<td onClick="doToggle('downtimes')" class="nav_main"><img id='downtimes_plus' src='images/plus.gif' border=0> Downtime(s)<td>
 								</tr>
+								
+							</table>
+							<table class="nopad" id='downtimes_sub' style='display:none;'>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
@@ -190,16 +230,20 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad">
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
 								
 								<tr>
-									<td class="nav_main">Worker(s)<td>
+									<td class="nav_main" onClick="doToggle('worker')"><img id='worker_plus' src='images/plus.gif' border=0> Worker(s)<td>
 								</tr>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad" id='worker_sub' style='display:none;'>
 								<tr>
 									<td class="nav_sub"><a href='add_worker.php' class="sub">Add</A><td>
 								</tr>
@@ -221,12 +265,16 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad">
 								<tr>
-									<td class="nav_main">Session<td>
+									<td class="nav_main" onClick="doToggle('session')"><img id='session_plus' src='images/plus.gif' border=0> Session<td>
 								</tr>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad" id='session_sub' style='display:none;'>
 								<tr>
 									<td class="nav_sub"><a href='logout.php' class="sub">Logout</A><td>
 								</tr>
@@ -236,12 +284,16 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad">
 								<tr>
-									<td class="nav_main">Core<td>
+									<td class="nav_main" onClick="doToggle('core')"><img id='core_plus' src='images/plus.gif' border=0> Core<td>
 								</tr>
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
+							</table>
+							<table class="nopad" id='core_sub' style='display:none;'>
 								<tr>
 									<td class="nav_sub"><a href='bartlby_action.php?action=reload' class="sub">Reload</A><td>
 								</tr>
@@ -269,7 +321,8 @@
 								<tr>
 									<td class="nav_place">&nbsp;</td>
 								</tr>
-								
+							</table>
+							<table class="nopad">
 								<tr>
 									<td><a target='_blank' href='http://bartlby.sf.net/support'><img border=0 src='images/bartlby1-first-aid.gif'></A></td>
 								</tr>

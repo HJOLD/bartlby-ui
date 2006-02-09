@@ -9,7 +9,7 @@ $layout= new Layout();
 $layout->setTitle("Select a Service");
 $layout->Form("fm1", $_GET[script]);
 $layout->Table("100%");
-$layout->DisplayHelp(array(0=>"INFO|Pick a service From the Dropdown List"));
+$layout->set_menu("services");
 
 $map = $btl->GetSVCMap();
 $optind=0;

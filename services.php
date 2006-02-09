@@ -11,7 +11,8 @@
 	
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 	
-	$layout->DisplayHelp(array(0=>"INFO|A detailed list of all services bartlby is monitoring"));
+	$layout->set_menu("main");
+	
 	$layout->setTitle("Services");
 	
 	$display_serv=$_GET[server_id];
@@ -36,7 +37,7 @@
 			$forward_link=$btl->create_pagelinks("services.php?expect_state=" . $_GET[expect_state] . "&server_id=" . $_GET[server_id], count($servs)-1, $perp, $curp,$k ."site");
 			
 			
-			$cur_box_title=$servs[0][server_name] . " ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " ) $forward_link"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.gif' border=0></a>";
+			$cur_box_title="<a href='server_detail.php?server_id=" . $servs[0][server_id] . "'>" . $servs[0][server_name] . "</A> ( " . $servs[0][client_ip] . ":" . $servs[0][client_port] . " ) $forward_link"; //. "<a href='package_create.php?action=create_package&server_id="  . $servs[0][server_id] . "'><font size=1><img src='images/icon_work1.gif' border=0></a>";
 			$cur_box_content = "<table class='service_table' cellpadding=2>";
 			
 			$d=0;

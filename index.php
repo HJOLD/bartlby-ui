@@ -3,7 +3,7 @@
 <?
 	$dhl=opendir("images/");
 	while($f = readdir($dhl)) {
-		if($f == "." || $f == ".." || is_dir("images/" . $f)) {
+		if($f == "." || $f == ".." || is_dir("images/" . $f) || !preg_match("/.*\.[png|gif|jpg]/", $f)) {
 			continue;	
 		}	
 		$str .= "'images/" . $f . "',";

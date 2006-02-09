@@ -6,7 +6,7 @@
 	$btl=new BartlbyUi($Bartlby_CONF);
 	
 	$layout= new Layout();
-	$layout->DisplayHelp(array(0=>"WARN|Welcome to BartlbyUI",1=>"INFO|This is the help screen"));
+	$layout->set_menu("main");
 	$layout->MetaRefresh(30);
 	$layout->Table("100%");
 	$lib=bartlby_lib_info($btl->CFG);

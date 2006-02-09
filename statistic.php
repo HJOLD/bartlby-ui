@@ -8,6 +8,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
+$layout->set_menu("core");
 $layout->setTitle("Bartlby Core Performance");
 $layout->Table("100%");
 

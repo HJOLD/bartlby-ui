@@ -6,7 +6,7 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 $layout->setTitle("Select Downtime");
-
+$layout->set_menu("downtimes");
 $layout->Form("fm1", $_GET[script]);
 $layout->Table("100%");
 

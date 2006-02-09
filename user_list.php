@@ -5,11 +5,11 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->set_menu("worker");
 $layout->setTitle("Select a  Worker");
 $layout->Form("fm1", $_GET[script]);
 $layout->Table("100%");
-$layout->DisplayHelp(array(0=>"INFO|Pick a service From the Dropdown List"));
+
 
 $servs=$btl->GetWorker();
 $optind=0;

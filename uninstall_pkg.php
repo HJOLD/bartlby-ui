@@ -9,7 +9,7 @@ $layout= new Layout();
 $layout->setTitle("Select a package");
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
-$layout->DisplayHelp(array(0=>"INFO|Pick a Server From the Dropdown List"));
+$layout->set_menu("packages");
 
 $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);

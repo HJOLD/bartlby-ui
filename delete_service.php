@@ -6,7 +6,7 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 $layout->setTitle("Delete Service");
-$layout->DisplayHelp(array(0=>"INFO|Confirm delete request?",1=>"CRIT|If you confirm this the Server and all its assigned services will  be deleted [FOR EVER]"));
+$layout->set_menu("services");
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 

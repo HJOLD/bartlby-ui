@@ -8,7 +8,7 @@ $layout= new Layout();
 
 $layout->setTitle("Add Downtime");
 
-
+$layout->set_menu("downtimes");
 
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");

@@ -5,7 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-
+$layout->set_menu("core");
 $layout->setTitle("Edit Config");
 $layout->Form("fm1", "bartlby_action.php","POST");
 $layout->Table("100%");

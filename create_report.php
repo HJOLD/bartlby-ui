@@ -48,7 +48,7 @@ while(list($k, $servs) = @each($map)) {
 
 $layout= new Layout();
 
-$layout= new Layout();
+$layout->set_menu("report");
 $layout->setTitle("Report");
 $layout->Form("fm1", "report.php");
 $layout->Table("100%");

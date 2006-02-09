@@ -23,6 +23,7 @@ function dnl($i) {
 
 switch($act) {
 	case 'delete_downtime':
+		$layout->set_menu("downtimes");
 		if($_GET[downtime_id]) {
 			$rdt = bartlby_delete_downtime($btl->CFG, $_GET[downtime_id]);	
 			$layout->OUT .= "<script>doReloadButton();</script>";
@@ -32,6 +33,7 @@ switch($act) {
 		}
 	break;
 	case 'modify_downtime':
+		$layout->set_menu("downtimes");
 		if($_GET[downtime_notice] && $_GET[downtime_from] && $_GET[downtime_to] && $_GET[downtime_type]) {
 			sscanf($_GET[downtime_from],"%d.%d.%d %d:%d", &$d, &$m, &$y, &$h, &$s);
 			$dfrom=mktime($h, $s, 0, $m, $d,$y);
@@ -47,6 +49,7 @@ switch($act) {
 		}
 	break;
 	case 'add_downtime':
+		$layout->set_menu("downtimes");
 		if($_GET[downtime_notice] && $_GET[downtime_from] && $_GET[downtime_to] && $_GET[downtime_type]) {
 			$msg = $_GET[downtime_from];
 			sscanf($_GET[downtime_from],"%d.%d.%d %d:%d", &$d, &$m, &$y, &$h, &$s);
@@ -68,6 +71,7 @@ switch($act) {
 	break;
 	
 	case 'edit_cfg':
+		$layout->set_menu("core");
 		if($_POST["cfg_file"]) {
 			
 			$new_cfg=$_POST["cfg_file"];
@@ -86,18 +90,20 @@ switch($act) {
 		
 	break;
 	case 'stop':
+		$layout->set_menu("core");
 		$base_dir=bartlby_config($btl->CFG, "basedir");
 		if(!$base_dir) {
 			$act="missing_param";
 		} else {
 			$cmd="export BARTLBY_HOME='$base_dir'; cd \$BARTLBY_HOME; ./bartlby.startup stop 2>&1";
-		
+			
 			$fp=popen($cmd, "r");
 			$msg=fgets($fp, 1024);
 			pclose($fp);	
 		}
 	break;
 	case 'delete_package':
+		$layout->set_menu("packages");
 		if($_GET[package_name]) {
 			
 			unlink("pkgs/" . $_GET[package_name]);
@@ -106,11 +112,12 @@ switch($act) {
 		}
 	break;
 	case 'delete_package_ask':
-		
+		$layout->set_menu("packages");
 		$global_msg[button] .= "<input type=button value='yes' onClick=\"document.location.href='bartlby_action.php?action=delete_package&package_name=" . $_GET[package_name] . "'\">";
 	break;
 	
 	case 'add_comment':
+		$layout->set_menu("main");
 		if($_GET[subject] && $_GET[comment]) {
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$fp=@fopen("comments/" . (int)$_GET[service_id], "a+");
@@ -128,6 +135,7 @@ switch($act) {
 	
 	break;
 	case 'uninstall_package':
+		$layout->set_menu("packages");
 		$global_msg["package"] = "Removing package '$_GET[package_name]' from Server:  $_GET[server_id]<br>";
 		$fp=@fopen("pkgs/" . $_GET[package_name], "r");
 		if($fp) {
@@ -160,6 +168,7 @@ switch($act) {
 		}		
 	break;
 	case 'install_package':
+		$layout->set_menu("packages");
 		if($_GET[package_name] && $_GET[server_id]) {
 			$global_msg["package"] = $btl->installPackage($_GET[package_name], $_GET[server_id]);
 		}  else {
@@ -168,6 +177,7 @@ switch($act) {
 		
 	break;
 	case 'create_package':
+		$layout->set_menu("packages");
 		$global_msg[pkg_services]="";
 		$pkg=array();
 		if($_GET[services]) {
@@ -195,6 +205,7 @@ switch($act) {
 	
 	case 'disable_service':
 	case 'enable_service':
+		$layout->set_menu("main");
 		if($_GET[service_id]) {
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$idx=$btl->findSHMPlace($_GET[service_id]);
@@ -208,6 +219,7 @@ switch($act) {
 	break;
 	case 'disable_notify':
 	case 'enable_notify':
+		$layout->set_menu("main");
 		if($_GET[service_id]) {
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$idx=$btl->findSHMPlace($_GET[service_id]);
@@ -220,6 +232,7 @@ switch($act) {
 	break;
 	
 	case 'reload':
+		$layout->set_menu("core");
 		bartlby_reload($btl->CFG);
 		while(1) {
 			$x++;
@@ -234,6 +247,7 @@ switch($act) {
 		}
 	break;
 	case 'delete_worker':
+		$layout->set_menu("worker");
 		if($_GET[worker_id]) {
 			$global_msg=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 			$d=bartlby_delete_worker($btl->CFG, $_GET[worker_id]);
@@ -245,6 +259,7 @@ switch($act) {
 		 }     
 	break;
 	case 'modify_worker':
+		$layout->set_menu("worker");
 		if($_GET[worker_id] && $_GET[worker_name]) {
 			for($x=0;$x<count($_GET[worker_services]); $x++) {
 				$svcstr .="" . $_GET[worker_services][$x] . "|";	
@@ -275,7 +290,7 @@ switch($act) {
 		}     
 	break;
 	case 'add_worker':
-	
+		$layout->set_menu("worker");
 		if($_GET[worker_name] && $_GET[worker_mail]) {
 			$msg = "wa:" .  $_GET[worker_active] . "\n";
 			
@@ -310,6 +325,7 @@ switch($act) {
 		}     
 	break;
 	case 'delete_service':
+		$layout->set_menu("services");
 		if($_GET[service_id]) {
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$del = bartlby_delete_service($btl->CFG, $_GET[service_id]);
@@ -319,7 +335,7 @@ switch($act) {
 		 }     
 	break;
 	case 'modify_service':
-	
+		$layout->set_menu("services");
 		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
 			//echo "$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);";
 			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);
@@ -331,6 +347,7 @@ switch($act) {
 		}     
 	break;
 	case 'add_service': 
+		$layout->set_menu("services");
 		if($_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
 						//&bartlby_config, &server_id, &plugin,&service_name,&plugin_arguments,&notify_enabled,&hour_from,&hour_to,
 						//&min_from,
@@ -346,6 +363,7 @@ switch($act) {
 	break;
 	
 	case 'delete_server':
+		$layout->set_menu("client");
 		if($_GET[server_id]) {
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 			
@@ -357,6 +375,7 @@ switch($act) {
 		}     
 	break;
 	case 'modify_server':
+		$layout->set_menu("client");
 		if($_GET[server_id] && $_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
 				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon]);
 				
@@ -368,6 +387,7 @@ switch($act) {
 		}     
 	break;
 	case 'add_server':
+		$layout->set_menu("client");
 			if($_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
 				
 				$add_server=bartlby_add_server($btl->CFG, $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon]);
@@ -389,6 +409,7 @@ switch($act) {
 			}     
 	break;
 	case 'storeMap':
+		$layout->set_menu("services");
 		$st=$_POST[storeString];
 		$st=str_replace("\$", "\\$", $st);
 		$st=str_replace("\\'", "'", $st);
@@ -399,7 +420,7 @@ switch($act) {
 	break;
 	default:
 		$msg="Action not implemented ($act)";
-		
+		$layout->set_menu("core");
 	break;
 		
 }

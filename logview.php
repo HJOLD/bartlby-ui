@@ -5,6 +5,7 @@
 	$btl=new BartlbyUi($Bartlby_CONF);
 	$info=$btl->getInfo();
 	$layout= new Layout();
+	$layout->set_menu("report");
 	$layout->Form("fm1", "logview.php");
 	$layout->Table("100%");
 	
