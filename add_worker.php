@@ -148,7 +148,7 @@ $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Notifys:",
-			1=>"<input type=checkbox value=0 name=notify[]><font color=green>OK</font><input value=1 type=checkbox name=notify[]><font color=orange>Warning</font><input value=2 type=checkbox name=notify[]><font color=red>Critical</font>" 
+			1=>"<input type=checkbox value=0 name=notify[]><font color=green>OK</font><input value=1 type=checkbox name=notify[]><font color=orange>Warning</font><input value=2 type=checkbox name=notify[]><font color=red>Critical</font><input type=checkbox value=7 name=notify[]><font color=gray>Sirene</font>" 
 		)
 	)
 );

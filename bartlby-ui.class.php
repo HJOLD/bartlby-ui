@@ -30,6 +30,7 @@ class BartlbyUi {
 		
 		if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
 			if(!file_exists("/proc/" . $pid_is . "/cmdline")) {
+				
 				$this->redirectError("BARTLBY::SHM::STALE");
 				exit(1);
 			}

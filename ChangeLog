@@ -1,3 +1,28 @@
+2006-02-09 01:16  hjanuschka
+
+	* images/: minus.gif, plus.gif: plus/minus icon
+
+2006-02-09 01:15  hjanuschka
+
+	* ChangeLog, add_downtime.php, add_server.php, add_service.php,
+	  add_worker.php, bartlby_action.php, create_report.php,
+	  delete_downtime.php, delete_server.php, delete_service.php,
+	  delete_worker.php, downtime_list.php, edit_config.php, error.php,
+	  index.php, install_pkg.php, layout.class.php, logview.php,
+	  modify_downtime.php, modify_server.php, modify_service.php,
+	  modify_worker.php, overview.php, package_create.php,
+	  package_delete.php, report.php, server_detail.php,
+	  server_list.php, service_detail.php, service_list.php,
+	  services.php, statistic.php, template.html, uninstall_pkg.php,
+	  user_list.php, view_comments.php, server_icons/firewall1.gif,
+	  server_icons/router1.gif: datalib: mysql/ catch failed logins
+	  core: fixed some setuid problems with datalib core: zero worker
+	  detected and logged core: network code re-worked, much faster and
+	  cleaner now core: encode/decode removed php: encode/decode
+	  removed ui: topology map manager added ui: nicer menu (flap) ui:
+	  server_detail (added) startup sh: pre-start check if logfile is
+	  writeable
+
 2006-02-05 22:32  hjanuschka
 
 	* create_map.php: forgott to cvs add create_map

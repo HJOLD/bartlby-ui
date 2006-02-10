@@ -53,7 +53,8 @@ function loadImages() {
 	checkLoad()
 }
 function checkLoad() {
-	if (currCount == preImages.length) { 
+	if (currCount == preImages.length-4) { 
+		alert("done");
 		location.replace(locationAfterPreload)
 		return
 	}
@@ -66,7 +67,9 @@ function checkLoad() {
 	}
 	timerID = setTimeout("checkLoad()",10) 
 }
+window.setTimeout("document.location.href='overview.php'", 2000);
 // end hiding -->
+
 </script>
 
 </head>

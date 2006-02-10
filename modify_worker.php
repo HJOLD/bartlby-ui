@@ -162,11 +162,16 @@ if(strstr((string)$defaults[notify_levels], "|1|")) {
 if(strstr((string)$defaults[notify_levels], "|2|")) {
 	$chk2="checked";	
 }
+if(strstr((string)$defaults[notify_levels], "|7|")) {
+	$chk7="checked";	
+}
+
+
 $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Notifys:",
-			1=>"<input type=checkbox value=0 name=notify[] $chk0><font color=green>OK</font><input value=1 type=checkbox name=notify[] $chk1><font color=orange>Warning</font><input value=2 type=checkbox name=notify[] $chk2><font color=red>Critical</font>" 
+			1=>"<input type=checkbox value=0 name=notify[] $chk0><font color=green>OK</font><input value=1 type=checkbox name=notify[] $chk1><font color=orange>Warning</font><input value=2 type=checkbox name=notify[] $chk2><font color=red>Critical</font> <input type=checkbox value=7 name=notify[] $chk7><font color=gray>Sirene</font>" 
 		)
 	)
 );

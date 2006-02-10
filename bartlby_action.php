@@ -210,12 +210,21 @@ switch($act) {
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$idx=$btl->findSHMPlace($_GET[service_id]);
 			
-			$cur=bartlbe_toggle_service_active($btl->CFG, $idx);
+			$cur=bartlby_toggle_service_active($btl->CFG, $idx);
 			
 		} else {                                     
 		 	$act="missing_param";
 		}     
 		
+	break;
+	case 'sirene_enable':
+	case 'sirene_disable':
+		$layout->set_menu("main");
+		$r=bartlby_toggle_sirene($btl->CFG);
+		 $global_msg[intervall]=bartlby_config($btl->CFG, "sirene_interval");
+		if(!$global_msg[intervall]) {
+			 $global_msg[intervall]=600;
+		}
 	break;
 	case 'disable_notify':
 	case 'enable_notify':
@@ -224,7 +233,7 @@ switch($act) {
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$idx=$btl->findSHMPlace($_GET[service_id]);
 			
-			$cur=bartlbe_toggle_service_notify($btl->CFG, $idx);
+			$cur=bartlby_toggle_service_notify($btl->CFG, $idx);
 			
 		}else {                                     
 		 	$act="missing_param";

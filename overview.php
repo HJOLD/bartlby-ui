@@ -12,6 +12,17 @@
 	$lib=bartlby_lib_info($btl->CFG);
 	$info=$btl->info;
 	
+	if ($info[sirene_mode] == 0) {
+		$sir="<input type='button' value='Enable Sirene' onClick=\"document.location.href='bartlby_action.php?action=sirene_enable';\">";	
+	} else {
+		$sirene_intv=bartlby_config($btl->CFG, "sirene_interval");
+		if(!$sirene_intv) {
+			$sirene_intv=600;
+		}
+		$sir="Notify Every: $sirene_intv Seconds <input type='button' value='Disable Sirene' onClick=\"document.location.href='bartlby_action.php?action=sirene_disable';\">";	
+	}
+	
+	
 	$mode=bartlby_config($btl->CFG, "i_am_a_slave");
 	if(!$mode) {
 		$vmode="MASTER";	
@@ -32,6 +43,10 @@
 		<tr>
 			<td class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
 			<td align=right class='font1'>Mode:<font class='font2'>" . $vmode . "</font></td>
+		</tr>
+		<tr>
+			<td class='font1'>&nbsp;</td>
+			<td align=right class='font1'><font class='font2'>$sir</font></td>
 		</tr>
 	</table>";
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
