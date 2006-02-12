@@ -148,11 +148,15 @@ class BartlbyUi {
 			echo $str;	
 		} else {
 			$logfile = $logfile . "." . date("Y.m.d");
+			$str=str_replace("\r", "", $str);
+			$str=str_replace("\n", "", $str);
+			$str=str_replace(";", "", $str);
+			$str=str_replace(">", "", $str);
+			$str=str_replace("<", "", $str);
+			
+			
 			$logline=sprintf(date("d.m.Y H:i:s") . ";" . "[" . posix_getpid() . "];" . $str . ";\n");
-			$logline=str_replace("\r", "", $logline);
-			$logline=str_replace("\n", "", $logline);
-			$logline=str_replace(";", "", $logline);
-			$logline=htmlentities($logline);
+			
 			$fp=fopen($logfile, "a+");
 			fwrite($fp, $logline);
 			fclose($fp);
