@@ -130,8 +130,7 @@ class BartlbyUi {
 			
 	      		 @header("WWW-Authenticate: Basic realm=\"Bartlby Config Admin\"");	
 	      		 @Header("HTTP/1.0 401 Unauthorized");
-	      		
-			
+	      		 $this->_log("Login attempt from " . $_SERVER[REMOTE_ADDR] . " User: '" . $_SERVER[PHP_AUTH_USER] . "'  Pass: '" . $_SERVER[PHP_AUTH_PW] . "'"); 
 			 $this->redirectError("BARTLBY::LOGIN");
 			 exit;
 		} else {

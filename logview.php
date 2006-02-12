@@ -54,14 +54,7 @@
 	$layout->setTitle($forward_link);	
 	
 	while(list($k, $v)=@each($fl)) {
-		if($skipped < $skip_em) {
-			$skipped++;
-			continue;	
-		}
-		if($lcounter > 100) {
-			break;	
-		}
-		$lcounter++;
+		
 		if($_GET["bartlby_filter"]) {
 			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
 				continue;
@@ -119,7 +112,14 @@
 			case 6: $img="icon_stat.gif"; break;
 		}
 
-		
+		if($skipped < $skip_em) {
+			$skipped++;
+			continue;	
+		}
+		if($lcounter > 100) {
+			break;	
+		}
+		$lcounter++;
 				
 		$layout->Tr(
 		$layout->Td(
