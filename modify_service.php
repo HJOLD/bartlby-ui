@@ -58,7 +58,12 @@ if($defaults[service_type] == 3) {
 	$types[2][s]=1;
 }
 
-
+$types[3][c]="";
+$types[3][v]="4";
+$types[3][k]="Local";
+if($defaults[service_type] == 4) {
+	$types[3][s]=1;
+}
 
 //Get plugins :))
 $layout->set_menu("services");

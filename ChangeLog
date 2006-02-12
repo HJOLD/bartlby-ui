@@ -1,3 +1,10 @@
+2006-02-11 00:54  hjanuschka
+
+	* ChangeLog, add_worker.php, bartlby-ui.class.php,
+	  bartlby_action.php, index.php, modify_worker.php, overview.php,
+	  fin/sirene_disable, fin/sirene_enable: sirene enable/disable
+	  worker select SIRENE
+
 2006-02-09 01:16  hjanuschka
 
 	* images/: minus.gif, plus.gif: plus/minus icon

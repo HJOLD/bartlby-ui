@@ -428,11 +428,31 @@ switch($act) {
 	
 	break;
 	default:
+		$act="unkw_action";
 		$msg="Action not implemented ($act)";
 		$layout->set_menu("core");
 	break;
 		
 }
+$get_line="";
+$post_line="";
+$global_line="";
+while(list($k, $v) = @each($_GET)) {
+		$get_line .= "GET:::" . $k . ":'" . $v . "' ";
+}
+while(list($k, $v) = @each($_POST)) {
+		$post_line .= "POST:::" . $k . ":'" . $v . "' ";
+}
+while(list($k, $v) = @each($global_msg)) {
+		$global_line .= "GM:::" . $k . ":'" . $v . "' ";
+}
+@reset($_GET);
+@reset($_POST);
+@reset($global_msg);
+if($act != "edit_cfg") {
+	$btl->_log("UI Event: (action->$act IP->" .  $_SERVER[REMOTE_ADDR] . ")\\dbr $get_line $post_line \\dbr $global_line");
+}
+
 $f=$act;
 
 $msg=$btl->finScreen($f);

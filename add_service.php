@@ -24,7 +24,9 @@ $types[2][c]="";
 $types[2][v]="3";
 $types[2][k]="Group";
 
-
+$types[3][c]="";
+$types[3][v]="4";
+$types[3][k]="Local";
 
 //Get plugins :))
 $layout->set_menu("services");

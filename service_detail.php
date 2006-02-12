@@ -27,6 +27,9 @@ if($defaults[service_type] == 2) {
 if($defaults[service_type] == 3) {
 	$svc_type="Group";
 }
+if($defaults[service_type] == 4) {
+	$svc_type="Local";
+}
 
 if($defaults["notify_enabled"]==1) {
 	$noti_en="true";
@@ -158,8 +161,8 @@ $core_content = "<table  width='100%'>
 
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
 
-if($defaults[service_type] == 1){
-	$info_box_title='Active Service';  
+if($defaults[service_type] == 1 || $defaults[service_type] == 4){
+	$info_box_title='Active/Local Service';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table  width='100%'>
 		<tr>

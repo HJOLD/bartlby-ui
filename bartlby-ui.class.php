@@ -66,6 +66,7 @@ class BartlbyUi {
 		}
 		return $r;
 	}
+	
 	function simpleRight($k, $v) {
 		if(!is_array($this->rights[$k])) {
 				return true;
@@ -139,6 +140,22 @@ class BartlbyUi {
 			$this->user_id=$auted;
 			
 			
+		}
+	}
+	function _log($str) {
+		$logfile=bartlby_config($this->CFG, "logfile");
+		if(!$logfile) {
+			echo $str;	
+		} else {
+			$logfile = $logfile . "." . date("Y.m.d");
+			$logline=sprintf(date("d.m.Y H:i:s") . ";" . "[" . posix_getpid() . "];" . $str . ";\n");
+			$logline=str_replace("\r", "", $logline);
+			$logline=str_replace("\n", "", $logline);
+			$logline=str_replace(";", "", $logline);
+			$logline=htmlentities($logline);
+			$fp=fopen($logfile, "a+");
+			fwrite($fp, $logline);
+			fclose($fp);
 		}
 	}
 	function redirectError($msg) {
