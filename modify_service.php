@@ -34,6 +34,28 @@ if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
 	$defaults=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);	
 }
 
+
+//ACKS
+
+//Ack's
+$ack[0][c]="";
+$ack[0][v] = 0; //No
+$ack[0][k] = "No"; //No
+$ack[0][s]=0;
+
+$ack[1][c]="";
+$ack[1][v] = 1; //No
+$ack[1][k] = "Yes"; //No
+$ack[1][s]=0;
+
+
+if($defaults[service_ack] == 0) {
+	$ack[0][s]=1;	
+} else {
+
+	$ack[1][s]=1;
+}
+
 //Types
 
 $types[0][c]="";
@@ -177,6 +199,15 @@ $layout->Tr(
 		array(
 			0=>"Service Check intervall",
 			1=>$layout->Field("service_interval", "text", $defaults[check_interval]) . " Seconds"
+			
+		)
+	)
+);
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service Acknowledgement",
+			1=>$layout->DropDown("service_ack", $ack)
 			
 		)
 	)

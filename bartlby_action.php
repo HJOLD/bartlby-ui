@@ -116,10 +116,19 @@ switch($act) {
 		$global_msg[button] .= "<input type=button value='yes' onClick=\"document.location.href='bartlby_action.php?action=delete_package&package_name=" . $_GET[package_name] . "'\">";
 	break;
 	
+	case 'ack_problem':
 	case 'add_comment':
+		$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 		$layout->set_menu("main");
+		if($act == 'ack_problem') {
+			$_GET[subject]="Acknowledge of problem";
+			$_GET[notify][0]=2;
+			$idx=$btl->findSHMPlace($_GET[service_id]);
+			bartlby_ack_problem($btl->CFG, $idx);
+				
+		}
 		if($_GET[subject] && $_GET[comment]) {
-			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+			
 			$fp=@fopen("comments/" . (int)$_GET[service_id], "a+");
 			if(!$fp) {
 				$act="missing_param";	
@@ -347,7 +356,7 @@ switch($act) {
 		$layout->set_menu("services");
 		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
 			//echo "$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);";
-			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);
+			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
@@ -362,7 +371,7 @@ switch($act) {
 						//&min_from,
 						//&min_to,&check_interva	l, &service_type,&service_var,&service_passive_timeout
 			
-			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, substr($_GET[service_time_from], 0, 2), substr($_GET[service_time_to], 0, 2), substr($_GET[service_time_from], 3, 2), substr($_GET[service_time_to], 3, 2),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);
+			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, substr($_GET[service_time_from], 0, 2), substr($_GET[service_time_to], 0, 2), substr($_GET[service_time_from], 3, 2), substr($_GET[service_time_to], 3, 2),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
@@ -408,7 +417,7 @@ switch($act) {
 				if($_GET[package_name] != "") {
 					$global_msg["package"].= "<br>" . $btl->installPackage($_GET[package_name], $add_server);	
 				} else {
-					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20);
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0);
 					$global_msg["init_service"]="<li>Init";
 				}
 				

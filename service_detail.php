@@ -16,6 +16,19 @@ $layout->Table("100%");
 $svc_color=$btl->getColor($defaults[current_state]);
 $svc_state=$btl->getState($defaults[current_state]);
 
+switch($defaults[service_ack]) {
+	case 0:
+		$needs_ack="no";
+	break;
+	case 1:
+		$needs_ack="yes";
+	break;		
+	case 2:
+		$needs_ack="outstanding <input type=button value='Acknowledge this problem' onClick=\"document.location.href='ack_service.php?service_id=" . $defaults[service_id]  . "';\">";
+	break;
+}
+
+
 if($defaults[service_type] == 1) {
 	$svc_type="Active";
 }
@@ -112,11 +125,18 @@ $core_content = "<table  width='100%'>
 		<td align=left >" . dnl($defaults[hour_to]) . ":" . dnl($defaults[min_to]) . ':00' . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
-		<tr>
+	<tr>
 		<td width=150 class='font2'>Flap count:</td>
 		<td align=left >" . $defaults[flap_count] . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
+	<tr>
+		<td width=150 class='font2'>Ack settings:</td>
+		<td align=left >" . $needs_ack . "</font></td>
+		<td>&nbsp;</td>           
+	</tr>
+	
+	
 </table>";
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
 

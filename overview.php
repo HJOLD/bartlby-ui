@@ -80,6 +80,7 @@
 	$services_unkown=0;
 	$services_downtime=0;
 	$all_services=0;
+	$acks_outstanding=0;
 	
 	while(list($k,$v)=@each($servers)) {
 		$x=$k;
@@ -98,6 +99,12 @@
 			if($v[$y][is_downtime] == 1) {
 				$qck[$v[$y][server_name]][$v[$y][current_state]]--;
 				$qck[$v[$y][server_name]][downtime]++;
+				
+			}
+			if($v[$y][service_ack] == 2) {
+				$qck[$v[$y][server_name]][acks]++;	
+				$acks_outstanding++;
+				
 			}
 			
 			
@@ -228,6 +235,9 @@
 			if($qck[$k][downtime]) {
 				$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
 			}
+			if($qck[$k][acks]) {
+				$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2&acks=yes'>" . $qck[$k][acks] . " Ack Wait</A></td></tr>";
+			}
 					
 				$quick_view .= "$qo";
 				$quick_view .= "$qw";
@@ -260,9 +270,10 @@
 			<td class='font1'>Warning:<font class='font2'>" . $services_warning. "</font></td>
 			<td class='font1'>Critical:<font class='font2'>" . $services_critical. "</font></td>
 			<td class='font1'>Downtime:<font class='font2'>" . $services_downtime. "</font></td>
+			<td class='font1'>Acks outstanding:<font class='font2'>" . $acks_outstanding. "</font></td>
 		</tr>
 		<tr>
-			<td class='font1' colspan=5>$repl</td>
+			<td class='font1' colspan=6>$repl</td>
 			
 		</tr>
 	</table>";

@@ -52,6 +52,9 @@
 				if($_GET[expect_state] != "" && $servs[$x][current_state] != $_GET[expect_state]) {
 					continue;	
 				}
+				if($_GET[acks] == "yes" && $servs[$x][service_ack] != 2) {
+					continue;	
+				}
 				$d++;
 				/*
 				echo "<script>var menu2558=new Array()
@@ -89,6 +92,10 @@
 				$displayed_services++;
 				$svc_color=$btl->getColor($servs[$x][current_state]);
 				$svc_state=$btl->getState($servs[$x][current_state]);
+				if($servs[$x][service_ack] == 2) {
+					
+					$svc_state .= "<br>(ACKW)";	
+				}
 				$server_color="black";
 				$SERVER="&nbsp;";
 				$class="header1";

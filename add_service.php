@@ -8,6 +8,14 @@ $layout= new Layout();
 
 $layout->setTitle("Add Service");
 
+//Ack's
+$ack[0][c]="";
+$ack[0][v] = 0; //No
+$ack[0][k] = "No"; //No
+
+$ack[1][c]="";
+$ack[1][v] = 1; //No
+$ack[1][k] = "Yes"; //No
 
 //Types
 
@@ -132,6 +140,16 @@ $layout->Tr(
 		array(
 			0=>"Service Check intervall",
 			1=>$layout->Field("service_interval", "text", "10") . " Seconds"
+			
+		)
+	)
+);
+
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service Acknowledgement",
+			1=>$layout->DropDown("service_ack", $ack)
 			
 		)
 	)

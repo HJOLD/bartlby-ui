@@ -154,11 +154,11 @@ class BartlbyUi {
 			$str=str_replace("<", "", $str);
 			
 			
-			$logline=sprintf(date("d.m.Y H:i:s") . ";" . "[" . posix_getpid() . "];" . $str . ";\n");
+			$logline=date("d.m.Y H:i:s") . ";" . "[" . posix_getpid() . "];" . $str . ";\n";
 			
-			$fp=fopen($logfile, "a+");
-			fwrite($fp, $logline);
-			fclose($fp);
+			$fp=@fopen($logfile, "a+");
+			@fwrite($fp, $logline);
+			@fclose($fp);
 		}
 	}
 	function redirectError($msg) {
@@ -166,11 +166,16 @@ class BartlbyUi {
 		echo "<script>parent.location.href='error.php?msg=$msg';</script>";
 	}
 	function findSHMPlace($svcid) {
-		for($x=0; $x<$this->info[services]; $x++) {
-			$svc=bartlby_get_service($this->CFG, $x);
-			if($svc[service_id] == $svcid) {
-				return $x;
-			}	
+		$map=bartlby_svc_map($this->CFG, NULL, NULL);
+		
+		
+		
+		for($x=0; $x<count($map); $x++) {
+			if($map[$x][service_id] == $svcid) {
+				
+				return 	$map[$x][shm_place];
+				
+			}
 		}
 		return -1;	
 	}
@@ -200,30 +205,40 @@ class BartlbyUi {
 	}
 	function GetServers() {
 		
-		for($x=0; $x<$this->info[services]; $x++) {
-			$svc=bartlby_get_service($this->CFG, $x);
-			
-			if(is_array($this->rights[servers])) {
-				
-				if(in_array($svc[server_id], $this->rights[servers])) {
-					$servers[$svc[server_id]]=$svc[server_name];
-				}
-			} else {
-				$servers[$svc[server_id]]=$svc[server_name];
-			}
-			
-		}
+		$map=bartlby_svc_map($this->CFG, NULL, NULL);
 		
-		//var_dump($servers);
+		
+		
+		for($x=0; $x<count($map); $x++) {
+			$servers[$map[$x][server_id]] = $map[$x][server_name];
+			
+		
+		}
+			
+		
+		
 		return $servers;
 	}
 	function GetServices() {
+		/*
 		$ar=array();
 		for($x=0; $x<$this->info[services]; $x++) {	
 			$svc=bartlby_get_service($this->CFG, $x);
 			array_push($ar, $svc);
 		}
 		return $ar;
+		*/
+		$map=bartlby_svc_map($this->CFG, NULL, NULL);
+		
+		
+		
+		for($x=0; $x<count($map); $x++) {
+			//$servers[$map[$x][server_id]] = $map[$x][server_name];
+			array_push($ar, $map[$x]);
+		}
+		return $ar;
+			
+		
 	}
 	function GetSVCMap($state=false) {
 		//array(2555, 3191,2558)
