@@ -1,3 +1,26 @@
+2006-02-17 22:18  hjanuschka
+
+	* ack_service.php, add_service.php, bartlby-ui.class.php,
+	  bartlby_action.php, delete_service.php, favicon.ico,
+	  modify_service.php, overview.php, service_detail.php,
+	  services.php, template.html, fin/ack_problem: acknowledgement
+
+2006-02-12 19:40  hjanuschka
+
+	* bartlby-ui.class.php, logview.php: [no log message]
+
+2006-02-12 02:47  hjanuschka
+
+	* bartlby-ui.class.php: event log fix
+
+2006-02-12 02:40  hjanuschka
+
+	* ChangeLog, add_service.php, bartlby-ui.class.php,
+	  bartlby_action.php, modify_service.php, service_detail.php,
+	  template.html: first aid link fixed -> www.bartlby.org new
+	  service type "Local" added _log function added all actions are
+	  logged now
+
 2006-02-11 00:54  hjanuschka
 
 	* ChangeLog, add_worker.php, bartlby-ui.class.php,

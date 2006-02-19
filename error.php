@@ -47,11 +47,14 @@ $layout->OUT .= "<script>
 			if(!$base_dir) {
 				$omsg="basedir config not set";
 			} else {
-				$cmd="export BARTLBY_HOME='$base_dir'; cd \$BARTLBY_HOME; ./bartlby.startup start 2>&1";
+				$cmd="export BARTLBY_HOME='$base_dir'; cd \$BARTLBY_HOME; ./bartlby.startup restartwithout 2>&1";
 				
 				$fp=popen($cmd, "r");
-				$omsg=fgets($fp, 1024);
+				while(!feof($fp)) {
+					$omsg .= fgets($fp, 1024);	
+				}
 				pclose($fp);	
+				/*
 				if(preg_match("/PIDFILE:.*exists/", $omsg)) {
 					$pid_file=bartlby_config($btl->CFG, "pidfile_dir");
 					$omsg .= "<br>retrying after pid file deletion (" . $pid_file . "/bartlby.pid)<br>";
@@ -59,10 +62,11 @@ $layout->OUT .= "<script>
 					$fp=popen($cmd, "r");
 					$omsg .= fgets($fp, 1024);
 					pclose($fp);	
-				}
+				}*/
+				
 				
 			}
-			sleep(2);
+			
 		break;
 		case 'BARTLBY::NOT::RUNNING':
 			$omsg = "Bartlby doesnt seem to be running<br><input type=button value='try to startup bartlby' onClick='doStartup();'>";
@@ -72,7 +76,7 @@ $layout->OUT .= "<script>
 			$omsg="ERROR is undefined";	
 	}
 	
-	$omsg=$btl->FinScreen(str_replace("::", "_", $_GET[msg]));
+	$omsg =$btl->FinScreen(str_replace("::", "_", $_GET[msg]));
 	
 	$layout->Tr(
 	$layout->Td(
