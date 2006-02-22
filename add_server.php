@@ -16,6 +16,9 @@ $layout->Table("100%");
 
 $optind=0;
 //$res=mysql_query("select srv.server_id, srv.server_name from servers srv, rights r where r.right_value=srv.server_id and r.right_key='server' and r.right_user_id=" . $poseidon->user_id);
+if(!is_dir("pkgs")) {
+	mkdir("pkgs", 0777);	
+}
 $dhl=opendir("pkgs");
 $packages[$optind][c]="";
 $packages[$optind][v]="";	

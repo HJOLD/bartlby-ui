@@ -322,9 +322,11 @@ visibility: hidden;
 	$layout->display("no");
 	
 	//Load Defaults ;-)
-	$fp=fopen("create_map.dat","r");
-		while(!feof($fp)) {
-			$estr .= @fgets($fp, 1024);
+	$fp=@fopen("create_map.dat","r");
+		if($fp) {
+			while(!feof($fp)) {
+				$estr .= @fgets($fp, 1024);
+			}
 		}
 	@fclose($fp);
 	@eval($estr);
