@@ -1,3 +1,128 @@
+<script type="text/javascript">
+
+/***********************************************
+* Cool DHTML tooltip script II- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+var offsetfromcursorX=12 //Customize x offset of tooltip
+var offsetfromcursorY=10 //Customize y offset of tooltip
+
+var offsetdivfrompointerX=10 //Customize x offset of tooltip DIV relative to pointer image
+var offsetdivfrompointerY=14 //Customize y offset of tooltip DIV relative to pointer image. Tip: Set it to (height_of_pointer_image-1).
+
+document.write('<div id="dhtmltooltip"></div>') //write out tooltip DIV
+document.write('<img id="dhtmlpointer" src="images/arrow2.gif">') //write out pointer image
+
+var ie=document.all
+var ns6=document.getElementById && !document.all
+var enabletip=false
+if (ie||ns6)
+var tipobj=document.all? document.all["dhtmltooltip"] : document.getElementById? document.getElementById("dhtmltooltip") : ""
+
+var pointerobj=document.all? document.all["dhtmlpointer"] : document.getElementById? document.getElementById("dhtmlpointer") : ""
+
+function ietruebody(){
+return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
+}
+
+function ddrivetip(thetext, thewidth, thecolor){
+if (ns6||ie){
+if (typeof thewidth!="undefined") tipobj.style.width=thewidth+"px"
+if (typeof thecolor!="undefined" && thecolor!="") tipobj.style.backgroundColor=thecolor
+tipobj.innerHTML=thetext
+enabletip=true
+return false
+}
+}
+
+function positiontip(e){
+if (enabletip){
+var nondefaultpos=false
+var curX=(ns6)?e.pageX : event.clientX+ietruebody().scrollLeft;
+var curY=(ns6)?e.pageY : event.clientY+ietruebody().scrollTop;
+//Find out how close the mouse is to the corner of the window
+var winwidth=ie&&!window.opera? ietruebody().clientWidth : window.innerWidth-20
+var winheight=ie&&!window.opera? ietruebody().clientHeight : window.innerHeight-20
+
+var rightedge=ie&&!window.opera? winwidth-event.clientX-offsetfromcursorX : winwidth-e.clientX-offsetfromcursorX
+var bottomedge=ie&&!window.opera? winheight-event.clientY-offsetfromcursorY : winheight-e.clientY-offsetfromcursorY
+
+var leftedge=(offsetfromcursorX<0)? offsetfromcursorX*(-1) : -1000
+
+//if the horizontal distance isn't enough to accomodate the width of the context menu
+if (rightedge<tipobj.offsetWidth){
+//move the horizontal position of the menu to the left by it's width
+tipobj.style.left=curX-tipobj.offsetWidth+"px"
+nondefaultpos=true
+}
+else if (curX<leftedge)
+tipobj.style.left="5px"
+else{
+//position the horizontal position of the menu where the mouse is positioned
+tipobj.style.left=curX+offsetfromcursorX-offsetdivfrompointerX+"px"
+pointerobj.style.left=curX+offsetfromcursorX+"px"
+}
+
+//same concept with the vertical position
+if (bottomedge<tipobj.offsetHeight){
+tipobj.style.top=curY-tipobj.offsetHeight-offsetfromcursorY+"px"
+nondefaultpos=true
+}
+else{
+tipobj.style.top=curY+offsetfromcursorY+offsetdivfrompointerY+"px"
+pointerobj.style.top=curY+offsetfromcursorY+"px"
+}
+tipobj.style.visibility="visible"
+if (!nondefaultpos)
+pointerobj.style.visibility="visible"
+else
+pointerobj.style.visibility="hidden"
+}
+}
+
+function hideddrivetip(){
+if (ns6||ie){
+enabletip=false
+tipobj.style.visibility="hidden"
+pointerobj.style.visibility="hidden"
+tipobj.style.left="-1000px"
+tipobj.style.backgroundColor=''
+tipobj.style.width=''
+}
+}
+
+document.onmousemove=positiontip
+
+</script>
+
+<style type="text/css">
+
+#dhtmltooltip{
+position: absolute;
+left: -300px;
+width: 150px;
+border: 1px solid black;
+padding: 2px;
+background-color: lightyellow;
+visibility: hidden;
+z-index: 100;
+/*Remove below line to remove shadow. Below line should always appear last within this CSS*/
+filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
+}
+
+#dhtmlpointer{
+position:absolute;
+left: -300px;
+z-index: 101;
+visibility: hidden;
+}
+
+</style>
+
+
+
 <script>
 	var layer_array = new Array();
 	var active_layer=null;
@@ -147,13 +272,49 @@
 	$server_ico .="</select>";
 	
 	$map=$btl->getSVCMap();
+	$ssum=0;
 	while(list($server, $svcs) = each($map)) {
 		if($btl->isServerUp($svcs[0][server_id], $map)) {
 			$is_up="green";	
 		} else {
 			$is_up="red";
 		}
-		$layout->OUT .= "<div title='" . $svcs[0][server_name] . "/" . $svcs[0][server_icon] . "' onDblClick='RemoveLayer(this);' id='server" . $svcs[0][server_id] . "' style=\"position: relative;width:100px;height:100px\"><img  src='server_icons/" . $svcs[0][server_icon] . "'><br><font color='$is_up'>" . $svcs[0][server_name] . "</font></div>\n";	
+		
+		$qck[$svcs[0][server_name]][0]=0;
+		$qck[$svcs[0][server_name]][1]=0;
+		$qck[$svcs[0][server_name]][2]=0;
+		$qck[$svcs[0][server_name]][downtime]=0;
+		$qck[$svcs[0][server_name]][acks]=0;
+		for($y=0; $y<count($svcs); $y++) {
+			$ssum++;
+			$qck[$svcs[$y][server_name]][$svcs[$y][current_state]]++;	
+			$qck[$svcs[$y][server_name]][10]=$svcs[$y][server_id];
+			$qck[$svcs[$y][server_name]][server_icon]=$svcs[$y][server_icon];
+			if($svcs[$y][is_downtime] == 1) {
+				$qck[$svcs[$y][server_name]][$svcs[$y][current_state]]--;
+				$qck[$svcs[$y][server_name]][downtime]++;
+				
+			}
+			if($svcs[$y][service_ack] == 2) {
+				$qck[$svcs[$y][server_name]][acks]++;	
+				$acks_outstanding++;
+				
+			}
+		}
+		
+		
+		$srvmsg = "<table><tr>";
+		$srvmsg .= "<tr><td colspan=2><b>" . $svcs[0][server_name] . "</b></td></tr>";
+		$srvmsg .= "<tr><td><font color=green>OK: </font></td><td>" . $qck[$svcs[0][server_name]][0] . "</td></tr>";
+		$srvmsg .= "<tr><td><font color=orange>Warning: </font></td><td>" . $qck[$svcs[0][server_name]][1] . "</td></tr>";
+		$srvmsg .= "<tr><td><font color=red>Critical: </font></td><td>" . $qck[$svcs[0][server_name]][2] . "</td></tr>";
+		$srvmsg .= "<tr><td>Downtimes:  </td><td>" . $qck[$svcs[0][server_name]][downtime] . "</td></tr>";
+		$srvmsg .= "<tr><td>Acks outstanding:  </td><td>" . $qck[$svcs[0][server_name]][acks] . "</td></tr>";
+		$srvmsg .= "</tr></table>";
+		
+		$mover="ddrivetip('" . $srvmsg . "', 300);";
+		$mout="hideddrivetip();";
+		$layout->OUT .= "<div onClick=\"" . $mout . "\" onMouseOut=\"" . $mout . "\" onMouseOver=\"" . $mover . "\" xtitle='" . $svcs[0][server_name] . "/" . $svcs[0][server_icon] . "' onDblClick='RemoveLayer(this);' id='server" . $svcs[0][server_id] . "' style=\"position: relative;width:100px;height:100px\"><img  src='server_icons/" . $svcs[0][server_icon] . "'><br><font color='$is_up'>" . $svcs[0][server_name] . "</font></div>\n";	
 		$layout->OUT .= '<script type="text/javascript">var hndl' . $svcs[0][server_id] . '=document.getElementById("server' . $svcs[0][server_id] . '"); Drag.init(hndl' . $svcs[0][server_id] . ', null);pushLayer(hndl' . $svcs[0][server_id] . ');</script>' . "\n";
 	}
 	
@@ -181,12 +342,19 @@
 		echo "layerId[$cnt] = '" . $k . "';\n";
 		$cnt++;
 	}
-	
+	reset($map);
 	echo "</script>\n";
-	
-	
+	$srvmsg = "<table><tr>";
+	$srvmsg .= "<tr><td colspan=2><b>Bartlby</b></td></tr>";
+	$srvmsg .= "<tr><td>Servers:  </td><td>" . count($map) . "</td></tr>";
+	$srvmsg .= "<tr><td>Services:  </td><td>" . $ssum . "</td></tr>";
+	$srvmsg .= "<tr><td>Uptime:  </td><td>" . $btl->intervall(time()-$btl->info[startup_time]) . "</td></tr>";
+	$srvmsg .= "</tr></table>";
+	$mover="ddrivetip('" . $srvmsg . "', 300);";
+	$mout="hideddrivetip();";
+	echo '<div onMouseOut="' . $mout . '" onMouseOver="' . $mover . '" id="bartlby" style="position: relative; left:0; top:0;width:100px;height:100px"><img src="images/btl-logo.gif"></div>';
 ?>
-<div id="bartlby" style="position: relative; left:0; top:0;"><img src='images/btl-logo.gif'></div>
+
 
 <script language="javascript">
 var aThumb = document.getElementById("bartlby");
