@@ -179,7 +179,8 @@ switch($act) {
 	case 'install_package':
 		$layout->set_menu("packages");
 		if($_GET[package_name] && $_GET[server_id]) {
-			$global_msg["package"] = $btl->installPackage($_GET[package_name], $_GET[server_id]);
+			$global_msg["package"] = $btl->installPackage($_GET[package_name], $_GET[server_id], $_GET[force_plugins], $_GET[force_perf]);
+			$layout->OUT .= "<script>doReloadButton();</script>";
 		}  else {
 			$act="missing_param";
 		}
@@ -189,12 +190,58 @@ switch($act) {
 		$layout->set_menu("packages");
 		$global_msg[pkg_services]="";
 		$pkg=array();
+		$basedir=bartlby_config($btl->CFG, "basedir");
+		if($basedir) {
+			$perf_dir=$basedir . "/perf/";	
+		}
+		$plugin_dir=bartlby_config($btl->CFG, "agent_plugin_dir");
+		
 		if($_GET[services]) {
 			//$msg = "Creating package: " . $_GET[package_name] . "<br>";
 			for($x=0; $x<$btl->info[services]; $x++) {
 				$svc=bartlby_get_service($btl->CFG, $x);
 				if(@in_array($svc[service_id], $_GET[services])) {
 					$global_msg[pkg_services] .="<li>" . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name];
+					
+					if($_GET[package_with_plugins]) {
+						
+						if(file_exists($plugin_dir . "/" . $svc[plugin])) {
+							$svc[__install_plugin]="";	
+							$fp = fopen($plugin_dir . "/" . $svc[plugin], "rb");
+							if($fp) {
+									
+									while(!feof($fp)) {
+										$svc[__install_plugin] .= fgets($fp, 1024);
+									}
+									fclose($fp);
+									$global_msg[pkg_services] .= "<li> ---> added plugin " . $svc[plugin] . " to package <br>";
+							} else {
+								$global_msg[pkg_services] .= " Plugin open failed (" . $svc[plugin] . ")<br>";
+							}
+							
+							
+						}
+					}
+					if($_GET[package_with_perf]) {
+						
+						if(file_exists($perf_dir . "/" . $svc[plugin])) {
+							$svc[__install_perf]="";	
+							$fp1 = fopen($perf_dir . "/" . $svc[plugin], "rb");
+							if($fp1) {
+									while(!feof($fp1)) {
+										$svc[__install_perf] .= fgets($fp1, 1024);
+									}
+									fclose($fp1);
+									$global_msg[pkg_services] .= "<li> ---> added perf handler " . $svc[plugin] . " to package <br>";
+							} else {
+								$global_msg[pkg_services] .= " Plugin open failed (" . $svc[plugin] . ")<br>";
+							}
+							
+							
+						}
+					}
+					
+					
 					array_push($pkg, $svc);
 				}
 				
@@ -415,7 +462,7 @@ switch($act) {
 				
 				
 				if($_GET[package_name] != "") {
-					$global_msg["package"].= "<br>" . $btl->installPackage($_GET[package_name], $add_server);	
+					$global_msg["package"].= "<br>" . $btl->installPackage($_GET[package_name], $add_server, NULL, NULL);	
 				} else {
 					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0);
 					$global_msg["init_service"]="<li>Init";

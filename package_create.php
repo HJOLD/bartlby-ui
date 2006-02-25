@@ -64,6 +64,25 @@ $layout->Tr(
 $layout->Tr(
 	$layout->Td(
 			Array(
+				0=>"Include Plugins:",
+				1=>$layout->Field("package_with_plugins", "checkbox", "checked")
+			)
+		)
+
+);
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Include Perf Handlers:",
+				1=>$layout->Field("package_with_perf", "checkbox", "checked")
+			)
+		)
+
+);
+
+$layout->Tr(
+	$layout->Td(
+			Array(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",

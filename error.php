@@ -5,7 +5,7 @@
 	
 	$layout= new Layout();
 	$layout->setTitle("Error");
-	$btl = new BartlbyUi($Bartlby_CONF, false);
+	$btl = new BartlbyUi($Bartlby_CONF, false, false);
 	
 $layout->OUT .= "<script>
 		function doRetry() {

@@ -55,11 +55,7 @@
 	
 	while(list($k, $v)=@each($fl)) {
 		
-		if($_GET["bartlby_filter"]) {
-			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
-				continue;
-			}
-		}
+		
 		$info_array=explode(";",$v);
 		
 		$log_detail_o=explode("@", $info_array[2]);
@@ -120,6 +116,12 @@
 			break;	
 		}
 		$lcounter++;
+				
+		if($_GET["bartlby_filter"]) {
+			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
+				continue;
+			}
+		}
 				
 		$layout->Tr(
 		$layout->Td(

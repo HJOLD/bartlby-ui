@@ -45,6 +45,26 @@ $layout->Tr(
 $layout->Tr(
 	$layout->Td(
 			Array(
+				0=>"Force plugins update:",
+				1=>$layout->Field("force_plugins", "checkbox", "checked")
+			)
+		)
+
+);
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Force perf Handlers update:",
+				1=>$layout->Field("force_perf", "checkbox", "checked")
+			)
+		)
+
+);
+
+
+$layout->Tr(
+	$layout->Td(
+			Array(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",

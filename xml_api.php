@@ -7,14 +7,14 @@ $UNAME="";
 $PW="";
 $AUT_OK=false;
 
-$btl = new BartlbyUi($Bartlby_CONF, false);
-
+$btl = new BartlbyUi($Bartlby_CONF);
+$map=$btl->GetSVCMap();
 
 
 
 function xml_bartlby_get_svc_map($args) {
-	global $btl;
-	return $btl->GetSVCMap();	
+	global $btl, $map;
+	return $map;
 }
 
 function xml_bartlby_get_service($args) {
@@ -172,6 +172,27 @@ function xml_bartlby_ack_problem($args) {
 	$r=bartlby_ack_problem($btl->CFG, $idx);
 	return $r;
 }
+function xml_bartlby_log($args) {
+	global $btl;
+	$btl->_log($args);	
+}
+
+function xml_bartlby_find_service($args) {
+	global $map;
+	$ret=array(-1, $args[0], $args[1]);
+	while(list($server, $services) = each($map)) {
+		
+		if($services[0][server_name] == $args[0]) {
+			for($x=0; $x<count($services); $x++) {
+				if($services[$x][service_name] == $args[1]) {
+					$ret=$services[$x];
+				}	
+			}	
+		}
+	}
+	reset($map);
+	return $ret;
+}
 
 function xml_bartlby_login() {
 	global $UNAME, $PW, $btl;
@@ -202,10 +223,8 @@ function xml_bartlby_login() {
 	
 	//return new IXR_Error(4000, 'ha ha ha');
 }
-if(xml_bartlby_login() != "OK") {
-		$server = new IXR_Server(NULL);
-				
-} else {
+
+
 	$server = new IXR_Server(array(
 	    'bartlby.login' => 'xml_bartlby_login',
 	    'bartlby.get_service_map' => 'xml_bartlby_get_svc_map',
@@ -237,10 +256,12 @@ if(xml_bartlby_login() != "OK") {
 	    'bartlby.toggle_service_active' => 'xml_bartlby_toggle_service_active',
 	    'bartlby.toggle_sirene' => 'xml_bartlby_toggle_sirene',
 	    'bartlby.reload' => 'xml_bartlby_reload',
-	    'bartlby.shm_destroy', 'xml_bartlby_shm_destroy',
-	    'bartlby.ack_problem', 'xml_bartlby_ack_problem'
+	    'bartlby.shm_destroy' => 'xml_bartlby_shm_destroy',
+	    'bartlby.ack_problem' => 'xml_bartlby_ack_problem',
+	    'bartlby.log' => 'xml_bartlby_log',
+	    'bartlby.find_service' => 'xml_bartlby_find_service'
 	));
-}
+
 
 
 /*

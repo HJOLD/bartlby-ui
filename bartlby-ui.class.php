@@ -5,11 +5,23 @@ set_time_limit(0);
 
 class BartlbyUi {
 	
-	function BartlbyUi($cfg, $auth=true) {
-		
+	function BartlbyUi($cfg, $auth=true, $shm_check=true) {
+				
 		if(!function_exists("bartlby_version")) {
 			dl("bartlby.so");	
 		}	
+	
+		if(bartlby_check_shm_size($cfg) == false) {
+			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+				$this->redirectError("BARTLBY::MODULE::MISMATCH");
+				exit(1);
+			} else {
+				return;	
+			}
+			
+		}
+		
+		
 		$this->BASE_URL=substr($_SERVER[SCRIPT_URI], 0, strrpos($_SERVER[SCRIPT_URI], "/")+1);				
 		$this->CFG=$cfg;
 		//Check if bartlby is running :-)
@@ -162,8 +174,11 @@ class BartlbyUi {
 		}
 	}
 	function redirectError($msg) {
+		
 		//header("Location: error.php?msg=" . $msg);	
+		
 		echo "<script>parent.location.href='error.php?msg=$msg';</script>";
+		
 	}
 	function findSHMPlace($svcid) {
 		$map=bartlby_svc_map($this->CFG, NULL, NULL);
@@ -305,7 +320,19 @@ class BartlbyUi {
          	);
     		return $i;
 	}
-	function installPackage($pkg, $server) {
+	function installPackage($pkg, $server, $force_plugin, $force_perf) {
+		$basedir=bartlby_config($this->CFG, "basedir");
+		
+		
+		if($basedir) {
+			$perf_dir=$basedir . "/perf/";	
+		}
+		
+		$plugin_dir=bartlby_config($this->CFG, "agent_plugin_dir");
+		
+		
+		
+		
 		$msg = "Installing package '$pkg' on Server:  $server<br>";
 		$fp=@fopen("pkgs/" . $pkg, "r");
 		if($fp) {
@@ -323,8 +350,46 @@ class BartlbyUi {
 				$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
 				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
 				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
-				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout]);
+				
+				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack]);
 				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
+				
+				if($re[$x][__install_plugin]) {
+					$msg .= str_repeat("&nbsp;", 20) . "Installing plugin: " . $re[$x][plugin] . "<br>";	
+					
+					if(!file_exists($plugin_dir . "/" . $re[$x][plugin]) || $force_plugin == "checked") {
+						$plugin=@fopen($plugin_dir . "/" . $re[$x][plugin], "wb");
+						if($plugin){
+							fwrite($plugin, $re[$x][__install_plugin]);
+							fclose($plugin);
+							@chmod($plugin_dir . "/" . $re[$x][plugin], 0777);
+						} else {
+							$msg .= str_repeat("&nbsp;", 25) . " plugin fopen( " . $plugin_dir . "/" . $re[$x][plugin] . ") failed<br>";
+						}
+					} else {
+						$msg .= 	str_repeat("&nbsp;", 25) .  "plugin (" . $plugin_dir . "/" . $re[$x][plugin] . ") already existing<br>";
+					}
+					
+				}
+				if($re[$x][__install_perf]) {
+					$msg .= str_repeat("&nbsp;", 20) . "Installing perf handler: " . $re[$x][plugin] . "<br>";	
+					
+					if(!file_exists($perf_dir . "/" . $re[$x][plugin]) || $force_perf == "checked") {
+						$perf=@fopen($perf_dir . "/" . $re[$x][plugin], "wb");
+						if($perf){
+							fwrite($perf, $re[$x][__install_perf]);
+							fclose($perf);
+							@chmod($perf_dir . "/" . $re[$x][plugin], 0777);
+						} else {
+							$msg .= str_repeat("&nbsp;", 25) . " fopen( " . $perf_dir . "/" . $re[$x][plugin] . ") failed<br>";
+						}
+					} else {
+						$msg .= 	str_repeat("&nbsp;", 25) .  "plugin (" . $re[$x][plugin] . ") already existing<br>";
+					}
+					
+				}
+				
+				
 				
 
 			}

@@ -468,7 +468,7 @@ class IXR_Client {
     var $debug = false;
     // Storage place for an error message
     var $error = false;
-    function IXR_Client($server, $path = false, $port = 80, $bartlbyuser="", $bartlbypass="") {
+    function IXR_Client($server, $path = false, $port = 80, $HTTP_AUTH_USER="", $HTTP_AUTH_PW="") {
         if (!$path) {
             // Assume we have been given a URL instead
             $bits = parse_url($server);
@@ -484,11 +484,11 @@ class IXR_Client {
             $this->path = $path;
             $this->port = $port;
         }
-        if($bartlbyuser) {
-        		$this->bartlbyuser=$bartlbyuser;
+        if($HTTP_AUTH_USER) {
+        		$this->HTTP_AUTH_USER=$HTTP_AUTH_USER;
         }
-        if($bartlbypass) {
-        		$this->bartlbypass=$bartlbypass;
+        if($HTTP_AUTH_PW) {
+        		$this->HTTP_AUTH_PW=$HTTP_AUTH_PW;
         }
         $this->useragent = 'The Incutio XML-RPC PHP Library';
     }
@@ -503,9 +503,13 @@ class IXR_Client {
         $request .= "Host: {$this->server}$r";
         $request .= "Content-Type: text/xml$r";
         $request .= "User-Agent: {$this->useragent}$r";
-        $request .= "Content-length: {$length}$r";
-        $request .= "Bartlby-User: {$this->bartlbyuser}$r";
-        $request .= "Bartlby-Pass: {$this->bartlbypass}$r$r";
+        if($this->HTTP_AUTH_USER) {
+        	$request .= "Authorization: Basic " . base64_encode($this->HTTP_AUTH_USER.':'.$this->HTTP_AUTH_PW) . $r;
+        	
+        }
+        
+        
+        $request .= "Content-length: {$length}$r$r";
         $request .= $xml;
         // Now send the request
         if ($this->debug) {
@@ -804,14 +808,14 @@ class IXR_IntrospectionServer extends IXR_Server {
 
 class IXR_ClientMulticall extends IXR_Client {
     var $calls = array();
-    function IXR_ClientMulticall($server, $path = false, $port = 80, $bartlbyuser, $bartlbypass) {
+    function IXR_ClientMulticall($server, $path = false, $port = 80, $HTTP_AUTH_USER, $HTTP_AUTH_PW) {
         parent::IXR_Client($server, $path, $port);
         $this->useragent = 'The Incutio XML-RPC PHP Library (multicall client)';
-        if($bartlbyuser) {
-        		$this->bartlbyuser=$bartlbyuser;
+        if($HTTP_AUTH_USER) {
+        		$this->HTTP_AUTH_USER=$HTTP_AUTH_USER;
         }
-        if($bartlbypass) {
-        		$this->bartlbypass=$bartlbypass;
+        if($HTTP_AUTH_PW) {
+        		$this->HTTP_AUTH_PW=$HTTP_AUTH_PW;
         }
     }
     function addCall() {
