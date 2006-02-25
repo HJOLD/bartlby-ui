@@ -19,6 +19,7 @@ $optind=0;
 if(!is_dir("pkgs")) {
 	mkdir("pkgs", 0777);	
 }
+
 $dhl=opendir("pkgs");
 $packages[$optind][c]="";
 $packages[$optind][v]="";	

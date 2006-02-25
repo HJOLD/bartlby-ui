@@ -47,7 +47,7 @@
 	
 	$curp = $_GET["site"] > 0 ? $_GET["site"] : 1;
 	$perp=100;
-	$forward_link=$btl->create_pagelinks("logview.php?logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time), count($fl)-1, $perp, $curp,"site");
+	$forward_link=$btl->create_pagelinks("logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time), count($fl)-1, $perp, $curp,"site");
 	$skip_em=($curp*$perp)-$perp;
 	$skipped=0;
 	
@@ -107,7 +107,11 @@
 			case 5: $img="trigger.gif"; break;
 			case 6: $img="icon_stat.gif"; break;
 		}
-
+		if($_GET["bartlby_filter"]) {
+			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
+				continue;
+			}
+		}
 		if($skipped < $skip_em) {
 			$skipped++;
 			continue;	
@@ -117,11 +121,7 @@
 		}
 		$lcounter++;
 				
-		if($_GET["bartlby_filter"]) {
-			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {
-				continue;
-			}
-		}
+		
 				
 		$layout->Tr(
 		$layout->Td(
