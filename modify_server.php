@@ -14,7 +14,10 @@ $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
 $defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
-
+if($defaults == false) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
+}
 $optind=0;
 $dhl=opendir("server_icons");
 while($file = readdir($dhl)) {

@@ -1,4 +1,7 @@
 <?
+set_time_limit(0);
+echo "<!---SMASH IE BUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFER--->";
+flush();
 include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
@@ -38,6 +41,7 @@ if(!$_GET[report_service] || !$log_mask) {
 	
 	$time_start=mktime(0,0,0, $date_start[1], $date_start[0], $date_start[2]);
 	$time_end=mktime(0,0,0, $date_end[1], $date_end[0], $date_end[2]);
+	
 	
 	$daycnt = $time_end-$time_start+86400;
 	
@@ -107,6 +111,8 @@ if(!$_GET[report_service] || !$log_mask) {
 				$el[1]=$tmp[2];
 				array_push($notify[$tmp[4]][$tmp[3]], $el);
 			
+			} else {
+				continue;	
 			} 	
 		}
 		if($work_on > time()) {
@@ -129,6 +135,9 @@ if(!$_GET[report_service] || !$log_mask) {
 		$flash[0]="0";
 		$flash[1]="0";
 		$flash[2]="0";
+		
+		//$img_file=$btl->create_report_img($state_array, $time_start, $time_end);
+
 		while(list($state, $time) = @each($svc)) {
 			$out .= "<script>";
 			$out .= "menu_state" . $state . "=new Array();\n";
@@ -240,6 +249,9 @@ $layout->Tr(
 		)
 
 );
+
+
+
 
 
 $layout->TableEnd();

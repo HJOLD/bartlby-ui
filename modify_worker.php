@@ -8,6 +8,12 @@ $layout= new Layout();
 $layout->set_menu("worker");
 $layout->setTitle("Modify Worker");
 $defaults=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
+
+if($defaults == false) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
+}
+
 $map = $btl->GetSVCMap();
 $optind=0;
 while(list($k, $servs) = @each($map)) {

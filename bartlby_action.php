@@ -73,7 +73,9 @@ switch($act) {
 	case 'edit_cfg':
 		$layout->set_menu("core");
 		if($_POST["cfg_file"]) {
-			
+			if (get_magic_quotes_gpc()) {
+				$_POST["cfg_file"] = stripslashes($_POST["cfg_file"]);
+			}
 			$new_cfg=$_POST["cfg_file"];
 			//Backup current
 			$backup_name=$btl->CFG . ".bak_" . date("d-m-Y_H_i_s");
@@ -239,6 +241,21 @@ switch($act) {
 							
 							
 						}
+						if(file_exists($perf_dir . "/defaults/" . $svc[plugin] . ".rrd")) {
+							$svc[__install_perf_default]="";	
+							$fp1 = fopen($perf_dir . "/defaults/" . $svc[plugin] . ".rrd", "rb");
+							if($fp1) {
+									while(!feof($fp1)) {
+										$svc[__install_perf_default] .= fgets($fp1, 1024);
+									}
+									fclose($fp1);
+									$global_msg[pkg_services] .= "<li> ---> added perf handler (default) " . $svc[plugin] . ".rrd to package <br>";
+							} else {
+								$global_msg[pkg_services] .= " Plugin open failed (" . $svc[plugin] . ")<br>";
+							}
+							
+							
+						}						
 					}
 					
 					

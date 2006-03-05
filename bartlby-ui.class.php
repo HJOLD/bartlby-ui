@@ -388,6 +388,23 @@ class BartlbyUi {
 					}
 					
 				}
+				if($re[$x][__install_perf_default]) {
+					$msg .= str_repeat("&nbsp;", 20) . "Installing perf handler (default): " . $re[$x][plugin] . "<br>";	
+					
+					if(!file_exists($perf_dir . "/defaults/" . $re[$x][plugin] . ".rrd") || $force_perf == "checked") {
+						$perf=@fopen($perf_dir . "/defaults/" . $re[$x][plugin] . ".rrd", "wb");
+						if($perf){
+							fwrite($perf, $re[$x][__install_perf_default]);
+							fclose($perf);
+							@chmod($perf_dir . "/defaults/" . $re[$x][plugin] . ".rrd", 0777);
+						} else {
+							$msg .= str_repeat("&nbsp;", 25) . " fopen( " . $perf_dir . "/" . $re[$x][plugin] . ") failed<br>";
+						}
+					} else {
+						$msg .= 	str_repeat("&nbsp;", 25) .  "plugin (" . $re[$x][plugin] . ") already existing<br>";
+					}
+					
+				}
 				
 				
 				
@@ -438,6 +455,55 @@ class BartlbyUi {
 		}
 	
 		return $ret;
+	}
+	function create_report_img($map, $from, $to) {
+		$im = @ImageCreate (900, 320)  or die ("GD Errror");
+		$background_color = ImageColorAllocate ($im, 255, 255, 255);
+		$green = ImageColorAllocate($im,0,255,0);
+		$orange = ImageColorAllocate($im,255,255,0);
+		$red = ImageColorAllocate($im,255,0,0);
+		$black = ImageColorAllocate($im,0,0,0);
+		
+		imagefilledrectangle($im, 0, 320,900,0, $background_color);
+		//Default all is green
+		imagefilledrectangle($im, 10, 210,890,10,  $green); 
+		
+		echo "FROM: $from TO: $to <br>";
+		$step=($to-$from);
+		echo "step: $step <br>";
+		if($step == 0) {
+			//One day graphic
+			$step=86400/890;	
+		} else {
+			$step = $step / 890;	
+		}
+		imagestringup($im, 1, 10, 320, date("d.m.Y H:i:s", $from), $black);
+		for($xy=0; $xy<count($map);$xy++) {
+			
+			if($map[$xy][state] != 0) {
+				$width=(($map[$xy][end]-$map[$xy][start]) / 890)* $step;
+				$startb = (($map[$xy][start] - $from)) / 890;
+				
+				$width = round($width);
+				$startb = round($startb);
+				
+				
+				echo "<br>BLOCK: " . $map[$xy][state] . "===> start: " . $startb . "px " . $width . "<br>";
+				//imagefilledrectangle ($im, (10+$starb), 210,($width+$startb+10),20,  $red); 
+				$starty=10+$startb;
+				$startx=10+$startb+$width;
+				echo "y: " . $starty . " X: " . $startx . "<br>";
+				imagefilledrectangle ($im, $starty, 210,$startx,20,  $red); 
+				imagestringup($im, 1, $starty, 320, date("d.m.Y H:i:s", $map[$xy][start]), $black);
+			}
+		}
+		imagestringup($im, 1, 890, 320, date("d.m.Y H:i:s", $to), $black);
+		
+		
+		
+		imagePNG($im, "/var/www/htdocs/test.png");
+   		imagedestroy($im);
+
 	}
 }
 ?>

@@ -13,13 +13,18 @@ $layout->set_menu("downtimes");
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
-
+$default=false;
 $r=bartlby_downtime_map($btl->CFG);
 $optind=0;
 for($x=0; $x<count($r); $x++) {
 	if($r[$x][downtime_id] == $_GET[downtime_id]) {
 		$default=$r[$x];	
 	}
+}
+
+if($default == false) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
 }
 
 if($default[downtime_type]==2) {
