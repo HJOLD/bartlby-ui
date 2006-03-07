@@ -33,7 +33,7 @@
 				continue;	
 			}
 			$curp = $_GET[$k ."site"] > 0 ? $_GET[$k ."site"] : 1;
-			$perp=bartlby_config($btl->CFG, "services_per_page");
+			$perp=bartlby_config("ui-extra.conf", "services_per_page");
 			$forward_link=$btl->create_pagelinks("services.php?expect_state=" . $_GET[expect_state] . "&server_id=" . $_GET[server_id], count($servs)-1, $perp, $curp,$k ."site");
 			
 			
@@ -72,14 +72,14 @@
 			
 				$special_menu = "<a href='#' onClick=\"return dropdownmenu(this, event, menu" . $servs[$x][service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img src='images/icon_work1.gif' border=0></A>";
 				$layout->OUT .= "<script>var menu" . $servs[$x][service_id] . "=new Array();</script>";
-				$special_counter=bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_cnt");
+				$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $servs[$x][service_id] . "_cnt");
 				if($special_counter) {
 					$layout->OUT .= "<script>";
 					$fspc=0;
 					for($spc=0; $spc<$special_counter; $spc++) {
-						$spc_name=bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_[" . ($spc+1) ."]_name");
+						$spc_name=bartlby_config("ui-extra.conf", "special_addon_ui_" . $servs[$x][service_id] . "_[" . ($spc+1) ."]_name");
 						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . $fspc . "]='<br>$spc_name<br>';\n";
-						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . ($fspc+1) . "]='" . str_replace("^", "=", bartlby_config($btl->CFG, "special_addon_ui_" . $servs[$x][service_id] . "_[" . ($spc+1) ."]")) . "';\n";
+						$layout->OUT .= "menu" . $servs[$x][service_id] . "[" . ($fspc+1) . "]='" . str_replace("^", "=", bartlby_config("ui-extra.conf", "special_addon_ui_" . $servs[$x][service_id] . "_[" . ($spc+1) ."]")) . "';\n";
 						$fspc++;
 						$fspc++;
 					}

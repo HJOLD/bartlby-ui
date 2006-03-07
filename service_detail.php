@@ -237,18 +237,18 @@ if($defaults[service_type] == 3){
 }
 
 //special_ui's
-$special_counter=bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_cnt");
+$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
 if($special_counter) {
 	
 	for($spc=1; $spc<=$special_counter; $spc++) {
 		
-		$spc_name=bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]_name");
+		$spc_name=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]_name");
 		//$layout->OUT .= "menu" . $defaults[service_id] . "[" . $spc_real . "]='" . str_replace("^", "=", bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]")) . "';\n";
 		$info_box_title="$spc_name";  
 		// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 		$core_content = "<table  width='100%'>
 			<tr>
-				<td>" . str_replace("^", "=", bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]")) . "</td>           
+				<td>" . str_replace("^", "=", bartlby_config('ui-extra.conf', "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]")) . "</td>           
 			</tr>
 			
 			

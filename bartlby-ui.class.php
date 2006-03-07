@@ -8,7 +8,11 @@ class BartlbyUi {
 	function BartlbyUi($cfg, $auth=true, $shm_check=true) {
 				
 		if(!function_exists("bartlby_version")) {
-			dl("bartlby.so");	
+			$dl_ret=@dl("bartlby.so");	
+			if(!$dl_ret) {
+				echo "Bartlby php module isn't either compiled in nor the shared variant was found!!!";
+				exit;	
+			}
 		}	
 	
 		if(bartlby_check_shm_size($cfg) == false) {

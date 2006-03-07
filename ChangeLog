@@ -1,3 +1,43 @@
+2006-03-05 01:23  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_downtime.php,
+	  modify_server.php, modify_service.php, modify_worker.php,
+	  report.php, statistic.php, fin/BARTLBY_OBJECT_MISSING: [no log
+	  message]
+
+2006-02-25 19:57  hjanuschka
+
+	* add_server.php, logview.php: [no log message]
+
+2006-02-25 02:59  hjanuschka
+
+	* IXR_Library.inc.php, bartlby-ui.class.php, bartlby_action.php,
+	  error.php, install_pkg.php, logview.php, package_create.php,
+	  xml_api.php, fin/BARTLBY_MODULE_MISMATCH: packages can now
+	  include plugins and perf handlers check_shm_size checks if
+	  bartlby-php and bartlby-core do match
+
+2006-02-23 22:31  hjanuschka
+
+	* IXR_Library.inc.php, xml_api.php: XML RPC re-worked follows now
+	  XML-RPC specifications (http://www.xmlrpc.com/spec/) using xmlrpc
+	  from (http://scripts.incutio.com/xmlrpc/)
+
+2006-02-22 23:34  hjanuschka
+
+	* add_server.php, create_map.php: create pkg directory if missing
+	  map fix eof bug if map_data is missing (occurs on initial setup)
+
+2006-02-22 22:20  hjanuschka
+
+	* create_map.php, template.html, images/arrow2.gif: extended
+	  service_map
+
+2006-02-19 16:14  hjanuschka
+
+	* ChangeLog, error.php, images/btl.css: ui: start/stop working
+	  again fixed warning bug in overview
+
 2006-02-17 22:18  hjanuschka
 
 	* ack_service.php, add_service.php, bartlby-ui.class.php,
