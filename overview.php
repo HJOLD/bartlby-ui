@@ -13,13 +13,13 @@
 	$info=$btl->info;
 	
 	if ($info[sirene_mode] == 0) {
-		$sir="<input type='button' value='Enable Sirene' onClick=\"document.location.href='bartlby_action.php?action=sirene_enable';\">";	
+		$sir="<a href='#' title='Enable Sirene' onClick=\"document.location.href='bartlby_action.php?action=sirene_enable';\"><img border=0 title='Enable Sirene' src='images/Disable-Sirene.gif'></A>";	
 	} else {
 		$sirene_intv=bartlby_config($btl->CFG, "sirene_interval");
 		if(!$sirene_intv) {
 			$sirene_intv=600;
 		}
-		$sir="Notify Every: $sirene_intv Seconds <input type='button' value='Disable Sirene' onClick=\"document.location.href='bartlby_action.php?action=sirene_disable';\">";	
+		$sir="Notify Every: $sirene_intv Seconds <a title='Disable Sirene' href='#' onClick=\"document.location.href='bartlby_action.php?action=sirene_disable';\"><img border=0 title='Disable Sirene' src='images/Enable-Sirene.gif'></A>";	
 	}
 	
 	

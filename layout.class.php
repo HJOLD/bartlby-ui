@@ -159,6 +159,7 @@ class Layout {
 			echo $o; 	
 		}
 		fclose($fp);
+		
 			
 		
 		

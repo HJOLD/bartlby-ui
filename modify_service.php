@@ -215,6 +215,15 @@ $layout->Tr(
 		)
 	)
 );
+$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service retain in status",
+			1=>$layout->Field("service_retain", "text", $defaults[service_retain]) . " Times"
+			
+		)
+	)
+);
 
 $layout->Tr(
 	$layout->Td(

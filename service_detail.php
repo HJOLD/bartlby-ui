@@ -135,9 +135,16 @@ $core_content = "<table  width='100%'>
 		<td align=left >" . $needs_ack . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
+
+	<tr>
+		<td width=150 class='font2'>Status:</td>
+		<td align=left >" . $defaults[service_retain_current] . "/"  . $defaults[service_retain] . "</font></td>
+		<td>&nbsp;</td>           
+	</tr>	
 	
 	
 </table>";
+
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
 
 if($defaults[is_downtime] == 1) {
