@@ -460,6 +460,247 @@ class BartlbyUi {
 	
 		return $ret;
 	}
+	function XMLBoxHealth(&$status, &$remote_data) {
+		
+		$hosts_up=0;
+		$hosts_down=0;
+		$services_critical=0;
+		$services_ok=0;
+		$services_warning=0;
+		$services_unkown=0;
+		$services_downtime=0;
+		$all_services=0;
+		$acks_outstanding=0;
+		for($rx=0; $rx<=count($remote_data);$rx++) {
+			$servers=$remote_data[$rx];
+			$hosts_sum +=count($servers);
+			
+			while(list($k,$v)=@each($servers)) {
+				$x=$k;
+				if($this->isServerUp($x, $servers)) {
+					$hosts_up++;	
+				} else {
+					$hosts_down++;	
+					$hosts_a_down[$k]=1;
+					
+				}
+				
+				
+				for($y=0; $y<count($v); $y++) {
+					
+					$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
+					$qck[$v[$y][server_name]][10]=$v[$y][server_id];
+					$qck[$v[$y][server_name]][server_icon]=$v[$y][server_icon];
+					if($v[$y][is_downtime] == 1) {
+						$qck[$v[$y][server_name]][$v[$y][current_state]]--;
+						$qck[$v[$y][server_name]][downtime]++;
+						
+					}
+					if($v[$y][service_ack] == 2) {
+						$qck[$v[$y][server_name]][acks]++;	
+						$acks_outstanding++;
+						
+					}
+					
+					
+					$all_services++;
+					switch($v[$y][current_state]) {
+	     	
+						case 0:
+							$services_ok++;
+							if($v[$y][is_downtime] == 1) {
+								$services_ok--;
+								$services_downtime++;	
+							}
+						break;
+						case 1:
+							$services_warning++;
+							if($v[$y][is_downtime] == 1) {
+								$services_warning--;
+								$services_downtime++;	
+							}
+						break;
+						case 2:
+							$services_critical++;
+							if($v[$y][is_downtime] == 1) {
+								$services_critical--;
+								$services_downtime++;	
+							}
+						break;
+						
+						default:
+							$services_unkown++;
+							if($v[$y][is_downtime] == 1) {
+								$services_ok--;
+								$services_downtime++;	
+							}
+						
+						
+					}	
+				}
+				
+				
+			}
+		}
+		
+		$service_sum=$all_services-$services_downtime;
+		
+		
+		
+		
+	
+		if($service_sum == 0) {
+			$criticals=100;
+		} else {
+			$criticals=(($service_sum-$services_ok) * 100 / $service_sum);
+		}
+	
+		$proz=100-$criticals;
+		
+		
+		
+		
+		$prozent_zahl = floor($proz);
+		$prozent_float = number_format($proz, 1); 
+		$prozent_crit_zahl = floor($criticals);
+		$prozent_crit_float = number_format($criticals, 1); 
+		
+		$color="green";
+		
+		if($prozent_float <= 60) {
+			$color="red";	
+		} else if($prozent_float <= 90) {
+			$color="yellow";	
+		} else if($prozent_float <= 80) {
+			$color="red";	
+		} else {
+			$color="green";
+		}
+	
+		$bar=$prozent_float . "% Ok - $prozent_crit_float % Critical";
+		$r[prozent_float] = $prozent_float;
+		$r[color] = $color;
+		$r[qck]=$qck;
+		
+		
+		$r[services_critical]=$services_critical;
+		$r[services_warning]=$services_warning;
+		$r[services_ok]=$services_ok;
+		$r[services_downtime]=$services_downtime;
+		$r[hosts_up]=$hosts_up;
+		$r[hosts_down]=$hosts_down;
+		$r[acks_outstanding]=$acks_outstanding;
+		$r[service_sum] = $service_sum;
+		$r[hosts_sum] = $hosts_sum;
+		
+		return $r;
+		
+	}
+	function XMLQuickView($status, $qck) {
+		$quick_view="<table width=760>";
+		while(list($k, $v)=@each($qck)) {
+			
+			if($k != $last_qck) {
+				$cl="";
+				$STATE="UP";
+				if ($hosts_a_down[$qck[$k][10]] == 1) {
+					$cl="";
+					$STATE="DOWN";
+				}
+				$quick_view .= "<tr>";
+				$quick_view .= "<td class=$cl><img src='server_icons/" . $qck[$k][server_icon] . "'><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "'>$k</A></td>";
+				$quick_view .= "<td class=$cl><font size=1>$STATE</td>";
+				$quick_view .= "<td class=$cl><table width=100>";
+				
+				$sf=false;
+				if($qck[$k][0]) {
+					$sf=true;
+					$qo="<tr><td class=green_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=0'>" . $qck[$k][0] . " OK's</A></td></tr>";
+				}
+				if($qck[$k][1]) {
+					$sf=true;
+					$qw="<tr><td class=orange_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=1'>" . $qck[$k][1] . " Warnings</A></td></tr>";
+				}
+				
+				if($qck[$k][2]) {
+					$sf=true;
+					$qc="<tr><td class=red_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2'>" . $qck[$k][2] . " Criticals</A></td></tr>";
+				}
+				
+				if($qck[$k][3]) {
+					$sf=true;
+					$qk="<tr><td class=yellow_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
+				}
+				if($qck[$k][4]) {
+					$sf=true;
+					$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][4] . " Info</td></tr>";
+				}
+				if($qck[$k][downtime]) {
+					$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
+				}
+				if($qck[$k][acks]) {
+					$qk="<tr><td class=silver_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2&acks=yes'>" . $qck[$k][acks] . " Ack Wait</A></td></tr>";
+				}
+						
+					$quick_view .= "$qo";
+					$quick_view .= "$qw";
+					$quick_view .= "$qc";
+					$quick_view .= "$qk";
+				$quick_view .= "</table></td>";
+				$quick_view .= "</tr>";
+				$quick_view .= "<tr><td colspan=3><hr noshade></td></tr>";
+			}
+			
+			$last_qck=$k;	
+			$qo="";
+			$qw="";
+			$qc="";
+			$qk="";
+		}
+		
+		$quick_view .= "</table>";
+		
+		return $quick_view;		
+	}
+	
+	function getRemoteStatus($url, $alias) {
+		//Check for IXR
+		//Call bartlby_info -> remote
+		//call svc_map
+		//return percentage
+		//return quick_view
+		//return svc_array
+		
+		include_once("IXR_Library.inc.php");
+		
+		//get uname and pw
+		if(preg_match("/http:\/\/(.*):(.*)@(.*):([0-9]+)\/(.*)/i", $url, $match)) {
+			$uname=$match[1];
+			$pw=$match[2];
+			$port=$match[3];
+			$e_url="http://" . $match[3] . "/" . $match[5];
+		
+			$client = new IXR_ClientMulticall($e_url, false, $port, $uname, $pw);
+			$client->debug=false;
+			$client->addCall('bartlby.get_info');	
+			$client->addCall('bartlby.get_service_map');	
+			$client->query();
+			$response = $client->getResponse();
+			$r_array[info]=$response[0];
+			$r_array[services]=$response[1];
+			$r_array[url]=$url;
+			$r_array[alias]=$alias;
+			
+			
+						
+			
+			return $r_array;
+			
+		}
+		
+			
+	}
+	
 	function create_report_img($map, $from, $to) {
 		$im = @ImageCreate (900, 320)  or die ("GD Errror");
 		$background_color = ImageColorAllocate ($im, 255, 255, 255);

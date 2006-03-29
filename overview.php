@@ -71,6 +71,23 @@
 	
 	$servers=$btl->GetSVCMap();
 	
+	$mode=bartlby_config("ui-extra.conf", "xml_remote_count");
+	if($mode) {
+		$remote_xml=array();
+		for($xml_X=1; $xml_X<=$mode; $xml_X++) {
+				$xml_cur=bartlby_config("ui-extra.conf", "xml_remote[" . $xml_X . "]");
+				$xml_cur_alias=bartlby_config("ui-extra.conf", "xml_alias[" . $xml_X . "]");
+				if($xml_cur) {
+					$xml_return = $btl->getRemoteStatus($xml_cur, $xml_cur_alias);
+					array_push($remote_xml, $xml_return);	
+				}
+		}
+		
+		
+			
+	}
+	
+	
 	$hosts_sum=count($servers);
 	$hosts_up=0;
 	$hosts_down=0;
@@ -304,7 +321,74 @@
 	</table></div><div style='position:relative; z-index:1; top:-40px;'>$silverbar</div>";
 	$layout->push_outside($layout->create_box($health_title, $health_content));
 	
-
+	//Generate external boxes ;-)
+	
+	for($bx=0; $bx<count($remote_xml); $bx++) {
+		$xml_base_url=substr($remote_xml[$bx][url], 0, strrpos($remote_xml[$bx][url], "/")+1);
+		
+		$xml_box_content=$btl->XMLBoxHealth($remote_xml[$bx][info],$remote_xml[$bx][services]);
+		$remote_xml[$bx][qck]=$xml_box_content[qck];
+		$xml_box_title=$remote_xml[$bx][alias] . " --> "  . $btl->intervall(time()-$remote_xml[$bx][info][0][startup_time]);
+		
+		$xml_box_output = "<div style='position:relative; z-index:2; '> <table class='nopad'>
+		<tr>
+			<td  class='bar_left_" . $xml_box_content[color] . "'>&nbsp;</td>
+			<td class='bar_middle_" . $xml_box_content[color] . "' style='width:" . $xml_box_content[prozent_float]*7.3 . "'></td>
+			<td class='bar_right_" . $xml_box_content[color] . "'>&nbsp;</td>
+			<td class='font2'>&nbsp;</td>
+			
+		</tr>
+		
+		
+	</table></div><div style='position:relative; z-index:1; top:-40px;'>$silverbar</div>
+	<table class='nopad' width='100%'>
+		<tr>
+			<td colspan=6 class='font1'>Home: <font class='font2'><a target='_blank' href='$xml_base_url'>" . $xml_base_url . "</A></font></td>
+			
+		</tr>
+		<tr>
+			<td colspan=6 class='font1'>Version:<font class='font2'>" . $remote_xml[$bx][info][0][version] . "</font></td>
+			
+		</tr>
+		<tr>
+			<td colspan=2 class='font1'>Hosts:<font class='font2'>" . $xml_box_content[hosts_sum] . "</font></td>
+			<td colspan=4 align=left class='font1'>Services:<font class='font2'>" . $xml_box_content[service_sum] . "</font></td>
+		</tr>
+		<tr>
+			<td class='font1'>Up:<font class='font2'>" . $xml_box_content[hosts_up]. "</font></td>
+			<td class='font1'>Down:<font class='font2'>" . $xml_box_content[hosts_down] . "</font></td>
+			<td class='font1'>OK:<font class='font2'>" . $xml_box_content[services_ok]. "</font></td>
+			<td class='font1'>Warning:<font class='font2'>" . $xml_box_content[services_warning]. "</font></td>
+			<td class='font1'>Critical:<font class='font2'>" . $xml_box_content[services_critical]. "</font></td>
+			<td class='font1'>Downtime:<font class='font2'>" . $xml_box_content[services_downtime]. "</font></td>
+			<td class='font1'>Acks outstanding:<font class='font2'>" . $xml_box_content[acks_outstanding]. "</font></td>
+		</tr>
+		
+		
+	</table>
+	
+	";
+	$layout->push_outside($layout->create_box($xml_box_title, $xml_box_output));
+		
+		
+		
+		
+	}
+	//Generate external quick views ;-)
+	
+	for($bx=0; $bx<count($remote_xml); $bx++) {
+		
+		$xml_box_content=$btl->XMLQuickView($remote_xml[$bx][info],$remote_xml[$bx][qck]);
+		$xml_box_title=$remote_xml[$bx][alias] . " --> QuickView";
+		
+		
+		$layout->push_outside($layout->create_box($xml_box_title, $xml_box_content));
+		
+		
+		
+		
+	}
+	
 	
 	$layout->setTitle("QuickView");
 	
