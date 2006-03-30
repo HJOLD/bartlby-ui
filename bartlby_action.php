@@ -279,15 +279,19 @@ switch($act) {
 	case 'disable_service':
 	case 'enable_service':
 		$layout->set_menu("main");
-		if($_GET[service_id]) {
-			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
-			$idx=$btl->findSHMPlace($_GET[service_id]);
-			
-			$cur=bartlby_toggle_service_active($btl->CFG, $idx);
-			
-		} else {                                     
-		 	$act="missing_param";
-		}     
+		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+			if($_GET[service_id]) {
+				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+				$idx=$btl->findSHMPlace($_GET[service_id]);
+				
+				$cur=bartlby_toggle_service_active($btl->CFG, $idx);
+				
+			} else {                                     
+			 	$act="missing_param";
+			}  
+		} else {
+		 	$act="xml_remote";	
+		 }   
 		
 	break;
 	case 'sirene_enable':
@@ -302,15 +306,20 @@ switch($act) {
 	case 'disable_notify':
 	case 'enable_notify':
 		$layout->set_menu("main");
-		if($_GET[service_id]) {
-			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
-			$idx=$btl->findSHMPlace($_GET[service_id]);
+		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+			if($_GET[service_id]) {
+				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+				$idx=$btl->findSHMPlace($_GET[service_id]);
 			
-			$cur=bartlby_toggle_service_notify($btl->CFG, $idx);
+				$cur=bartlby_toggle_service_notify($btl->CFG, $idx);
 			
-		}else {                                     
-		 	$act="missing_param";
-		 }     
+			}else {                                     
+		 		$act="missing_param";
+		 	}     
+		 } else {
+		 	$act="xml_remote";	
+		 }
+		 
 	break;
 	
 	case 'reload':

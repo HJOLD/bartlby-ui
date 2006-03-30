@@ -378,7 +378,7 @@
 	
 	for($bx=0; $bx<count($remote_xml); $bx++) {
 		
-		$xml_box_content=$btl->XMLQuickView($remote_xml[$bx][info],$remote_xml[$bx][qck]);
+		$xml_box_content=$btl->XMLQuickView($remote_xml[$bx][info],$remote_xml[$bx][qck], $bx+1);
 		$xml_box_title=$remote_xml[$bx][alias] . " --> QuickView";
 		
 		

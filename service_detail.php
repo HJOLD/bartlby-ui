@@ -10,7 +10,12 @@ $btl=new BartlbyUi($Bartlby_CONF);
 $layout= new Layout();
 $layout->set_menu("main");
 $layout->setTitle("Actions");
-$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
+
+if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
+	$defaults=$btl->remoteServiceByID($match[1], $match[2]);
+} else {
+	$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
+}
 $layout->Table("100%");
 
 $svc_color=$btl->getColor($defaults[current_state]);

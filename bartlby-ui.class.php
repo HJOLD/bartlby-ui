@@ -595,8 +595,29 @@ class BartlbyUi {
 		
 		return $r;
 		
+	
 	}
-	function XMLQuickView($status, $qck) {
+	function appendXML_to_svc_map($xml_data,$alias, &$map, $xml_id) {
+		
+		for($x=0; $x<count($xml_data); $x++) {
+			
+			while(list($k, $v) = each($xml_data[$x])) {
+				for($y=0; $y<count($v); $y++) {
+					if(!is_array($map["XML:" . $xml_id . ":" . $k])) {
+						$map["XML:" . $xml_id . ":" . $k]=array();
+					}
+					$v[$y][server_name] = $alias . "-->" . $v[$y][server_name];
+					$v[$y][server_id] = "XML:" . $xml_id . ":" . $v[$y][server_id];
+					$v[$y][service_id] = "XML:" . $xml_id . ":" . $v[$y][service_id];
+					$v[$y][shm_place] = "XML:" . $xml_id . ":" . $v[$y][shm_place];
+					
+					 array_push($map["XML:" . $xml_id . ":" . $k], $v[$y]);
+				}
+			}
+		}
+	}
+	
+	function XMLQuickView($status, $qck, $xml_id) {
 		$quick_view="<table width=760>";
 		while(list($k, $v)=@each($qck)) {
 			
@@ -608,28 +629,28 @@ class BartlbyUi {
 					$STATE="DOWN";
 				}
 				$quick_view .= "<tr>";
-				$quick_view .= "<td class=$cl><img src='server_icons/" . $qck[$k][server_icon] . "'><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "'>$k</A></td>";
+				$quick_view .= "<td class=$cl><img src='server_icons/" . $qck[$k][server_icon] . "'><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "'>$k</A></td>";
 				$quick_view .= "<td class=$cl><font size=1>$STATE</td>";
 				$quick_view .= "<td class=$cl><table width=100>";
 				
 				$sf=false;
 				if($qck[$k][0]) {
 					$sf=true;
-					$qo="<tr><td class=green_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=0'>" . $qck[$k][0] . " OK's</A></td></tr>";
+					$qo="<tr><td class=green_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=0'>" . $qck[$k][0] . " OK's</A></td></tr>";
 				}
 				if($qck[$k][1]) {
 					$sf=true;
-					$qw="<tr><td class=orange_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=1'>" . $qck[$k][1] . " Warnings</A></td></tr>";
+					$qw="<tr><td class=orange_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=1'>" . $qck[$k][1] . " Warnings</A></td></tr>";
 				}
 				
 				if($qck[$k][2]) {
 					$sf=true;
-					$qc="<tr><td class=red_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2'>" . $qck[$k][2] . " Criticals</A></td></tr>";
+					$qc="<tr><td class=red_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=2'>" . $qck[$k][2] . " Criticals</A></td></tr>";
 				}
 				
 				if($qck[$k][3]) {
 					$sf=true;
-					$qk="<tr><td class=yellow_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
+					$qk="<tr><td class=yellow_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
 				}
 				if($qck[$k][4]) {
 					$sf=true;
@@ -639,7 +660,7 @@ class BartlbyUi {
 					$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
 				}
 				if($qck[$k][acks]) {
-					$qk="<tr><td class=silver_box><font size=1><xa href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2&acks=yes'>" . $qck[$k][acks] . " Ack Wait</A></td></tr>";
+					$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=2&acks=yes'>" . $qck[$k][acks] . " Ack Wait</A></td></tr>";
 				}
 						
 					$quick_view .= "$qo";
@@ -662,7 +683,60 @@ class BartlbyUi {
 		
 		return $quick_view;		
 	}
-	
+	function remoteServerByID($xml_id, $server_id) {
+		include_once("IXR_Library.inc.php");
+		
+		$url=bartlby_config("ui-extra.conf", "xml_remote[" . $xml_id. "]");
+		$alias=bartlby_config("ui-extra.conf", "xml_alias[" . $xml_id. "]");
+		if(preg_match("/http:\/\/(.*):(.*)@(.*):([0-9]+)\/(.*)/i", $url, $match)) {
+			$uname=$match[1];
+			$pw=$match[2];
+			$port=$match[3];
+			$e_url="http://" . $match[3] . "/" . $match[5];
+			
+		}
+			
+		$client = new IXR_ClientMulticall($e_url, false, $port, $uname, $pw);
+		$client->debug=false;
+		$client->addCall('bartlby.get_server_by_id', $server_id);	
+		$client->query();
+		$response = $client->getResponse();
+		
+		$response[0][0][server_name] = $alias . "-->" . $response[0][0][server_name];
+		$response[0][0][server_id] = "XML:" . $xml_id . ":" . $response[0][0][server_id];
+		$response[0][0][service_id] = "XML:" . $xml_id . ":" . $response[0][0][service_id];
+		$response[0][0][shm_place] = "XML:" . $xml_id . ":" . $response[0][0][shm_place];
+		
+		
+		return $response[0][0];
+	}
+	function remoteServiceByID($xml_id, $service_id) {
+		include_once("IXR_Library.inc.php");
+		
+		$url=bartlby_config("ui-extra.conf", "xml_remote[" . $xml_id. "]");
+		$alias=bartlby_config("ui-extra.conf", "xml_alias[" . $xml_id. "]");
+		if(preg_match("/http:\/\/(.*):(.*)@(.*):([0-9]+)\/(.*)/i", $url, $match)) {
+			$uname=$match[1];
+			$pw=$match[2];
+			$port=$match[3];
+			$e_url="http://" . $match[3] . "/" . $match[5];
+			
+		}
+			
+		$client = new IXR_ClientMulticall($e_url, false, $port, $uname, $pw);
+		$client->debug=false;
+		$client->addCall('bartlby.get_service', $service_id);	
+		$client->query();
+		$response = $client->getResponse();
+		
+		$response[0][0][server_name] = $alias . "-->" . $response[0][0][server_name];
+		$response[0][0][server_id] = "XML:" . $xml_id . ":" . $response[0][0][server_id];
+		$response[0][0][service_id] = "XML:" . $xml_id . ":" . $response[0][0][service_id];
+		$response[0][0][shm_place] = "XML:" . $xml_id . ":" . $response[0][0][shm_place];
+		
+		
+		return $response[0][0];
+	}
 	function getRemoteStatus($url, $alias) {
 		//Check for IXR
 		//Call bartlby_info -> remote

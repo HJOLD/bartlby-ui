@@ -11,6 +11,33 @@
 	
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 	
+	
+	$mode=bartlby_config("ui-extra.conf", "xml_remote_count");
+	$do_xml=true;
+	if($_GET[server_id]) {
+		if(!preg_match("/^XML.*/i", $_GET[server_id])) {
+			$do_xml=false;	
+		}	
+	}
+	if($do_xml==true) {
+		if($mode) {
+			$remote_xml=array();
+			for($xml_X=1; $xml_X<=$mode; $xml_X++) {
+					$xml_cur=bartlby_config("ui-extra.conf", "xml_remote[" . $xml_X . "]");
+					$xml_cur_alias=bartlby_config("ui-extra.conf", "xml_alias[" . $xml_X . "]");
+					if($xml_cur) {
+						$xml_return = $btl->getRemoteStatus($xml_cur, $xml_cur_alias);
+						$btl->appendXML_to_svc_map($xml_return[services], $xml_cur_alias, $map, $xml_X);	
+					}
+			}
+		
+		
+			
+		}
+	}
+	
+	
+	
 	$layout->set_menu("main");
 	
 	$layout->setTitle("Services");
