@@ -650,7 +650,7 @@ class BartlbyUi {
 				
 				if($qck[$k][3]) {
 					$sf=true;
-					$qk="<tr><td class=yellow_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
+					$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=XML:" . $xml_id . ":" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
 				}
 				if($qck[$k][4]) {
 					$sf=true;
@@ -760,13 +760,15 @@ class BartlbyUi {
 			$client->addCall('bartlby.get_service_map');	
 			$client->query();
 			$response = $client->getResponse();
+			if(!$response) {
+				return false;	
+			}
 			$r_array[info]=$response[0];
 			$r_array[services]=$response[1];
 			$r_array[url]=$url;
 			$r_array[alias]=$alias;
 			
 			
-						
 			
 			return $r_array;
 			

@@ -79,7 +79,9 @@
 				$xml_cur_alias=bartlby_config("ui-extra.conf", "xml_alias[" . $xml_X . "]");
 				if($xml_cur) {
 					$xml_return = $btl->getRemoteStatus($xml_cur, $xml_cur_alias);
-					array_push($remote_xml, $xml_return);	
+					if($xml_return) {
+						array_push($remote_xml, $xml_return);	
+					}
 				}
 		}
 		
@@ -243,7 +245,7 @@
 			
 			if($qck[$k][3]) {
 				$sf=true;
-				$qk="<tr><td class=yellow_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
+				$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=3'>" . $qck[$k][3] . " Unkown</A></td></tr>";
 			}
 			if($qck[$k][4]) {
 				$sf=true;
@@ -328,7 +330,18 @@
 		
 		$xml_box_content=$btl->XMLBoxHealth($remote_xml[$bx][info],$remote_xml[$bx][services]);
 		$remote_xml[$bx][qck]=$xml_box_content[qck];
-		$xml_box_title=$remote_xml[$bx][alias] . " --> "  . $btl->intervall(time()-$remote_xml[$bx][info][0][startup_time]);
+		$xml_box_title=$remote_xml[$bx][alias];
+		
+		$silverbar = "<table class='nopad'>
+		<tr>
+			<td class='bar_left_silver'>&nbsp;</td>
+			<td class='bar_middle_silver' style='width:" . 100*7.3 . "'></td>
+			<td class='bar_right_silver'>&nbsp;</td>
+			<td class='font2'>" . $xml_box_content[prozent_float] . "% OK</td>
+			
+		</tr>
+		
+		</table>";
 		
 		$xml_box_output = "<div style='position:relative; z-index:2; '> <table class='nopad'>
 		<tr>
@@ -342,6 +355,11 @@
 		
 	</table></div><div style='position:relative; z-index:1; top:-40px;'>$silverbar</div>
 	<table class='nopad' width='100%'>
+		<tr>
+			
+			<td colspan=6 class='font1'>Uptime: <font class='font2'>" . $btl->intervall(time()-$remote_xml[$bx][info][0][startup_time]) . "</font></td>
+			
+		</tr>
 		<tr>
 			<td colspan=6 class='font1'>Home: <font class='font2'><a target='_blank' href='$xml_base_url'>" . $xml_base_url . "</A></font></td>
 			
