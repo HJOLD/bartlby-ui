@@ -147,6 +147,11 @@ $core_content = "<table  width='100%'>
 		<td>&nbsp;</td>           
 	</tr>	
 	
+		<tr>
+		<td width=150 class='font2'>Is Running?:</td>
+		<td align=left >" .  $defaults[check_is_running] . "</font></td>
+		<td>&nbsp;</td>           
+	</tr>	
 	
 </table>";
 
