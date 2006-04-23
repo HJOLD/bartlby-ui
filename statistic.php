@@ -16,11 +16,8 @@ $layout->setTitle("Bartlby Core Performance");
 $layout->Table("100%");
 
 //Check if profiling is enabled
-$core_perf = bartlby_config($btl->CFG, "core_performance");
-if($core_perf) {
-	$byte_count=0;
-	$raw = @file($core_perf);
-	
+	$map = $btl->GetSVCMap();
+	$info = $btl->getInfo();
 	$check_max=0;
 	$check_avg=0;
 	$check_count=0;
@@ -33,69 +30,44 @@ if($core_perf) {
 	$round_sum=0;
 	
 	
-	
-	
-	
-	while(list($nr, $line) = @each($raw)) {
-		$byte_count += strlen($line);
-		$s_info=explode("\t\t", $line);
-		$type=$s_info[6];
-		$ms=$s_info[5];
-		$plugin=$s_info[4];
-		
-		$server=$s_info[2];
-		$service=$server . "/" . $s_info[3];
-		
-		
-		
-		
-		switch($type) {
-			case 1:
-				//SVC_CHECK_TIME
-				if($check_max < $ms) {
-					$check_max=$ms;
-					$check_plg_max=$plugin;
-				}
-				
-				$check_sum += $ms;
-				
-				$check_count++;
-				//Plugin Table
-				if(!is_array($plugin_table[$plugin])) {
+	while(list($k, $servs) = @each($map)) {
+		for($x=0; $x<count($servs); $x++) {
+			$check_sum +=$servs[$x][service_time_sum];
+			$check_count +=$servs[$x][service_time_count];
+			$plugin=$servs[$x][plugin];
+			if($servs[$x][service_time_count] > 0) {
+				$ms=round($servs[$x][service_time_sum] / $servs[$x][service_time_count], 2);
+			} else {
+				$ms=0;	
+			}
+			$service=$servs[$x][server_name] . "/" . $servs[$x][service_name] . "(" .   $servs[$x][plugin] . ")";
+			$server=$servs[$x][server_name];
+			
+			if(!is_array($plugin_table[$plugin])) {
 					$plugin_table[$plugin]=Array();
-				}
-				array_push($plugin_table[$plugin], $ms);
-				
-				//Service Table
-				if(!is_array($service_table[$service])) {
-					$service_table[$service]=Array();
-				}
-				array_push($service_table[$service], $ms);
-				
-				//Server Table
-				if(!is_array($server_table[$server])) {
-					$server_table[$server]=Array();
-				}
-				array_push($server_table[$server], $ms);
-				
-					
-				
-			break;
-			case 2:
-				//ROUND_TIME
-				if($round_max < $ms) {
-					$round_max=$ms;
-				}
-				
-				$round_sum += $ms;
-				$round_count++;
-				
-				
-			break;
-				
+			}
+			array_push($plugin_table[$plugin], $ms);
+			
+			//Service Table
+			if(!is_array($service_table[$service])) {
+				$service_table[$service]=Array();
+			}
+			array_push($service_table[$service], $ms);
+			
+			//Server Table
+			if(!is_array($server_table[$server])) {
+				$server_table[$server]=Array();
+			}
+			array_push($server_table[$server], $ms);
+			
+			
 		}	
-		
-	}	
+	}
+	$round_sum=$info[round_time_sum];
+	$round_count=$info[round_time_count];
+	
+	
+	
 	
 	$check_avg=round($check_sum / $check_count,2);
 	$round_avg=round($round_sum / $round_count,2);
@@ -112,10 +84,7 @@ if($core_perf) {
 	
 	$info_box_title="Check Time:";  
 	$core_content = "<table  width='100%'>
-		<tr>
-			<td width=150 valign=top class='font2'>Max:</td>
-			<td>$check_max ms</td>
-		</tr>
+	
 		<tr>
 			<td width=150 valign=top class='font2'>Average:</td>
 			<td>$check_avg ms</td>
@@ -128,10 +97,7 @@ if($core_perf) {
 	
 	$info_box_title="Round Time:";  
 	$core_content = "<table  width='100%'>
-		<tr>
-			<td width=150 valign=top class='font2'>Max:</td>
-			<td>$round_max ms</td>
-		</tr>
+		
 		<tr>
 			<td width=150 valign=top class='font2'>Average:</td>
 			<td>$round_avg ms</td>
@@ -225,19 +191,7 @@ if($core_perf) {
 		)
 
 	);	
-} else {
-	$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'show'=>'Looks you dont have enabled core performance tracking (set core_performance= to a regular file on disk in config file)'
-					)
-			)
-		)
 
-	);	
-}
 
 $layout->TableEnd();
 
@@ -267,19 +221,19 @@ function sort_table($plugin_table) {
 
 function make_html($info=array()) {
 	$have=0;
-	$out = "<table>";
+	$out = "<table >";
 	$out .= "<tr>";
 	$out .= "<td class='font2'>&nbsp;</td>";	
 	$out .= "<td class='font2'>Average</td>";
-	$out .= "<td class='font2'>Maximum</td>";
+	
 	$out .= "</tr>";
 	while(list($average, $d) = each( $info )) {
 		while(list($plugin, $d1) = each($d)) {
 			while(list($max, $d2) = each($d1)) {
 				$out .= "<tr>";
-				$out .= "<td>$plugin</td>";	
+				$out .= "<td width=400>$plugin</td>";	
 				$out .= "<td>$average ms</td>";
-				$out .= "<td>$max ms</td>";
+				
 				$out .= "</tr>";
 				$have++;
 				

@@ -29,6 +29,12 @@
 	} else {
 		$vmode="SLAVE<br>dont change anything";	
 	}
+	if($info[round_time_count] > 0 &&  $info[round_time_sum] > 0 ) {
+		$rndMS=round($info[round_time_sum] / $info[round_time_count], 2);
+	} else {
+		$rndMS=0;	
+	}
+	
 	$info_box_title='Core Information<div class="clock" nowrap>Time: ' . date("d.m.Y H:i:s") . '</div>';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table class='nopad' width='100%'>
@@ -43,6 +49,11 @@
 		<tr>
 			<td class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
 			<td align=right class='font1'>Mode:<font class='font2'>" . $vmode . "</font></td>
+		</tr>
+		
+		<tr>
+			<td class='font1'>&nbsp;</td>
+			<td align=right class='font1'>Avg Round Time:<font class='font2'>" . $rndMS . " ms</font></td>
 		</tr>
 		<tr>
 			<td class='font1'>&nbsp;</td>

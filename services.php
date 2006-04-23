@@ -10,7 +10,7 @@
 	$btl=new BartlbyUi($Bartlby_CONF);
 	
 	$map = $btl->GetSVCMap($_GET[service_state]);	
-	
+
 	
 	$mode=bartlby_config("ui-extra.conf", "xml_remote_count");
 	$do_xml=true;

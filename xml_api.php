@@ -37,7 +37,7 @@ function xml_bartlby_version($args) {
 function xml_bartlby_config($args) {
 	global $btl;
 	
-	return bartlby_config($btl->CFG, $args);	
+	return bartlby_config($args[0], $args[1]);	
 }
 function xml_bartlby_lib_info($args) {
 	global $btl;

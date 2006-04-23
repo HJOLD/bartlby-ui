@@ -294,6 +294,23 @@ switch($act) {
 		 }   
 		
 	break;
+	case 'force_check':
+		$layout->set_menu("main");
+		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+			if($_GET[service_id]) {
+				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+				$idx=$btl->findSHMPlace($_GET[service_id]);
+				
+				$cur=bartlby_check_force($btl->CFG, $idx);
+				
+			} else {                                     
+			 	$act="missing_param";
+			}  
+		} else {
+		 	$act="xml_remote";	
+		 }   
+		
+	break;
 	case 'sirene_enable':
 	case 'sirene_disable':
 		$layout->set_menu("main");

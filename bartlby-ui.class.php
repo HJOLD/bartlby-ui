@@ -683,6 +683,28 @@ class BartlbyUi {
 		
 		return $quick_view;		
 	}
+	function XMLRemoteConfig($xml_id, $file, $var) {
+		include_once("IXR_Library.inc.php");
+		
+		$url=bartlby_config("ui-extra.conf", "xml_remote[" . $xml_id. "]");
+		$alias=bartlby_config("ui-extra.conf", "xml_alias[" . $xml_id. "]");
+		if(preg_match("/http:\/\/(.*):(.*)@(.*):([0-9]+)\/(.*)/i", $url, $match)) {
+			$uname=$match[1];
+			$pw=$match[2];
+			$port=$match[3];
+			$e_url="http://" . $match[3] . "/" . $match[5];
+			
+		}
+			
+		$client = new IXR_ClientMulticall($e_url, false, $port, $uname, $pw);
+		$client->debug=false;
+		$client->addCall('bartlby.config', $file, $var);	
+		$client->query();
+		$response = $client->getResponse();
+		
+		
+		return $response[0][0];
+	}	
 	function remoteServerByID($xml_id, $server_id) {
 		include_once("IXR_Library.inc.php");
 		
@@ -731,6 +753,7 @@ class BartlbyUi {
 		
 		$response[0][0][server_name] = $alias . "-->" . $response[0][0][server_name];
 		$response[0][0][server_id] = "XML:" . $xml_id . ":" . $response[0][0][server_id];
+		$response[0][0][service_id_real] = $response[0][0][service_id];
 		$response[0][0][service_id] = "XML:" . $xml_id . ":" . $response[0][0][service_id];
 		$response[0][0][shm_place] = "XML:" . $xml_id . ":" . $response[0][0][shm_place];
 		

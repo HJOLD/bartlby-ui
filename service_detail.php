@@ -61,6 +61,12 @@ if($defaults["service_active"]==1) {
 }
 //echo $defaults[last_notify_send] . "<br>";
 
+if( $defaults[service_time_sum] > 0 && $defaults[service_time_count] > 0) {
+	$svcMS=round($defaults[service_time_sum] / $defaults[service_time_count], 2);
+} else {
+	$svcMS=0;	
+}
+
 $info_box_title='Service Info';  
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 $core_content = "<table  width='100%'>
@@ -152,7 +158,16 @@ $core_content = "<table  width='100%'>
 		<td align=left >" .  $defaults[check_is_running] . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>	
-	
+	<tr>
+		<td width=150 class='font2'>Average Check Time:</td>
+		<td align=left >" .  $svcMS . " ms</font></td>
+		<td>&nbsp;</td>           
+	</tr>
+	<tr>
+		<td width=150 class='font2'>Force it:</td>
+		<td align=left ><a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=force_check'>Now</A></font></td>
+		<td>&nbsp;</td>           
+	</tr>
 </table>";
 
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
@@ -254,18 +269,35 @@ if($defaults[service_type] == 3){
 }
 
 //special_ui's
-$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
+if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
+	$special_counter=$btl->XMLRemoteConfig($match[1], "ui-extra.conf", "special_addon_ui_" . $defaults[service_id_real] . "_cnt");	
+} else {
+	$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
+	
+}
 if($special_counter) {
 	
 	for($spc=1; $spc<=$special_counter; $spc++) {
 		
-		$spc_name=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]_name");
+		if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
+			$spc_name=$btl->XMLRemoteConfig($match[1], "ui-extra.conf", "special_addon_ui_" . $defaults[service_id_real] . "_[" . $spc ."]_name");
+		} else {
+			$spc_name=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]_name");
+		}
 		//$layout->OUT .= "menu" . $defaults[service_id] . "[" . $spc_real . "]='" . str_replace("^", "=", bartlby_config($btl->CFG, "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]")) . "';\n";
 		$info_box_title="$spc_name";  
 		// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
+		
+		if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
+			
+			$special_value=$btl->XMLRemoteConfig($match[1], 'ui-extra.conf', "special_addon_ui_" . $defaults[service_id_real] . "_[" . $spc ."]");
+		} else {
+			$special_value=bartlby_config('ui-extra.conf', "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]");
+		}
+		
 		$core_content = "<table  width='100%'>
 			<tr>
-				<td>" . str_replace("^", "=", bartlby_config('ui-extra.conf', "special_addon_ui_" . $defaults[service_id] . "_[" . $spc ."]")) . "</td>           
+				<td>" . str_replace("^", "=", $special_value) . "</td>           
 			</tr>
 			
 			
