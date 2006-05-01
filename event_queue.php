@@ -16,18 +16,18 @@ $layout->setTitle("Bartlby Last Event's");
 $layout->Table("100%");
 
 //Check if profiling is enabled
-	$evnts="";
+	$evnts="<table width=400>";
 	
-	for($x=0; $x<=128; $x++) {
+	for($x=128; $x>=0; $x--) {
 		$msg=bartlby_event_fetch($btl->CFG, $x);
 		if($msg[id] == 0) {
 			continue;	
 		}
-		$evnts .= "(" . date("d.m.Y H:i:s", $msg[time]) . ") ID:<b>" . $msg[id] . "</b>:" . $msg[message] . "<br>";	
+		$evnts .= "<tr><td><font size=1>" . date("d.m.Y H:i:s", $msg[time]) . "</td><td> ID:<b>" . $msg[id] . "</b></td><td>" . $msg[message] . "</td></tr>";	
 	}
 
 	
-	
+	$evnts .="</table>";
 	
 	$layout->Tr(
 	$layout->Td(

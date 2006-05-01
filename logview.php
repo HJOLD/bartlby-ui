@@ -18,13 +18,22 @@
 	
 	$logf=bartlby_config($btl->CFG, "logfile") . date(".Y.m.d", $ch_time);
 	$svcid=$_GET[service_id];
+	$shm_id=$btl->findSHMPlace($svcid);
+	
+	if($shm_id >= 0) {
+		$svcM="<a href='service_detail.php?service_place=" . $shm_id . "'>Service Detail</A>";
+	}
+	
+	
+	
+	
 	$layout->Tr(
 		$layout->Td(
 				Array(
 					0=>Array(
 						'colspan'=> 3,
 						'class'=>'header',
-						'show'=>"<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>"
+						'show'=>"<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>  "  
 						)
 				)
 			)
@@ -34,7 +43,7 @@
 		$layout->Td(
 				Array(
 					0=>array("colspan" => 3, 
-						"show" => "Filter:" . $layout->Field("bartlby_filter", "text", $_GET["bartlby_filter"]) . $layout->Field("bartlby_sub", "submit", "Filter")
+						"show" => "Filter:" . $layout->Field("bartlby_filter", "text", $_GET["bartlby_filter"]) . $layout->Field("bartlby_sub", "submit", "Filter") . $svcM
 					)
 				)
 			)
@@ -80,7 +89,7 @@
 			}
 			
 			
-			$outline = $tmp[2] . " changed to " . $btl->getState($tmp[1]) . "<br>" . $tmp[3] . "<br>";
+			$outline = "<a href='logview.php?service_id=" .  $tmp[0] . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $tmp[3] . "<br>";
 			$stcheck=$tmp[1];
 		} else if($log_detail_o[1] == "NOT") {
 			$tmp=explode("|", $log_detail_o[2]);
