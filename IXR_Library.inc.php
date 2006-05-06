@@ -76,7 +76,7 @@ class IXR_Value {
                 return '<double>'.$this->data.'</double>';
                 break;
             case 'string':
-                return '<string>'.htmlspecialchars($this->data).'</string>';
+                return '<string>'.htmlspecialchars(str_replace("\b", "",$this->data)).'</string>';
                 break;
             case 'array':
                 $return = '<array><data>'."\n";

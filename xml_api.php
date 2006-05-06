@@ -21,6 +21,13 @@ function xml_bartlby_get_service($args) {
 	global $btl;
 	return bartlby_get_service($btl->CFG, $args);
 }
+function xml_bartlby_get_service_with_id($args) {
+	global $btl;
+	$idx=$btl->findSHMPlace($args);
+	return bartlby_get_service($btl->CFG, $idx);
+}
+
+
 function xml_bartlby_get_worker($args) {
 	global $btl;
 	return bartlby_get_worker($btl->CFG, $args);	
@@ -223,12 +230,20 @@ function xml_bartlby_login() {
 	
 	//return new IXR_Error(4000, 'ha ha ha');
 }
-
+function xml_bartlby_force_service($args) {
+	global $btl;
+	
+	$idx=$btl->findSHMPlace($args);
+	$cur=bartlby_check_force($btl->CFG, $idx);	
+	return $cur;
+}
 
 	$server = new IXR_Server(array(
 	    'bartlby.login' => 'xml_bartlby_login',
 	    'bartlby.get_service_map' => 'xml_bartlby_get_svc_map',
 	    'bartlby.get_service' => 'xml_bartlby_get_service',
+	    'bartlby.get_service_with_id' => 'xml_bartlby_get_service_with_id',
+	    
 	    'bartlby.get_worker' => 'xml_bartlby_get_worker',
 	    'bartlby.get_info' => 'xml_bartlby_get_info',
 	    'bartlby.version' => 'xml_bartlby_version',
@@ -259,7 +274,8 @@ function xml_bartlby_login() {
 	    'bartlby.shm_destroy' => 'xml_bartlby_shm_destroy',
 	    'bartlby.ack_problem' => 'xml_bartlby_ack_problem',
 	    'bartlby.log' => 'xml_bartlby_log',
-	    'bartlby.find_service' => 'xml_bartlby_find_service'
+	    'bartlby.find_service' => 'xml_bartlby_find_service',
+	    'bartlby.force_service' => 'xml_bartlby_force_service'
 	));
 
 

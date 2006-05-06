@@ -11,6 +11,10 @@ $layout= new Layout();
 $layout->set_menu("main");
 $layout->setTitle("Actions");
 
+if($_GET[service_id]) {
+	$_GET[service_place] = $btl->findSHMPlace($_GET[service_id]);	
+}
+
 if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
 	$defaults=$btl->remoteServiceByID($match[1], $match[2]);
 } else {
@@ -317,9 +321,12 @@ if($defaults[notify_enabled] == 1) {
 } else {
 	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
 }
+
+
+$modify = "<a href='modify_service.php?service_id=" . $defaults[service_id] . "'>Modify</A>";
 $comments  ="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img src='images/icon_comments.gif' border=0></A>";
 				
-$layout->OUT .="$notifys $check <a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments";
+$layout->OUT .="$notifys $check <a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments $modify";
 $layout->TableEnd();
 
 $layout->display();

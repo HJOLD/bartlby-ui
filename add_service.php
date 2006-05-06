@@ -44,7 +44,7 @@ $dh=opendir($plgs);
 while ($file = readdir ($dh)) { 
    if ($file != "." && $file != "..") { 
    	clearstatcache();
-   	if(is_executable($plgs . "/" . $file) && !is_dir($plgs . "/" . $file)) {
+   	if((preg_match("/\.exe$/i", $file)) || (is_executable($plgs . "/" . $file) && !is_dir($plgs . "/" . $file))) {
        		$plugins[$optind][c]="";
        		$plugins[$optind][v]=$file;
        		$plugins[$optind][k]=$file;

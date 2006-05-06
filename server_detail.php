@@ -67,6 +67,22 @@ for($x=0; $x<count($server_map); $x++) {
 
 //echo $defaults[last_notify_send] . "<br>";
 
+
+@$fp=fsockopen($defaults[server_ip], $defaults[server_port], $errno, $errstr, 2);
+if(!$fp) {
+	$agent_v = "$errstr ($errno)<br />\n";	
+} else {
+	$str=$_GET[plugin] . "| " . $arges . "|\n";
+	
+	$estr=bartlby_encode($str);
+		
+	$agent_v=@fread($fp, 1024);
+	@fclose($fp);
+}
+
+
+
+
 $info_box_title='Server Info';  
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 $core_content = "<table  width='100%'>
@@ -100,8 +116,17 @@ $core_content = "<table  width='100%'>
 		<td align=left >" . getGeoip(gethostbyname($defaults[server_ip])) . "</font></td>  
 		<td>&nbsp;</td>         
 	</tr>
+	<tr>
+		<td width=150 class='font2'>Agent:</td>
+		<td align=left >" . $agent_v . "</font></td>  
+		<td>&nbsp;</td>         
+	</tr>
+	
 	
 </table>";
+
+
+
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
 
 
