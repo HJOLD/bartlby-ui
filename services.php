@@ -44,12 +44,12 @@
 	
 	$display_serv=$_GET[server_id];
 	if(!$display_serv) {
-		while(list($k,$v) = each($map)) {
+		while(list($k,$v) = @each($map)) {
 		//	$display_serv=$k;
 			
 			break;	
 		}
-		reset($map);	
+		@reset($map);	
 	}
 	
 		
