@@ -85,6 +85,7 @@ class BartlbyUi {
 	}
 	
 	function simpleRight($k, $v) {
+		return true;
 		if(!is_array($this->rights[$k])) {
 				return true;
 		}
@@ -849,6 +850,50 @@ class BartlbyUi {
 		imagePNG($im, "/var/www/htdocs/test.png");
    		imagedestroy($im);
 
+	}
+	function getserviceOptions($defaults, $layout) {
+		if($defaults[service_active] == 1) {
+			$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_service'><img src='images/enabled.gif'  border=0></A>";
+		} else {
+			$check = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_service'><img src='images/diabled.gif' title='Enable  Checks for this Service' border=0></A>";
+		}
+		if($defaults[notify_enabled] == 1) {
+			$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_notify'><img src='images/notrigger.gif' title='Disable Notifications for this Service' border=0></A>";
+		} else {
+			$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
+		}
+		if($defaults[is_downtime] == 1) {
+			$downtime="<img src='images/icon_work.gif' title='Service is in downtime (" . date("d.m.Y H:i:s", $defaults[downtime_from])  . "-" . date("d.m.Y H:i:s", $servs[$x][downtime_to]) . "): " . $defaults[downtime_notice] . "'>";	
+		} else {
+			$downtime="&nbsp;";
+		}
+		$special_menu = "<a href='javascript:void();' onClick=\"return dropdownmenu(this, event, menu" . $defaults[service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img title='Click to view special addons' src='images/icon_work1.gif' border=0></A>";
+		$layout->OUT .= "<script>var menu" . $defaults[service_id] . "=new Array();</script>";
+		$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
+		if($special_counter) {
+			$layout->OUT .= "<script>";
+			$fspc=0;
+			for($spc=0; $spc<$special_counter; $spc++) {
+				$spc_name=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . ($spc+1) ."]_name");
+				$layout->OUT .= "menu" . $defaults[service_id] . "[" . $fspc . "]='<br>$spc_name<br>';\n";
+				$layout->OUT .= "menu" . $defaults[service_id] . "[" . ($fspc+1) . "]='" . str_replace("^", "=", bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . ($spc+1) ."]")) . "';\n";
+				$fspc++;
+				$fspc++;
+			}
+			$layout->OUT .= "</script>";
+		} else {
+				$special_menu="";
+		}
+		
+		$modify = "<a href='modify_service.php?service_id=" . $defaults[service_id] . "'><img src='images/modify.gif' title='Modify this Service' border=0></A>";
+		$force = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=force_check'><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
+		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
+		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
+						
+						
+		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu";
+		
+		return $ret;
 	}
 }
 ?>

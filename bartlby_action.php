@@ -91,6 +91,23 @@ switch($act) {
 		}
 		
 	break;
+	
+	case 'submit_passive':
+		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+			if($_GET[passive_text]) {
+				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+				$idx=$btl->findSHMPlace($_GET[service_id]);
+				$global_msg[readable_state]="<font color=" . $btl->getColor($_GET[passive_state]) . ">" . $btl->getState($_GET[passive_state]) . "</font>";
+				bartlby_set_passive($btl->CFG, $idx, $_GET[passive_state], $_GET[passive_text]);
+			} else {
+				$act="missing_param";
+			}
+		} else {
+			$act="xml_remote";	
+		}
+		
+	break;
+	
 	case 'stop':
 		$layout->set_menu("core");
 		$base_dir=bartlby_config($btl->CFG, "basedir");
@@ -444,6 +461,7 @@ switch($act) {
 	break;
 	case 'modify_service':
 		$layout->set_menu("services");
+		
 		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
 			//echo "$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);";
 			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain]);

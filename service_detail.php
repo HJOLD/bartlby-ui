@@ -167,11 +167,7 @@ $core_content = "<table  width='100%'>
 		<td align=left >" .  $svcMS . " ms</font></td>
 		<td>&nbsp;</td>           
 	</tr>
-	<tr>
-		<td width=150 class='font2'>Force it:</td>
-		<td align=left ><a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=force_check'>Now</A></font></td>
-		<td>&nbsp;</td>           
-	</tr>
+	
 </table>";
 
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
@@ -242,16 +238,36 @@ if($defaults[service_type] == 1 || $defaults[service_type] == 4){
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
 }
 if($defaults[service_type] == 2){
+	
+		
+		$ibox[0][c]="green";
+		$ibox[0][v]=0;	
+		$ibox[0][k]="OK";
+		$ibox[1][c]="orange";        
+		$ibox[1][v]=1;	  
+		$ibox[1][k]="Warning";
+		$ibox[2][c]="red";        
+		$ibox[2][v]=2;	  
+		$ibox[2][k]="Critical";
+		
+		$ibox[$defaults[current_state]][s]=1;
+		$state_dropdown=$layout->DropDown("passive_state", $ibox);
+		
 	$info_box_title='Passive Service';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table  width='100%'>
+		<form name='pp' action='bartlby_action.php'>
 		<tr>
 			<td width=150 class='font2'>Timeout:</td>
 			<td align=left >" . $defaults[service_passive_timeout] . "</font></td>
 			<td>&nbsp;</td>           
 		</tr>
-		
-		
+		<tr>
+			<td width=150 class='font2'>Submit manually:</td>
+			<td align=left >$state_dropdown<input type='hidden' name='action' value='submit_passive'><input type='hidden' name='service_id' value='" . $defaults[service_id] . "'><input type='text' name='passive_text'><input type=submit value='store'></font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		</form>
 	</table>";
 	
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
@@ -311,22 +327,8 @@ if($special_counter) {
 	}
 	
 }
-if($defaults[service_active] == 1) {
-	$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_service'><img src='images/enabled.gif'  border=0></A>";
-} else {
-	$check = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_service'><img src='images/diabled.gif' title='Enable  Checks for this Service' border=0></A>";
-}
-if($defaults[notify_enabled] == 1) {
-	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_notify'><img src='images/notrigger.gif' title='Disable Notifications for this Service' border=0></A>";
-} else {
-	$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
-}
-
-
-$modify = "<a href='modify_service.php?service_id=" . $defaults[service_id] . "'>Modify</A>";
-$comments  ="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img src='images/icon_comments.gif' border=0></A>";
-				
-$layout->OUT .="$notifys $check <a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  src='images/icon_view.gif' border=0></A> $comments $modify";
+	
+$layout->OUT .= $btl->getserviceOptions($defaults, $layout);
 $layout->TableEnd();
 
 $layout->display();

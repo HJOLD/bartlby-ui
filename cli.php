@@ -130,7 +130,7 @@ while(1){
 					ncurses_addstr(sprintf("%10s", $btl->GetState($servs[$x][current_state])));
 					ncurses_move($y+1, 20);
 					ncurses_color_set(4);
-					ncurses_addstr($servs[$x][server_name] . ":" . $servs[$x][service_name] . str_repeat(" ", 40-(strlen($servs[$x][service_name])+strlen($servs[$x][server_name]))));
+					ncurses_addstr($servs[$x][server_name] . ":" . $servs[$x][service_name] . str_repeat(" ", (strlen($servs[$x][service_name])+strlen($servs[$x][server_name]))));
 					
 					ncurses_addstr(substr(str_replace("\n", "", $servs[$x][new_server_text]), 0, 60));
 					ncurses_color_set(4);

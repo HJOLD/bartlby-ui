@@ -10,6 +10,24 @@ include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
+if($_GET[maxn]) {
+	$maxn=$_GET[maxn];	
+} else {
+	$maxn=10;	
+}
+if($_GET[sortorder]) {
+	$sorto=$_GET[sortorder];	
+} else {
+	$sorto="desc";	
+}
+
+if($sorto == "asc") {
+	$ascc="checked";	
+} else {
+	$descc="checked";	
+}
+
+
 $layout= new Layout();
 $layout->set_menu("core");
 $layout->setTitle("Bartlby Core Performance");
@@ -40,8 +58,8 @@ $layout->Table("100%");
 			} else {
 				$ms=0;	
 			}
-			$service=$servs[$x][server_name] . "/" . $servs[$x][service_name] . "(" .   $servs[$x][plugin] . ")";
-			$server=$servs[$x][server_name];
+			$service="<img src='server_icons/" . $servs[$x][server_icon] . "'>" .  $servs[$x][server_name] . "/" . $servs[$x][service_name] . "(" .   $servs[$x][plugin] . ")";
+			$server="<img src='server_icons/" . $servs[$x][server_icon] . "'>" . $servs[$x][server_name];
 			
 			if(!is_array($plugin_table[$plugin])) {
 					$plugin_table[$plugin]=Array();
@@ -82,6 +100,24 @@ $layout->Table("100%");
 	$service_html=make_html($service_sorted);
 	$server_html=make_html($server_sorted);
 	
+	
+	$info_box_title="Options:";  
+	$core_content = "<table  width='100%'>
+	
+		<tr>
+			<td width=150 valign=top class='font2'>Max Num:</td>
+			<td><form name='f' action=statistic.php><input type=text name='maxn' value='$maxn'><input type='submit' value='Update..'><br>
+			<input type=radio name='sortorder' value='asc' $ascc >Ascending <input type=radio name='sortorder' value='desc' $descc >Descending
+			</form></td>
+		</tr>
+		
+		
+	</table>";
+	
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
+	
+	
 	$info_box_title="Check Time:";  
 	$core_content = "<table  width='100%'>
 	
@@ -114,7 +150,7 @@ $layout->Table("100%");
 			<td>$check_plg_max</td>
 		</tr>
 		<tr>
-			<td width=150 valign=top class='font2'>Average slowest 10:</td>
+			<td width=150 valign=top class='font2'>Average slowest $maxn:</td>
 			<td>
 				
 					$plugin_html
@@ -132,7 +168,7 @@ $layout->Table("100%");
 	$core_content = "<table  width='100%'>
 		
 		<tr>
-			<td width=150 valign=top class='font2'>Average slowest 10:</td>
+			<td width=150 valign=top class='font2'>Average slowest $maxn:</td>
 			<td>
 				
 					$service_html
@@ -151,7 +187,7 @@ $layout->Table("100%");
 	$core_content = "<table  width='100%'>
 		
 		<tr>
-			<td width=150 valign=top class='font2'>Average slowest 10:</td>
+			<td width=150 valign=top class='font2'>Average slowest $maxn:</td>
 			<td>
 				
 					$server_html
@@ -198,6 +234,8 @@ $layout->TableEnd();
 $layout->display();
 
 function sort_table($plugin_table) {
+	global $sorto;
+	
 	while(list($k, $v) = each($plugin_table)) {
 		
 		$max=0;
@@ -214,12 +252,18 @@ function sort_table($plugin_table) {
 		
 		$plugins_sortable[$avg][$k][$max] = 1;
 	}
-	 krsort($plugins_sortable);	
+	
+	if($sorto == "asc") {
+		ksort($plugins_sortable);
+	} else {
+		krsort($plugins_sortable);	
+	}
 	return $plugins_sortable;
 	
 }
 
 function make_html($info=array()) {
+	global $maxn;
 	$have=0;
 	$out = "<table >";
 	$out .= "<tr>";
@@ -231,13 +275,13 @@ function make_html($info=array()) {
 		while(list($plugin, $d1) = each($d)) {
 			while(list($max, $d2) = each($d1)) {
 				$out .= "<tr>";
-				$out .= "<td width=400>$plugin</td>";	
-				$out .= "<td>$average ms</td>";
+				$out .= "<td align=left valign=top nowrap>$plugin</td>";	
+				$out .= "<td align=right valign=bottom>$average ms</td>";
 				
 				$out .= "</tr>";
 				$have++;
 				
-				if($have == 10) {
+				if($have == $maxn) {
 					break 3;	
 				}
 			}	

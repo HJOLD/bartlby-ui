@@ -179,6 +179,13 @@ function xml_bartlby_ack_problem($args) {
 	$r=bartlby_ack_problem($btl->CFG, $idx);
 	return $r;
 }
+function xml_bartlby_set_passive($args) {
+	global $btl;
+	$idx=$btl->findSHMPlace($args[0]);
+	$r=bartlby_set_passive($btl->CFG, $idx, $args[1], $args[2]);
+	return $r;
+}
+
 function xml_bartlby_log($args) {
 	global $btl;
 	$btl->_log($args);	
@@ -274,6 +281,7 @@ function xml_bartlby_force_service($args) {
 	    'bartlby.shm_destroy' => 'xml_bartlby_shm_destroy',
 	    'bartlby.ack_problem' => 'xml_bartlby_ack_problem',
 	    'bartlby.log' => 'xml_bartlby_log',
+	    'bartlby.set_passive' => 'xml_bartlby_set_passive',
 	    'bartlby.find_service' => 'xml_bartlby_find_service',
 	    'bartlby.force_service' => 'xml_bartlby_force_service'
 	));
