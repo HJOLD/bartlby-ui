@@ -127,6 +127,23 @@ class Layout {
 	function setTitle($str) {
 		$this->BoxTitle=$str;
 	}
+	function beginMenu() {
+		return "";	
+	}
+	function addRoot($name) {
+		$r = "<table class=\"nopad\">	<tr><td class=\"nav_main\" onClick=\"doToggle('$name')\"><img id='" . $name . "_plus' src='images/plus.gif' border=0> $name</td></tr><tr><td class=\"nav_place\">&nbsp;</td></tr></table><table class=\"nopad\" id='" . $name . "_sub' style='display:none;'>";
+		
+		
+		return $r;	
+	}
+	function addSub($root, $name, $link) {
+		$r="<tr><td class=\"nav_sub\"><a href='" . $link . "' class=\"sub\">$name</A></td></tr><tr><td class=\"nav_place\">&nbsp;</td></tr>";
+		return $r;	
+	}
+	function endMenu() {
+		return "</table>";	
+	}
+	
 	function display($cr="") {
 			
 		if($this->menu_set == false) {
@@ -147,6 +164,21 @@ class Layout {
 		$source_file=str_replace(".php", ".phps",$source_file);
 		$bname=basename($source_file);
 		
+		$dhl = opendir("extensions");
+		while($file = readdir($dhl)) {
+			if($file != "." && $file != "..") {
+				include_once("extensions/" . $file . "/" . $file . ".class.php");
+				
+				
+				if (class_exists($file)) {
+					eval("\$clh = new " . $file . "();");
+					$this->ext_menu .= $clh->_menu();
+				}
+			}
+		}
+		closedir();
+		
+		
 		
 		$fp=fopen($this->template_file, "r");
 		while(!feof($fp)) {
@@ -155,6 +187,7 @@ class Layout {
 			$o = str_replace("<!--BTUIOUTSIDE-->",$this->OUTSIDE,$o);
 			$o = str_replace("<!--BTUIBOXTITLE-->",$this->BoxTitle,$o);
 			$o = str_replace("<!--BTUITIME-->",round($diff,2),$o);
+			$o = str_replace("<!--BTLEXTMENU-->",$this->ext_menu,$o);
 			$o = str_replace("<!--SERVERTIME-->",date("d.m.Y H:i:s") ,$o);
 			echo $o; 	
 		}
