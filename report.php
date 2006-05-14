@@ -86,7 +86,7 @@ if(!$_GET[report_service] || !$log_mask) {
 					$diff = $log_stamp - $last_mark;
 					//$out .= "State changed from " . $btl->getState($last_state) . " to " . $btl->getState($tmp[1]) . "<br>";	
 					//echo "Where " . $diff . " in " . $btl->getState($last_state) . "<br>"; 
-					array_push($state_array, array("start"=>$last_mark, "end"=>$log_stamp, "state"=>$last_state, "msg"=>$tmp[3]));
+					array_push($state_array, array("start"=>$last_mark, "end"=>$log_stamp, "state"=>$last_state, "msg"=>$tmp[3], "lstate"=>$tmp[1]));
 					
 					$svc[$last_state] += $diff;
 					
@@ -137,7 +137,10 @@ if(!$_GET[report_service] || !$log_mask) {
 		$flash[2]="0";
 		
 		//$img_file=$btl->create_report_img($state_array, $time_start, $time_end);
-
+		$o1 .= "<table width=100%>";
+		$o1 .= "<td colspan=3 class=header>Output:</td>";
+		
+		
 		while(list($state, $time) = @each($svc)) {
 			$out .= "<script>";
 			$out .= "menu_state" . $state . "=new Array();\n";
@@ -145,10 +148,17 @@ if(!$_GET[report_service] || !$log_mask) {
 			$menu_counter=1;
 			
 			for($xy=0; $xy<count($state_array);$xy++) {
+					$o1 .= "<tr>";
+					$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][start]) . "</td>";
+					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][lstate]) . "'>" . $btl->getState($state_array[$xy][lstate]) . "</font></b></td>";
+			
+					$o1 .= "<td>" . $state_array[$xy][msg] . "</td></tr>";
 				
 				if($state_array[$xy][state] == $state) {
 					
-					$out .= "menu_state" . $state . "[" . $menu_counter . "]='<font size=1>" . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][start]) . " - " . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][end]) . " (<i>" . ($state_array[$xy][end]-$state_array[$xy][start]) . "</i>)</font><br>';\n";
+					
+					
+					$out .= "menu_state" . $state . "[" . $menu_counter . "]='<font size=1>" . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][start]) . " - " . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][end]) . " (<i>" . ($state_array[$xy][end]-$state_array[$xy][start]) . "</i>) </font><br>';\n";
 					$menu_counter++;
 				}
 			}
@@ -163,13 +173,13 @@ if(!$_GET[report_service] || !$log_mask) {
 			
 			$out .= "</td>";
 			$out .= "<td>Time:  " . $btl->intervall($time) . " seconds</td>";
-			$out .= "<td>Percent:  <b>" . round($perc,2) . "</b>  seconds </td>";
+			$out .= "<td><b>" . round($perc,2) . "%</b>   </td>";
 			
 			$flash[$state]=$perc;
 			
 			
 		}
-		
+		$o1 .= "</table>";
 		for($x=0; $x<3; $x++) {
 			$nstate= $x+1;
 			$rstr .= "&text_" . $nstate . "=" . $btl->getState($x) . "&value_" . $nstate . "=" . $flash[$x];	
@@ -232,6 +242,14 @@ $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>$out
+			)
+		)
+
+);
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>$o1
 			)
 		)
 
