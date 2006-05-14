@@ -34,6 +34,10 @@ class Bartlby_Inventory {
 		return $r;
 		
 	}
+	
+	function _About() {
+		return "BartlbyInventory Version 0.1 by h.januschka";	
+	}
 	function _Menu() {
 		$r =  $this->layout->beginMenu();
 		$r .= $this->layout->addRoot("Inventory");
@@ -42,6 +46,7 @@ class Bartlby_Inventory {
 		$r .= $this->layout->endMenu();
 		return $r;
 	}
+	/*
 	function _overview() {
 		return "_overview";	
 	}
@@ -51,6 +56,7 @@ class Bartlby_Inventory {
 	function _processInfo() {
 		return "_processInfo";	
 	}
+	*/
 	function _serverDetail() {
 		global $defaults;
 		$d=$this->getDefaults($_GET[server_id]);
@@ -61,12 +67,13 @@ class Bartlby_Inventory {
 		
 		return $r;		
 	}
+	/*
 	function _serviceDetail() {
 		global $defaults;
 		
 		
 		return "<a href='extensions_wrap.php?script=Bartlby_Inventory/index.php&server_id=" . $defaults[server_id] . "'>Modify/View Inventory Details</A>";		
-	}
+	}*/
 }
 
 ?>
