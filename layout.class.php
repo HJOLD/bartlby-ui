@@ -167,7 +167,7 @@ class Layout {
 		$dhl = opendir("extensions");
 		while($file = readdir($dhl)) {
 			if($file != "." && $file != "..") {
-				include_once("extensions/" . $file . "/" . $file . ".class.php");
+				@include_once("extensions/" . $file . "/" . $file . ".class.php");
 				
 				
 				if (class_exists($file)) {
