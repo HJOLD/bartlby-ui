@@ -327,7 +327,9 @@ if($special_counter) {
 	}
 	
 }
-	
+
+$r=$btl->getExtensionsReturn("_serviceDetail", $layout);
+
 $layout->OUT .= $btl->getserviceOptions($defaults, $layout);
 $layout->TableEnd();
 

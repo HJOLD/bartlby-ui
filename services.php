@@ -186,6 +186,9 @@
 
 	);	
 
+	$r=$btl->getExtensionsReturn("_services", $layout);
+	
+
 	$layout->TableEnd();
 	$layout->display();
 	

@@ -326,6 +326,48 @@ class BartlbyUi {
          	);
     		return $i;
 	}
+	function getExtensionsReturn($method, $layout) {
+		$r=array();
+		$dhl = opendir("extensions");
+		while($file = readdir($dhl)) {
+			if($file != "." && $file != "..") {
+				@include_once("extensions/" . $file . "/" . $file . ".class.php");
+				
+				
+				if (class_exists($file)) {
+					eval("\$clh = new " . $file . "();");
+					if(method_exists($clh, $method)) {
+						eval("\$o = \$clh->" . $method . "();");
+						$ex[ex_name]=$file;
+						$ex[out] = $o;
+						array_push($r, $ex);
+						
+						$info_box_title='Extension: ' . $ex[ex_name];  
+						// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
+						$core_content = "<table  width='100%'>
+							<tr>
+								<td colspan=2>" . $ex[out] .  "</td> 
+							</tr>
+							
+							
+							
+						</table>";
+						
+						
+						$layout->push_outside($layout->create_box($info_box_title, $core_content));
+								
+						
+						
+					}
+					
+					
+				}
+			}
+		}
+		closedir();
+		return $r;	
+		
+	}
 	function installPackage($pkg, $server, $force_plugin, $force_perf) {
 		$basedir=bartlby_config($this->CFG, "basedir");
 		

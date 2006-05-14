@@ -151,6 +151,12 @@ $layout->push_outside($layout->create_box($info_box_title, $core_content));
 
 
 
+$r=$btl->getExtensionsReturn("_serverDetail", $layout);
+
+
+
+
+
 $layout->TableEnd();
 
 $layout->display();

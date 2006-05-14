@@ -228,7 +228,7 @@ $layout->Table("100%");
 
 	);	
 
-
+$r=$btl->getExtensionsReturn("_processInfo", $layout);
 $layout->TableEnd();
 
 $layout->display();
