@@ -6,6 +6,17 @@
 <script type="text/javascript" src="images/btl.js"></script>
 
 <script>
+	function GenericToggleFix(elID, st) {
+	//alert(elID);
+	//alert(st);
+		obj=document.getElementById(elID);
+		//alert(obj);
+		obj.style.display=st;  
+	}
+	function GenericToggle(elID) {
+		obj=document.getElementById(elID);
+		obj.style.display=!(obj.style.display=="block")? "block" : "none";  
+	}
 	function doToggle(elID) {
 		imgPlus='images/plus.gif';
 		imgMinus='images/minus.gif';

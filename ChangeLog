@@ -1,3 +1,143 @@
+2006-05-15 00:55  hjanuschka
+
+	* images/modify.gif: missing modify.gif
+
+2006-05-14 22:13  hjanuschka
+
+	* report.php: little reporting tweak
+
+2006-05-14 21:53  hjanuschka
+
+	* extensions/SSH/SSH.class.php: SSH2 Extension capture LF
+
+2006-05-14 20:23  hjanuschka
+
+	* extensions.php, template.html,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  extensions/SSH/SSH.class.php, extensions/SSH/exec.php,
+	  extensions/SSH/index.php, extensions/SSH/save.php,
+	  extensions/SSH/data/1: SSH2 Extension
+
+2006-05-14 16:50  hjanuschka
+
+	* bartlby-ui.class.php, overview.php, server_detail.php,
+	  service_detail.php, services.php, statistic.php,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php: some
+	  hooks for extensions (overview/services/server-service detail)
+
+2006-05-14 15:19  hjanuschka
+
+	* layout.class.php: oops ;-) include_once set quiet ;)
+
+2006-05-14 15:01  hjanuschka
+
+	* extensions_wrap.php, layout.class.php, template.html,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  extensions/Bartlby_Inventory/index.php,
+	  extensions/Bartlby_Inventory/save.php: UI extensions try out +
+	  sample extensions (Inventory)
+
+2006-05-13 01:41  hjanuschka
+
+	* ajax_server_search.php, ajax_service_search.php,
+	  ajax_worker_search.php, bartlby-ui.class.php, bartlby_action.php,
+	  cli.php, logview.php, server_list.php, service_detail.php,
+	  service_list.php, services.php, statistic.php, ui-extra.conf,
+	  user_list.php, xml_api.php, fin/submit_passive,
+	  images/ajax_search.js, images/btl.css, images/force.gif: [no log
+	  message]
+
+2006-05-07 16:42  hjanuschka
+
+	* services.php, event_stream.php: [no log message]
+
+2006-05-07 01:32  hjanuschka
+
+	* IXR_Library.inc.php, add_service.php, modify_service.php,
+	  server_detail.php, service_detail.php, ui-extra.conf,
+	  xml_api.php: [no log message]
+
+2006-05-02 00:12  hjanuschka
+
+	* event_queue.php, logview.php: logview extended event_queue massiv
+	  changes
+
+2006-04-25 09:19  hjanuschka
+
+	* event_queue.php, template.html: view events via ui
+
+2006-04-25 00:20  hjanuschka
+
+	* bartlby-ui.class.php, ui-extra.conf, fin/BARTLBY_SHM_STALE:
+	  fixing a check_running bug
+
+2006-04-23 20:08  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, overview.php,
+	  service_detail.php, services.php, statistic.php, ui-extra.conf,
+	  xml_api.php, fin/force_check: core/ui/php: checks can now be
+	  forced ui: remote xml special_addon support core: svc perf MS
+	  core: round perf MS php: svcmap, get_service perf MS ui: perf MS
+
+2006-04-10 00:12  hjanuschka
+
+	* service_detail.php: R E L E A S E (1.1.8a -> Naproxen):
+
+	  perf: distribute RRDs correspodening to the perf handler core:
+	  sched_timeout refined core: service_retain core: lib/mysql
+	  service_retain php: service_retain ui: overview supports remote
+	  bartlby's ui: server/service detail supports remote bartlby's ui:
+	  services list supports remote bartlby ui: service_retain ui: add
+	  perf defaults to package ui: catch un-existing objects,
+	  server|service|worker ui: exit if either built in nor shared
+	  bartlby extension was found (discovered during php upgrade ) ui:
+	  addons got own config file (ui-extra.conf) php: E_WARNING on
+	  unexisting config file
+
+2006-04-06 10:34  hjanuschka
+
+	* bartlby-ui.class.php, overview.php, ui-extra.conf: typo fixes
+
+2006-03-30 03:21  hjanuschka
+
+	* fin/xml_remote: fin screen for xml_remote
+
+2006-03-30 03:12  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, overview.php,
+	  server_detail.php, service_detail.php, services.php,
+	  ui-extra.conf: remote xml server/service detail, services, quick
+	  view links
+
+2006-03-30 01:45  hjanuschka
+
+	* bartlby-ui.class.php, overview.php, template.html, ui-extra.conf:
+	  overview remote xml
+
+2006-03-18 02:55  hjanuschka
+
+	* add_service.php, bartlby-ui.class.php, bartlby_action.php,
+	  layout.class.php, modify_service.php, overview.php,
+	  service_detail.php, images/Disable-Sirene.gif,
+	  images/Enable-Sirene.gif: perf: distribute RRDs correspodening to
+	  the perf handler core: sched_timeout refined core: service_retain
+	  core: lib/mysql service_retain php: service_retain ui:
+	  service_retain ui: add perf defaults to package ui: catch
+	  un-existing objects, server|service|worker ui: exit if either
+	  built in nor shared bartlby extension was found (discovered
+	  during php upgrade ) ui: addons got own config file
+	  (ui-extra.conf) php: E_WARNING on unexisting config file
+
+2006-03-07 21:57  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, service_detail.php,
+	  services.php, ui-extra.conf: perf: distribute RRDs correspodening
+	  to the perf handler ui: add perf defaults to package ui: catch
+	  un-existing objects, server|service|worker ui: exit if either
+	  built in nor shared bartlby extension was found (discovered
+	  during php upgrade ) ui: addons got own config file
+	  (ui-extra.conf) php: E_WARNING on unexisting config file
+
 2006-03-05 01:23  hjanuschka
 
 	* bartlby-ui.class.php, bartlby_action.php, modify_downtime.php,

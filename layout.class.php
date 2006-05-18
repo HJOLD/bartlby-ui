@@ -197,9 +197,14 @@ class Layout {
 		
 		
 	}
-	function create_box($title, $content) {
+	function create_box($title, $content, $id="") {
+		if($id != "") {
+			$oid = " id=\"$id\" ";
+		} else {
+			$oid = "";	
+		}
 		$rr .= '
-			<table class="nopad">
+			<table class="nopad" ' . $oid . '>
 				<tr>
 					<td class="box_left_corner_top">&nbsp;</td>
 					<td class="box_top_run">' . $title . '</td>

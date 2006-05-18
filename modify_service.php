@@ -5,7 +5,7 @@ include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
-$layout->setTitle("Modify Service");
+$layout->setTitle("");
 function dnl($i) {
 	return sprintf("%02d", $i);
 }
@@ -139,33 +139,55 @@ $layout->OUT .= "<script>
 		function GrpChk() {
 			window.open('grpstr.php?str='+document.fm1.service_var.value, 'grp', 'width=600, height=600, scrollbars=yes');
 		}
+		function CheckTables() {
+			va=document.fm1.service_type.options[document.fm1.service_type.selectedIndex].value;
+			GenericToggleFix(\"active\", \"none\");
+			GenericToggleFix(\"passive\", \"none\");
+			GenericToggleFix(\"group\", \"none\");
+			
+			if(va == 2) {
+				GenericToggleFix(\"passive\", \"block\");
+			}
+			if(va == 1) {
+				GenericToggleFix(\"active\", \"block\");
+			}
+			if(va == 3) {
+				GenericToggleFix(\"group\", \"block\");	
+			}
+			if(va == 4) {
+				GenericToggleFix(\"active\", \"block\");	
+			}
+			
+		}
+		CheckTables();
 		</script>
 ";
-$layout->Form("fm1", "bartlby_action.php");
+echo "<form name='fm1' action='bartlby_action.php' method=GET>\n";
 $layout->Table("100%");
 
 
 
 
+$active_box_out = "<table>";
 
-$layout->Tr(
+$active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Type",
-			1=>$layout->DropDown("service_type", $types) 
+			1=>$layout->DropDown("service_type", $types,"onChange=\"CheckTables()\"") 
 		)
 	)
-);
+, true);
 
-$layout->Tr(
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Name",
 			1=>$layout->Field("service_name", "text", $defaults[service_name]) . $layout->Field("action", "hidden", "modify_service")
 		)
 	)
-);
-$layout->Tr(
+,true);
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Server",
@@ -173,9 +195,9 @@ $layout->Tr(
 			
 		)
 	)
-);
+,true);
 
-$layout->Tr(
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Check From:",
@@ -183,10 +205,10 @@ $layout->Tr(
 			
 		)
 	)
-);
+, true);
 
 
-$layout->Tr(
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Check To:",
@@ -194,10 +216,10 @@ $layout->Tr(
 			
 		)
 	)
-);
+, true);
 
 
-$layout->Tr(
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Check intervall",
@@ -205,8 +227,8 @@ $layout->Tr(
 			
 		)
 	)
-);
-$layout->Tr(
+,true);
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Acknowledgement",
@@ -214,8 +236,8 @@ $layout->Tr(
 			
 		)
 	)
-);
-$layout->Tr(
+,true);
+$active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service retain in status",
@@ -223,42 +245,37 @@ $layout->Tr(
 			
 		)
 	)
-);
+,true);
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Active Service Settings'
-					)
-			)
-		)
+$active_box_out .= "</table>";
+$layout->push_outside($layout->create_box("Basic Settings", $active_box_out, "basic"));
 
-);
-$layout->Tr(
+
+$active_box_out = "<table>";
+
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
-			0=>"Service Timeout(TCP Stuff)",
+			0=>"Service Timeout(either TCP or Local)",
 			1=>$layout->Field("service_check_timeout", "text", $defaults[service_check_timeout])
 			
 		)
 	)
-);
+,true);
 
-$layout->Tr(
+$active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Plugin",
 			1=>$layout->DropDown("service_plugin", $plugins) .  " <a href='javascript:showPlgHelp();'>Show Help of Plugin</A>&nbsp;&nbsp;<a href='javascript:testPlg();'>Test It</A>"
 		)
 	)
-);
+,true);
 
  $defaults[plugin_arguments]=str_replace("\n", "\\n",  $defaults[plugin_arguments]);
  $defaults[plugin_arguments]=str_replace("\r", "\\r",  $defaults[plugin_arguments]);
-$layout->Tr(
+
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Plugin Arguments",
@@ -266,24 +283,15 @@ $layout->Tr(
 			
 		)
 	)
-);
+,true);
+
+$active_box_out .= "</table>";
+$layout->push_outside($layout->create_box("Active/Local Settings", $active_box_out, "active"));
 
 
+$active_box_out = "<table>";
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Passive Service Settings'
-					)
-			)
-		)
-
-);
-
-$layout->Tr(
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Timeout",
@@ -291,23 +299,16 @@ $layout->Tr(
 			
 		)
 	)
-);
+,true);
 
 
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>Array(
-					'colspan'=> 2,
-					'class'=>'header',
-					'show'=>'Group Service Settings'
-					)
-			)
-		)
 
-);
+$active_box_out .= "</table>";
+$layout->push_outside($layout->create_box("Passive Settings", $active_box_out, "passive"));
+$active_box_out = "<table>";
 
-$layout->Tr(
+
+$active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Group definition",
@@ -316,7 +317,10 @@ $layout->Tr(
 			
 		)
 	)
-);
+,true);
+$active_box_out .= "</table>";
+$layout->push_outside($layout->create_box("Group Settings", $active_box_out, "group"));
+
 
 $layout->Tr(
 	$layout->Td(
