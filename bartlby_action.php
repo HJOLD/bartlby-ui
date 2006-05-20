@@ -22,6 +22,12 @@ function dnl($i) {
 
 
 switch($act) {
+	case 'disable_extension':
+		touch("extensions/" . $_GET[ext] . ".disabled");
+	break;
+	case 'enable_extension':
+		@unlink("extensions/" . $_GET[ext] . ".disabled");
+	break;
 	case 'delete_downtime':
 		$layout->set_menu("downtimes");
 		if($_GET[downtime_id]) {
@@ -525,7 +531,7 @@ switch($act) {
 				if($_GET[package_name] != "") {
 					$global_msg["package"].= "<br>" . $btl->installPackage($_GET[package_name], $add_server, NULL, NULL);	
 				} else {
-					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0, 3);
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "");
 					$global_msg["init_service"]="<li>Init";
 				}
 				

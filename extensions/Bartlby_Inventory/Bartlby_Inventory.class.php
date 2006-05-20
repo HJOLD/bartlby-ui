@@ -61,9 +61,47 @@ class Bartlby_Inventory {
 		global $defaults;
 		$d=$this->getDefaults($_GET[server_id]);
 		$r="<a href='extensions_wrap.php?script=Bartlby_Inventory/index.php&server_id=" . $_GET[server_id] . "'>Modify/View Inventory Details</A><br>";
-		$r .= "<br><b>Serial: </b> " . $d[serial] . "<br>";
-		$r .= "<b>Warranty End: </b> " . $d[war] . "<br>";
-		$r .= "<b>Aditional Info: </b> " . nl2br($d[info]) . "<br>";
+		if($d[serial] != "") {
+			$r .= "<br><b>Serial: </b> " . $d[serial] . "<br>";
+		}
+		if($d[war] != "") {
+			$r .= "<b>Warranty End: </b> " . $d[war] . "<br>";
+		}
+		if($d[info] != "") {
+			$r .= "<b>Aditional Info: </b> " . nl2br($d[info]) . "<br>";
+		}
+		
+		if(function_exists("snmpget")) {
+			snmp_set_valueretrieval(SNMP_VALUE_LIBRARY);
+			$r .= "<br><br><table cellpadding=0 cellspacing=0 width=100%>";
+			$r .= "<tr><td colspan=2><b>SNMP Info</b></td></tr>";
+			$descr = snmpget($defaults[server_ip], "public", "sysDescr.0");
+			$uptime = snmpget($defaults[server_ip], "public", "sysUpTime.0");
+			$contact = snmpget($defaults[server_ip], "public", "sysContact.0");
+			$sysname = snmpget($defaults[server_ip], "public", "sysName.0");
+			$syslocation = snmpget($defaults[server_ip], "public", "sysLocation.0");
+			
+			$descr = preg_replace("/(^.*: )/", "", $descr);
+			$uptime = preg_replace("/(^.*: )/", "", $uptime);
+			$contact = preg_replace("/(^.*: )/", "", $contact);
+			$sysname = preg_replace("/(^.*: )/", "", $sysname);
+			$syslocation = preg_replace("/(^.*: )/", "", $syslocation);
+			
+			
+			
+			$r .= "<tr><td align=left valign=top>Description:</td><td> " . $descr . "</td></tr>";	
+			$r .= "<tr><td align=left valign=top>Uptime:</td><td> " . $uptime . "</td></tr>";	
+			$r .= "<tr><td align=left valign=top>Contact:</td><td> " . $contact . "</td></tr>";	
+			$r .= "<tr><td align=left valign=top>Systemname:</td><td> " . $sysname . "</td></tr>";	
+			$r .= "<tr><td align=left valign=top>Location:</td><td> " . $syslocation . "</td></tr>";	
+			$r .= "<tr><td align=left valign=top>Uptime:</td><td> " . $uptime . "</td></tr>";	
+			
+			$r .= "</table>";
+		} else {
+			$r .= "<br><br><table cellpadding=0 cellspacing=0 width=100%>";
+			$r .= "<tr><td colspan=2><i>you should re-compile your php with --with-snmp</i></td></tr>";	
+			$r .= "</table>";
+		}
 		
 		return $r;		
 	}

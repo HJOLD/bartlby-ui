@@ -326,11 +326,14 @@ class BartlbyUi {
          	);
     		return $i;
 	}
-	function getExtensionsReturn($method, $layout) {
+	function getExtensionsReturn($method, $layout, $ign=false) {
 		$r=array();
 		$dhl = opendir("extensions");
 		while($file = readdir($dhl)) {
-			if($file != "." && $file != "..") {
+			if($file != "." && $file != ".." && !preg_match("/.*\.disabled/", $file)) {
+				if($ign == false && file_exists("extensions/" .  $file . ".disabled")) {
+						continue;
+				}
 				@include_once("extensions/" . $file . "/" . $file . ".class.php");
 				
 				
@@ -344,12 +347,20 @@ class BartlbyUi {
 						if($o != "") {
 							array_push($r, $ex);
 							
+							if(!file_exists("extensions/" . $file . ".disabled")) {
+								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=disable_extension&ext=$file' title='$file extension is enabled click to change'><img border=0 src='images/enabled.gif'></A></td></tr>";
+							} else {
+								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=enable_extension&ext=$file' title='$file extension is disabled click to change'><img border=0 src='images/diabled.gif'></A></td></tr>";	
+							}
+							
+							
 							$info_box_title='Extension: ' . $ex[ex_name];  
 							// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 							$core_content = "<table  width='100%'>
 								<tr>
 									<td colspan=2>" . $ex[out] .  "</td> 
 								</tr>
+								$endis
 								
 								
 								
@@ -402,7 +413,7 @@ class BartlbyUi {
 				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
 				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
 				
-				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack], $re[$x][service_retain]);
+				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack], $re[$x][service_retain],$re[$x][service_snmp_community], $re[$x][service_snmp_objid],$re[$x][service_snmp_version],$re[$x][service_snmp_warning],$re[$x][service_snmp_critical],$re[$x][service_snmp_type]);
 				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
 				
 				if($re[$x][__install_plugin]) {

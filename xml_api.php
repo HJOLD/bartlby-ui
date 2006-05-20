@@ -87,7 +87,7 @@ function xml_bartlby_encode($args) {
 function xml_bartlby_add_service($args) {
 	global $btl;
 	//SERVERID, PLUGIN, SERVICE_NAME, PLUGIN ARGS, HOURFROM (00), HOURTO(00), MINFROM (00), MINTO(00), service_interval, service_type, GROUPSTR, PASSIVE_TIMEOUT, CHECK_TIMEOUT, SERVICE_ACK
-	$ads=bartlby_add_service($btl->CFG, $args[0], $args[1],$args[2],$args[3],1, $args[4], $args[5], $args[6], $args[7],$args[8],$args[9],$args[10],$args[11],$args[12],$args[13]);	
+	$ads=bartlby_add_service($btl->CFG, $args[0], $args[1],$args[2],$args[3],1, $args[4], $args[5], $args[6], $args[7],$args[8],$args[9],$args[10],$args[11],$args[12],$args[13],$args[14],$args[15],$args[16],$args[17],$args[18],$args[19]);	
 	return $ads;
 }
 function xml_bartlby_delete_service($args) {
