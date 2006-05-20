@@ -20,6 +20,8 @@ if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
 } else {
 	$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
 }
+
+
 $layout->Table("100%");
 
 $svc_color=$btl->getColor($defaults[current_state]);
@@ -237,6 +239,55 @@ if($defaults[service_type] == 1 || $defaults[service_type] == 4){
 	
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
 }
+
+
+if($defaults[service_type] == 5){
+	if($defaults[service_snmp_type]  == 1) {
+		$snmp_type = "Lower";
+	} 
+	if($defaults[service_snmp_type]  == 2) {
+		$snmp_type = "Greater";
+	} 
+	$info_box_title='SNMP Service';  
+	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
+	$core_content = "<table  width='100%'>
+		<tr>
+			<td width=150 class='font2'>Community:</td>
+			<td align=left >" . $defaults[service_snmp_community] . "</font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Object ID:</td>
+			<td align=left >" . $defaults[service_snmp_objid] . "</font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Protocol Version:</td>
+			<td align=left >" . $defaults[service_snmp_version] . "</font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Warning:</td>
+			<td align=left >" . $defaults[service_snmp_warning] . "</font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Critical:</td>
+			<td align=left >" . $defaults[service_snmp_critical] . "</font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		<tr>
+			<td width=150 class='font2'>Match Type:</td>
+			<td align=left >" . $snmp_type . "</font></td>
+			<td>&nbsp;</td>           
+		</tr>
+		
+	</table>";
+	
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+}
+
+
 if($defaults[service_type] == 2){
 	
 		

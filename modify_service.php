@@ -89,6 +89,12 @@ $types[3][k]="Local";
 if($defaults[service_type] == 4) {
 	$types[3][s]=1;
 }
+$types[4][c]="";
+$types[4][v]="5";
+$types[4][k]="SNMP";
+if($defaults[service_type] == 5) {
+	$types[4][s]=1;
+}
 
 //Get plugins :))
 $layout->set_menu("services");
@@ -144,6 +150,7 @@ $layout->OUT .= "<script>
 			GenericToggleFix(\"active\", \"none\");
 			GenericToggleFix(\"passive\", \"none\");
 			GenericToggleFix(\"group\", \"none\");
+			GenericToggleFix(\"snmp\", \"none\");
 			
 			if(va == 2) {
 				GenericToggleFix(\"passive\", \"block\");
@@ -156,6 +163,9 @@ $layout->OUT .= "<script>
 			}
 			if(va == 4) {
 				GenericToggleFix(\"active\", \"block\");	
+			}
+			if(va == 5) {
+				GenericToggleFix(\"snmp\", \"block\");	
 			}
 			
 		}
@@ -320,6 +330,104 @@ $active_box_out .= $layout->Tr(
 ,true);
 $active_box_out .= "</table>";
 $layout->push_outside($layout->create_box("Group Settings", $active_box_out, "group"));
+
+
+
+
+$snmptypes[0][c]="";
+$snmptypes[0][v]="1";
+$snmptypes[0][k]="Lower";
+
+
+if($defaults[service_snmp_type] == 1) {
+	 $snmptypes[0][s]=1;
+}
+
+$snmptypes[1][c]="";
+$snmptypes[1][v]="2";
+$snmptypes[1][k]="Greater";
+
+if($defaults[service_snmp_type] == 2) {
+	 $snmptypes[1][s]=1;
+}
+
+$snmpversions[0][c]="";
+$snmpversions[0][v]="1";
+$snmpversions[0][k]="1";
+
+
+if($defaults[service_snmp_version] == 1) {
+	 $snmpversions[0][s]=1;
+}
+
+$snmpversions[1][c]="";
+$snmpversions[1][v]="2";
+$snmpversions[1][k]="2c";
+
+if($defaults[service_snmp_version] == 2) {
+	 $snmpversions[1][s]=1;
+}
+
+$active_box_out = "<table >";
+
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Community",
+			1=>$layout->Field("service_snmp_community", "text", $defaults[service_snmp_community])
+			
+		)
+	)
+,true);
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"OBJ ID",
+			1=>$layout->Field("service_snmp_objid", "text", $defaults[service_snmp_objid])
+			
+		)
+	)
+,true);
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Version",
+			1=>$layout->DropDown("service_snmp_version", $snmpversions, "") 
+			
+		)
+	)
+,true);
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Warning",
+			1=>$layout->Field("service_snmp_warning", "text", $defaults[service_snmp_warning])
+			
+		)
+	)
+,true);
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Critical",
+			1=>$layout->Field("service_snmp_critical", "text", $defaults[service_snmp_critical])
+			
+		)
+	)
+,true);
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"MatchType",
+			1=>$layout->DropDown("service_snmp_type", $snmptypes, "") 
+			
+		)
+	)
+,true);
+$active_box_out .= "</table>";
+$layout->push_outside($layout->create_box("SNMP Settings", $active_box_out, "snmp"));
+
+
 
 
 $layout->Tr(

@@ -42,68 +42,75 @@ class SSH {
 	*/
 	function _serverDetail() {
 		global $defaults;
-		$r = "<script language='javascript'>
-			function getXmlHttpRequestObject() {
-				if (window.XMLHttpRequest) {
-					return new XMLHttpRequest();
-				} else if(window.ActiveXObject) {
-					return new ActiveXObject(\"Microsoft.XMLHTTP\");
-				} else {
-					alert(\"Ajax? enabled?!\");
+		
+		$st = $this->getDefaults($_GET[server_id]);
+		
+		
+		if($st[ssh_user] && $st[ssh_pass]) {
+			$r = "<script language='javascript'>
+				function getXmlHttpRequestObject() {
+					if (window.XMLHttpRequest) {
+						return new XMLHttpRequest();
+					} else if(window.ActiveXObject) {
+						return new ActiveXObject(\"Microsoft.XMLHTTP\");
+					} else {
+						alert(\"Ajax? enabled?!\");
+					}
 				}
-			}
-			var sshr = getXmlHttpRequestObject();
-			function SSHExec(urll) {
-				
-				if (sshr.readyState == 4 || sshr.readyState == 0) {
+				var sshr = getXmlHttpRequestObject();
+				function SSHExec(urll) {
 					
-					var str = escape(document.getElementById('ssh_cmd').value);
-					
-					sshr.open(\"GET\", urll + '?ip=" . $defaults[server_ip] . "&server_id=" .  $_GET[server_id] . "&exec=' + str, true);
-					sshr.onreadystatechange = sshOutput; 
-					sshr.send(null);
-					document.getElementById('exe').disabled=true;
-					document.getElementById('ssh_cmd').disabled=true;
-					
-					
-				}		
-			}
-			function sshOutput() {
-				if (sshr.readyState == 4) {
-					
-					var ss = document.getElementById('ssh_output');
-					
-					var str = sshr.responseText + ss.innerHTML;
-					ss.innerHTML = str;
-					document.getElementById('exe').disabled=false;
-					document.getElementById('ssh_cmd').disabled=false;
-					document.getElementById('ssh_cmd').value='';
-					
-				}
-			}
-			function sshKeyUp(evnt){
-			
-				if(evnt.wich) {
-					kcode = evnt.wich;
+					if (sshr.readyState == 4 || sshr.readyState == 0) {
 						
-				} else if (evnt.keyCode) {
-					kcode = evnt.keyCode;	
+						var str = escape(document.getElementById('ssh_cmd').value);
+						
+						sshr.open(\"GET\", urll + '?ip=" . $defaults[server_ip] . "&server_id=" .  $_GET[server_id] . "&exec=' + str, true);
+						sshr.onreadystatechange = sshOutput; 
+						sshr.send(null);
+						document.getElementById('exe').disabled=true;
+						document.getElementById('ssh_cmd').disabled=true;
+						
+						
+					}		
 				}
+				function sshOutput() {
+					if (sshr.readyState == 4) {
+						
+						var ss = document.getElementById('ssh_output');
+						
+						var str = sshr.responseText + ss.innerHTML;
+						ss.innerHTML = str;
+						document.getElementById('exe').disabled=false;
+						document.getElementById('ssh_cmd').disabled=false;
+						document.getElementById('ssh_cmd').value='';
+						
+					}
+				}
+				function sshKeyUp(evnt){
 				
-				if(kcode == 13 && document.getElementById('cape').checked) {
-					//Enter
-					SSHExec('extensions/SSH/exec.php');
+					if(evnt.wich) {
+						kcode = evnt.wich;
+							
+					} else if (evnt.keyCode) {
+						kcode = evnt.keyCode;	
+					}
 					
+					if(kcode == 13 && document.getElementById('cape').checked) {
+						//Enter
+						SSHExec('extensions/SSH/exec.php');
+						
+					}
 				}
-			}
-			function sshClear() {
-				var ss = document.getElementById('ssh_output')
-				ss.innerHTML = '';	
-			}
-		</script>";
-		$r .= "<a href='extensions_wrap.php?script=SSH/index.php?server_id=" .  $_GET[server_id] . "'>Manage Authentication</A><input type=button id=exe value='execute' onClick=\"SSHExec('extensions/SSH/exec.php');\"><input type=button value='clear' onClick=\"sshClear();\"><input type=checkbox value='1' id=cape checked>Capture &lt;Enter&gt;<br><textarea rows=20 cols=50 id='ssh_cmd' onKeyUp=\"sshKeyUp(event)\"></textarea>\n<div id=\"ssh_output\"></div>";
+				function sshClear() {
+					var ss = document.getElementById('ssh_output')
+					ss.innerHTML = '';	
+				}
+			</script>";
+			$r .= "<a href='extensions_wrap.php?script=SSH/index.php?server_id=" .  $_GET[server_id] . "'>Manage Authentication</A><input type=button id=exe value='execute' onClick=\"SSHExec('extensions/SSH/exec.php');\"><input type=button value='clear' onClick=\"sshClear();\"><input type=checkbox value='1' id=cape checked>Capture &lt;Enter&gt;<br><textarea rows=20 cols=50 id='ssh_cmd' onKeyUp=\"sshKeyUp(event)\"></textarea>\n<div id=\"ssh_output\"></div>";
 		
-		
+		} else {
+			$r = "";	
+		}
 		return $r;		
 	}
 	/*
