@@ -54,6 +54,9 @@ if($defaults[service_type] == 3) {
 if($defaults[service_type] == 4) {
 	$svc_type="Local";
 }
+if($defaults[service_type] == 5) {
+	$svc_type="SNMP";
+}
 
 if($defaults["notify_enabled"]==1) {
 	$noti_en="true";
@@ -206,7 +209,7 @@ $info_box_title='Last Output';
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 $core_content = "<table  width='100%'>
 	<tr>
-		<td>" . $defaults[new_server_text] . "</td> 
+		<td>" . str_replace( "\\dbr", "<br>",nl2br($defaults[new_server_text])) . "</td> 
 	</tr>
 	
 	
