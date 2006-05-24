@@ -96,6 +96,20 @@ if($defaults[service_type] == 5) {
 	$types[4][s]=1;
 }
 
+$types[5][c]="";
+$types[5][v]="6";
+$types[5][k]="NRPE";
+if($defaults[service_type] == 6) {
+	$types[5][s]=1;
+}
+
+$types[6][c]="";
+$types[6][v]="7";
+$types[6][k]="NRPE(ssl)";
+if($defaults[service_type] == 7) {
+	$types[6][s]=1;
+}
+
 //Get plugins :))
 $layout->set_menu("services");
 $optind=0;
@@ -155,7 +169,7 @@ $layout->OUT .= "<script>
 			if(va == 2) {
 				GenericToggleFix(\"passive\", \"block\");
 			}
-			if(va == 1) {
+			if(va == 1 || va == 6 || va == 7) {
 				GenericToggleFix(\"active\", \"block\");
 			}
 			if(va == 3) {

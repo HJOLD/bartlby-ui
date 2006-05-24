@@ -41,7 +41,13 @@ $types[4][c]="";
 $types[4][v]="5";
 $types[4][k]="SNMP";
 
+$types[5][c]="";
+$types[5][v]="6";
+$types[5][k]="NRPE";
 
+$types[6][c]="";
+$types[6][v]="7";
+$types[6][k]="NRPE(ssl)";
 
 //Get plugins :))
 $layout->set_menu("services");
@@ -95,7 +101,7 @@ $layout->OUT .= "<script>
 			if(va == 2) {
 				GenericToggleFix(\"passive\", \"block\");
 			}
-			if(va == 1) {
+			if(va == 1 || va == 6 || va == 7) {
 				GenericToggleFix(\"active\", \"block\");
 			}
 			if(va == 3) {

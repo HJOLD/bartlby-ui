@@ -68,17 +68,7 @@ for($x=0; $x<count($server_map); $x++) {
 //echo $defaults[last_notify_send] . "<br>";
 
 
-@$fp=fsockopen($defaults[server_ip], $defaults[server_port], $errno, $errstr, 2);
-if(!$fp) {
-	$agent_v = "$errstr ($errno)<br />\n";	
-} else {
-	$str=$_GET[plugin] . "| " . $arges . "|\n";
-	
-	$estr=bartlby_encode($str);
-		
-	$agent_v=@fread($fp, 1024);
-	@fclose($fp);
-}
+
 
 
 
@@ -116,11 +106,7 @@ $core_content = "<table  width='100%'>
 		<td align=left >" . getGeoip(gethostbyname($defaults[server_ip])) . "</font></td>  
 		<td>&nbsp;</td>         
 	</tr>
-	<tr>
-		<td width=150 class='font2'>Agent:</td>
-		<td align=left >" . $agent_v . "</font></td>  
-		<td>&nbsp;</td>         
-	</tr>
+	
 	
 	
 </table>";
