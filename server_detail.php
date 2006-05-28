@@ -60,8 +60,13 @@ if($btl->isServerUp($_GET[server_id], $map)) {
 $services_assigned="";
 
 for($x=0; $x<count($server_map); $x++) {
-	$services_assigned .= "<a href='service_detail.php?service_place=" . $server_map[$x][shm_place] . "'>" . $server_map[$x][service_name] . "</A><br>";
+	//$services_assigned .= "<a href='service_detail.php?service_place=" . $server_map[$x][shm_place] . "'>" . $server_map[$x][service_name] . "</A><br>";
+	$dmp_info[$server_map[$x][current_state]] += 1;
 	
+}
+
+while(list($k, $v) = each($dmp_info)) {
+		$services_assigned .= $btl->getState($k) . ":" . $v . ",";
 }
 
 
@@ -139,7 +144,7 @@ $layout->push_outside($layout->create_box($info_box_title, $core_content));
 
 $r=$btl->getExtensionsReturn("_serverDetail", $layout);
 
-
+$layout->OUT .= $btl->getServerOptions($defaults, $layout);
 
 
 

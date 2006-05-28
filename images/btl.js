@@ -1,3 +1,9 @@
+function serviceManageIconChange(f) {
+	selval=f.server_icon.options[f.server_icon.selectedIndex].value;
+	ph = document.getElementById("picholder");
+	ph.innerHTML="<img src='server_icons/" + selval + "'>";
+		
+}
 function openMap() {
 	window.open('create_map.php','','width=1024,height=786, scrollbar=yes, scrollbars=yes')
 }

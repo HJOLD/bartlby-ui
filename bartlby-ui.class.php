@@ -307,7 +307,8 @@ class BartlbyUi {
 			case 4: return "INFO"; break;
 			case 5: return "TRIGGER"; break;
 			case 6: return "FLAPPING"; break;
-				
+			default:
+			return "UNKOWN($state)";
 			
 		}
 	}
@@ -906,6 +907,11 @@ class BartlbyUi {
 		imagePNG($im, "/var/www/htdocs/test.png");
    		imagedestroy($im);
 
+	}
+	function getserveroptions($defaults, $layout) {
+		$modify = "<a href='modify_server.php?server_id=" . $_GET[server_id] . "'><img src='images/modify.gif' title='Modify this server' border=0></A>";
+		
+		return $modify;
 	}
 	function getserviceOptions($defaults, $layout) {
 		if($defaults[service_active] == 1) {

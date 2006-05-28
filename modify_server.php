@@ -68,7 +68,19 @@ $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>"Icon:",
-				1=>$layout->DropDown("server_icon", $server_icons) 
+				1=>$layout->DropDown("server_icon", $server_icons, "onChange=\"serviceManageIconChange(this.form);\"") 
+			)
+		)
+
+);
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>Array(
+					'colspan'=> 2,
+					"align"=>"left",
+					'show'=>"<div id=picholder></div><script>serviceManageIconChange(document.fm1);</script>"
+					)
 			)
 		)
 

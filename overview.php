@@ -260,7 +260,7 @@
 			}
 			if($qck[$k][4]) {
 				$sf=true;
-				$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][4] . " Info</td></tr>";
+				$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=4'>" . $qck[$k][4] . " Info</A></td></tr>";
 			}
 			if($qck[$k][downtime]) {
 				$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
