@@ -106,7 +106,7 @@ class SSH {
 					ss.innerHTML = '';	
 				}
 			</script>";
-			$r .= "<a href='extensions_wrap.php?script=SSH/index.php?server_id=" .  $_GET[server_id] . "'>Manage Authentication</A><input type=button id=exe value='execute' onClick=\"SSHExec('extensions/SSH/exec.php');\"><input type=button value='clear' onClick=\"sshClear();\"><input type=checkbox value='1' id=cape checked>Capture &lt;Enter&gt;<br><textarea rows=20 cols=50 id='ssh_cmd' onKeyUp=\"sshKeyUp(event)\"></textarea>\n<div id=\"ssh_output\"></div>";
+			$r .= "<a href='extensions_wrap.php?script=SSH/index.php?server_id=" .  $_GET[server_id] . "'><img src='images/keys.gif' border=0> Authentication</A><input type=button id=exe value='execute' onClick=\"SSHExec('extensions/SSH/exec.php');\"><input type=button value='clear' onClick=\"sshClear();\"><input type=checkbox value='1' id=cape checked>Capture &lt;Enter&gt;<br><textarea rows=20 cols=50 id='ssh_cmd' onKeyUp=\"sshKeyUp(event)\"></textarea>\n<div id=\"ssh_output\"></div>";
 		
 		} else {
 			$r = "";	

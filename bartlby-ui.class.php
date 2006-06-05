@@ -351,9 +351,9 @@ class BartlbyUi {
 							array_push($r, $ex);
 							
 							if(!file_exists("extensions/" . $file . ".disabled")) {
-								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=disable_extension&ext=$file' title='$file extension is enabled click to change'><img border=0 src='images/enabled.gif'></A></td></tr>";
+								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=disable_extension&ext=$file' title='$file extension is enabled click to change'><img border=0 src='images/extension_enable.gif'></A></td></tr>";
 							} else {
-								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=enable_extension&ext=$file' title='$file extension is disabled click to change'><img border=0 src='images/diabled.gif'></A></td></tr>";	
+								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=enable_extension&ext=$file' title='$file extension is disabled click to change'><img border=0 src='images/extension_disable.gif'></A></td></tr>";	
 							}
 							
 							
