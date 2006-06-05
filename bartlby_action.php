@@ -225,6 +225,7 @@ switch($act) {
 			//$msg = "Creating package: " . $_GET[package_name] . "<br>";
 			for($x=0; $x<$btl->info[services]; $x++) {
 				$svc=bartlby_get_service($btl->CFG, $x);
+				$svc=bartlby_get_service_by_id($btl->CFG, $svc[service_id]);
 				if(@in_array($svc[service_id], $_GET[services])) {
 					$global_msg[pkg_services] .="<li>" . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name];
 					

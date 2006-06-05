@@ -57,6 +57,8 @@ class BartlbyUi {
 		$this->release=$this->info[version];
 		$this->loadRights();
 		
+		
+		
 	}
 	function finScreen($f=false) {
 		global $_GET,$global_msg;

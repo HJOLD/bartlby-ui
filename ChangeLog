@@ -1,3 +1,45 @@
+2006-05-28 18:18  hjanuschka
+
+	* add_server.php, bartlby-ui.class.php, modify_server.php,
+	  overview.php, server_detail.php, template.html, images/btl.js,
+	  server_icons/01generic.gif, server_icons/apple.gif,
+	  server_icons/freebsd.gif, server_icons/linux.gif,
+	  server_icons/openbsd.gif, server_icons/windows.gif: cbr
+
+2006-05-24 21:18  hjanuschka
+
+	* add_service.php, modify_service.php, server_detail.php,
+	  service_detail.php: version bump
+
+2006-05-21 23:19  hjanuschka
+
+	* service_detail.php, template.html: commit before workweek
+
+2006-05-21 01:37  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, extensions.php,
+	  xml_api.php, extensions/SSH.disabled,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  fin/add_service, fin/disable_extension, fin/enable_extension,
+	  fin/modify_service: ssh extension disabled by default from now
+	  !!! USE OF YOUR OWN RISK !!!!!!!! extensions can be
+	  enabled/disabled
+
+2006-05-20 22:26  hjanuschka
+
+	* add_service.php, bartlby-ui.class.php, bartlby_action.php,
+	  modify_service.php, service_detail.php,
+	  extensions/SSH/SSH.class.php: ui: add/modify server page rebrush
+	  (should be user-friendlier) core: snmp INTEGER greater, lower
+	  (warning,critical) (--enable-snmp=yes) core/lib mysql: SNMP
+	  functionality ui: add/modify_service SNMP php: SNMP functions
+
+2006-05-19 00:17  hjanuschka
+
+	* ChangeLog, add_service.php, layout.class.php, modify_service.php,
+	  template.html: modified the service add/modify pages should be a
+	  bit user friendlier
+
 2006-05-15 00:55  hjanuschka
 
 	* images/modify.gif: missing modify.gif
