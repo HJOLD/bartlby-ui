@@ -54,7 +54,7 @@ $layout->Table("100%");
 			$check_count +=$servs[$x][service_time_count];
 			$plugin=$servs[$x][plugin];
 			if($servs[$x][service_time_count] > 0) {
-				$ms=round($servs[$x][service_time_sum] / $servs[$x][service_time_count], 2);
+				$ms=@round($servs[$x][service_time_sum] / $servs[$x][service_time_count], 2);
 			} else {
 				$ms=0;	
 			}
@@ -236,7 +236,7 @@ $layout->display();
 function sort_table($plugin_table) {
 	global $sorto;
 	
-	while(list($k, $v) = each($plugin_table)) {
+	while(list($k, $v) = @each($plugin_table)) {
 		
 		$max=0;
 		$sum=0;
@@ -254,9 +254,9 @@ function sort_table($plugin_table) {
 	}
 	
 	if($sorto == "asc") {
-		ksort($plugins_sortable);
+		@ksort($plugins_sortable);
 	} else {
-		krsort($plugins_sortable);	
+		@krsort($plugins_sortable);	
 	}
 	return $plugins_sortable;
 	
