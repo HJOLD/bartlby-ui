@@ -75,11 +75,11 @@ class Bartlby_Inventory {
 			snmp_set_valueretrieval(SNMP_VALUE_LIBRARY);
 			$r .= "<br><br><table cellpadding=0 cellspacing=0 width=100%>";
 			$r .= "<tr><td colspan=2><b>SNMP Info</b></td></tr>";
-			$descr = snmpget($defaults[server_ip], "public", "sysDescr.0");
-			$uptime = snmpget($defaults[server_ip], "public", "sysUpTime.0");
-			$contact = snmpget($defaults[server_ip], "public", "sysContact.0");
-			$sysname = snmpget($defaults[server_ip], "public", "sysName.0");
-			$syslocation = snmpget($defaults[server_ip], "public", "sysLocation.0");
+			$descr = snmpget($defaults[server_ip], "public", "sysDescr.0",1);
+			$uptime = snmpget($defaults[server_ip], "public", "sysUpTime.0",1);
+			$contact = snmpget($defaults[server_ip], "public", "sysContact.0",1);
+			$sysname = snmpget($defaults[server_ip], "public", "sysName.0",1);
+			$syslocation = snmpget($defaults[server_ip], "public", "sysLocation.0",1);
 			
 			$descr = preg_replace("/(^.*: )/", "", $descr);
 			$uptime = preg_replace("/(^.*: )/", "", $uptime);
