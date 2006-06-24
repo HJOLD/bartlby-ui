@@ -78,17 +78,29 @@ switch($act) {
 	
 	case 'edit_cfg':
 		$layout->set_menu("core");
+		
+		
+		switch($_POST[ecfg]) {
+			case 'bartlby.cfg':
+				$cfgfile=$btl->CFG;
+			break;	
+			case 'ui-extra.conf':
+				$cfgfile="ui-extra.conf";
+			break;
+		}
+		
+		
 		if($_POST["cfg_file"]) {
 			if (get_magic_quotes_gpc()) {
 				$_POST["cfg_file"] = stripslashes($_POST["cfg_file"]);
 			}
 			$new_cfg=$_POST["cfg_file"];
 			//Backup current
-			$backup_name=$btl->CFG . ".bak_" . date("d-m-Y_H_i_s");
+			$backup_name=$cfgfile . ".bak_" . date("d-m-Y_H_i_s");
 			$global_msg[backup_cfg]=$backup_name;
 		
-			copy($btl->CFG, $backup_name);
-			$fp=fopen($btl->CFG, "w");
+			copy($cfgfile, $backup_name);
+			$fp=fopen($cfgfile, "w");
 			$new_cfg=str_replace("\r", "", $new_cfg);
 			fwrite($fp, $new_cfg);
 			fclose($fp);

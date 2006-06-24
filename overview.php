@@ -123,16 +123,17 @@
 		}
 		
 		for($y=0; $y<count($v); $y++) {
-			$qck[$v[$y][server_name]][$v[$y][current_state]]++;	
-			$qck[$v[$y][server_name]][10]=$v[$y][server_id];
-			$qck[$v[$y][server_name]][server_icon]=$v[$y][server_icon];
+			$qck[$v[$y][server_id]][$v[$y][current_state]]++;	
+			$qck[$v[$y][server_id]][10]=$v[$y][server_id];
+			$qck[$v[$y][server_id]][server_icon]=$v[$y][server_icon];
+			$qck[$v[$y][server_id]][server_name]=$v[$y][server_name];
 			if($v[$y][is_downtime] == 1) {
-				$qck[$v[$y][server_name]][$v[$y][current_state]]--;
-				$qck[$v[$y][server_name]][downtime]++;
+				$qck[$v[$y][server_id]][$v[$y][current_state]]--;
+				$qck[$v[$y][server_id]][downtime]++;
 				
 			}
 			if($v[$y][service_ack] == 2) {
-				$qck[$v[$y][server_name]][acks]++;	
+				$qck[$v[$y][server_id]][acks]++;	
 				$acks_outstanding++;
 				
 			}
@@ -235,7 +236,7 @@
 				$STATE="DOWN";
 			}
 			$quick_view .= "<tr>";
-			$quick_view .= "<td class=$cl><img src='server_icons/" . $qck[$k][server_icon] . "'><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "'>$k</A></td>";
+			$quick_view .= "<td class=$cl><img src='server_icons/" . $qck[$k][server_icon] . "'><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "'>" . $qck[$k][server_name] . "</A></td>";
 			$quick_view .= "<td class=$cl><font size=1>$STATE</td>";
 			$quick_view .= "<td class=$cl><table width=100>";
 			
