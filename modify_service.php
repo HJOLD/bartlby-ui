@@ -9,7 +9,7 @@ $layout->setTitle("");
 function dnl($i) {
 	return sprintf("%02d", $i);
 }
-if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
+if($_GET[service_id]{0} == 's') {
 	$layout->Form("fm1", "bartlby_action.php");
 	$layout->Table("100%");
 
@@ -30,14 +30,44 @@ if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
 	exit(1);
 	
 	
-} else {
-	$defaults=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);	
+} 
+
+$defaults=@bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+
+$fm_action="modify_service";
+if($_GET["copy"] == "true") {
+	$fm_action="add_service";
+}
+if($_GET["new"] == "true") {
+	$fm_action="add_service";
+	
+	$defaults["min_from"]="00";
+	$defaults["min_to"]="59";
+	$defaults["hour_from"]="00";
+	$defaults["hour_to"]="24";
+	
+	$defaults["check_interval"]=bartlby_config("ui-extra.conf", "new.service.interval");
+	$defaults[service_type]=(int)bartlby_config("ui-extra.conf", "new.service.type");
+	$defaults[service_ack]=(int)bartlby_config("ui-extra.conf", "new.service.ack");
+	$defaults[service_retain]=(int)bartlby_config("ui-extra.conf", "new.service.retain");
+	
+	$defaults[service_check_timeout]=(int)bartlby_config("ui-extra.conf", "new.service.active.tcptimeout");
+	$defaults[plugin]=bartlby_config("ui-extra.conf", "new.service.active.plugin");
+	$defaults[service_args]=bartlby_config("ui-extra.conf", "new.service.active.arguments");
+	
+	$defaults[service_passive_timeout]=(int)bartlby_config("ui-extra.conf", "new.service.passive.timeout");
+	
 }
 
-if($defaults == false) {
+
+
+if($defaults == false && $_GET["new"] != "true") {
 	$btl->redirectError("BARTLBY::OBJECT::MISSING");
 	exit(1);	
 }
+
+
+
 //ACKS
 
 //Ack's
@@ -207,7 +237,7 @@ $active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Name",
-			1=>$layout->Field("service_name", "text", $defaults[service_name]) . $layout->Field("action", "hidden", "modify_service")
+			1=>$layout->Field("service_name", "text", $defaults[service_name]) . $layout->Field("action", "hidden", $fm_action)
 		)
 	)
 ,true);

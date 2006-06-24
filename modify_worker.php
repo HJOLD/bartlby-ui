@@ -7,9 +7,21 @@ $btl=new BartlbyUi($Bartlby_CONF);
 $layout= new Layout();
 $layout->set_menu("worker");
 $layout->setTitle("Modify Worker");
-$defaults=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
+$defaults=@bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 
-if($defaults == false) {
+$fm_action="modify_worker";
+if($_GET["copy"] == "true") {
+	$fm_action="add_worker";
+	$layout->setTitle("Copy Worker");
+}
+if($_GET["new"] == "true") {
+	$fm_action="add_worker";
+	$layout->setTitle("Add Worker");
+	
+	
+}
+
+if($defaults == false && $_GET["new"] != "true") {
 	$btl->redirectError("BARTLBY::OBJECT::MISSING");
 	exit(1);	
 }
@@ -60,8 +72,8 @@ while ($file = readdir ($dh)) {
        		}*/
        		
        		if(strstr((string)$defaults[enabled_triggers],"|" . $file . "|")) {
-			$triggers[$optind][s]=1;	
-		}
+				$triggers[$optind][s]=1;	
+			}
        		
        		$optind++;
        	}
@@ -114,7 +126,7 @@ $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Name",
-			1=>$layout->Field("worker_name", "text", $defaults[name]) . $layout->Field("action", "hidden", "modify_worker")
+			1=>$layout->Field("worker_name", "text", $defaults[name]) . $layout->Field("action", "hidden", $fm_action)
 		)
 	)
 );
@@ -191,7 +203,18 @@ $layout->Tr(
 	)
 );
 
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>Array(
+					'colspan'=> 2,
+					"align"=>"left",
+					'show'=>"<a href='modify_worker.php?copy=true&worker_id=" . $_GET[worker_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this worker' border=0></A>"
+					)
+			)
+		)
 
+);
 
 $layout->Tr(
 	$layout->Td(

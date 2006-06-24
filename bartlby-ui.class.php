@@ -912,8 +912,8 @@ class BartlbyUi {
 	}
 	function getserveroptions($defaults, $layout) {
 		$modify = "<a href='modify_server.php?server_id=" . $_GET[server_id] . "'><img src='images/modify.gif' title='Modify this server' border=0></A>";
-		
-		return $modify;
+		$copy = "<a href='modify_server.php?copy=true&server_id=" . $_GET[server_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Server' border=0></A>";
+		return $modify . " " . $copy;
 	}
 	function getserviceOptions($defaults, $layout) {
 		if($defaults[service_active] == 1) {
@@ -931,6 +931,7 @@ class BartlbyUi {
 		} else {
 			$downtime="&nbsp;";
 		}
+		
 		$special_menu = "<a href='javascript:void();' onClick=\"return dropdownmenu(this, event, menu" . $defaults[service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img title='Click to view special addons' src='images/icon_work1.gif' border=0></A>";
 		$layout->OUT .= "<script>var menu" . $defaults[service_id] . "=new Array();</script>";
 		$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
@@ -954,8 +955,8 @@ class BartlbyUi {
 		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
 		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
 						
-						
-		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu";
+		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Service' border=0></A>";				
+		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy";
 		
 		return $ret;
 	}
