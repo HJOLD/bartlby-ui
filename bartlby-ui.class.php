@@ -1,6 +1,6 @@
 <?
 set_time_limit(0);
-
+define("BARTLBY_UI_VERSION", "0.9");
 
 
 class BartlbyUi {

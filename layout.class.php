@@ -145,7 +145,7 @@ class Layout {
 	}
 	
 	function display($cr="") {
-			
+		//global $BARTLBY_UI_VERSION;
 		if($this->menu_set == false) {
 			$this->set_menu("core");	
 			$this->set_menu("main");
@@ -189,6 +189,8 @@ class Layout {
 			$o = str_replace("<!--BTUITIME-->",round($diff,2),$o);
 			$o = str_replace("<!--BTLEXTMENU-->",$this->ext_menu,$o);
 			$o = str_replace("<!--SERVERTIME-->",date("d.m.Y H:i:s") ,$o);
+			
+			$o = str_replace("<!--UIVERSION-->",BARTLBY_UI_VERSION ,$o);
 			echo $o; 	
 		}
 		fclose($fp);
