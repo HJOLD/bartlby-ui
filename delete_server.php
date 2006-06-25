@@ -11,7 +11,10 @@ $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
 $global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
-
+if($global_msg == false) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
+}
 $dlmsg=$btl->finScreen("delete_server1");
 
 $layout->Tr(

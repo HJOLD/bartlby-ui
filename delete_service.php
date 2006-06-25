@@ -34,6 +34,10 @@ if($_GET[service_id] == "" || $_GET[service_id]{0} == 's') {
 }
 
 $global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+if($global_msg == false) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
+}
 
 $dlmsg=$btl->finScreen("delete_service1");
 

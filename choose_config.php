@@ -24,7 +24,7 @@ $optind++;
 $layout->Tr(
 $layout->Td(
 		Array(
-			0=>"Package:",
+			0=>"Config file:",
 			1=>$layout->DropDown("ecfg", $packages) 
 		)
 	)
