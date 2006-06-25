@@ -142,6 +142,7 @@ if($defaults[service_type] == 7) {
 
 //Get plugins :))
 $layout->set_menu("services");
+/*
 $optind=0;
 $plgs=bartlby_config($btl->CFG, "agent_plugin_dir");
 $dh=opendir($plgs);
@@ -160,6 +161,14 @@ while ($file = readdir ($dh)) {
    } 
 }
 closedir($dh); 
+*/
+$layout->OUT .= "<script language='JavaScript' type='text/javascript' src='images/ajax_search.js'></script>";
+$layout->OUT .= "<script>
+			function setSearch(value) {
+				document.getElementById('txtSearch').value=value;
+				document.getElementById('search_suggest').innerHTML = '';
+			}
+			</script>";
 
 $servs=$btl->GetServers();
 $optind=0;
@@ -177,13 +186,13 @@ while(list($k, $v) = each($servs)) {
 
 $layout->OUT .= "<script>
 		function testPlg() {
-		plugin=document.fm1.service_plugin.options[document.fm1.service_plugin.selectedIndex].value;
+		plugin=document.fm1.service_plugin.value;
 		server=document.fm1.service_server.options[document.fm1.service_server.selectedIndex].value;
 		plg_args=document.fm1.service_args.value;
 		window.open('check.php?server=' + server +  '&plugin=' + plugin + '&args=' + plg_args, 'chk','width=600, height=600, scrollbars=yes'); 
 		}
 		function showPlgHelp() {
-			plugin=document.fm1.service_plugin.options[document.fm1.service_plugin.selectedIndex].value;
+			plugin=document.fm1.service_plugin.value;
 			window.open('execv.php?cmd='+plugin+' -h', 'plgwnd', 'width=600, height=600');
 		}
 		function GrpChk() {
@@ -321,7 +330,7 @@ $active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Plugin",
-			1=>$layout->DropDown("service_plugin", $plugins) .  " <a href='javascript:showPlgHelp();'>Show Help of Plugin</A>&nbsp;&nbsp;<a href='javascript:testPlg();'>Test It</A>"
+			1=>"<input type='text' value='" . $defaults[plugin] . "' id='txtSearch' name='service_plugin' alt='Search Criteria' onclick=\"searchSuggest('ajax_plugin_search.php');\" onkeyup=\"searchSuggest('ajax_plugin_search.php');\" autocomplete='off' /> <div id='search_suggest'></div><a href='javascript:showPlgHelp();'>Show Help of Plugin</A>&nbsp;&nbsp;<a href='javascript:testPlg();'>Test It</A>"
 		)
 	)
 ,true);
