@@ -66,7 +66,7 @@ for($x=0; $x<count($server_map); $x++) {
 }
 
 while(list($k, $v) = each($dmp_info)) {
-		$services_assigned .= $btl->getState($k) . ":" . $v . ",";
+		$services_assigned .= "<a href='services.php?server_id=" . $_GET[server_id] . "&expect_state=" . $k . "'><font color='" . $btl->getColor($k) . "'>" . $btl->getState($k) . "</font></A>:" . $v . ",";
 }
 
 
@@ -129,8 +129,8 @@ $core_content = "<table  width='100%'>
 		<td>" . count($server_map) . "</td> 
 	</tr>
 	<tr>
-		<td width=150 class='font2' valign=top>Services:</td>
-		<td>" . $services_assigned . "</td> 
+		<td width=150 class='font2' valign=top>Services: </td>
+		<td> <a href='services.php?server_id=$_GET[server_id]'>All</A>," . $services_assigned . "</td> 
 	</tr>
 	
 	

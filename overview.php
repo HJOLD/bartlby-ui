@@ -24,6 +24,7 @@
 	
 	
 	$mode=bartlby_config($btl->CFG, "i_am_a_slave");
+	$quickview_disabled=bartlby_config("ui-extra.conf", "quickview_enabled");
 	if(!$mode) {
 		$vmode="MASTER";	
 	} else {
@@ -297,9 +298,9 @@
 		<tr>
 			<td class='font1'>Up:<font class='font2'>" . $hosts_up. "</font></td>
 			<td class='font1'>Down:<font class='font2'>" . $hosts_down. "</font></td>
-			<td class='font1'>OK:<font class='font2'>" . $services_ok. "</font></td>
-			<td class='font1'>Warning:<font class='font2'>" . $services_warning. "</font></td>
-			<td class='font1'>Critical:<font class='font2'>" . $services_critical. "</font></td>
+			<td class='font1'><a href='services.php?expect_state=0'><font color=green>OK</font></A>:<font class='font2'>" . $services_ok. "</font></td>
+			<td class='font1'><a href='services.php?expect_state=1'><font color=orange>Warning</font></A>:<font class='font2'>" . $services_warning. "</font></td>
+			<td class='font1'><a href='services.php?expect_state=2'><font color=red>Critical</font></A>:<font class='font2'>" . $services_critical. "</font></td>
 			<td class='font1'>Downtime:<font class='font2'>" . $services_downtime. "</font></td>
 			<td class='font1'>Acks outstanding:<font class='font2'>" . $acks_outstanding. "</font></td>
 		</tr>
@@ -422,17 +423,26 @@
 	
 	$layout->setTitle("QuickView");
 	
-	
-	
-	$layout->Tr(
-	$layout->Td(
-			array(0=>$quick_view)
-		)
-
-	);
-	
-	
 	$r=$btl->getExtensionsReturn("_overview", $layout);
+	
+	if($quickview_disabled != "false") {
+		$layout->Tr(
+		$layout->Td(
+				array(0=>$quick_view)
+			)
+
+		);
+		
+	} else {
+		$layout->Tr(
+		$layout->Td(
+				array(0=>"<i>Disabled</i>")
+			)
+
+		);	
+	}
+	
+	
 	
 	$layout->TableEnd();
 	$layout->display();

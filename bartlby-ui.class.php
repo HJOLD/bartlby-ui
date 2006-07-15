@@ -60,6 +60,16 @@ class BartlbyUi {
 		
 		
 	}
+	function getServerInfs($id, $map) {
+		reset($map);
+		$re[0]=0;
+		$re[1]=0;
+		$re[2]=0;
+		for($x=0; $x<count($map[$id]); $x++) {
+			$re[$map[$id][$x][current_state]]++;
+		}
+		return $re;
+	}
 	function finScreen($f=false) {
 		global $_GET,$global_msg;
 		

@@ -37,6 +37,15 @@ function searchSuggest(urll) {
 	}		
 }
 
+function quickSuggest(urll) {
+	if (searchReq.readyState == 4 || searchReq.readyState == 0) {
+		var str = escape(document.getElementById('qlook').value);
+		searchReq.open("GET", urll + '?search=' + str, true);
+		searchReq.onreadystatechange = handleQuickSuggest; 
+		searchReq.send(null);
+	}		
+}
+
 //Called when the AJAX response is returned.
 function handleSearchSuggest() {
 	if (searchReq.readyState == 4) {
@@ -52,6 +61,14 @@ function handleSearchSuggest() {
 			suggest += 'class="suggest_link">' + str[i] + '</div>';
 			ss.innerHTML += suggest;
 		}
+	}
+}
+function handleQuickSuggest() {
+	if (searchReq.readyState == 4) {
+		var ss = document.getElementById('quick_suggest')
+		ss.innerHTML = "<div style='background-color: #ffffff'><a href=\"#\" onClick=\"javascript:document.getElementById('quick_suggest').innerHTML=''\">X close</A><hr>" + searchReq.responseText + "</div>";
+		
+		
 	}
 }
 

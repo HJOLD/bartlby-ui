@@ -1,3 +1,67 @@
+2006-06-25 23:49  hjanuschka
+
+	* server_icons/: black_box.png, firewall.png, preview.png,
+	  rack_bsd.png, rack_linux.png, rack_windows.png,
+	  server-sm-app.gif, server-sm-dev.gif, server-sm-fis.gif,
+	  server-sm-lin.gif, server-sm-new.gif, server-sm-win.gif,
+	  switch.png, wireless.png: [no log message]
+
+2006-06-25 23:44  hjanuschka
+
+	* ajax_plugin_search.php, modify_service.php: add/modify service ->
+	  ajaxed plugin search
+
+2006-06-25 23:25  hjanuschka
+
+	* choose_config.php, delete_server.php, delete_service.php: [no log
+	  message]
+
+2006-06-24 20:01  hjanuschka
+
+	* bartlby_action.php, choose_config.php, edit_config.php,
+	  overview.php, template.html: ui: edit multiple config files (ui,
+	  core. ....)
+
+2006-06-24 04:35  hjanuschka
+
+	* bartlby-ui.class.php, layout.class.php, template.html: ui
+	  displays version now
+
+2006-06-24 04:29  hjanuschka
+
+	* add_server.php, add_service.php, add_worker.php,
+	  bartlby-ui.class.php, modify_server.php, modify_service.php,
+	  modify_worker.php, ui-extra.conf, images/edit-copy.png: core:
+	  extensions improved ui: copy service (use existing service as
+	  start values for a new service) ui: copy server (use existing
+	  server as start values for a new server) ui: copy worker (use
+	  existing server as start values for a new worker)
+
+2006-06-24 01:41  hjanuschka
+
+	* comments/1,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  fin/add_comment: few bugs in "comments"
+
+2006-06-15 01:24  hjanuschka
+
+	* statistic.php, extensions/Bartlby_Inventory/data/1,
+	  pkgs/default-pkg: fixing problems in statistic.php on fresh
+	  install fixing problem with missing "pkg" dir
+
+2006-06-05 23:06  hjanuschka
+
+	* bartlby-ui.class.php,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  extensions/SSH/SSH.class.php, images/barcode.gif,
+	  images/extension_disable.gif, images/extension_enable.gif,
+	  images/extensions.gif, images/keys.gif: [no log message]
+
+2006-06-05 02:00  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, bartlby_action.php: ui: package
+	  create/install supports now the $MACROS
+
 2006-05-28 18:18  hjanuschka
 
 	* add_server.php, bartlby-ui.class.php, modify_server.php,
