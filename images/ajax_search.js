@@ -50,7 +50,7 @@ function quickSuggest(urll) {
 function handleSearchSuggest() {
 	if (searchReq.readyState == 4) {
 		var ss = document.getElementById('search_suggest')
-		ss.innerHTML = '';
+		ss.innerHTML = "<a href=\"#\" onClick=\"javascript:document.getElementById('search_suggest').innerHTML=''\">X close</A><hr>";
 		var str = searchReq.responseText.split("\n");
 		for(i=0; i < str.length - 1; i++) {
 			//Build our element string.  This is cleaner using the DOM, but

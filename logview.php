@@ -98,7 +98,7 @@
 				
 				continue;	
 			}
-			$outline = "Done " . $tmp[3] . " for " . $tmp[4] . " Service:" .  $tmp[5] . " " . $btl->getState($tmp[2]);
+			$outline =  "Done " . $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?service_id=" .  $tmp[0] . "'>" .  $tmp[5] . "</A> " . $btl->getState($tmp[2]);
 			$stcheck=5;	
 		} elseif(!$_GET[service_id]) {
 			$outline = $info_array[2];

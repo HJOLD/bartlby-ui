@@ -82,12 +82,56 @@ $ack[1][k] = "Yes"; //No
 $ack[1][s]=0;
 
 
+//Notify Enabled
+$notenabled[0][c]="";
+$notenabled[0][v] = 0; //No
+$notenabled[0][k] = "No"; //No
+$notenabled[0][s]=0;
+
+$notenabled[1][c]="";
+$notenabled[1][v] = 1; //No
+$notenabled[1][k] = "Yes"; //No
+$notenabled[1][s]=0;
+
+if(is_int($defaults[notify_enabled]) && $defaults[notify_enabled] == 0) {
+	$notenabled[0][s]=1;	
+	
+} else {
+	
+	$notenabled[1][s]=1;
+}
+
+//Notify Enabled
+$servactive[0][c]="";
+$servactive[0][v] = 0; //No
+$servactive[0][k] = "No"; //No
+$servactive[0][s]=0;
+
+$servactive[1][c]="";
+$servactive[1][v] = 1; //No
+$servactive[1][k] = "Yes"; //No
+$servactive[1][s]=0;
+
+
+if(is_int($defaults[service_active]) && $defaults[service_active] == 0) {
+	$servactive[0][s]=1;	
+	
+} else {
+
+	$servactive[1][s]=1;
+}
+
+
+
+
 if($defaults[service_ack] == 0) {
 	$ack[0][s]=1;	
 } else {
 
 	$ack[1][s]=1;
 }
+
+
 
 //Types
 
@@ -291,6 +335,29 @@ $active_box_out .= $layout->Tr(
 		)
 	)
 ,true);
+
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service Enabled?",
+			1=>$layout->DropDown("service_active", $servactive)
+			
+		)
+	)
+,true);
+
+$active_box_out .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Notification enabled",
+			1=>$layout->DropDown("notify_enabled", $notenabled)
+			
+		)
+	)
+,true);
+
+
+
 $active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
@@ -300,6 +367,9 @@ $active_box_out .= $layout->Tr(
 		)
 	)
 ,true);
+
+
+
 $active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(

@@ -44,6 +44,9 @@ class ServerGroups {
 			}	
 			
 			$defaults=$this->load($file);
+			if(!$defaults[name]) {
+				continue;	
+			}
 			$all[0]=0;
 			$all[1]=0;
 			$all[2]=0;
@@ -121,6 +124,37 @@ class ServerGroups {
 	}
 	*/
 	
+	function _quickLook() {
+		global $_GET;
+		echo "<tr>";
+		echo "<td colspan=2>";
+		echo "<center><b>Groups</b></center>";
+		echo "</td></tr>";
+		
+		
+		$svcfound=false;
+		$dhl = opendir("extensions/ServerGroups/data/");
+		
+		while($file = readdir($dhl)) {
+			
+			if($file == "." || $file == "..") {
+				continue;	
+			}	
+			
+			$defaults=$this->load($file);
+			
+			if(@preg_match("/" . $_GET[search] . "/i", $defaults[name])) {
+				$svcfound=true;
+				echo "<tr><td colspan=1><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=$file'>" . $defaults[name] . "</A></td><td><img src='extensions/ServerGroups/group_member.png'></td></tr>";
+			}
+			
+		}	
+			
+		if($svcfound == false) {
+			echo "<tr><td colspan=2><i>no group matched</i></td></tr>";
+		}
+	}
+	
 	/*
 	function _serviceDetail() {
 		global $defaults;
@@ -143,7 +177,7 @@ class ServerGroups {
 			$defaults=$this->load($file);
 			
 			if(@in_array($_GET[server_id], $defaults[servers])) {
-				$r .= $defaults[name] . ",";	
+				$r .= "<img src='extensions/ServerGroups/group_member.png'><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=" . $file . "'>" . $defaults[name] . "</a><br>";	
 			}
 			
 		}

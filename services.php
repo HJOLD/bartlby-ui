@@ -54,11 +54,12 @@
 	
 		
 		while(list($k, $servs) = @each($map)) {
-			$displayed_servers++;
+			
 			
 			if($display_serv && $display_serv != $k) {
 				continue;	
 			}
+			
 			$curp = $_GET[$k ."site"] > 0 ? $_GET[$k ."site"] : 1;
 			$perp=bartlby_config("ui-extra.conf", "services_per_page");
 			$forward_link=$btl->create_pagelinks("services.php?expect_state=" . $_GET[expect_state] . "&server_id=" . $_GET[server_id], count($servs)-1, $perp, $curp,$k ."site");
@@ -69,7 +70,7 @@
 			
 			$d=0;
 			$skip_em=($curp*$perp)-$perp;
-			
+			$f=false;
 			for($x=$skip_em; $x<count($servs); $x++) {
 				
 				
@@ -135,9 +136,13 @@
 						)
 					)
 				, true);
+				$f=true;
 			}
 			$cur_box_content .= "</table>";
-			$layout->push_outside($layout->create_box($cur_box_title, $cur_box_content));
+			if($f == true) {
+				$layout->push_outside($layout->create_box($cur_box_title, $cur_box_content));
+				$displayed_servers++;
+			}
 	}
 	$legend_content="<table class='nopad' width='100%'>
 		<tr>
