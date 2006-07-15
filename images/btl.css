@@ -70,7 +70,7 @@ td.blue { padding: 4;   text-valign: middle;  font-family:tahoma; font-size:12px
 div.reload {z-index:101;visibility:hidden; position: absolute; left: 840px; top:80px;}
 div.ui_performance { position: absolute; left: 5px; top:80px;}
 div.clock {position: absolute; left: 800px; top:110px; color:#000000;z-index:3;}
-div.quick_look {position: absolute; left: 840px; top:80px; color:#000000;z-index:3;}
+div.quick_look {position: absolute; left: 380px; top:81px; color:#000000;z-index:3;}
 
 div.help {position: absolute; left: 1024px; top:0px; color:#000000;z-index:3;}
 

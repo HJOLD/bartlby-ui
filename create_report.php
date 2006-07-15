@@ -40,6 +40,9 @@ while(list($k, $servs) = @each($map)) {
 		$servers[$optind][c]="";
 		$servers[$optind][v]=$servs[$x][service_id];	
 		$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
+		if($servs[$x][service_id] == $_GET[service_id]) {
+			$servers[$optind][s]=1;
+		}
 		
 		$optind++;
 	}

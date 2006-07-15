@@ -66,7 +66,7 @@ function handleSearchSuggest() {
 function handleQuickSuggest() {
 	if (searchReq.readyState == 4) {
 		var ss = document.getElementById('quick_suggest')
-		ss.innerHTML = "<div style='background-color: #ffffff'><a href=\"#\" onClick=\"javascript:document.getElementById('quick_suggest').innerHTML=''\">X close</A><hr>" + searchReq.responseText + "</div>";
+		ss.innerHTML = "<div style=''><a href=\"#\" onClick=\"javascript:document.getElementById('quick_suggest').innerHTML=''\">X close</A><hr>" + searchReq.responseText + "</div>";
 		
 		
 	}

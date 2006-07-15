@@ -1,6 +1,6 @@
 <?
 set_time_limit(0);
-define("BARTLBY_UI_VERSION", "0.9");
+define("BARTLBY_UI_VERSION", "1.13");
 
 
 class BartlbyUi {
@@ -15,15 +15,7 @@ class BartlbyUi {
 			}
 		}	
 	
-		if(bartlby_check_shm_size($cfg) == false) {
-			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
-				$this->redirectError("BARTLBY::MODULE::MISMATCH");
-				exit(1);
-			} else {
-				return;	
-			}
-			
-		}
+		
 		
 		
 		$this->BASE_URL=substr($_SERVER[SCRIPT_URI], 0, strrpos($_SERVER[SCRIPT_URI], "/")+1);				
@@ -35,11 +27,21 @@ class BartlbyUi {
 			Check if process is still here
 		*/
 		$pid_file=bartlby_config($this->CFG, "pidfile_dir");
-				
+			
 		if((!$this->info && $auth == true) || !$pid_file) {
 			$this->redirectError("BARTLBY::NOT::RUNNING");
 			exit(1);
 		} 
+		
+		if(bartlby_check_shm_size($cfg) == false) {
+			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+				$this->redirectError("BARTLBY::MODULE::MISMATCH");
+				exit(1);
+			} else {
+				return;	
+			}
+			
+		}
 		
 		$pid_ar=@file($pid_file . "/bartlby.pid");
 		$pid_is=@implode($pid_ar, "");
@@ -942,6 +944,7 @@ class BartlbyUi {
 			$downtime="&nbsp;";
 		}
 		
+		
 		$special_menu = "<a href='javascript:void();' onClick=\"return dropdownmenu(this, event, menu" . $defaults[service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img title='Click to view special addons' src='images/icon_work1.gif' border=0></A>";
 		$layout->OUT .= "<script>var menu" . $defaults[service_id] . "=new Array();</script>";
 		$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
@@ -964,9 +967,10 @@ class BartlbyUi {
 		$force = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=force_check'><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
 		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
 		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
+		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.png' border=0></A>";				
 						
 		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Service' border=0></A>";				
-		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy";
+		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy $reports ";
 		
 		return $ret;
 	}
