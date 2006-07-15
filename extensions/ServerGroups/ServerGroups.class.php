@@ -142,7 +142,7 @@ class ServerGroups {
 			
 			$defaults=$this->load($file);
 			
-			if(in_array($_GET[server_id], $defaults[servers])) {
+			if(@in_array($_GET[server_id], $defaults[servers])) {
 				$r .= $defaults[name] . ",";	
 			}
 			
