@@ -172,7 +172,9 @@ class Layout {
 				
 				if (class_exists($file)) {
 					eval("\$clh = new " . $file . "();");
-					$this->ext_menu .= $clh->_menu();
+					if(method_exists($clh, "_menu")) {
+						$this->ext_menu .= $clh->_menu();
+					}
 				}
 			}
 		}
