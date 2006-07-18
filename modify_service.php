@@ -68,6 +68,8 @@ if($defaults == false && $_GET["new"] != "true") {
 
 
 
+
+
 //ACKS
 
 //Ack's
@@ -551,7 +553,28 @@ $active_box_out .= "</table>";
 $layout->push_outside($layout->create_box("SNMP Settings", $active_box_out, "snmp"));
 
 
+if(!$_GET["copy"] && !$_GET["new"]) {
+	$idx=$btl->findSHMPlace($_GET[service_id]);
+	$ssvc=bartlby_get_service($btl->CFG, $idx);
+	if($ssvc[service_active] == 1) {
+		bartlby_toggle_service_active($btl->CFG, $idx);
+		$dounlock=$idx;
+			
+	
+	$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>Array(
+					'colspan'=> 2,
+					"align"=>"left",
+					'show'=>"<input type=hidden name=unlock value='" . $dounlock . "'><font color=red>the service check has been disabled until you hit save, if you don't do this the service remains inactive</font>"
+					)
+			)
+		)
 
+	);
+	}
+}
 
 $layout->Tr(
 	$layout->Td(
