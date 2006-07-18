@@ -36,14 +36,15 @@ switch($act) {
 		if(!$perf_dir) {
 			$global_msg["output"]="'performance_dir' not set in bartlby core config file";	
 		} else {
-			$svc=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
-			$global_msg[shm_place]=$btl->findSHMPlace($_GET[service_id]);
+			$idx=$btl->findSHMPlace($_GET[service_id]);
+			$global_msg[shm_place]=$idx;
+			$svc=bartlby_get_service($btl->CFG, $idx);
 			$cmd=$perf_dir . "/" . $svc[plugin];
 			if(!file_exists($cmd)) {
 				$output="Perfhandler '$cmd' does not exists";
 			} else {
 				
-				$exec="export BARTLBY_HOME=\"$btlhome\"; export BARTLBY_CONFIG=\"" . $btl->CFG . "\"; " . $cmd . "  graph " . $svc[service_id] . " 2>&1";
+				$exec="export BARTLBY_CURR_SERVICE=\"" . $svc[service_name] . "\"; export BARTLBY_CURR_HOST=\"" . $svc[server_name] . "\"; export BARTLBY_CURR_PLUGIN=\"" . $svc[plugin] . "\"; export BARTLBY_HOME=\"$btlhome\"; export BARTLBY_CONFIG=\"" . $btl->CFG . "\"; " . $cmd . "  graph " . $svc[service_id] . " 2>&1";
 				
 				$fp=popen($exec, "r");
 				$output="<hr><pre>";
