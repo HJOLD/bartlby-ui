@@ -968,9 +968,10 @@ class BartlbyUi {
 		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
 		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
 		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.png' border=0></A>";				
-						
+		
+		$stat = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph'><img title='Graph collected perf handler data' src='images/icon_stat.gif' border=0></A>";				
 		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Service' border=0></A>";				
-		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy $reports ";
+		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy $reports $stat";
 		
 		return $ret;
 	}

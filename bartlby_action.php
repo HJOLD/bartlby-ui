@@ -28,6 +28,40 @@ switch($act) {
 	case 'enable_extension':
 		@unlink("extensions/" . $_GET[ext] . ".disabled");
 	break;
+	case 'perfhandler_graph':
+		$global_msg["output"]="";
+		//get perfhandler_dir
+		$perf_dir=bartlby_config($btl->CFG,"performance_dir");
+		$btlhome=bartlby_config($btl->CFG, "basedir");
+		if(!$perf_dir) {
+			$global_msg["output"]="'performance_dir' not set in bartlby core config file";	
+		} else {
+			$svc=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
+			$global_msg[shm_place]=$btl->findSHMPlace($_GET[service_id]);
+			$cmd=$perf_dir . "/" . $svc[plugin];
+			if(!file_exists($cmd)) {
+				$output="Perfhandler '$cmd' does not exists";
+			} else {
+				
+				$exec="export BARTLBY_HOME=\"$btlhome\"; export BARTLBY_CONFIG=\"" . $btl->CFG . "\"; " . $cmd . "  graph " . $svc[service_id] . " 2>&1";
+				
+				$fp=popen($exec, "r");
+				$output="<hr><pre>";
+				while(!feof($fp)) {
+					$output .= fgets($fp);	
+				}	
+				pclose($fp);
+				$output .="</pre><hr>";
+				$output .= "<br> Perf handler called (see output above)";
+			}
+			$global_msg["output"]=$output;
+			
+			$global_msg["output"] .='<br><br><span style="font-weight: bold;">Next Steps:<br /></span><ul><li><a href="service_detail.php?service_place=' . $global_msg[shm_place] . '">Back to the Service</a></li></ul>';
+		}
+		
+		
+	break;
+	
 	case 'delete_downtime':
 		$layout->set_menu("downtimes");
 		if($_GET[downtime_id]) {

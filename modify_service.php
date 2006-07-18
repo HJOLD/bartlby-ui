@@ -124,7 +124,7 @@ if(is_int($defaults[service_active]) && $defaults[service_active] == 0) {
 
 
 
-if($defaults[service_ack] == 0) {
+if(is_int($defaults[service_ack]) && $defaults[service_ack] == 0) {
 	$ack[0][s]=1;	
 } else {
 
