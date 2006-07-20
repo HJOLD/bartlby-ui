@@ -4,7 +4,9 @@ define("BARTLBY_UI_VERSION", "1.13");
 
 
 class BartlbyUi {
-	
+	function dnl($i) {
+		return sprintf("%02d", $i);
+	}
 	function BartlbyUi($cfg, $auth=true, $shm_check=true) {
 				
 		if(!function_exists("bartlby_version")) {
@@ -19,6 +21,7 @@ class BartlbyUi {
 		
 		
 		$this->BASE_URL=substr($_SERVER[SCRIPT_URI], 0, strrpos($_SERVER[SCRIPT_URI], "/")+1);				
+		
 		$this->CFG=$cfg;
 		//Check if bartlby is running :-)
 		$this->info=@bartlby_get_info($this->CFG);
@@ -58,6 +61,8 @@ class BartlbyUi {
 		$this->perform_auth($auth);
 		$this->release=$this->info[version];
 		$this->loadRights();
+		$this->BASEDIR=@bartlby_config($this->CFG, "basedir");
+		$this->PERFDIR=@bartlby_config($this->CFG, "performance_dir");
 		
 		
 		
@@ -968,8 +973,11 @@ class BartlbyUi {
 		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
 		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
 		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.png' border=0></A>";				
-		
-		$stat = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph'><img title='Graph collected perf handler data' src='images/icon_stat.gif' border=0></A>";				
+		if(file_exists($this->PERFDIR . "/" . $defaults[plugin])) {
+			$stat = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph'><img title='Graph collected perf handler data' src='images/icon_stat.gif' border=0></A>";				
+		} else {
+			$stat = "";
+		}
 		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Service' border=0></A>";				
 		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy $reports $stat";
 		
