@@ -1,3 +1,83 @@
+2006-07-20 22:53  hjanuschka
+
+	* bartlby-ui.class.php: ui version bump
+
+2006-07-20 22:52  hjanuschka
+
+	* bartlby-ui.class.php, fin/perfhandler_graph: perfhandler file
+	  missing graph icon is now only available if perf handler exists
+
+2006-07-19 00:06  hjanuschka
+
+	* bartlby_action.php: some env vars missing in perf handler
+	  graphing
+
+2006-07-18 23:53  hjanuschka
+
+	* bartlby_action.php, modify_service.php: ui: modify_service,
+	  service gets disabled until saving is done, REMEMBER to hit save
+	  or objects may remain disabled unwanted
+
+2006-07-18 23:39  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_service.php: ui:
+	  as the result of performance issue on big system with CHEAP
+	  hardware :-)	   perfhandlers are now only collecting data in the
+	  core	   if you want to see a graph, you know have button in the
+	  UI, because all the graph processes burned the CPU
+
+2006-07-16 23:31  hjanuschka
+
+	* layout.class.php,
+	  extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php,
+	  extensions/PluginArgumentQuickLook/PluginArgumentQuickLook.class.php:
+	  Extension's: AutoDiscoverAddons, PluginArgumentQuickLook
+
+2006-07-15 21:14  hjanuschka
+
+	* ajax_quick_look.php, bartlby-ui.class.php, create_report.php,
+	  template.html, extensions/ServerGroups/ServerGroups.class.php,
+	  images/ajax_search.js, images/btl.css, images/create_report.png:
+	  [no log message]
+
+2006-07-15 16:03  hjanuschka
+
+	* ajax_quick_look.php, bartlby-ui.class.php, bartlby_action.php,
+	  logview.php, modify_service.php, services.php, template.html,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  extensions/ServerGroups/group_member.png,
+	  extensions/ServerGroups/overview.php, images/ajax_search.js,
+	  images/btl.css: add modify service
+
+2006-07-15 04:40  hjanuschka
+
+	* extensions/ServerGroups/ServerGroups.class.php: typo in
+	  ServerGroups.class.php
+
+2006-07-15 04:38  hjanuschka
+
+	* ChangeLog, ajax_quick_look.php, bartlby-ui.class.php,
+	  overview.php, server_detail.php, template.html, ui-extra.conf,
+	  extensions/ServerGroups.disabled,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  extensions/ServerGroups/ajax_search.php,
+	  extensions/ServerGroups/delete.php,
+	  extensions/ServerGroups/delete_group.png,
+	  extensions/ServerGroups/edit.php,
+	  extensions/ServerGroups/groupview.php,
+	  extensions/ServerGroups/manage.php,
+	  extensions/ServerGroups/new_group.png,
+	  extensions/ServerGroups/overview.php,
+	  extensions/ServerGroups/save.php,
+	  extensions/ServerGroups/view_all.png,
+	  extensions/ServerGroups/data/1, images/ajax_search.js,
+	  images/btl.css, server_icons/01generic.gif,
+	  server_icons/apple.gif, server_icons/firewall1.gif,
+	  server_icons/freebsd.gif, server_icons/linux.gif,
+	  server_icons/openbsd.gif, server_icons/router1.gif,
+	  server_icons/windows.gif: many fixes added Quick Look bar
+	  serverGroup extension added
+
 2006-06-25 23:49  hjanuschka
 
 	* server_icons/: black_box.png, firewall.png, preview.png,
