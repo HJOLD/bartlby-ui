@@ -374,7 +374,7 @@ class BartlbyUi {
 							}
 							
 							
-							$info_box_title='Extension: ' . $ex[ex_name];  
+							$info_box_title='Extension: ' . $this->wikiLink("ui-extensions:" . $ex[ex_name], $ex[ex_name]);  
 							// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 							$core_content = "<table  width='100%'>
 								<tr>
@@ -401,6 +401,9 @@ class BartlbyUi {
 		closedir();
 		return $r;	
 		
+	}
+	function wikiLink($page_name, $display) {
+		return "<a target='_blank' href='http://wiki.bartlby.org/dokuwiki/doku.php?id=" . $page_name . "'>" . $display . "</A>";	
 	}
 	function installPackage($pkg, $server, $force_plugin, $force_perf) {
 		$basedir=bartlby_config($this->CFG, "basedir");

@@ -22,7 +22,7 @@ $cnt = (int)bartlby_config($btl->CFG, "extension_count");
 if($cnt) {
 	for($x=1; $x<=$cnt; $x++) {
 		$path = bartlby_config($btl->CFG, "extension[" . $x . "]");
-		$core_extensions .= "<li>" . basename($path) . "<br>";
+		$core_extensions .= $btl->wikiLink("core_extensions:" . basename($path), basename($path)) . "<br>";
 	}
 }
 

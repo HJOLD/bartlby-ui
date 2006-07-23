@@ -71,6 +71,9 @@
 	
 	
 	$is_repl_on=bartlby_config($btl->CFG, "replication");
+	if(!$is_repl_on) {
+		$is_repl_on="false";	
+	}
 	$repl = "Replication enabled:<font class='font2'> <b>$is_repl_on</b><br>";
 	if($is_repl_on == "true") {
 			$repl_cnt=bartlby_config($btl->CFG, "replicate_cnt");

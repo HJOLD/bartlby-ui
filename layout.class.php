@@ -23,6 +23,8 @@
 class Layout {
 	var $OUT;
 	var $template_file;
+	
+	
 	function set_menu($men) {
 		$this->OUT .= "<script>doToggle('" . $men . "');</script>";	
 		$this->menu_set=true;
