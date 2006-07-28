@@ -253,6 +253,7 @@ $layout->OUT .= "<script>
 			
 			if(va == 2) {
 				GenericToggleFix(\"passive\", \"block\");
+				GenericToggleFix(\"active\", \"block\");
 			}
 			if(va == 1 || va == 6 || va == 7) {
 				GenericToggleFix(\"active\", \"block\");
