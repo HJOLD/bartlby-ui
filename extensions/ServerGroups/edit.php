@@ -115,7 +115,7 @@
 	reset($servers);
 			
 	$layout->setTitle("Actions");
-	$del_icon = "<a href='extensions_wrap.php?script=ServerGroups/delete.php&grpname=" . $members[name] . "'><img src='extensions/ServerGroups/delete_group.png' border=0></A>";
+	$del_icon = "<a href='extensions_wrap.php?script=ServerGroups/delete.php&grpname=" . $members[name] . "'><img src='extensions/ServerGroups/delete_group.gif' border=0></A>";
 				
 	$layout->Tr(
 	$layout->Td(

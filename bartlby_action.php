@@ -261,87 +261,8 @@ switch($act) {
 	case 'create_package':
 		$layout->set_menu("packages");
 		$global_msg[pkg_services]="";
-		$pkg=array();
-		$basedir=bartlby_config($btl->CFG, "basedir");
-		if($basedir) {
-			$perf_dir=$basedir . "/perf/";	
-		}
-		$plugin_dir=bartlby_config($btl->CFG, "agent_plugin_dir");
-		
 		if($_GET[services]) {
-			//$msg = "Creating package: " . $_GET[package_name] . "<br>";
-			for($x=0; $x<$btl->info[services]; $x++) {
-				$svc=bartlby_get_service($btl->CFG, $x);
-				$svc=bartlby_get_service_by_id($btl->CFG, $svc[service_id]);
-				if(@in_array($svc[service_id], $_GET[services])) {
-					$global_msg[pkg_services] .="<li>" . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name];
-					
-					if($_GET[package_with_plugins]) {
-						
-						if(file_exists($plugin_dir . "/" . $svc[plugin])) {
-							$svc[__install_plugin]="";	
-							$fp = fopen($plugin_dir . "/" . $svc[plugin], "rb");
-							if($fp) {
-									
-									while(!feof($fp)) {
-										$svc[__install_plugin] .= fgets($fp, 1024);
-									}
-									fclose($fp);
-									$global_msg[pkg_services] .= "<li> ---> added plugin " . $svc[plugin] . " to package <br>";
-							} else {
-								$global_msg[pkg_services] .= " Plugin open failed (" . $svc[plugin] . ")<br>";
-							}
-							
-							
-						}
-					}
-					if($_GET[package_with_perf]) {
-						
-						if(file_exists($perf_dir . "/" . $svc[plugin])) {
-							$svc[__install_perf]="";	
-							$fp1 = fopen($perf_dir . "/" . $svc[plugin], "rb");
-							if($fp1) {
-									while(!feof($fp1)) {
-										$svc[__install_perf] .= fgets($fp1, 1024);
-									}
-									fclose($fp1);
-									$global_msg[pkg_services] .= "<li> ---> added perf handler " . $svc[plugin] . " to package <br>";
-							} else {
-								$global_msg[pkg_services] .= " Plugin open failed (" . $svc[plugin] . ")<br>";
-							}
-							
-							
-						}
-						if(file_exists($perf_dir . "/defaults/" . $svc[plugin] . ".rrd")) {
-							$svc[__install_perf_default]="";	
-							$fp1 = fopen($perf_dir . "/defaults/" . $svc[plugin] . ".rrd", "rb");
-							if($fp1) {
-									while(!feof($fp1)) {
-										$svc[__install_perf_default] .= fgets($fp1, 1024);
-									}
-									fclose($fp1);
-									$global_msg[pkg_services] .= "<li> ---> added perf handler (default) " . $svc[plugin] . ".rrd to package <br>";
-							} else {
-								$global_msg[pkg_services] .= " Plugin open failed (" . $svc[plugin] . ")<br>";
-							}
-							
-							
-						}						
-					}
-					
-					
-					array_push($pkg, $svc);
-				}
-				
-			}
-			$save=serialize($pkg);
-			$fp=@fopen("pkgs/" . $_GET[package_name], "w");
-			if($fp) {
-				fwrite($fp, $save);
-				fclose($fp);
-			} else {
-				$global_msg[pkg_services] = "save failed";	
-			}
+			$global_msg[pkg_services]=$btl->create_package($_GET[package_name], $_GET[services], $_GET[package_with_plugins], $_GET[package_with_perf]);
 		} else {                                     
 		 	$act="missing_param";
 		 }                            
@@ -412,18 +333,8 @@ switch($act) {
 	
 	case 'reload':
 		$layout->set_menu("core");
-		bartlby_reload($btl->CFG);
-		while(1) {
-			$x++;
-			$i = @bartlby_get_info($btl->CFG);
-			flush();
-			
-			if($i[do_reload] == 0) {
-				$msg = "Done";
-				//$layout->OUT .= "<script>doReloadButton();</script>";
-				break;	
-			}
-		}
+		$btl->doReload();
+		$msg="done";
 	break;
 	case 'delete_worker':
 		$layout->set_menu("worker");

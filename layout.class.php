@@ -169,13 +169,15 @@ class Layout {
 		$dhl = opendir("extensions");
 		while($file = readdir($dhl)) {
 			if($file != "." && $file != "..") {
-				@include_once("extensions/" . $file . "/" . $file . ".class.php");
-				
-				
-				if (class_exists($file)) {
-					eval("\$clh = new " . $file . "();");
-					if(method_exists($clh, "_menu")) {
-						$this->ext_menu .= $clh->_menu();
+				if(!file_exists("extensions/" .  $file . ".disabled")) {
+					@include_once("extensions/" . $file . "/" . $file . ".class.php");
+					
+					
+					if (class_exists($file)) {
+						eval("\$clh = new " . $file . "();");
+						if(method_exists($clh, "_menu")) {
+							$this->ext_menu .= $clh->_menu();
+						}
 					}
 				}
 			}

@@ -9,8 +9,40 @@ class ServerGroups {
 		$this->layout = new Layout();
 		
 	}
+	function _restore() {
+		global $orig_servers, $o, $bdir;	
 	
-	
+		foreach(glob("extensions/ServerGroups/*.ser") as $fname) {
+			@unlink($fname);
+		}
+		foreach(glob($bdir . "/*.ServerGroups") as $fname) {
+			$grp = $this->load(basename($fname), $bdir);
+			
+			
+			for($x=0; $x<count($grp[servers]); $x++) {
+				$new_servers[$x] = $orig_servers[$grp[servers][$x]];	
+			}
+			
+			$new_group[choosen_servers]	= $new_servers;
+			$new_group[grpname] = $grp[name];
+			$this->save($new_group);
+			$o .= "restored group: " . $new_group[grpname] . "<br>";
+		}
+		
+	}
+	function _backup() {
+		global $o, $bdir;	
+		$o .= "ServerGroups saving to " . $bdir . "<br>";
+		foreach(glob("extensions/ServerGroups/data/*.ser") as $fname) {
+			clearstatcache();
+   			$ta = explode(".",basename($fname));
+   			
+   			$unser = base64_decode($ta[0]);
+   			
+			$o .= $unser  . "<br>";	
+			@copy($fname, $bdir . "/" . $ta[0] . ".ServerGroups");
+		}
+	}
 	function _About() {
 		return "enables you to build server groups";
 			
@@ -110,7 +142,7 @@ class ServerGroups {
 		
 		$r .= "</tr>";	
 		$r .= "<tr>";
-		$r .= "<td colspan=" . GROUPS_PER_ROW . "><a title='View All Servers' href='extensions_wrap.php?script=ServerGroups/groupview.php'><img src='extensions/ServerGroups/view_all.png' border=0></A>";
+		$r .= "<td colspan=" . GROUPS_PER_ROW . "><a title='View All Servers' href='extensions_wrap.php?script=ServerGroups/groupview.php'><img src='extensions/ServerGroups/view_all.gif' border=0></A>";
 		$r .= "</tr>";	
 		$r .= "</table>";
 		return $r;	
@@ -147,7 +179,7 @@ class ServerGroups {
 			}
 			if(@preg_match("/" . $_GET[search] . "/i", $defaults[name])) {
 				$svcfound=true;
-				$rq .= "<tr><td colspan=1><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=$file'>" . $defaults[name] . "</A></td><td><img src='extensions/ServerGroups/group_member.png'></td></tr>";
+				$rq .= "<tr><td colspan=1><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=$file'>" . $defaults[name] . "</A></td><td><img src='extensions/ServerGroups/group_member.gif'></td></tr>";
 			}
 			
 		}	
@@ -180,7 +212,7 @@ class ServerGroups {
 			$defaults=$this->load($file);
 			
 			if(@in_array($_GET[server_id], $defaults[servers])) {
-				$r .= "<img src='extensions/ServerGroups/group_member.png'><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=" . $file . "'>" . $defaults[name] . "</a><br>";	
+				$r .= "<img src='extensions/ServerGroups/group_member.gif'><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=" . $file . "'>" . $defaults[name] . "</a><br>";	
 			}
 			
 		}
@@ -193,20 +225,26 @@ class ServerGroups {
 		@unlink("extensions/ServerGroups/data/" . $fname . ".ser");
 		
 	}
-	function save($ar=array()) {
+	function save($ar=array(), $path="") {
 		$fname=base64_encode($ar[grpname]);
 		$ser[name]=$ar[grpname];
 		$ser[servers] = $ar[choosen_servers];
-		
-		$fp = fopen("extensions/ServerGroups/data/" . $fname . ".ser", "w");
+		if($path == "") {
+			$fp = fopen("extensions/ServerGroups/data/" . $fname . ".ser", "w");
+		} else {
+			$fp = fopen($path. "/" . $fname . ".ser", "w");	
+		}
 		fwrite($fp, serialize($ser));
 		fclose($fp);
 		
 		
 	}
-	function load($file) {
-		
-		$fp = @fopen("extensions/ServerGroups/data/" . $file, "r");
+	function load($file, $path="") {
+		if($path == "") {
+			$fp = @fopen("extensions/ServerGroups/data/" . $file, "r");
+		} else {
+			$fp = @fopen($path . "/" . $file, "r");
+		}
 		if($fp) {
 			while(!feof($fp)) {
 				$bf .= fgets($fp, 1024);	

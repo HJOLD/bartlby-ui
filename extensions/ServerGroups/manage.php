@@ -45,7 +45,7 @@
 	
 	
 	$layout->setTitle("Actions");
-	$del_icon = "<a href='extensions_wrap.php?script=ServerGroups/edit.php'><img src='extensions/ServerGroups/new_group.png' border=0></A>";
+	$del_icon = "<a href='extensions_wrap.php?script=ServerGroups/edit.php'><img src='extensions/ServerGroups/new_group.gif' border=0></A>";
 				
 	$layout->Tr(
 	$layout->Td(

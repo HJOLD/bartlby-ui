@@ -4,6 +4,22 @@ define("BARTLBY_UI_VERSION", "1.15");
 
 
 class BartlbyUi {
+		
+	function doReload() {
+		bartlby_reload($this->CFG);
+		while(1) {
+			$x++;
+			$i = @bartlby_get_info($this->CFG);
+			flush();
+			
+			if($i[do_reload] == 0) {
+				$msg = "Done";
+				//$layout->OUT .= "<script>doReloadButton();</script>";
+				break;	
+			}
+		}
+	}
+	
 	function dnl($i) {
 		return sprintf("%02d", $i);
 	}
@@ -405,7 +421,7 @@ class BartlbyUi {
 	function wikiLink($page_name, $display) {
 		return "<a target='_blank' href='http://wiki.bartlby.org/dokuwiki/doku.php?id=" . $page_name . "'>" . $display . "</A>";	
 	}
-	function installPackage($pkg, $server, $force_plugin, $force_perf) {
+	function installPackage($pkg, $server, $force_plugin, $force_perf, $my_path="") {
 		$basedir=bartlby_config($this->CFG, "basedir");
 		
 		
@@ -419,7 +435,11 @@ class BartlbyUi {
 		
 		
 		$msg = "Installing package '$pkg' on Server:  $server<br>";
-		$fp=@fopen("pkgs/" . $pkg, "r");
+		if($my_path == "") {
+			$fp=@fopen("pkgs/" . $pkg, "r");
+		} else {
+			$fp=@fopen($my_path . $pkg, "r");	
+		}
 		if($fp) {
 			while(!feof($fp)) {
 				$bf .= fgets($fp, 1024);	
@@ -429,8 +449,8 @@ class BartlbyUi {
 			for($x=0; $x<count($re); $x++) {
 				$msg .= "Installing Service: <b>" . $re[$x][service_name] . "</b><br>";	
 				
-				$tfrom=dnl($re[$x][hour_from]) . ":" . dnl($re[$x][min_from]) . ":00";
-				$tto=dnl($re[$x][hour_to]) . ":" . dnl($re[$x][min_to]) . ":00";
+				$tfrom=$this->dnl($re[$x][hour_from]) . ":" . $this->dnl($re[$x][min_from]) . ":00";
+				$tto=$this->dnl($re[$x][hour_to]) . ":" . $this->dnl($re[$x][min_to]) . ":00";
 				
 				$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
 				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
@@ -857,13 +877,15 @@ class BartlbyUi {
 			$pw=$match[2];
 			$port=$match[3];
 			$e_url="http://" . $match[3] . "/" . $match[5];
-		
+			
 			$client = new IXR_ClientMulticall($e_url, false, $port, $uname, $pw);
-			$client->debug=false;
+			$client->debug=true;
 			$client->addCall('bartlby.get_info');	
 			$client->addCall('bartlby.get_service_map');	
 			$client->query();
+			$client->debug=false;
 			$response = $client->getResponse();
+		
 			if(!$response) {
 				return false;	
 			}
@@ -881,58 +903,102 @@ class BartlbyUi {
 			
 	}
 	
-	function create_report_img($map, $from, $to) {
-		$im = @ImageCreate (900, 320)  or die ("GD Errror");
-		$background_color = ImageColorAllocate ($im, 255, 255, 255);
-		$green = ImageColorAllocate($im,0,255,0);
-		$orange = ImageColorAllocate($im,255,255,0);
-		$red = ImageColorAllocate($im,255,0,0);
-		$black = ImageColorAllocate($im,0,0,0);
-		
-		imagefilledrectangle($im, 0, 320,900,0, $background_color);
-		//Default all is green
-		imagefilledrectangle($im, 10, 210,890,10,  $green); 
-		
-		echo "FROM: $from TO: $to <br>";
-		$step=($to-$from);
-		echo "step: $step <br>";
-		if($step == 0) {
-			//One day graphic
-			$step=86400/890;	
-		} else {
-			$step = $step / 890;	
+function create_package($package_name, $in_services = array(), $with_plugins, $with_perf, $my_path="") {
+		$pkg=array();
+		$basedir=bartlby_config($this->CFG, "basedir");
+		if($basedir) {
+			$perf_dir=$basedir . "/perf/";	
 		}
-		imagestringup($im, 1, 10, 320, date("d.m.Y H:i:s", $from), $black);
-		for($xy=0; $xy<count($map);$xy++) {
+		$plugin_dir=bartlby_config($this->CFG, "agent_plugin_dir");
+		
+		if($in_services) {
 			
-			if($map[$xy][state] != 0) {
-				$width=(($map[$xy][end]-$map[$xy][start]) / 890)* $step;
-				$startb = (($map[$xy][start] - $from)) / 890;
+			//$msg = "Creating package: " . $_GET[package_name] . "<br>";
+			for($x=0; $x<$this->info[services]; $x++) {
+				$svc=bartlby_get_service($this->CFG, $x);
+				$svc=bartlby_get_service_by_id($this->CFG, $svc[service_id]);
 				
-				$width = round($width);
-				$startb = round($startb);
+				if(@in_array($svc[service_id], $in_services)) {
+					
+					$re .="<li>" . $svc[server_name] . ":" . $svc[client_port] . "/" . $svc[service_name];
+					
+					if($with_plugins) {
+						
+						if(file_exists($plugin_dir . "/" . $svc[plugin])) {
+							$svc[__install_plugin]="";	
+							$fp = fopen($plugin_dir . "/" . $svc[plugin], "rb");
+							if($fp) {
+								while(!feof($fp)) {
+									$svc[__install_plugin] .= fgets($fp, 1024);
+								}
+								fclose($fp);
+								$re .= "<li> ---> added plugin " . $svc[plugin] . " to package <br>";
+							} else {
+								$re .= " Plugin open failed (" . $svc[plugin] . ")<br>";
+							}
+							
+							
+						}
+					}
+					if($with_perf) {
+						
+						if(file_exists($perf_dir . "/" . $svc[plugin])) {
+							$svc[__install_perf]="";	
+							$fp1 = fopen($perf_dir . "/" . $svc[plugin], "rb");
+							if($fp1) {
+								while(!feof($fp1)) {
+									$svc[__install_perf] .= fgets($fp1, 1024);
+								}
+								fclose($fp1);
+								$re .= "<li> ---> added perf handler " . $svc[plugin] . " to package <br>";
+							} else {
+								$re .= " Plugin open failed (" . $svc[plugin] . ")<br>";
+							}
+							
+							
+						}
+						if(file_exists($perf_dir . "/defaults/" . $svc[plugin] . ".rrd")) {
+							$svc[__install_perf_default]="";	
+							$fp1 = fopen($perf_dir . "/defaults/" . $svc[plugin] . ".rrd", "rb");
+							if($fp1) {
+									while(!feof($fp1)) {
+										$svc[__install_perf_default] .= fgets($fp1, 1024);
+									}
+									fclose($fp1);
+									$re .= "<li> ---> added perf handler (default) " . $svc[plugin] . ".rrd to package <br>";
+							} else {
+								$re .= " Plugin open failed (" . $svc[plugin] . ")<br>";
+							}
+							
+							
+						}						
+					}
+					
+					
+					array_push($pkg, $svc);
+				}
 				
-				
-				echo "<br>BLOCK: " . $map[$xy][state] . "===> start: " . $startb . "px " . $width . "<br>";
-				//imagefilledrectangle ($im, (10+$starb), 210,($width+$startb+10),20,  $red); 
-				$starty=10+$startb;
-				$startx=10+$startb+$width;
-				echo "y: " . $starty . " X: " . $startx . "<br>";
-				imagefilledrectangle ($im, $starty, 210,$startx,20,  $red); 
-				imagestringup($im, 1, $starty, 320, date("d.m.Y H:i:s", $map[$xy][start]), $black);
+			}
+			$save=serialize($pkg);
+			if($my_path == "") {
+				$fp=@fopen("pkgs/" . $package_name, "w");
+			} else {
+				$fp=@fopen($my_path . $package_name, "w");	
+			}
+			if($fp) {
+				fwrite($fp, $save);
+				fclose($fp);
+			} else {
+				$re = "save failed";	
 			}
 		}
-		imagestringup($im, 1, 890, 320, date("d.m.Y H:i:s", $to), $black);
 		
 		
-		
-		imagePNG($im, "/var/www/htdocs/test.png");
-   		imagedestroy($im);
-
+			return $re;	
 	}
 	function getserveroptions($defaults, $layout) {
 		$modify = "<a href='modify_server.php?server_id=" . $_GET[server_id] . "'><img src='images/modify.gif' title='Modify this server' border=0></A>";
-		$copy = "<a href='modify_server.php?copy=true&server_id=" . $_GET[server_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Server' border=0></A>";
+		$copy = "<a href='modify_server.php?copy=true&server_id=" . $_GET[server_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Server' border=0></A>";
 		return $modify . " " . $copy;
 	}
 	function getserviceOptions($defaults, $layout) {
@@ -975,13 +1041,13 @@ class BartlbyUi {
 		$force = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=force_check'><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
 		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
 		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
-		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.png' border=0></A>";				
+		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.gif' border=0></A>";				
 		if(file_exists($this->PERFDIR . "/" . $defaults[plugin])) {
 			$stat = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph'><img title='Graph collected perf handler data' src='images/icon_stat.gif' border=0></A>";				
 		} else {
 			$stat = "";
 		}
-		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this Service' border=0></A>";				
+		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Service' border=0></A>";				
 		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy $reports $stat";
 		
 		return $ret;
