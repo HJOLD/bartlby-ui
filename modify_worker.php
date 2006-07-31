@@ -209,7 +209,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"left",
-					'show'=>"<a href='modify_worker.php?copy=true&worker_id=" . $_GET[worker_id] . "'><img src='images/edit-copy.png' title='Copy (Create a similar) this worker' border=0></A>"
+					'show'=>"<a href='modify_worker.php?copy=true&worker_id=" . $_GET[worker_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this worker' border=0></A>"
 					)
 			)
 		)

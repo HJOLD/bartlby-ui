@@ -6,6 +6,29 @@ class Bartlby_Inventory {
 		$this->layout = new Layout();
 		
 	}
+	function _restore() {
+		global $orig_servers, $o, $bdir;	
+	
+		foreach(glob("extensions/Bartlby_Inventory/*.ser") as $fname) {
+			@unlink($fname);
+		}
+		foreach(glob($bdir . "/*.Bartlby_Inventory") as $fname) {
+			$mn = str_replace("Bartlby_Inventory", "ser", $fname);
+			@copy($fname, $mn);			
+		}
+		
+	}
+	function _backup() {
+		global $o, $bdir;	
+		$o .= "Bartlby_Inventory saving to " . $bdir . "<br>";
+		foreach(glob("extensions/Bartlby_Inventory/data/*.ser") as $fname) {
+			clearstatcache();
+   			$mn = str_replace("ser", "Bartlby_Inventory", $fname);
+   			$o .= $mn . ":::" . basename($mn) . "<br>";
+			@copy($fname, $bdir . "/" . basename($mn));
+						
+		}
+	}
 	function storeServer($id, $serial, $war,$info) {
 		$s[id] = $id;
 		$s[serial] = $serial;

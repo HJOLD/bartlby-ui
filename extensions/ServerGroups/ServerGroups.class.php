@@ -16,17 +16,8 @@ class ServerGroups {
 			@unlink($fname);
 		}
 		foreach(glob($bdir . "/*.ServerGroups") as $fname) {
-			$grp = $this->load(basename($fname), $bdir);
-			
-			
-			for($x=0; $x<count($grp[servers]); $x++) {
-				$new_servers[$x] = $orig_servers[$grp[servers][$x]];	
-			}
-			
-			$new_group[choosen_servers]	= $new_servers;
-			$new_group[grpname] = $grp[name];
-			$this->save($new_group);
-			$o .= "restored group: " . $new_group[grpname] . "<br>";
+			$mn = str_replace("ServerGroups", "ser", $fname);
+			@copy($fname, $mn);			
 		}
 		
 	}
