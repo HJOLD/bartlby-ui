@@ -17,8 +17,16 @@ if($_GET["copy"] == "true") {
 if($_GET["new"] == "true") {
 	$fm_action="add_worker";
 	$layout->setTitle("Add Worker");
+	$defaults="";
 	
 	
+}
+
+if($btl->user_id != $_GET[worker_id]) {
+	$btl->hasRight("action." . $fm_action);
+}
+if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
+	$btl->hasRight("modify_all_workers");
 }
 
 if($defaults == false && $_GET["new"] != "true") {
@@ -122,6 +130,7 @@ $layout->Table("100%");
 
 
 
+
 $layout->Tr(
 	$layout->Td(
 		array(
@@ -134,7 +143,7 @@ $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Password:",
-			1=>$layout->Field("worker_password", "password", $defaults[password])
+			1=>$layout->Field("worker_password", "password", "")
 		)
 	)
 );

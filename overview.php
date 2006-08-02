@@ -4,7 +4,7 @@
 	include "bartlby-ui.class.php";
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
-	
+	$btl->hasRight("main.overview");
 	$layout= new Layout();
 	$layout->set_menu("main");
 	$layout->MetaRefresh(30);

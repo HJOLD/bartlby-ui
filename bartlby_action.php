@@ -18,17 +18,19 @@ function dnl($i) {
 }
 
 
-
-
-
+if($act != "delete_package_ask") {
+	$btl->hasRight("action." . $act);
+}
 switch($act) {
 	case 'disable_extension':
+		
 		touch("extensions/" . $_GET[ext] . ".disabled");
 	break;
 	case 'enable_extension':
 		@unlink("extensions/" . $_GET[ext] . ".disabled");
 	break;
 	case 'perfhandler_graph':
+		$btl->hasServerorServiceRight($_GET[service_id]);
 		$global_msg["output"]="";
 		//get perfhandler_dir
 		$perf_dir=bartlby_config($btl->CFG,"performance_dir");
@@ -146,7 +148,9 @@ switch($act) {
 	break;
 	
 	case 'submit_passive':
+		
 		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+			$btl->hasServerorServiceRight($_GET[service_id]);
 			if($_GET[passive_text]) {
 				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 				$idx=$btl->findSHMPlace($_GET[service_id]);
@@ -190,6 +194,7 @@ switch($act) {
 	
 	case 'ack_problem':
 	case 'add_comment':
+		$btl->hasServerorServiceRight($_GET[service_id]);
 		$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 		$layout->set_menu("main");
 		if($act == 'ack_problem') {
@@ -216,6 +221,8 @@ switch($act) {
 	
 	break;
 	case 'uninstall_package':
+		$btl->hasServerRight($_GET[server_id]);
+		
 		$layout->set_menu("packages");
 		$global_msg["package"] = "Removing package '$_GET[package_name]' from Server:  $_GET[server_id]<br>";
 		$fp=@fopen("pkgs/" . $_GET[package_name], "r");
@@ -249,6 +256,8 @@ switch($act) {
 		}		
 	break;
 	case 'install_package':
+		$btl->hasServerRight($_GET[server_id]);
+		
 		$layout->set_menu("packages");
 		if($_GET[package_name] && $_GET[server_id]) {
 			$global_msg["package"] = $btl->installPackage($_GET[package_name], $_GET[server_id], $_GET[force_plugins], $_GET[force_perf]);
@@ -273,6 +282,7 @@ switch($act) {
 		$layout->set_menu("main");
 		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
 			if($_GET[service_id]) {
+				$btl->hasServerorServiceRight($_GET[service_id]);
 				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 				$idx=$btl->findSHMPlace($_GET[service_id]);
 				
@@ -290,6 +300,7 @@ switch($act) {
 		$layout->set_menu("main");
 		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
 			if($_GET[service_id]) {
+				$btl->hasServerorServiceRight($_GET[service_id]);
 				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 				$idx=$btl->findSHMPlace($_GET[service_id]);
 				
@@ -317,6 +328,7 @@ switch($act) {
 		$layout->set_menu("main");
 		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
 			if($_GET[service_id]) {
+				$btl->hasServerorServiceRight($_GET[service_id]);
 				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 				$idx=$btl->findSHMPlace($_GET[service_id]);
 			
@@ -339,6 +351,9 @@ switch($act) {
 	case 'delete_worker':
 		$layout->set_menu("worker");
 		if($_GET[worker_id]) {
+			if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
+				$btl->hasRight("modify_all_workers");
+			}
 			$global_msg=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 			$d=bartlby_delete_worker($btl->CFG, $_GET[worker_id]);
 			
@@ -350,7 +365,10 @@ switch($act) {
 	break;
 	case 'modify_worker':
 		$layout->set_menu("worker");
-		if($_GET[worker_id] && $_GET[worker_name]) {
+		if($_GET[worker_id] >= 0 && $_GET[worker_name]) {
+			if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
+				$btl->hasRight("modify_all_workers");
+			}
 			for($x=0;$x<count($_GET[worker_services]); $x++) {
 				$svcstr .="" . $_GET[worker_services][$x] . "|";	
 			}
@@ -372,7 +390,7 @@ switch($act) {
 			}
 			
 			
-			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password], $triggerstr);
+			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr);
 			$layout->OUT .= "<script>doReloadButton();</script>";
 
 		} else {                                     
@@ -406,7 +424,7 @@ switch($act) {
 			}
 			
 			
-			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], $_GET[worker_password], $triggerstr);
+			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
 			
@@ -417,6 +435,7 @@ switch($act) {
 	case 'delete_service':
 		$layout->set_menu("services");
 		if($_GET[service_id]) {
+			$btl->hasServerorServiceRight($_GET[service_id]);
 			$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 			$del = bartlby_delete_service($btl->CFG, $_GET[service_id]);
 			$layout->OUT .= "<script>doReloadButton();</script>";
@@ -428,6 +447,7 @@ switch($act) {
 		$layout->set_menu("services");
 		
 		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
+			$btl->hasServerorServiceRight($_GET[service_id]);
 			//echo "$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);";
 			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type], $_GET[service_active]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
@@ -459,6 +479,7 @@ switch($act) {
 	case 'delete_server':
 		$layout->set_menu("client");
 		if($_GET[server_id]) {
+			$btl->hasServerRight($_GET[server_id]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 			
 			$s = bartlby_delete_server($btl->CFG, $_GET[server_id]);
@@ -471,6 +492,7 @@ switch($act) {
 	case 'modify_server':
 		$layout->set_menu("client");
 		if($_GET[server_id] && $_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
+				$btl->hasServerRight($_GET[server_id]);
 				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon]);
 				
 				$defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);

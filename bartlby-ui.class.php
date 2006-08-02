@@ -19,7 +19,14 @@ class BartlbyUi {
 			}
 		}
 	}
-	
+	function isSuperUser() {
+		if($this->rights[super_user][0] != "true") {
+			return false;
+		}else {
+			return true;	
+		}
+		
+	}
 	function dnl($i) {
 		return sprintf("%02d", $i);
 	}
@@ -53,13 +60,9 @@ class BartlbyUi {
 		} 
 		
 		if(bartlby_check_shm_size($cfg) == false) {
-			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
-				$this->redirectError("BARTLBY::MODULE::MISMATCH");
-				exit(1);
-			} else {
-				return;	
-			}
-			
+			$this->redirectError("BARTLBY::MODULE::MISMATCH");
+			exit(1);
+						
 		}
 		
 		$pid_ar=@file($pid_file . "/bartlby.pid");
@@ -118,19 +121,94 @@ class BartlbyUi {
 		}
 		return $r;
 	}
-	
-	function simpleRight($k, $v) {
-		return true;
-		if(!is_array($this->rights[$k])) {
-				return true;
+	function hasServerorServiceRight($svcid, $do_redir=true) {
+		if($this->rights[super_user][0] == "true") {
+			return true;	
 		}
-		if($this->rights[$k][0] == $v) {
-			return true;
+		
+		$rt=false;
+		$svc=bartlby_get_service_by_id($this->CFG, $svcid);
+		if(!$svc) {
+			$rt = false;
+		}
+		if($this->hasServerRight($svc[server_id], false)) {
+			$rt = true;	
+			
+			
+		}
+		
+		if(in_array($svcid, $this->rights[services])) {
+			$rt = true;
+		} 
+		
+		if($rt == false) {
+			if($do_redir == true) {
+				if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+						$this->redirectError("BARTLBY::RIGHT::MISSING", "&right=service_" . $svcid);
+						exit(1);	
+				}
+			} else {
+					return false;	
+			}
 		} else {
+			return $rt;
+		}	
+		
+		
+		
+		
+		
+	}
+	function hasServerRight($srvid, $do_redir=true) {
+		
+		if($this->rights[super_user][0] == "true") {
+			return true;	
+		}
+		
+		if(!is_array($this->rights[servers])) {
 			return false;
+		}
+	
+		settype($srvid, "integer");
+		
+		
+		
+		if(in_array($srvid, $this->rights[servers])) {
+			return true;	
+		}
+		if($do_redir == true) {
+			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+					$this->redirectError("BARTLBY::RIGHT::MISSING", "&right=server_" . $srvid);
+					exit(1);	
+			}
+		} else {
+				return false;	
+		}
+	}
+	function hasRight($k,$do_redir=true) {
+		if($this->rights[super_user][0] == "true") {
+			
+			return true;	
+		}
+		
+		if($this->rights[$k] && $this->rights[$k][0] != "false") {
+			
+				return true;
+		} else {
+			if($do_redir == true) {
+				if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+					$this->redirectError("BARTLBY::RIGHT::MISSING", "&right=" . $k);
+					exit(1);	
+				}
+			} else {
+				return false;	
+			}
 		}	
 	}
 	function loadRights() {
+		if(!file_exists("rights/" . $this->user . ".dat")) {
+			copy("rights/template.dat", "rights/" . $this->user . ".dat");
+		}
 		if(file_exists("rights/" . $this->user . ".dat")) {
 			$fa=file("rights/" . $this->user . ".dat");
 			while(list($k, $v) = each($fa)) {
@@ -144,6 +222,11 @@ class BartlbyUi {
 			for($x=0; $x<count($this->rights[servers]); $x++) {
 					settype($this->rights[servers][$x], "integer");
 			}
+		} else {
+			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+				$this->redirectError("BARTLBY::RIGHT::FILE::NOT::FOUND");
+				exit(1);	
+			}
 		}
 		if($this->rights[servers][0] == 0) {
 			$this->rights[servers]=null;
@@ -154,6 +237,13 @@ class BartlbyUi {
 			$this->rights[services]=null;
 		}
 		
+		// if is super_user ALL services and servers are allowed
+		if($this->user == @bartlby_config("ui-extra.conf", "super_user") || $this->rights[super_user][0] == "true") {
+		
+				$this->rights[services]=null;
+				$this->rights[servers]=null;
+				//$this->rights[super_user][0]=true;
+		}
 		
 	}
 	function getRelease() {
@@ -164,16 +254,17 @@ class BartlbyUi {
 	}
 	
 	function perform_auth($a=true) {
-		$wrks=$this->GetWorker();
+		$wrks=$this->GetWorker(false);
 		$auted=0;
 		if($a==false) {
 			$auted=1;
 		} else {
 			
 			while(list($k, $v) = each($wrks)) {
-				//$v1=bartlby_get_worker_by_id($this->CFG, $v[worker_id]);
-				if($_SERVER[PHP_AUTH_USER] == $v[name] && $_SERVER[PHP_AUTH_PW] == $v[password]) {
+				
+				if($_SERVER[PHP_AUTH_USER] == $v[name] && md5($_SERVER[PHP_AUTH_PW]) == $v[password]) {
 					$auted=1;
+					$this->user_id=$v[worker_id];
 				}
 			}
 		}
@@ -189,7 +280,7 @@ class BartlbyUi {
 		} else {
 			$this->user=$_SERVER[PHP_AUTH_USER];
 			$this->pw=$_SERVER[PHP_AUTH_PW];
-			$this->user_id=$auted;
+			
 			
 			
 		}
@@ -214,15 +305,18 @@ class BartlbyUi {
 			@fclose($fp);
 		}
 	}
-	function redirectError($msg) {
+	function redirectError($msg, $qs) {
 		
 		//header("Location: error.php?msg=" . $msg);	
 		
-		echo "<script>parent.location.href='error.php?msg=$msg';</script>";
+		if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+			echo "<script>parent.location.href='error.php?msg=$msg" . $qs . "';</script>";
+			exit;
+		}
 		
 	}
 	function findSHMPlace($svcid) {
-		$map=bartlby_svc_map($this->CFG, NULL, NULL);
+		$map=bartlby_svc_map($this->CFG, $this->rights[services], $this->rights[servers]);
 		
 		
 		
@@ -246,13 +340,19 @@ class BartlbyUi {
 	function ServiceCount() {
 		return $this->info[services];	
 	}
-	function GetWorker() {
+	function GetWorker($do_check=true) {
+		
 		$r=array();
 		for($x=0; $x<$this->info[workers]; $x++) {
 			$wrk=bartlby_get_worker($this->CFG, $x);
 			if($wrk[name] == "") {
 				$x=0;
 				continue;	
+			}
+			if($do_check == true) {
+				if($wrk[name] != $this->user && !$this->hasRight("modify_all_workers", false)) {
+					continue;
+				}
 			}
 			//$r[$wrk[worker_id]]=$wrk[name];
 			array_push($r, $wrk);
@@ -261,7 +361,7 @@ class BartlbyUi {
 	}
 	function GetServers() {
 		
-		$map=bartlby_svc_map($this->CFG, NULL, NULL);
+		$map=bartlby_svc_map($this->CFG,$this->rights[services], $this->rights[servers]);
 		
 		
 		
@@ -284,7 +384,7 @@ class BartlbyUi {
 		}
 		return $ar;
 		*/
-		$map=bartlby_svc_map($this->CFG, NULL, NULL);
+		$map=bartlby_svc_map($this->CFG, $this->rights[services], $this->rights[servers]);
 		
 		
 		

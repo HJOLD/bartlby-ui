@@ -3,6 +3,7 @@
 	include "layout.class.php";
 	include "bartlby-ui.class.php";
 	$btl=new BartlbyUi($Bartlby_CONF);
+	$btl->hasright("log.logview");
 	$info=$btl->getInfo();
 	$layout= new Layout();
 	$layout->set_menu("report");

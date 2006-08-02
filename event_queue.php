@@ -9,7 +9,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
-
+$btl->hasRight("core.event_queue");
 $layout= new Layout();
 $layout->set_menu("core");
 $layout->setTitle("Bartlby Last Event's");

@@ -11,6 +11,14 @@ $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
 
+if($btl->user_id != $_GET[worker_id]) {
+	$btl->hasRight("action.delete_worker");
+}
+if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
+	
+	$btl->hasRight("action.modify_all_workers");
+}
+
 
 $global_msg=bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 

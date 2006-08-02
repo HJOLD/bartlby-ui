@@ -31,15 +31,19 @@ if($_GET[service_id]{0} == 's') {
 	
 	
 } 
-
+if($_GET[service_id]) {
+	$btl->hasServerorServiceRight($_GET[service_id]);
+}
 $defaults=@bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 
 $fm_action="modify_service";
 if($_GET["copy"] == "true") {
 	$fm_action="add_service";
+	$btl->hasRight("action.copy_service");
 }
 if($_GET["new"] == "true") {
 	$fm_action="add_service";
+	$btl->hasRight("action.add_service");
 	
 	$defaults["min_from"]="00";
 	$defaults["min_to"]="59";
@@ -58,7 +62,9 @@ if($_GET["new"] == "true") {
 	$defaults[service_passive_timeout]=(int)bartlby_config("ui-extra.conf", "new.service.passive.timeout");
 	
 }
-
+if($fm_action == "modify_service") {
+	$btl->hasRight("action.modify_service");
+}
 
 
 if($defaults == false && $_GET["new"] != "true") {

@@ -12,6 +12,10 @@ $layout->set_menu("client");
 
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
+if($_GET[server_id]) {
+	$btl->hasServerRight($_GET[server_id]);	
+}
+
 
 $defaults=@bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 
@@ -44,10 +48,12 @@ $fm_action="modify_server";
 $layout->setTitle("Modify Server");
 if($_GET["copy"] == "true") {
 	$fm_action="add_server";
+	$btl->hasRight("action.copy_server");
 	$layout->setTitle("Copy Server");
 }
 if($_GET["new"] == "true") {
 	$fm_action="add_server";
+	$btl->hasRight("action.add_server");
 	$layout->setTitle("Add Server");
 	
 	$defaults["min_from"]="00";
@@ -60,6 +66,10 @@ if($_GET["new"] == "true") {
 	$defaults[server_icon]=bartlby_config("ui-extra.conf", "new.server.icon");
 	
 	
+}
+
+if($fm_action == "modify_server") {
+	$btl->hasRight("action.modify_server");	
 }
 
 

@@ -9,6 +9,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
+$btl->hasRight("core.process_info");
 
 if($_GET[maxn]) {
 	$maxn=$_GET[maxn];	

@@ -4,7 +4,7 @@
 	include "bartlby-ui.class.php";
 	
 	$btl=new BartlbyUi($Bartlby_CONF, true);
-	
+	$btl->hasRight("core.event_queue");
 set_time_limit(0);
 echo "<!---SMASH IE BUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFER--->\n";
 echo "<script language='javascript'>window.external.setLoggedInName('" . $btl->user . "');</script>";

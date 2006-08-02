@@ -3,6 +3,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
+$btl->hasRight("action.delete_downtime");
 
 $layout= new Layout();
 $layout->setTitle("Delete Downtime");

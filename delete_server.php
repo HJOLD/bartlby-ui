@@ -10,6 +10,13 @@ $layout->set_menu("client");
 $layout->Form("fm1", "bartlby_action.php");
 $layout->Table("100%");
 
+
+if($_GET[server_id]) {
+	$btl->hasServerRight($_GET[server_id]);	
+}
+$btl->hasRight("action.delete_server");
+
+
 $global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 if($global_msg == false) {
 	$btl->redirectError("BARTLBY::OBJECT::MISSING");

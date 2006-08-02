@@ -3,7 +3,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
-
+$btl->hasRight("action.create_package");
 $layout= new Layout();
 
 $layout= new Layout();

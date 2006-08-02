@@ -8,7 +8,7 @@
 	$layout->Table("100%");
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
-	
+	$btl->hasRight("main.services");
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 
 	

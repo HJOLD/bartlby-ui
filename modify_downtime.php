@@ -30,13 +30,15 @@ if($default == false) {
 if($default[downtime_type]==2) {
 	$dt_type="Server";	
 	$dt_hidden=2;
+	$btl->hasServerRight($default[service_id]);
 } else {
 	$dt_type="service";
 	$dt_hidden=1;
+	$btl->hasServerorServiceRight($default[service_id]);
 }
 
 
-
+$btl->hasRight("action.modify_downtime");
 
 
 

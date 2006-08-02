@@ -3,7 +3,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
-
+$btl->hasright("log.report");
 
 $ibox[0][c]="green";
 $ibox[0][v]=0;
