@@ -79,7 +79,7 @@ for($x=0; $x<count($rights); $x++) {
 		echo "<font color=green>OK</font>";
 	} else {
 		$bad_error_found=true;
-		echo "<font color=orange>CRITICAL</font> either the file is not found or not writeable";	
+		echo "<font color=red>CRITICAL</font> either the file is not found or not writeable";	
 		
 	}
 	echo "\n";
