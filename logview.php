@@ -78,7 +78,9 @@
 				
 				continue;	
 			}
-			
+			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
+				continue;	
+			}
 			
 			$outline = "" . $tmp[1]  . "(" . $tmp[0] . ")";
 			$stcheck=6;
@@ -89,7 +91,9 @@
 				
 				continue;	
 			}
-			
+			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
+				continue;	
+			}
 			
 			$outline = "<a href='logview.php?service_id=" .  $tmp[0] . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $tmp[3] . "<br>";
 			$stcheck=$tmp[1];
@@ -97,6 +101,9 @@
 			$tmp=explode("|", $log_detail_o[2]);
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
+				continue;	
+			}
+			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
 				continue;	
 			}
 			$outline =  "Done " . $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?service_id=" .  $tmp[0] . "'>" .  $tmp[5] . "</A> " . $btl->getState($tmp[2]);

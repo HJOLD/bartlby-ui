@@ -9,6 +9,7 @@
 	
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
+	$btl->hasRight("super_user");
 	$sg = new BnR();
 	$servers=$btl->GetSVCMap();
 	
@@ -96,8 +97,13 @@ for($x=0; $x<count($dtmap); $x++) {
 $btl->doReload();
 $o .= ".... reloaded<br>";
 $o .= "<b>done ($bdir)</b><br>";
-
-
+foreach(glob("rights/*.dat") as $fn) {
+	@unlink($fn);
+}
+foreach(glob($bdir  . "/*.dat.priv") as $fn) {
+	@copy($fn, "rights/" . str_replace(".priv", "", basename($fn)));	
+	
+}
 
 
 $o .= "<b>Asking extensions</b><br>";

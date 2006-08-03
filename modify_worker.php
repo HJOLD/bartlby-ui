@@ -11,6 +11,7 @@ $defaults=@bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 
 $fm_action="modify_worker";
 if($_GET["copy"] == "true") {
+	$btl->hasRight("action.copy_worker");
 	$fm_action="add_worker";
 	$layout->setTitle("Copy Worker");
 }

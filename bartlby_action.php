@@ -22,6 +22,35 @@ if($act != "delete_package_ask") {
 	$btl->hasRight("action." . $act);
 }
 switch($act) {
+	case 'save_permissions':
+	
+		while(list($k, $v) = each($_POST)) {
+			if($k == "worker_id" || $k == "action") continue;
+			if($k == "worker_services") {
+				for($x=0; $x<count($_POST[worker_services]); $x++) {
+					if($_POST[worker_services][$x]{0} == 's') {
+						$cl = str_replace("s", "", $_POST[worker_services][$x]);
+						$servers .= $cl . ",";
+					} else {
+						$services .= $_POST[worker_services][$x] . ",";	
+					}
+				}
+				$new_file .= "services=" . $services . "\n";
+				$new_file .= "servers=" . $servers . "\n";
+				continue;	
+			}
+			$nk = str_replace("action_", "action.", $k);
+			$nk = str_replace("main_", "main.", $nk);
+			$nk = str_replace("core_", "core.", $nk);
+			$nk = str_replace("log_", "log.", $nk);
+			$new_file .= $nk . "=true\n";	
+		}
+		$wk = bartlby_get_worker_by_id($btl->CFG, $_POST[worker_id]);
+		$fp = @fopen("rights/" . $wk[name] . ".dat", "w");
+		@fwrite($fp, $new_file);
+		@fclose($fp);
+	break;
+	
 	case 'disable_extension':
 		
 		touch("extensions/" . $_GET[ext] . ".disabled");

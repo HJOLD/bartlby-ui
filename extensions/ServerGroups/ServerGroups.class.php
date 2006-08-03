@@ -51,7 +51,9 @@ class ServerGroups {
 	
 	function _overview() {
 		global $servers, $btl, $quickview_disabled;
-		
+		if(!$btl->hasRight("sg_overview", false)) {
+			return "you are missing 'sg_overview' right to view server groups";
+		}
 		
 		$quickview_disabled="false";
 		$r = "<table border=0>";
@@ -148,7 +150,10 @@ class ServerGroups {
 	*/
 	
 	function _quickLook() {
-		global $_GET, $rq;
+		global $_GET, $rq, $btl;
+		if(!$btl->hasRight("sg_quicklook", false)) {
+			return;
+		}
 		$rq .= "<tr>";
 		$rq .= "<td colspan=2>";
 		$rq .= "<center><b>Groups</b></center>";
@@ -190,7 +195,31 @@ class ServerGroups {
 	}
 	*/
 	
+	function _permissions() {
+		global $worker_rights;
+		
+		$ky["sg_serverdetail"]="View group membership in serverdetail";	
+		$ky["sg_overview"]="View groups in the overview";
+		$ky["sg_add"]="add groups";
+		$ky["sg_edit"]="modify groups";
+		$ky["sg_delete"]="delete groups";
+		
+		while(list($k, $v) = each($ky)) {
+			$kc="";
+			if($worker_rights[$k][0] && $worker_rights[$k][0] != "false") {
+				$kc="checked";	
+			}
+			$r .= "<input type=checkbox name='$k' $kc> " . $ky[$k] . "<br>";
+				
+		}
+		return $r;
+	}
+	
 	function _serverDetail() {
+		global $btl;
+		if(!$btl->hasRight("sg_serverdetail", false)) {
+			return;
+		}
 		$r = "<b>Member of following groups</b>:<br>";
 		$dhl = opendir("extensions/ServerGroups/data/");
 		

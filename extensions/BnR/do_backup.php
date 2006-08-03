@@ -10,6 +10,7 @@ echo "<!-------IEBUFFERBUFFER	IEBUFFERBUFFERIEBUFFERBUFFERIEBUFFERBUFFERIEBUFFER
 flush();
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
+	$btl->hasRight("super_user");
 	$sg = new BnR();
 	$servers=$btl->GetSVCMap();
 	
@@ -71,6 +72,12 @@ $o .= "adding backup info: '" .  $_GET[package_with_comment] . "'<br>";
 $fp=fopen($bdir . "/info.txt", "w");
 fwrite($fp, $_GET[package_with_comment]);
 fclose($fp);
+
+
+foreach(glob("rights/*.dat") as $fn) {
+	@copy($fn, $bdir . basename($fn) . ".priv");	
+	
+}
 
 $o .= "<b>Asking extensions</b><br>";
 

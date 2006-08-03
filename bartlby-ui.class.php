@@ -1,6 +1,6 @@
 <?
 set_time_limit(0);
-define("BARTLBY_UI_VERSION", "1.15");
+define("BARTLBY_UI_VERSION", "1.16");
 
 
 class BartlbyUi {
@@ -205,6 +205,42 @@ class BartlbyUi {
 			}
 		}	
 	}
+	function loadForeignRights($user) {
+		if(!file_exists("rights/" . $user . ".dat")) {
+			copy("rights/template.dat", "rights/" . $user . ".dat");
+		}
+		if(file_exists("rights/" . $user . ".dat")) {
+			$fa=file("rights/" . $user . ".dat");
+			while(list($k, $v) = each($fa)) {
+				$s1=explode("=", $v);
+				$r[$s1[0]]=explode(",", trim($s1[1]));
+				
+			}
+			for($x=0; $x<count($r[services]); $x++) {
+					settype($r[services][$x], "integer");
+			}
+			for($x=0; $x<count($r[servers]); $x++) {
+					settype($r[servers][$x], "integer");
+			}
+		} else {
+			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+				$this->redirectError("BARTLBY::RIGHT::FILE::NOT::FOUND");
+				exit(1);	
+			}
+		}
+		if($r[servers][0] == 0) {
+			$r[servers]=null;
+		}
+		
+		if($r[services][0] == 0) {
+			
+			$r[services]=null;
+		}
+		
+		// if is super_user ALL services and servers are allowed
+		return $r;
+		
+	}
 	function loadRights() {
 		if(!file_exists("rights/" . $this->user . ".dat")) {
 			copy("rights/template.dat", "rights/" . $this->user . ".dat");
@@ -229,12 +265,19 @@ class BartlbyUi {
 			}
 		}
 		if($this->rights[servers][0] == 0) {
-			$this->rights[servers]=null;
+			if($this->rights[services][0] == 0) {
+				$this->rights[servers]=null;
+			} else {
+				$this->rights[servers][0]=-1;
+			}
 		}
 		
 		if($this->rights[services][0] == 0) {
-			
-			$this->rights[services]=null;
+			if($this->rights[servers][0] == 0) {
+				$this->rights[services]=null;
+			} else {
+				$this->rights[services][0]=-1;	
+			}
 		}
 		
 		// if is super_user ALL services and servers are allowed

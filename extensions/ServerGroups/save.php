@@ -8,7 +8,7 @@
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
 	$inv = new ServerGroups();
-	
+	$btl->hasRight("sg_add");
 	$inv->save($_GET);
 	
 	

@@ -41,8 +41,11 @@ class SSH {
 	}
 	*/
 	function _serverDetail() {
-		global $defaults;
+		global $defaults, $btl;
 		
+		if(!$btl->hasRight("super_user", false)) {
+			return "";	
+		}
 		$st = $this->getDefaults($_GET[server_id]);
 		
 		
@@ -124,6 +127,9 @@ class SSH {
 	
 	
 	function storeServer($id, $ip, $port, $user, $pass) {
+		global $btl;
+		$btl->hasRight("super_user");
+			
 		$s[id] = $id;
 		$s[ssh_user] = $user;
 		$s[ssh_pass] = $pass;
@@ -139,7 +145,8 @@ class SSH {
 		header("Location: ../../extensions_wrap.php?script=SSH/index.php");
 	}
 	function getDefaults($id) {
-		
+		global $btl;
+		$btl->hasRight("super_user");
 		$fp = @fopen("extensions/SSH/data/" . $id . ".ser", "r");
 		if($fp) {
 			while(!feof($fp)) {

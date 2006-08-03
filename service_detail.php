@@ -6,7 +6,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
-
+$btl->hasRight("main.service_detail");
 $layout= new Layout();
 $layout->set_menu("main");
 $layout->setTitle("Actions");
@@ -19,6 +19,7 @@ if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
 	$defaults=$btl->remoteServiceByID($match[1], $match[2]);
 } else {
 	$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
+	$btl->hasServerorServiceRight($defaults[service_id]);
 }
 
 

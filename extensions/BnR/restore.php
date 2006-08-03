@@ -9,6 +9,7 @@
 	
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
+	$btl->hasRight("super_user");
 	$sg = new BnR();
 	$servers=$btl->GetSVCMap();
 	

@@ -15,6 +15,26 @@ class BnR {
 		return "Backup and restore";
 			
 	}
+	function _permissions() {
+		global $worker_rights;
+		//bnr.backup
+		//bnr.restore
+		/*
+		$bchecked="";
+		$rchecked="";
+		if($worker_rights["bnr.backup"][0] && $worker_rights["bnr.backup"][0] != "false") {
+			$bchecked="checked";
+		}
+		if($worker_rights["bnr.restore"][0] && $worker_rights["bnr.restore"][0] != "false") {
+			$rchecked="checked";
+		}
+		
+		$r = "<input type=checkbox name='bnr.backup' $bchecked> Backup<br>";	
+		$r .= "<input type=checkbox name='bnr.restore' $rchecked> Restore (also requires super user)<br>";
+		*/
+		$r = "BnR requires 'super user' right";
+		return $r;
+	}
 	
 	function _Menu() {
 		$r =  $this->layout->beginMenu();

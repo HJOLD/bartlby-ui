@@ -9,6 +9,12 @@
 	
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
+	if($_GET[group_name]) {
+		$btl->hasRight("sg_edit");
+	} else {
+		$btl->hasRight("sg_add");
+	}
+	
 	$sg = new ServerGroups();
 	
 	$layout= new Layout();

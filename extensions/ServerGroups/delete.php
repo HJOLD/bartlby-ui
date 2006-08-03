@@ -7,6 +7,7 @@
 	include "extensions/ServerGroups/ServerGroups.class.php";
 	
 	$btl=new BartlbyUi($Bartlby_CONF);
+	$btl->hasRight("sg_delete");
 	$inv = new ServerGroups();
 	
 	$inv->delete($_GET[grpname]);

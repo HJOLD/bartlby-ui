@@ -20,7 +20,7 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 $btl=new BartlbyUi($Bartlby_CONF);
-
+$btl->hasRight("main.server_detail");
 $layout= new Layout();
 $layout->set_menu("main");
 $layout->setTitle("Services");
@@ -28,6 +28,7 @@ if(preg_match("/^XML:(.*):(.*)$/i", $_GET[server_id], $match)) {
 	$defaults=$btl->remoteServerByID($match[1], $match[2]);
 } else {
 	$defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
+	$btl->hasServerRight($_GET[server_id]);
 }
 
 $map=$btl->getSVCMap($btl->CFG, NULL, NULL);
