@@ -264,16 +264,16 @@ class BartlbyUi {
 				exit(1);	
 			}
 		}
-		if($this->rights[servers][0] == 0) {
-			if($this->rights[services][0] == 0) {
+		if($this->rights[servers][0] == "0") {
+			if($this->rights[services][0] ==  "0") {
 				$this->rights[servers]=null;
 			} else {
 				$this->rights[servers][0]=-1;
 			}
 		}
 		
-		if($this->rights[services][0] == 0) {
-			if($this->rights[servers][0] == 0) {
+		if($this->rights[services][0] ==  "0") {
+			if($this->rights[servers][0] ==  "0") {
 				$this->rights[services]=null;
 			} else {
 				$this->rights[services][0]=-1;	
@@ -305,7 +305,8 @@ class BartlbyUi {
 			
 			while(list($k, $v) = each($wrks)) {
 				
-				if($_SERVER[PHP_AUTH_USER] == $v[name] && md5($_SERVER[PHP_AUTH_PW]) == $v[password]) {
+				if($_SERVER[PHP_AUTH_USER] == $v[name] && (md5($_SERVER[PHP_AUTH_PW]) == $v[password] || $_SERVER[PHP_AUTH_PW] == $v[password])) {
+					//FIXME: remove back. comp. to plain pass'es
 					$auted=1;
 					$this->user_id=$v[worker_id];
 				}
