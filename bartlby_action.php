@@ -395,9 +395,19 @@ switch($act) {
 	case 'modify_worker':
 		$layout->set_menu("worker");
 		if($_GET[worker_id] >= 0 && $_GET[worker_name]) {
+			
 			if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
 				$btl->hasRight("modify_all_workers");
 			}
+			$wks = $btl->GetWorker(false);
+			for($x=0; $x<count($wks); $x++) {
+			
+				if($wks[$x][name] == $_GET[worker_name] && $wks[$x][worker_id] != $_GET[worker_id]) {
+					$act = 'worker_exists';	
+					break 2;
+				}	
+			}
+			
 			for($x=0;$x<count($_GET[worker_services]); $x++) {
 				$svcstr .="" . $_GET[worker_services][$x] . "|";	
 			}
@@ -427,8 +437,20 @@ switch($act) {
 		}     
 	break;
 	case 'add_worker':
+		
 		$layout->set_menu("worker");
 		if($_GET[worker_name] && $_GET[worker_mail]) {
+			//Check if worker exists
+			$wks = $btl->GetWorker(false);
+			for($x=0; $x<count($wks); $x++) {
+			
+				if($wks[$x][name] == $_GET[worker_name]) {
+					$act = 'worker_exists';	
+					break 2;
+				}	
+			}
+			
+			
 			$msg = "wa:" .  $_GET[worker_active] . "\n";
 			
 			for($x=0;$x<count($_GET[worker_services]); $x++) {

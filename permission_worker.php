@@ -152,7 +152,7 @@ function translatedKey($k) {
 	$ar["action.delete_downtime"]=" delete downtime";
 	$ar["action.modify_downtime"]="modify downtime";
 	$ar["main.services"]="can view service list";
-	
+	$ar["sysmessages"]="system messages visible? in logview.";
 	
 	
 	if(!$ar[$k]) {

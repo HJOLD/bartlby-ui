@@ -94,8 +94,8 @@
 			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
 				continue;	
 			}
-			
-			$outline = "<a href='logview.php?service_id=" .  $tmp[0] . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $tmp[3] . "<br>";
+			$clean = htmlentities($tmp[3]);
+			$outline = "<a href='logview.php?service_id=" .  $tmp[0] . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $clean . "<br>";
 			$stcheck=$tmp[1];
 		} else if($log_detail_o[1] == "NOT") {
 			$tmp=explode("|", $log_detail_o[2]);
@@ -108,7 +108,33 @@
 			}
 			$outline =  "Done " . $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?service_id=" .  $tmp[0] . "'>" .  $tmp[5] . "</A> " . $btl->getState($tmp[2]);
 			$stcheck=5;	
+			
+		} else if($log_detail_o[1] == "NOT-EXT") {
+			$tmp=explode("|", $log_detail_o[2]);
+			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
+				
+				continue;	
+			}
+			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
+				continue;	
+			}
+			$outline =  $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?service_id=" .  $tmp[0] . "'>" .  $tmp[5] . "</A> " . $tmp[6];
+			$stcheck=7;	
+		}else if($log_detail_o[1] == "FORCE") {
+			$tmp=explode("|", $log_detail_o[2]);
+			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
+				
+				continue;	
+			}
+			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
+				continue;	
+			}
+			$outline = "Force Service:<a href='logview.php?service_id=" .  $tmp[0] . "'>" .  $tmp[5] . "</A> " . $tmp[6];
+			$stcheck=3;	
 		} elseif(!$_GET[service_id]) {
+			if(!$btl->hasRight("sysmessages", false)) {
+				continue;	
+			}
 			$outline = $info_array[2];
 			$stcheck=3;
 				
@@ -124,6 +150,7 @@
 			case 4: $img="info.gif"; break;
 			case 5: $img="trigger.gif"; break;
 			case 6: $img="icon_stat.gif"; break;
+			case 7: $img="icon_work.gif"; break;
 		}
 		if($_GET["bartlby_filter"]) {
 			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {

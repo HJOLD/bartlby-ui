@@ -13,6 +13,7 @@ action.disable_extension=true
 action.enable_extension=true
 action.sirene_enable=true
 action.sirene_disable=true
+sysmessages=true
 services=13277,13172
 servers=3,598,28
 main.service_detail=true
