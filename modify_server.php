@@ -10,7 +10,7 @@ $layout= new Layout();
 
 $layout->set_menu("client");
 
-$layout->Form("fm1", "bartlby_action.php");
+$ov .= $layout->Form("fm1", "bartlby_action.php", "GET", true);
 $layout->Table("100%");
 if($_GET[server_id]) {
 	$btl->hasServerRight($_GET[server_id]);	
@@ -99,32 +99,33 @@ while($file = readdir($dhl)) {
 }
 closedir($dhl);
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Server Name",
 			1=>$layout->Field("server_name", "text", $defaults[server_name]) . $layout->Field("action", "hidden", $fm_action) . "<a href=\"javascript:var w=window.open('locate_server.php','','width=353,height=421, scrollbar=yes, scrollbars=yes')\">Find Server Wizard!</A>"
 		)
 	)
-);
-$layout->Tr(
+,true);
+
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Server IP",
 			1=>$layout->Field("server_ip", "text", $defaults[server_ip])
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Server Port",
 			1=>$layout->Field("server_port", "text", $defaults[server_port]) . $layout->Field("server_id", "hidden", $_GET[server_id])
 		)
 	)
-);
+,true);
 if($fm_action == "add_server") {
-	$layout->Tr(
+	$ov .= $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>"Package:",
@@ -132,9 +133,9 @@ if($fm_action == "add_server") {
 			)
 		)
 
-	);	
+	,true);	
 }
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>"Icon:",
@@ -142,8 +143,8 @@ $layout->Tr(
 			)
 		)
 
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
@@ -154,9 +155,18 @@ $layout->Tr(
 			)
 		)
 
-);
+,true);
 
 
+
+
+
+$title="add server";  
+$content = "<table>" . $ov . "</table>";
+$layout->push_outside($layout->create_box($layout->BoxTitle, $content));
+	
+	
+$r=$btl->getExtensionsReturn("_PRE_" . $fm_action, $layout);
 
 $layout->Tr(
 	$layout->Td(
@@ -169,8 +179,7 @@ $layout->Tr(
 			)
 		)
 
-);
-
+,false);
 
 $layout->TableEnd();
 $layout->FormEnd();

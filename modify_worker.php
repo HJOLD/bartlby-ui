@@ -124,62 +124,61 @@ $layout->OUT .= "<script>
 		</script>
 ";
 
-$layout->DisplayHelp(array(0=>"INFO|Adding a new server to monitor cycle"));
 
-$layout->Form("fm1", "bartlby_action.php");
+$ov .= $layout->Form("fm1", "bartlby_action.php", "GET", true);
 $layout->Table("100%");
 
 
 
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Name",
 			1=>$layout->Field("worker_name", "text", $defaults[name]) . $layout->Field("action", "hidden", $fm_action)
 		)
 	)
-);
-$layout->Tr(
+, true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Password:",
 			1=>$layout->Field("worker_password", "password", "")
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Mail",
 			1=>$layout->Field("worker_mail", "text", $defaults[mail])
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"ICQ",
 			1=>$layout->Field("worker_icq", "text", $defaults[icq])
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Active?:",
 			1=>$layout->DropDown("worker_active", $act)
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Services:",
 			1=>$layout->DropDown("worker_services[]", $servers, "multiple")
 		)
 	)
-);
+, true);
 
 if(strstr((string)$defaults[notify_levels], "|0|")) {
 	$chk0="checked";	
@@ -195,25 +194,25 @@ if(strstr((string)$defaults[notify_levels], "|7|")) {
 }
 
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Notifys:",
 			1=>"<input type=checkbox value=0 name=notify[] $chk0><font color=green>OK</font><input value=1 type=checkbox name=notify[] $chk1><font color=orange>Warning</font><input value=2 type=checkbox name=notify[] $chk2><font color=red>Critical</font> <input type=checkbox value=7 name=notify[] $chk7><font color=gray>Sirene</font>" 
 		)
 	)
-);
+,true);
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Triggers:",
 			1=>$layout->DropDown("worker_triggers[]", $triggers, "multiple") . " <a href='javascript:simulateTriggers();'>Simulate</A>"
 		)
 	)
-);
+,true);
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
@@ -224,7 +223,14 @@ $layout->Tr(
 			)
 		)
 
-);
+,true);
+
+$title="";  
+$content = "<table>" . $ov . "</table>";
+$layout->push_outside($layout->create_box($layout->BoxTitle, $content));
+
+$r=$btl->getExtensionsReturn("_PRE_" . $fm_action, $layout);
+	
 
 $layout->Tr(
 	$layout->Td(

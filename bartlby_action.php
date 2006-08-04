@@ -592,6 +592,7 @@ switch($act) {
 	break;
 		
 }
+
 $get_line="";
 $post_line="";
 $global_line="";
@@ -607,14 +608,14 @@ while(list($k, $v) = @each($global_msg)) {
 @reset($_GET);
 @reset($_POST);
 @reset($global_msg);
-if($act != "edit_cfg") {
+if($act != "edit_cfg" && @bartlby_config("ui-extra.conf", "ui_event_log") == "true") {
 	$btl->_log("UI Event: (action->$act IP->" .  $_SERVER[REMOTE_ADDR] . ")\\dbr $get_line $post_line \\dbr $global_line");
 }
 
 $f=$act;
 
 $msg=$btl->finScreen($f);
-$layout->Tr(
+$ov .=  $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>Array(
@@ -624,7 +625,24 @@ $layout->Tr(
 			)
 		)
 
+, true);
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>Array(
+					'colspan'=> 2,
+					'show'=>"<a href='overview.php'>Overview</A>"
+					)
+			)
+		)
+
 );
+
+$content = "<table>" . $ov . "</table>";
+$layout->push_outside($layout->create_box($layout->BoxTitle, $content));
+
+$btl->getExtensionsReturn("_POST_" . $act, $layout);
+$layout->BoxTitle="";
 
 
 $layout->TableEnd();

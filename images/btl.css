@@ -68,7 +68,7 @@ td.orange { padding: 4;   text-valign: middle;  font-family:tahoma; font-size:12
 td.blue { padding: 4;   text-valign: middle;  font-family:tahoma; font-size:12px; height:20px; color:#000000; background-color:#ACACAC}
 
 div.reload {z-index:101;visibility:hidden; position: absolute; left: 840px; top:80px;}
-div.ui_performance { position: absolute; left: 5px; top:80px;}
+div.ui_performance { position: absolute; left: 5px; top:83px;}
 div.clock {position: absolute; left: 800px; top:110px; color:#000000;z-index:3;}
 div.quick_look {position: absolute; left: 380px; top:81px; color:#000000;z-index:3;}
 

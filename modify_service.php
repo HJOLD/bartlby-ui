@@ -597,6 +597,9 @@ $layout->Tr(
 );
 
 
+	
+$r=$btl->getExtensionsReturn("_PRE_" . $fm_action, $layout);
+
 $layout->TableEnd();
 $layout->FormEnd();
 $layout->display();

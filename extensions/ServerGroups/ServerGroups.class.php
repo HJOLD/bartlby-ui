@@ -9,6 +9,48 @@ class ServerGroups {
 		$this->layout = new Layout();
 		
 	}
+	
+	function _POST_add_server() {
+		global $add_server, $_GET, $btl;
+		if($btl->hasRight("sg_edit", false)) {
+			//return "add $add_server to groups: " . @implode(",", $_GET[ext_group]);
+			for($x=0; $x<@count($_GET[ext_group]); $x++) {
+				$d = $this->load($_GET[ext_group][$x]);
+				if($d[name]) {
+					@array_push($d[servers], $add_server);
+					$this->save(array("grpname" => $d[name], "choosen_servers" => $d[servers]));
+					$r .= "Added to group: " . $d[name] . "<br>";
+				}	
+			}
+		} else {
+			$r = "";	
+		}
+		return $r;
+	}
+	
+	function _PRE_add_server() {
+		global $layout;
+		
+		$dhl = opendir("extensions/ServerGroups/data/");
+		$optind = 0;
+		while($file = readdir($dhl)) {
+			
+			if($file == "." || $file == "..") {
+				continue;	
+			}	
+			
+			$defaults=$this->load($file);
+			if(!$defaults[name]) {
+				continue;	
+			}
+			$groups[$optind][v]=$file;
+			$groups[$optind][k]=$defaults[name];
+			$optind++;
+		}
+		
+		
+		return $layout->dropdown("ext_group[]", $groups, "multiple", "style=\"height:250;width:250px\"");	
+	}
 	function _restore() {
 		global $orig_servers, $o, $bdir;	
 	

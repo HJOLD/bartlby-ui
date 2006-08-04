@@ -91,12 +91,23 @@ class Layout {
 		}
 		
 	}
-	function Form($name,$action, $method='GET') {
-		$this->OUT .= "<form name='$name' action='$action' method=$method>\n";	
+	function Form($name,$action, $method='GET', $r = false) {
+		
+		$rr = "<form name='$name' action='$action' method=$method>\n";	
+		if($r) {
+			return $rr;	
+		} else {
+			$this->OUT .= $rr;	
+		}
 		
 	}
-	function FormEnd() {
-		$this->OUT .= "</form>\n";	
+	function FormEnd($r=false) {
+		$rr .= "</form>\n";	
+		if($r) {
+			return $rr;	
+		} else {
+			$this->OUT .= $rr;	
+		}
 	}
 	
 	function TextArea($name, $def, $height=7, $width=100) {
