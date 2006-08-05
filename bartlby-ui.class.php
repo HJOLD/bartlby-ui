@@ -63,7 +63,7 @@ class BartlbyUi {
 			exit(1);
 		} 
 		
-		if(bartlby_check_shm_size($cfg) == false) {
+		if($auth == true && bartlby_check_shm_size($cfg) == false) {
 			$this->redirectError("BARTLBY::MODULE::MISMATCH");
 			exit(1);
 						
@@ -353,7 +353,7 @@ class BartlbyUi {
 			@fclose($fp);
 		}
 	}
-	function redirectError($msg, $qs) {
+	function redirectError($msg, $qs="") {
 		
 		//header("Location: error.php?msg=" . $msg);	
 		
