@@ -1,3 +1,100 @@
+2006-08-06 03:17  hjanuschka
+
+	* config.php: auto commit
+
+2006-08-05 23:19  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2006-08-05 01:16  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, layout.class.php,
+	  logview.php, modify_server.php, modify_service.php,
+	  modify_worker.php, template.html, ui-extra.conf,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  extensions/ServerGroups/delete_group.gif,
+	  extensions/ServerGroups/group_member.gif,
+	  extensions/ServerGroups/new_group.gif,
+	  extensions/ServerGroups/view_all.gif, fin/save_permissions,
+	  images/btl.css, images/create_report.gif, images/edit-copy.gif:
+	  auto commit
+
+2006-08-03 22:29  hjanuschka
+
+	* bartlby_action.php, logview.php, permission_worker.php,
+	  fin/worker_exists, rights/template.dat: auto commit
+
+2006-08-03 02:35  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2006-08-03 02:08  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, logview.php,
+	  modify_worker.php, permission_worker.php, server_detail.php,
+	  service_detail.php, template.html,
+	  extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php,
+	  extensions/BnR/BnR.class.php, extensions/BnR/backup.php,
+	  extensions/BnR/do_backup.php, extensions/BnR/do_restore.php,
+	  extensions/BnR/restore.php, extensions/SSH/SSH.class.php,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  extensions/ServerGroups/delete.php,
+	  extensions/ServerGroups/edit.php,
+	  extensions/ServerGroups/save.php, rights/admin.dat,
+	  rights/template.dat: auto commit
+
+2006-08-02 23:44  hjanuschka
+
+	* setup.php, rights/admin.dat: default admin file
+
+2006-08-02 23:42  hjanuschka
+
+	* add_downtime.php, bartlby-ui.class.php, bartlby_action.php,
+	  choose_config.php, config.php, create_report.php,
+	  delete_downtime.php, delete_server.php, delete_service.php,
+	  delete_worker.php, edit_config.php, event_queue.php,
+	  event_stream.php, install_pkg.php, logview.php,
+	  modify_downtime.php, modify_server.php, modify_service.php,
+	  modify_worker.php, overview.php, package_create.php,
+	  package_delete.php, report.php, services.php, setup.php,
+	  statistic.php, template.html, ui-extra.conf, user_list.php,
+	  fin/BARTLBY_RIGHT_MISSING, rights/admin.dat, rights/template.dat:
+	  auto commit
+
+2006-08-01 00:19  hjanuschka
+
+	* modify_worker.php,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  extensions/BnR/do_backup.php, extensions/BnR/do_restore.php,
+	  extensions/ServerGroups/ServerGroups.class.php: auto commit
+
+2006-07-31 00:57  hjanuschka
+
+	* extensions/BnR/store/1: [no log message]
+
+2006-07-31 00:47  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, bartlby_action.php,
+	  layout.class.php, ui-extra.conf,
+	  extensions/Bartlby_Inventory.disabled, extensions/BnR.disabled,
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
+	  extensions/BnR/BnR.class.php, extensions/BnR/backup.php,
+	  extensions/BnR/do_backup.php, extensions/BnR/do_restore.php,
+	  extensions/BnR/restore.php,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  extensions/ServerGroups/delete_group.gif,
+	  extensions/ServerGroups/delete_group.png,
+	  extensions/ServerGroups/edit.php,
+	  extensions/ServerGroups/group_member.gif,
+	  extensions/ServerGroups/group_member.png,
+	  extensions/ServerGroups/manage.php,
+	  extensions/ServerGroups/new_group.gif,
+	  extensions/ServerGroups/new_group.png,
+	  extensions/ServerGroups/view_all.gif,
+	  extensions/ServerGroups/view_all.png, images/create_report.gif,
+	  images/create_report.png, images/edit-copy.gif,
+	  images/edit-copy.png: auto commit
+
 2006-07-28 23:17  hjanuschka
 
 	* modify_service.php: auto commit
