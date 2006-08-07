@@ -315,7 +315,7 @@ switch($act) {
 				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 				$idx=$btl->findSHMPlace($_GET[service_id]);
 				
-				$cur=bartlby_toggle_service_active($btl->CFG, $idx);
+				$cur=bartlby_toggle_service_active($btl->CFG, $idx, 1);
 				
 			} else {                                     
 			 	$act="missing_param";
@@ -361,7 +361,7 @@ switch($act) {
 				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
 				$idx=$btl->findSHMPlace($_GET[service_id]);
 			
-				$cur=bartlby_toggle_service_notify($btl->CFG, $idx);
+				$cur=bartlby_toggle_service_notify($btl->CFG, $idx, 1);
 			
 			}else {                                     
 		 		$act="missing_param";
@@ -504,7 +504,7 @@ switch($act) {
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			
 			if(strlen($_GET["unlock"]) > 0) {
-				bartlby_toggle_service_active($btl->CFG, $_GET["unlock"]);
+				bartlby_toggle_service_active($btl->CFG, $_GET["unlock"], 0);
 			}
 			$layout->OUT .= "<script>doReloadButton();</script>";
 		} else {                                     
