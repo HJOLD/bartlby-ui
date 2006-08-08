@@ -225,8 +225,8 @@ $core_content = "<table  width='100%'>
 
 $layout->push_outside($layout->create_box($info_box_title, $core_content));
 
-if($defaults[service_type] == 1 || $defaults[service_type] == 4 || $defaults[service_type] == 6 || $defaults[service_type] == 7){
-	$info_box_title='Active/Local Service';  
+if($defaults[service_type] == 2 || $defaults[service_type] == 1 || $defaults[service_type] == 4 || $defaults[service_type] == 6 || $defaults[service_type] == 7){
+	$info_box_title='Plugin settings';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table  width='100%'>
 		<tr>
