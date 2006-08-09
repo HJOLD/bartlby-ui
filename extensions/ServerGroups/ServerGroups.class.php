@@ -100,7 +100,7 @@ class ServerGroups {
 		$quickview_disabled="false";
 		$r = "<table border=0>";
 		$r .= "<tr>";
-		reset($servers);
+		@reset($servers);
 		
 		$dhl = opendir("extensions/ServerGroups/data/");
 		$c=0;

@@ -91,7 +91,7 @@ class BartlbyUi {
 		
 	}
 	function getServerInfs($id, $map) {
-		reset($map);
+		@reset($map);
 		$re[0]=0;
 		$re[1]=0;
 		$re[2]=0;
