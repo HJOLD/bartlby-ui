@@ -23,6 +23,17 @@ class BartlbyUi {
 			}
 		}
 	}
+	function resolveGroupString($str) {
+		$aa=explode("|", $str);
+		for($aax=0; $aax<count($aa); $aax++) {
+			$bb = explode("=", $aa[$aax]);
+			if($aa[$aax]) {
+				$svc = @bartlby_get_service_by_id($this->CFG, $aa[$aax]);
+				$r .= "Service: $svc[server_name]:$svc[client_port]/$svc[service_name] is not allowed to be in <font color=" . $this->getColor($bb[1]) . ">" . $this->getState($bb[1]) . "</font> (Current: <font color=" . $this->getColor($svc[current_state]) . ">" . $this->getState($svc[current_state]) . "</font>)<br>";
+			}
+		}	
+		return $r;
+	}
 	function isSuperUser() {
 		if($this->rights[super_user][0] != "true") {
 			return false;
@@ -112,6 +123,7 @@ class BartlbyUi {
 			while(!feof($fp)) {
 				$str=fgets($fp, 1024);
 				while(list($k, $v)=@each($_GET)) {
+					
 					$str=str_replace("\$_GET[" . $k . "]", $v, $str);	
 				}
 				while(list($k, $v)=@each($global_msg)) {
@@ -285,11 +297,12 @@ class BartlbyUi {
 		}
 		
 		// if is super_user ALL services and servers are allowed
+		
 		if($this->user == @bartlby_config("ui-extra.conf", "super_user") || $this->rights[super_user][0] == "true") {
 		
 				$this->rights[services]=null;
 				$this->rights[servers]=null;
-				//$this->rights[super_user][0]=true;
+				$this->rights[super_user][0]=true;
 		}
 		
 	}

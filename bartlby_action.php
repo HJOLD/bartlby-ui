@@ -394,7 +394,7 @@ switch($act) {
 	break;
 	case 'modify_worker':
 		$layout->set_menu("worker");
-		if($_GET[worker_id] >= 0 && $_GET[worker_name]) {
+		if($_GET[worker_id] >= 0 && $_GET[worker_name] && $_GET[worker_password]) {
 			
 			if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
 				$btl->hasRight("modify_all_workers");
@@ -439,7 +439,7 @@ switch($act) {
 	case 'add_worker':
 		
 		$layout->set_menu("worker");
-		if($_GET[worker_name] && $_GET[worker_mail]) {
+		if($_GET[worker_name] && $_GET[worker_mail] && $_GET[worker_password]) {
 			//Check if worker exists
 			$wks = $btl->GetWorker(false);
 			for($x=0; $x<count($wks); $x++) {
@@ -506,6 +506,13 @@ switch($act) {
 			if(strlen($_GET["unlock"]) > 0) {
 				bartlby_toggle_service_active($btl->CFG, $_GET["unlock"], 0);
 			}
+			$act="service_" . $_GET[service_type];
+			
+			if($_GET[service_type] == 3) {
+				$global_msg[group_out] = $btl->resolveGroupString($_GET[service_var]);				
+			}
+			
+			
 			$layout->OUT .= "<script>doReloadButton();</script>";
 		} else {                                     
 		 	$act="missing_param";
@@ -520,7 +527,7 @@ switch($act) {
 			
 			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], substr($_GET[service_time_from], 0, 2), substr($_GET[service_time_to], 0, 2), substr($_GET[service_time_from], 3, 2), substr($_GET[service_time_to], 3, 2),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type],$_GET[service_active]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
-			
+			$act="service_" . $_GET[service_type];
 			$layout->OUT .= "<script>doReloadButton();</script>";
 		} else {                                     
 		 	$act="missing_param";
