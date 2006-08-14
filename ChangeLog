@@ -1,3 +1,9 @@
+2006-08-15 00:02  hjanuschka
+
+	* ChangeLog, bartlby-ui.class.php, overview.php, services.php,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  extensions/ServerGroups/groupview.php: auto commit
+
 2006-08-14 01:05  hjanuschka
 
 	* ChangeLog: auto commit

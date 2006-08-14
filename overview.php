@@ -23,13 +23,16 @@
 	}
 	
 	
-	$mode=bartlby_config($btl->CFG, "i_am_a_slave");
+	
 	$quickview_disabled=bartlby_config("ui-extra.conf", "quickview_enabled");
+	/*
+	$mode=bartlby_config($btl->CFG, "i_am_a_slave");
 	if(!$mode) {
 		$vmode="MASTER";	
 	} else {
 		$vmode="SLAVE<br>dont change anything";	
 	}
+	*/
 	if($info[round_time_count] > 0 &&  $info[round_time_sum] > 0 ) {
 		$rndMS=round($info[round_time_sum] / $info[round_time_count], 2);
 	} else {
@@ -47,10 +50,12 @@
 			<td class='font1'>Services: <font class='font2'>" . $info[services] . "&nbsp;&nbsp;&nbsp;&nbsp;Workers: " . $info[workers] . "&nbsp;&nbsp;&nbsp;&nbsp;Downtimes: " . $info[downtimes]. "&nbsp;&nbsp;&nbsp;&nbsp;Running: " . $info[current_running]  . "</font></td>
 			<td align=right class='font1'>Datalib:<font class='font2'>" . $lib[Name] . "-" . $lib[Version] . "</font></td>
 		</tr>
+		<!--
 		<tr>
 			<td class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
 			<td align=right class='font1'>Mode:<font class='font2'>" . $vmode . "</font></td>
 		</tr>
+		-->
 		
 		<tr>
 			<td class='font1'>&nbsp;</td>
@@ -69,7 +74,7 @@
 	
 	
 	
-	
+	/*
 	$is_repl_on=bartlby_config($btl->CFG, "replication");
 	if(!$is_repl_on) {
 		$is_repl_on="false";	
@@ -83,7 +88,7 @@
 			}
 			$repl .= "Last Replication was on:" . date("d.m.Y H:i:s", $btl->info[last_replication]) . "<br></font>";
 	}
-	
+	*/
 	$servers=$btl->GetSVCMap();
 	
 	$mode=bartlby_config("ui-extra.conf", "xml_remote_count");
