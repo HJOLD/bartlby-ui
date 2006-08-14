@@ -268,7 +268,8 @@
 				$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=4'>" . $qck[$k][4] . " Info</A></td></tr>";
 			}
 			if($qck[$k][downtime]) {
-				$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
+				//$qk="<tr><td class=silver_box><font size=1>" . $qck[$k][downtime] . " Downtime</td></tr>";
+				$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&downtime=true'>" . $qck[$k][downtime] . " Downtime</A></td></tr>";
 			}
 			if($qck[$k][acks]) {
 				$qk="<tr><td class=silver_box><font size=1><a href='services.php?server_id=" . $qck[$k][10] . "&expect_state=2&acks=yes'>" . $qck[$k][acks] . " Ack Wait</A></td></tr>";
@@ -296,7 +297,7 @@
 	$tac_content = "<table class='nopad' width='100%'>
 		<tr>
 			<td colspan=2 class='font1'>Hosts:<font class='font2'>" . $hosts_sum . "</font></td>
-			<td colspan=4 align=left class='font1'>Services:<font class='font2'>" . $service_sum . "</font></td>
+			<td colspan=5 align=left class='font1'>Services:<font class='font2'>" . $service_sum . "</font></td>
 		</tr>
 		<tr>
 			<td class='font1'>Up:<font class='font2'>" . $hosts_up. "</font></td>
@@ -304,11 +305,12 @@
 			<td class='font1'><a href='services.php?expect_state=0'><font color=green>OK</font></A>:<font class='font2'>" . $services_ok. "</font></td>
 			<td class='font1'><a href='services.php?expect_state=1'><font color=orange>Warning</font></A>:<font class='font2'>" . $services_warning. "</font></td>
 			<td class='font1'><a href='services.php?expect_state=2'><font color=red>Critical</font></A>:<font class='font2'>" . $services_critical. "</font></td>
-			<td class='font1'>Downtime:<font class='font2'>" . $services_downtime. "</font></td>
-			<td class='font1'>Acks outstanding:<font class='font2'>" . $acks_outstanding. "</font></td>
+			<td class='font1'><a href='services.php?downtime=true'>Downtime</A>:<font class='font2'>" . $services_downtime. "</font></td>
+			<td class='font1'><a href='services.php?acks=yes'>Acks</A> outstanding:<font class='font2'>" . $acks_outstanding. "</font></td>
+			<td class='font1'><a href='services.php?expect_state=0&invert=true'>all failures</A></td>
 		</tr>
 		<tr>
-			<td class='font1' colspan=6>$repl</td>
+			<td class='font1' colspan=7>$repl</td>
 			
 		</tr>
 	</table>";

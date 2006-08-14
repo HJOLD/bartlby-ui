@@ -106,9 +106,15 @@ class BartlbyUi {
 		$re[0]=0;
 		$re[1]=0;
 		$re[2]=0;
+		$re[downtimes]=0;
 		for($x=0; $x<count($map[$id]); $x++) {
+			if($map[$id][$x][is_downtime] == 1) {
+				continue;	
+			}
 			$re[$map[$id][$x][current_state]]++;
+			
 		}
+		
 		return $re;
 	}
 	function finScreen($f=false) {
