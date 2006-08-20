@@ -50,17 +50,14 @@
 			<td class='font1'>Services: <font class='font2'>" . $info[services] . "&nbsp;&nbsp;&nbsp;&nbsp;Workers: " . $info[workers] . "&nbsp;&nbsp;&nbsp;&nbsp;Downtimes: " . $info[downtimes]. "&nbsp;&nbsp;&nbsp;&nbsp;Running: " . $info[current_running]  . "</font></td>
 			<td align=right class='font1'>Datalib:<font class='font2'>" . $lib[Name] . "-" . $lib[Version] . "</font></td>
 		</tr>
-		<!--
-		<tr>
-			<td class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
-			<td align=right class='font1'>Mode:<font class='font2'>" . $vmode . "</font></td>
-		</tr>
-		-->
 		
 		<tr>
-			<td class='font1'>&nbsp;</td>
+			<td colspan=1 class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
 			<td align=right class='font1'>Avg Round Time:<font class='font2'>" . $rndMS . " ms</font></td>
 		</tr>
+		
+		
+		
 		<tr>
 			<td class='font1'>&nbsp;</td>
 			<td align=right class='font1'><font class='font2'>$sir</font></td>

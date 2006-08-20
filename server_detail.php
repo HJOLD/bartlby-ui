@@ -31,6 +31,11 @@ if(preg_match("/^XML:(.*):(.*)$/i", $_GET[server_id], $match)) {
 	$btl->hasServerRight($_GET[server_id]);
 }
 
+if(!$defaults) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
+}
+
 $map=$btl->getSVCMap($btl->CFG, NULL, NULL);
 $mode=bartlby_config("ui-extra.conf", "xml_remote_count");
 if($mode) {

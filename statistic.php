@@ -59,8 +59,8 @@ $layout->Table("100%");
 			} else {
 				$ms=0;	
 			}
-			$service="<img src='server_icons/" . $servs[$x][server_icon] . "'>" .  $servs[$x][server_name] . "/" . $servs[$x][service_name] . "(" .   $servs[$x][plugin] . ")";
-			$server="<img src='server_icons/" . $servs[$x][server_icon] . "'>" . $servs[$x][server_name];
+			$service="<img src='server_icons/" . $servs[$x][server_icon] . "'><a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'>" .  $servs[$x][server_name] . "/" . $servs[$x][service_name] . "(" .   $servs[$x][plugin] . ")</A>";
+			$server="<img src='server_icons/" . $servs[$x][server_icon] . "'><a href='server_detail.php?server_id=" . $servs[$x][server_id] . "'>" . $servs[$x][server_name] . "</A>";
 			
 			if(!is_array($plugin_table[$plugin])) {
 					$plugin_table[$plugin]=Array();

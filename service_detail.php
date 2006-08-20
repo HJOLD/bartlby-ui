@@ -21,7 +21,10 @@ if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
 	$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
 	$btl->hasServerorServiceRight($defaults[service_id]);
 }
-
+if(!$defaults) {
+	$btl->redirectError("BARTLBY::OBJECT::MISSING");
+	exit(1);	
+}
 
 $layout->Table("100%");
 
