@@ -25,7 +25,9 @@
 		$def=bartlby_get_service($btl->CFG, $shm_id);
 		$svcM=$btl->getServiceOptions($def, $layout) . "<a href='service_detail.php?service_place=" . $shm_id . "'>Detail</A>";
 	}
-	
+	if($_GET[bartlby_filter]) {
+		$svcM .= "&nbsp; <a href='logview.php?bartlby_filter=&service_id=$svcid&l=" . date("Y.m.d", $ch_time) . "'>remove filter</A>";
+	}
 	
 	
 	

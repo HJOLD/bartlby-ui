@@ -51,6 +51,89 @@ class ServerGroups {
 		
 		return $layout->dropdown("ext_group[]", $groups, "multiple", "style=\"height:250;width:250px\"");	
 	}
+	function _POST_modify_server() {
+		global $layout, $_GET;
+		
+		$dhl = opendir("extensions/ServerGroups/data/");
+		$optind = 0;
+		while($file = readdir($dhl)) {
+			
+			if($file == "." || $file == "..") {
+				continue;	
+			}	
+			unset($defaults);
+			$defaults=$this->load($file);
+			if(!$defaults[name]) {
+				continue;	
+			}
+			
+			$groups[$optind][v]=$file;
+			$groups[$optind][k]=$defaults[name];
+			if(@in_array($_GET[server_id], $defaults[servers])) {
+				if(@!in_array($file,$_GET[ext_group])) {
+									
+					while(@list($k,$v) = @each($defaults[servers])) {
+						if($v == $_GET[server_id]) {
+							unset($defaults[servers][$k]);
+						}	
+					}
+					
+					
+					$this->save(array("grpname" => $defaults[name], "choosen_servers" => $defaults[servers]));
+					$r .= "removed from group: " . $defaults[name] . "<br>";
+					
+				}
+				
+			}
+			if(@!in_array($_GET[server_id], $defaults[servers])) {
+				if(@in_array($file,$_GET[ext_group])) {
+						
+					@array_push($defaults[servers], $_GET[server_id]);
+					$this->save(array("grpname" => $defaults[name], "choosen_servers" => $defaults[servers]));
+					$r .= "Added to group: " . $defaults[name] . "<br>";
+				}
+				$groups[$optind][s]=1;
+			}
+			reset($_GET[ext_group]);
+			reset($defaults);
+			
+			
+			
+			
+			$optind++;
+		}
+		
+		
+		return $r;
+	}
+	
+	function _PRE_modify_server() {
+		global $layout, $_GET;
+		
+		$dhl = opendir("extensions/ServerGroups/data/");
+		$optind = 0;
+		while($file = readdir($dhl)) {
+			
+			if($file == "." || $file == "..") {
+				continue;	
+			}	
+			
+			$defaults=$this->load($file);
+			if(!$defaults[name]) {
+				continue;	
+			}
+			$groups[$optind][v]=$file;
+			$groups[$optind][k]=$defaults[name];
+			if(@in_array($_GET[server_id], $defaults[servers])) {
+				$groups[$optind][s]=1;
+			}
+			$optind++;
+		}
+		
+		
+		return $layout->dropdown("ext_group[]", $groups, "multiple", "style=\"height:250;width:250px\"");	
+	}
+	
 	function _restore() {
 		global $orig_servers, $o, $bdir;	
 	
