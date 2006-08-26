@@ -37,19 +37,24 @@
 			if(!in_array($_GET[clientname], $exclude_list)) {
 				$add_server=bartlby_add_server($btl->CFG, $_GET[clientname],$_SERVER["REMOTE_ADDR"], 9030, "01generic.gif");
 				echo "ADDSERVER $add_server\n";
+				flush();
 				if(!$default_pkg) {
 					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1);	
 					echo "SERVICEADD INIT\n";
+					flush();
 				} else {
 					$btl->installPackage($default_pkg, $add_server, NULL, NULL);
 					echo "INSTPKG $default_pkg \n";
+					flush();
 				}
 				$btl->_log("AgentSyncer: $_GET[clientname] / " . $_SERVER["REMOTE_ADDR"]  . " registered");
 			} else {
 				echo "INFO clientname_excluded \n";		
+				flush();
 			}	
 		} else {
 			echo "INFO auto_register_off \n";	
+			flush();
 		}
 	}
 	
@@ -64,7 +69,27 @@
 			$xy="-";	
 		}
 		echo " " . $xy . "\n";
+		flush();
 	}
+	
+	$fn="extensions/AgentSyncer/bartlby_agent." . $_GET[arch];
+	echo "AB extensions_wrap.php?script=AgentSyncer/getab.php?bin=$fn $fn";
+	if(file_exists($fn)) {
+		$xy=@md5_file($fn);	
+	} else {
+		$xy="-";	
+	}
+	echo " " . $xy . "\n";
+	flush();
+	$fn="extensions/AgentSyncer/bartlby_cmd." . $_GET[arch];
+	echo "CB extensions_wrap.php?script=AgentSyncer/getab.php?bin=$fn $fn";
+	if(file_exists($fn)) {
+		$xy=@md5_file($fn);	
+	} else {
+		$xy="-";	
+	}
+	echo " " . $xy . "\n";
+	flush();
 	$btl->_log("AgentSyncer: $_GET[clientname] / " . $_SERVER["REMOTE_ADDR"] . " synced");
 	
 
