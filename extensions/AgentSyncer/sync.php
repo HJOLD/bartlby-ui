@@ -16,7 +16,7 @@
 	$client_found = 0;
 	while(list($k, $v) = each($servers)) {
 		//echo $v[0][server_name] . "-" .   $_SERVER["REMOTE_ADDR"] .  "-" . gethostbyname($v[0][client_ip]) . "-\n";
-		if($v[0][server_name] == $_GET[clientname] && gethostbyname($v[0][client_ip]) == $_SERVER["REMOTE_ADDR"]) {
+		if($v[0][server_name] == $_GET[clientname]) {
 			$client_found=1;
 			for($x=0; $x<count($v); $x++) {
 				
