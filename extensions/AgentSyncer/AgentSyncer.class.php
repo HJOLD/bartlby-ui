@@ -14,6 +14,8 @@ include "config.php";
 			$r .= $this->layout->addRoot("Agent Sync");
 			$r .= $this->layout->addSub("Agent Sync", "Available Binarys","extensions_wrap.php?script=AgentSyncer/view_binarys.php");
 			$r .= $this->layout->addSub("Agent Sync", "Edit default config","extensions_wrap.php?script=AgentSyncer/edit_cfg.php");
+			$r .= $this->layout->addSub("Agent Sync", "Logfile","logview.php?bartlby_filter=AgentSyncer:");
+			
 			
 			
 			$r .= $this->layout->endMenu();

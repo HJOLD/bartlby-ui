@@ -370,6 +370,8 @@ class BartlbyUi {
 			$fp=@fopen($logfile, "a+");
 			@fwrite($fp, $logline);
 			@fclose($fp);
+			@chmod($logfile, 0666);
+			
 		}
 	}
 	function redirectError($msg, $qs="") {
