@@ -143,6 +143,9 @@
 		} else {
 			continue;	
 		}
+		
+		
+		
 		$date=$info_array[0];
 		switch($stcheck) {
 			case 0: $img="ok.gif"; break;
@@ -169,7 +172,10 @@
 		$lcounter++;
 				
 		
-				
+			
+		if(preg_match("/^AgentSyncer.*/i", $outline)) {
+			$img = "agent_syncer.gif";	
+		}
 		$layout->Tr(
 		$layout->Td(
 				Array(

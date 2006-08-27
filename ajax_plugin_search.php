@@ -22,8 +22,8 @@ while ($file = readdir ($dh)) {
        	}
    }
    if($y>20) {
-		break 2;	
-	} 
+		break;	
+   } 
 }
 closedir($dh); 
 
