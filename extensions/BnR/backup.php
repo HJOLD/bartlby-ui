@@ -56,15 +56,8 @@ $layout->Tr(
 		)
 
 );
-$layout->Tr(
-	$layout->Td(
-			Array(
-				0=>"Include Logfiles:",
-				1=>$layout->Field("package_with_logfiles", "checkbox", "checked")
-			)
-		)
 
-);
+
 
 $layout->Tr(
 	$layout->Td(

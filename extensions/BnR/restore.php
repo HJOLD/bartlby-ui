@@ -79,6 +79,16 @@ $layout->Tr(
 
 );
 
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Restore config files:",
+				1=>$layout->Field("force_config", "checkbox", "checked")
+			)
+		)
+
+);
+
 
 $layout->Tr(
 	$layout->Td(

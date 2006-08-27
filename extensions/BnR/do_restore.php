@@ -105,6 +105,13 @@ foreach(glob($bdir  . "/*.dat.priv") as $fn) {
 	
 }
 
+if($_GET[force_config]) {
+	@copy($bdir . "/ui-extra.conf", "ui-extra.conf");
+	$o .= "restored: ui-extra.conf<br>";	
+	@copy($bdir . "/bartlby.cfg", $btl->CFG);
+	$o .= "restored: " . $btl->CFG . "<br>";
+}
+
 
 $o .= "<b>Asking extensions</b><br>";
 

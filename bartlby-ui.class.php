@@ -1,6 +1,6 @@
 <?
 set_time_limit(0);
-define("BARTLBY_UI_VERSION", "1.16");
+define("BARTLBY_UI_VERSION", "1.18");
 
 if(!version_compare(phpversion(), "5.0.0", ">=")) {
 	echo "you should have at least a php5 series";

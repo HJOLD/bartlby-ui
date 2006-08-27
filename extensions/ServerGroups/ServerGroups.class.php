@@ -324,11 +324,8 @@ class ServerGroups {
 	function _permissions() {
 		global $worker_rights;
 		
-		$ky["sg_serverdetail"]="View group membership in serverdetail";	
-		$ky["sg_overview"]="View groups in the overview";
-		$ky["sg_add"]="add groups";
-		$ky["sg_edit"]="modify groups";
-		$ky["sg_delete"]="delete groups";
+		$ky["agentsyncer_editcfg"]="Edit AgentSyncer default agent config";	
+		$ky["agentsyncer_sync"]="Allowed to sync";
 		
 		while(list($k, $v) = each($ky)) {
 			$kc="";

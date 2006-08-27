@@ -63,7 +63,7 @@ $o .= "Downtimes saved<br>";
 
 if($_GET[package_with_config]) {
 	@copy("ui-extra.conf", $bdir . "/ui-extra.conf");
-	@copy($btl->CFG, $bdir . "/" . basename($btl->CFG));
+	@copy($btl->CFG, $bdir . "/bartlby.cfg");
 	$o .= "ui-extra.conf, bartlby.cfg saved<br>";
 }
 
