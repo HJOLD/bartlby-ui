@@ -91,6 +91,10 @@
 	echo " " . $xy . "\n";
 	flush();
 	$btl->_log("AgentSyncer: $_GET[clientname] / " . $_SERVER["REMOTE_ADDR"] . " synced");
+
+	$fp=@fopen("extensions/AgentSyncer/store/" . md5($_GET[clientname]), "w");
+	@fwrite($fp, time());
+	@fclose($fp);
 	
 
 

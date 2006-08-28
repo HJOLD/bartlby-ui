@@ -12,7 +12,10 @@ include "config.php";
 			
 			$r =  $this->layout->beginMenu();
 			$r .= $this->layout->addRoot("Agent Sync");
+
+			$r .= $this->layout->addSub("Agent Sync", "Status","extensions_wrap.php?script=AgentSyncer/status.php");
 			$r .= $this->layout->addSub("Agent Sync", "Available Binarys","extensions_wrap.php?script=AgentSyncer/view_binarys.php");
+			
 			$r .= $this->layout->addSub("Agent Sync", "Edit default config","extensions_wrap.php?script=AgentSyncer/edit_cfg.php");
 			$r .= $this->layout->addSub("Agent Sync", "Logfile","logview.php?bartlby_filter=AgentSyncer:");
 			
@@ -20,6 +23,18 @@ include "config.php";
 			
 			$r .= $this->layout->endMenu();
 			return $r;
+		}
+		function _serverDetail() {
+			global $btl;
+			$srv=@bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
+			$fn = "extensions/AgentSyncer/store/" . md5($srv[server_name]);
+			//return $fn;
+			if(file_exists($fn)) {
+				return "Last Sync: " . date("d.m.Y H:i:s", file_get_contents($fn));
+			} else {
+				return "not synced till now";
+			}
+			
 		}
 		function _permissions() {
 			global $worker_rights;
