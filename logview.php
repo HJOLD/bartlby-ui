@@ -99,6 +99,20 @@
 			$clean = htmlentities($tmp[3]);
 			$outline = "<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $clean . "<br>";
 			$stcheck=$tmp[1];
+		}else if($log_detail_o[1] == "KILL") {
+			$tmp=explode("|", $log_detail_o[2]);
+			
+			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
+				
+				continue;	
+			}
+			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
+				continue;	
+			}
+			$clean = htmlentities($tmp[3]);
+			$outline = "<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" . $tmp[2] . "</A><br>" . $clean . "<br>";
+			$stcheck=8;
+			
 		} else if($log_detail_o[1] == "NOT") {
 			$tmp=explode("|", $log_detail_o[2]);
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
@@ -156,6 +170,7 @@
 			case 5: $img="trigger.gif"; break;
 			case 6: $img="icon_stat.gif"; break;
 			case 7: $img="icon_work.gif"; break;
+			case 8: $img="icon_work.gif"; break;
 		}
 		if($_GET["bartlby_filter"]) {
 			if(!preg_match("/" . $_GET["bartlby_filter"] . "/i", $v)) {

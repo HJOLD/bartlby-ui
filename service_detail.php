@@ -86,6 +86,12 @@ if( $defaults[service_time_sum] > 0 && $defaults[service_time_count] > 0) {
 	$svcMS=0;	
 }
 
+if($defaults[check_starttime] != 0) {
+	$currun=date("d.m.Y H:i:s", $defaults[check_starttime]) . " (PID: $defaults[check_is_running] )";
+} else {
+	$currun="<i>Currently not running</i>";	
+}
+
 $info_box_title='Service Info';  
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 $core_content = "<table  width='100%'>
@@ -174,7 +180,7 @@ $core_content = "<table  width='100%'>
 	
 		<tr>
 		<td width=150 class='font2'>Is Running?:</td>
-		<td align=left >" .  $defaults[check_is_running] . "</font></td>
+		<td align=left >" .  $currun . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>	
 	<tr>
