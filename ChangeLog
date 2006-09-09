@@ -1,3 +1,63 @@
+2006-09-04 00:19  hjanuschka
+
+	* logview.php, service_detail.php: auto commit
+
+2006-08-28 23:37  hjanuschka
+
+	* extensions/AgentSyncer/: AgentSyncer.class.php,
+	  bartlby.cfg.default, sync.php, store/1: auto commit
+
+2006-08-28 00:12  hjanuschka
+
+	* bartlby-ui.class.php,
+	  extensions/AgentSyncer/AgentSyncer.class.php: auto commit
+
+2006-08-27 20:29  hjanuschka
+
+	* template.html, extensions/AgentSyncer/AgentSyncer.class.php,
+	  extensions/AgentSyncer/bartlby.cfg.default,
+	  extensions/AgentSyncer/edit_cfg.php,
+	  extensions/AgentSyncer/getcfg.php,
+	  extensions/AgentSyncer/getplugin.php,
+	  extensions/AgentSyncer/save_cfg.php,
+	  extensions/AgentSyncer/sync.php,
+	  extensions/AgentSyncer/view_binarys.php,
+	  extensions/BnR/backup.php, extensions/BnR/do_backup.php,
+	  extensions/BnR/do_restore.php, extensions/BnR/restore.php,
+	  extensions/ServerGroups/ServerGroups.class.php,
+	  bartlby-ui.class.php: auto commit
+
+2006-08-27 03:25  hjanuschka
+
+	* ajax_plugin_search.php, logview.php,
+	  extensions/AgentSyncer/AgentSyncer.class.php,
+	  images/agent_syncer.gif: [no log message]
+
+2006-08-26 23:45  hjanuschka
+
+	* extensions/AgentSyncer/sync.php: [no log message]
+
+2006-08-26 02:19  hjanuschka
+
+	* extensions/AgentSyncer/: bartlby.cfg.default, sync.php: auto
+	  commit
+
+2006-08-26 01:02  hjanuschka
+
+	* ui-extra.conf, extensions/AgentSyncer/AgentSyncer.class.php,
+	  extensions/AgentSyncer/getcfg.php,
+	  extensions/AgentSyncer/getplugin.php,
+	  extensions/AgentSyncer/sync.php: auto commit
+
+2006-08-25 22:10  hjanuschka
+
+	* logview.php, template.html, extensions/automated.php,
+	  extensions/ServerGroups/ServerGroups.class.php: auto commit
+
+2006-08-24 22:04  hjanuschka
+
+	* ChangeLog: auto commit
+
 2006-08-20 21:52  hjanuschka
 
 	* ChangeLog, overview.php, server_detail.php, service_detail.php,
