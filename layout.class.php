@@ -43,8 +43,8 @@ class Layout {
 		$this->menu_set=false;
 	}
 
-	function Table($proz="100%") {
-		$this->OUT .= "<table width='$proz' cellpadding=0 cellspacing=0 border=0>";
+	function Table($proz="100%", $border=0) {
+		$this->OUT .= "<table border=$border width='$proz' cellpadding=0 cellspacing=0 border=0>";
 	}
 	function MetaRefresh($time=20) {
 		$this->OUT .= "<script>window.setTimeout('document.location.reload()', " . $time . "000);</script>";	
