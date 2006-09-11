@@ -200,8 +200,8 @@ class ServerGroups {
 			$all[0]=0;
 			$all[1]=0;
 			$all[2]=0;
-			$c++;
-			$r .= "<td align=left valign=top width=300>";					
+			
+			
 			
 			for($x=0; $x<count($defaults[servers]); $x++) {
 				$ret=$btl->getServerInfs($defaults[servers][$x], $servers);	
@@ -244,13 +244,20 @@ class ServerGroups {
 				$color="green";
 			}
 			
+			if ( $service_sum > 0 ) {
+
+			$r .= "<td align=left valign=top width=300>";					
 			$r .= "<table width='100%'><tr><td><b><a href='extensions_wrap.php?script=ServerGroups/groupview.php&grpname=$file'>$defaults[name]</b></td><tr><tr><td class=" . $color . "_box>$prozent_float % OK</td></tr></table>";
+
+			$c++;
+			
 			
 			
 			$r .= "</td>";
 			if($c == GROUPS_PER_ROW) {
 				$r .= "</tr><tr>";
 				$c=0;	
+			}
 			}
 		}
 		while($c < GROUPS_PER_ROW) {
