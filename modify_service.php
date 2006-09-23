@@ -60,7 +60,7 @@ if($_GET["new"] == "true") {
 	$defaults[service_args]=bartlby_config("ui-extra.conf", "new.service.active.arguments");
 	
 	$defaults[service_passive_timeout]=(int)bartlby_config("ui-extra.conf", "new.service.passive.timeout");
-	
+	$defaults[flap_seconds]=(int)bartlby_config("ui-extra.conf", "new.service.flap_seconds");
 }
 if($fm_action == "modify_service") {
 	$btl->hasRight("action.modify_service");
@@ -384,6 +384,15 @@ $active_box_out .=$layout->Tr(
 		array(
 			0=>"Service retain in status",
 			1=>$layout->Field("service_retain", "text", $defaults[service_retain]) . " Times"
+			
+		)
+	)
+,true);
+$active_box_out .=$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service flap time threshold",
+			1=>$layout->Field("flap_seconds", "text", $defaults[flap_seconds]) . " seconds"
 			
 		)
 	)

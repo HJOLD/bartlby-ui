@@ -167,6 +167,11 @@ $core_content = "<table  width='100%'>
 		<td>&nbsp;</td>           
 	</tr>
 	<tr>
+		<td width=150 class='font2'>Flap seconds:</td>
+		<td align=left >" . $defaults[flap_seconds] . "</font></td>
+		<td>&nbsp;</td>           
+	</tr>
+	<tr>
 		<td width=150 class='font2'>Ack settings:</td>
 		<td align=left >" . $needs_ack . "</font></td>
 		<td>&nbsp;</td>           

@@ -9,6 +9,7 @@ $layout->set_menu("worker");
 $layout->setTitle("Modify Worker");
 $defaults=@bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
 
+
 $fm_action="modify_worker";
 if($_GET["copy"] == "true") {
 	$btl->hasRight("action.copy_worker");
@@ -33,6 +34,10 @@ if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
 if($defaults == false && $_GET["new"] != "true") {
 	$btl->redirectError("BARTLBY::OBJECT::MISSING");
 	exit(1);	
+}
+if(!$defaults) {
+	$defaults[escalation_limit]=50;
+	$defaults[escalation_minutes]=3;
 }
 
 $map = $btl->GetSVCMap();
@@ -163,6 +168,16 @@ $ov .= $layout->Tr(
 		)
 	)
 ,true);
+
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Escalation",
+			1=>"<font size=1>" . $layout->Field("escalation_limit", "text", $defaults[escalation_limit]) . "notify's  per " . $layout->Field("escalation_minutes", "text", $defaults[escalation_minutes]) .  " minutes</font>"
+		)
+	)
+,true);
+
 $ov .= $layout->Tr(
 	$layout->Td(
 		array(

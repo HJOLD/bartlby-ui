@@ -70,7 +70,7 @@ for($x=0; $x<count($wrkmap); $x++) {
 	
 	
 	//bartlby_delete_worker($btl->CFG, $wrkmp[$x][worker_id]);
-	$add=bartlby_add_worker($btl->CFG, $wrkmap[$x][mail], $wrkmap[$x][icq], $wrkmap[$x][services], $wrkmap[$x][notify_levels], $wrkmap[$x][active], $wrkmap[$x][name],$wrkmap[$x][password], $wrkmap[$x][enabled_triggers]);
+	$add=bartlby_add_worker($btl->CFG, $wrkmap[$x][mail], $wrkmap[$x][icq], $wrkmap[$x][services], $wrkmap[$x][notify_levels], $wrkmap[$x][active], $wrkmap[$x][name],$wrkmap[$x][password], $wrkmap[$x][enabled_triggers], $wrkmap[$x][escalation_limit],$wrkmap[$x][escalation_minutes]);
 	$o_id = bartlby_set_worker_id($btl->CFG, $add, $wrkmap[$x][worker_id]);	
 	$o .= "adding worker: " . $wrkmap[$x][name] .  "($o_id)<br>";		
 }
