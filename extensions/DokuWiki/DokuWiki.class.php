@@ -38,16 +38,23 @@ class DokuWiki {
                 return "";
         }
         */
-        function _globExt($svcid, $path) {
-        		
-                foreach(glob($path . "/" . $svcid . "_*.png") as $fn) {
-                        $r .= "<img src='rrd/" . basename($fn) . "'><br>";
-                }
-                return $r;
-        }
 	function dwDisp($p) {
 	        $ifile = "extensions/DokuWiki/config.ini";
 		$ra=parse_ini_file($ifile,TRUE);
+		define('DOKU_INC', $ra[DokuWiki][PATH]); 
+		if(!defined('DOKU_INC')) define('DOKU_INC',realpath(dirname(__FILE__)).'/');
+  		require_once(DOKU_INC.'inc/init.php');
+  		require_once(DOKU_INC.'inc/common.php');
+  		require_once(DOKU_INC.'inc/pageutils.php');
+  		require_once(DOKU_INC.'inc/html.php');
+  		require_once(DOKU_INC.'inc/auth.php');
+  		require_once(DOKU_INC.'inc/actions.php');
+
+
+
+		$pa = @p_wiki_xhtml("start", "", TRUE);
+
+
 		
 		return "<iframe frameborder=0 src='" . $ra[DokuWiki][URL] . "?id=" . $p . "' width='100%' height='600'></iframe>";
 	}
