@@ -1,5 +1,6 @@
 <?
 set_time_limit(0);
+set_magic_quotes_runtime(0);
 define("BARTLBY_UI_VERSION", "1.18");
 
 if(!version_compare(phpversion(), "5.0.0", ">=")) {
