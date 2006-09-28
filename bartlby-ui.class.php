@@ -584,7 +584,7 @@ class BartlbyUi {
 				}
 			}
 		}
-		closedir();
+		closedir($dhl);
 		return $r;	
 		
 	}
