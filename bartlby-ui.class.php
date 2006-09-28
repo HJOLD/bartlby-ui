@@ -1169,7 +1169,8 @@ function create_package($package_name, $in_services = array(), $with_plugins, $w
 	function getserveroptions($defaults, $layout) {
 		$modify = "<a href='modify_server.php?server_id=" . $_GET[server_id] . "'><img src='images/modify.gif' title='Modify this server' border=0></A>";
 		$copy = "<a href='modify_server.php?copy=true&server_id=" . $_GET[server_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Server' border=0></A>";
-		return $modify . " " . $copy;
+		$logview= "<a href='logview.php?server_id=" . $_GET[server_id]. "' ><font size=1><img  title='View Events for this Server' src='images/icon_view.gif' border=0></A>";
+		return $modify . " " . $copy . " " . $logview;
 	}
 	function getserviceOptions($defaults, $layout) {
 		if($defaults[service_active] == 1) {

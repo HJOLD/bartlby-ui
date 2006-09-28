@@ -9,6 +9,7 @@
 	$layout->set_menu("report");
 	$layout->Form("fm1", "logview.php");
 	$layout->Table("100%");
+	$map=$btl->GetSVCMap();
 	
 	$ch_time=time();
 	if($_GET[l]) {
@@ -19,6 +20,8 @@
 	
 	$logf=bartlby_config($btl->CFG, "logfile") . date(".Y.m.d", $ch_time);
 	$svcid=$_GET[service_id];
+	$srvid=$_GET[server_id];
+	
 	$shm_id=$btl->findSHMPlace($svcid);
 	
 	if($shm_id >= 0) {
@@ -26,7 +29,7 @@
 		$svcM=$btl->getServiceOptions($def, $layout) . "<a href='service_detail.php?service_place=" . $shm_id . "'>Detail</A>";
 	}
 	if($_GET[bartlby_filter]) {
-		$svcM .= "&nbsp; <a href='logview.php?bartlby_filter=&service_id=$svcid&l=" . date("Y.m.d", $ch_time) . "'>remove filter</A>";
+		$svcM .= "&nbsp; <a href='logview.php?bartlby_filter=&server_id=$srvid&service_id=$svcid&l=" . date("Y.m.d", $ch_time) . "'>remove filter</A>";
 	}
 	
 	
@@ -37,7 +40,7 @@
 					0=>Array(
 						'colspan'=> 3,
 						'class'=>'header',
-						'show'=>"<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>  "  
+						'show'=>"<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=$svcid&l=" . date("Y.m.d", $ch_time-86400)  . "'>&laquo;" . date("Y.m.d", $ch_time-86400) . "</A> Logfile ($logf) <a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=$svcid&l=" . date("Y.m.d", $ch_time+86400)  . "'>&raquo;" . date("Y.m.d", $ch_time+86400) . "</A>  "  
 						)
 				)
 			)
@@ -60,7 +63,7 @@
 	
 	$curp = $_GET["site"] > 0 ? $_GET["site"] : 1;
 	$perp=100;
-	$forward_link=$btl->create_pagelinks("logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=$svcid&l=" . date("Y.m.d", $ch_time), count($fl)-1, $perp, $curp,"site");
+	$forward_link=$btl->create_pagelinks("logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=$svcid&l=" . date("Y.m.d", $ch_time), count($fl)-1, $perp, $curp,"site");
 	$skip_em=($curp*$perp)-$perp;
 	$skipped=0;
 	
@@ -76,6 +79,9 @@
 		if($log_detail_o[1] == "PERF") {
 			$tmp=explode("|", $log_detail_o[2]);
 			
+			if($_GET[server_id] && !cmpServiceIDHasServer($tmp[0], $_GET[server_id])) {
+				continue;	
+			}
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
 				continue;	
@@ -89,6 +95,10 @@
 		} else if($log_detail_o[1] == "LOG") {
 			$tmp=explode("|", $log_detail_o[2]);
 			
+			if($_GET[server_id] && !cmpServiceIDHasServer($tmp[0], $_GET[server_id])) {
+				continue;	
+			}
+			
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
 				continue;	
@@ -97,11 +107,15 @@
 				continue;	
 			}
 			$clean = htmlentities($tmp[3]);
-			$outline = "<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $clean . "<br>";
+			$outline = "<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" . $tmp[2] . "</A> changed to " . $btl->getState($tmp[1]) . "<br>" . $clean . "<br>";
 			$stcheck=$tmp[1];
 		}else if($log_detail_o[1] == "KILL") {
 			$tmp=explode("|", $log_detail_o[2]);
 			
+			if($_GET[server_id] && !cmpServiceIDHasServer($tmp[0], $_GET[server_id])) {
+				continue;	
+			}
+			
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
 				continue;	
@@ -110,11 +124,15 @@
 				continue;	
 			}
 			$clean = htmlentities($tmp[3]);
-			$outline = "<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" . $tmp[2] . "</A><br>" . $clean . "<br>";
+			$outline = "<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" . $tmp[2] . "</A><br>" . $clean . "<br>";
 			$stcheck=8;
 			
 		} else if($log_detail_o[1] == "NOT") {
 			$tmp=explode("|", $log_detail_o[2]);
+			
+			if($_GET[server_id] && !cmpServiceIDHasServer($tmp[0], $_GET[server_id])) {
+				continue;	
+			}
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
 				continue;	
@@ -122,11 +140,16 @@
 			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
 				continue;	
 			}
-			$outline =  "Done " . $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" .  $tmp[5] . "</A> " . $btl->getState($tmp[2]);
+			$outline =  "Done " . $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" .  $tmp[5] . "</A> " . $btl->getState($tmp[2]);
 			$stcheck=5;	
 			
 		} else if($log_detail_o[1] == "NOT-EXT") {
 			$tmp=explode("|", $log_detail_o[2]);
+			
+			if($_GET[server_id] && !cmpServiceIDHasServer($tmp[0], $_GET[server_id])) {
+				continue;	
+			}
+			
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
 				continue;	
@@ -134,10 +157,15 @@
 			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
 				continue;	
 			}
-			$outline =  $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" .  $tmp[5] . "</A> " . $tmp[6];
+			$outline =  $tmp[3] . " for " . $tmp[4] . " Service:<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" .  $tmp[5] . "</A> " . $tmp[6];
 			$stcheck=7;	
 		}else if($log_detail_o[1] == "FORCE") {
 			$tmp=explode("|", $log_detail_o[2]);
+			
+			if($_GET[server_id] && !cmpServiceIDHasServer($tmp[0], $_GET[server_id])) {
+				continue;	
+			}
+			
 			if($_GET[service_id] && $tmp[0] != $_GET[service_id]) {
 				
 				continue;	
@@ -145,12 +173,13 @@
 			if(!$btl->hasServerorServiceRight($tmp[0], false)) {
 				continue;	
 			}
-			$outline = "Force Service:<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" .  $tmp[5] . "</A> " . $tmp[6];
+			$outline = "Force Service:<a href='logview.php?bartlby_filter=" . $_GET["bartlby_filter"] . "&server_id=$srvid&service_id=" . $tmp[0] . "&l=" . date("Y.m.d", $ch_time)  . "'>" .  $tmp[5] . "</A> " . $tmp[6];
 			$stcheck=3;	
-		} elseif(!$_GET[service_id]) {
+		} elseif(!$_GET[service_id] && !$_GET[server_id]) {
 			if(!$btl->hasRight("sysmessages", false)) {
 				continue;	
 			}
+			
 			$outline = $info_array[2];
 			$stcheck=3;
 				
@@ -218,4 +247,21 @@
 	$layout->FormEnd();
 	$layout->display("no");
 	
+	
+function cmpServiceIDHasServer($svc_id, $server_id) {
+	global $map;
+	reset($map);
+	while(list($k, $v) = @each($map)) {
+		for($x=0; $x<count($v); $x++) {
+			if($v[$x][server_id] == $server_id && $v[$x][service_id] == $svc_id) {
+				return true;	
+			}
+		}
+	}
+	
+	return false;	
+}
+
+
+
 ?>
