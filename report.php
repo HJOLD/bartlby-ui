@@ -9,6 +9,8 @@ $btl=new BartlbyUi($Bartlby_CONF);
 $btl->hasright("log.report");
 $btl->hasServerorServiceRight($_GET[report_service]);
 
+$defaults=bartlby_get_service_by_id($btl->CFG, $_GET[report_service]);
+
 $ibox[0][c]="green";
 $ibox[0][v]=0;
 $ibox[0][s]=1;	
@@ -151,7 +153,7 @@ if(!$_GET[report_service] || !$log_mask) {
 			for($xy=0; $xy<count($state_array);$xy++) {
 					$o1 .= "<tr>";
 					$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][start]) . "</td>";
-					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][lstate]) . "'>" . $btl->getState($state_array[$xy][lstate]) . "</font></b></td>";
+					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][state]) . "'>" . $btl->getState($state_array[$xy][state]) . "</font></b></td>";
 			
 					$o1 .= "<td>" . $state_array[$xy][msg] . "</td></tr>";
 				
@@ -185,6 +187,8 @@ if(!$_GET[report_service] || !$log_mask) {
 			$nstate= $x+1;
 			$rstr .= "&text_" . $nstate . "=" . $btl->getState($x) . "&value_" . $nstate . "=" . $flash[$x];	
 		}
+		$idx=$btl->findSHMPlace($defaults[service_id]);
+		$svc_option_line="<a href='service_detail.php?service_place=$idx'>" . $defaults[server_name] . ":" . $defaults[client_port] . "/" . $defaults[service_name] . "</A>" . $btl->getServiceOptions($defaults, $layout);
 		
 		$out .= "<tr>";
 		
@@ -204,6 +208,7 @@ if(!$_GET[report_service] || !$log_mask) {
 				</object>
 				<br>
 				<!--http://actionscript.org/showMovie.php?id=483-->
+				' . $svc_option_line	 . '
 			</td>';
 				$out .= "</tr>";
 		$out .= "</table>";
