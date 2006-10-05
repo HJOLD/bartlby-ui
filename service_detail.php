@@ -19,6 +19,7 @@ if(preg_match("/^XML:(.*):(.*)$/i", $_GET[service_place], $match)) {
 	$defaults=$btl->remoteServiceByID($match[1], $match[2]);
 } else {
 	$defaults=bartlby_get_service($btl->CFG, $_GET[service_place]);
+	
 	$btl->hasServerorServiceRight($defaults[service_id]);
 }
 if(!$defaults) {
@@ -86,6 +87,19 @@ if( $defaults[service_time_sum] > 0 && $defaults[service_time_count] > 0) {
 	$svcMS=0;	
 }
 
+
+$server_enabled="";
+
+if($defaults[server_enabled] != 1) {
+	$server_enabled=";<i>server disabled</i>";	
+}
+
+$server_noti_enabled="";
+
+if($defaults[server_notify] != 1) {
+	$server_noti_enabled=";<i>disabled via server</i>";	
+}
+
 if($defaults[check_starttime] != 0) {
 	$currun=date("d.m.Y H:i:s", $defaults[check_starttime]) . " (PID: $defaults[check_is_running] )";
 } else {
@@ -97,7 +111,7 @@ $info_box_title='Service Info';
 $core_content = "<table  width='100%'>
 	<tr>
 		<td width=150 class='font2'>Server:</td>
-		<td align=left ><a href='server_detail.php?server_id=" . $defaults[server_id]  . "'>" . $defaults[server_name] . "</A> ( IP: " . gethostbyname($defaults[client_ip]) . " Port: " . $defaults[client_port] . " )</font></td> 
+		<td align=left ><a href='server_detail.php?server_id=" . $defaults[server_id]  . "'>" . $defaults[server_name] . "</A> ( IP: " . gethostbyname($defaults[client_ip]) . " Port: " . $defaults[client_port] . " )</font> $server_enabled </td> 
 		<td>&nbsp;</td>     
 	</tr>
 	<tr>
@@ -143,7 +157,7 @@ $core_content = "<table  width='100%'>
 	</tr>
 	<tr>
 		<td width=150 class='font2'>Notify Enabled:</td>
-		<td align=left >" . $noti_en . "</font></td>
+		<td align=left >" . $noti_en . " $server_noti_enabled</font></td>
 		<td>&nbsp;</td>           
 	</tr>
 	<tr>

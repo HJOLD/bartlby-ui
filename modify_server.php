@@ -68,6 +68,46 @@ if($_GET["new"] == "true") {
 	
 }
 
+//Notify Enabled
+$notenabled[0][c]="";
+$notenabled[0][v] = 0; //No
+$notenabled[0][k] = "No"; //No
+$notenabled[0][s]=0;
+
+$notenabled[1][c]="";
+$notenabled[1][v] = 1; //No
+$notenabled[1][k] = "Yes"; //No
+$notenabled[1][s]=0;
+
+if(is_int($defaults[server_notify]) && $defaults[server_notify] == 0) {
+	$notenabled[0][s]=1;	
+	
+} else {
+	
+	$notenabled[1][s]=1;
+}
+
+//Notify Enabled
+$servactive[0][c]="";
+$servactive[0][v] = 0; //No
+$servactive[0][k] = "No"; //No
+$servactive[0][s]=0;
+
+$servactive[1][c]="";
+$servactive[1][v] = 1; //No
+$servactive[1][k] = "Yes"; //No
+$servactive[1][s]=0;
+
+
+if(is_int($defaults[server_enabled]) && $defaults[server_enabled] == 0) {
+	$servactive[0][s]=1;	
+	
+} else {
+
+	$servactive[1][s]=1;
+}
+
+
 if($fm_action == "modify_server") {
 	$btl->hasRight("action.modify_server");	
 }
@@ -124,6 +164,37 @@ $ov .= $layout->Tr(
 		)
 	)
 ,true);
+
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Server Enabled?",
+			1=>$layout->DropDown("server_enabled", $servactive)
+			
+		)
+	)
+,true);
+
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Server Notify?",
+			1=>$layout->DropDown("server_notify", $notenabled)
+			
+		)
+	)
+,true);
+
+
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Flap Seconds",
+			1=>$layout->Field("server_flap_seconds", "text", $defaults[server_flap_seconds])
+		)
+	)
+,true);
+
 if($fm_action == "add_server") {
 	$ov .= $layout->Tr(
 	$layout->Td(

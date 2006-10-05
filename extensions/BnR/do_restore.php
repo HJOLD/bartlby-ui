@@ -47,7 +47,7 @@ $o .= ".... reloaded<br>";
 
 foreach(glob($bdir . "/*.srv") as $fname) {
 	$dmp = unserialize(file_get_contents($fname));
-	$add_server = bartlby_add_server($btl->CFG, $dmp[0][server_name], $dmp[0][client_ip], $dmp[0][client_port], $dmp[0][server_icon]);	
+	$add_server = bartlby_add_server($btl->CFG, $dmp[0][server_name], $dmp[0][client_ip], $dmp[0][client_port], $dmp[0][server_icon], $dmp[0][server_enabled], $dmp[0][server_notify], $dmp[0][server_flap_seconds]);	
 	$btl->installPackage(basename($fname), $add_server, $_GET[force_plugin], $_GET[force_perf], $bdir);
 	$o_id = bartlby_set_server_id($btl->CFG, $add_server, $dmp[0][server_id], 1);
 	$o .= "restored.... " . $dmp[0][server_name] . "($o_id) <br>";

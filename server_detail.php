@@ -81,7 +81,17 @@ while(list($k, $v) = each($dmp_info)) {
 
 
 
+if($defaults["server_notify"]==1) {
+	$noti_en="true";
+} else {
+	$noti_en="false";
+}
 
+if($defaults["server_enabled"]==1) {
+	$server_en="true";
+} else {
+	$server_en="false";
+}
 
 
 $info_box_title='Server Info';  
@@ -105,6 +115,26 @@ $core_content = "<table  width='100%'>
 	<tr>
 		<td width=150 class='font2'>Port:</td>
 		<td align=left >" . $defaults[server_port] . "</font></td>  
+		<td>&nbsp;</td>         
+	</tr>
+	<tr>
+		<td width=150 class='font2'>Notifications?:</td>
+		<td align=left >" . $noti_en . "</font></td>  
+		<td>&nbsp;</td>         
+	</tr>
+	<tr>
+		<td width=150 class='font2'>Enabled ?:</td>
+		<td align=left >" . $server_en . "</font></td>  
+		<td>&nbsp;</td>         
+	</tr>
+	<tr>
+		<td width=150 class='font2'>Last notify sent:</td>
+		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_notify_send]) . "</font></td>  
+		<td>&nbsp;</td>         
+	</tr>
+	<tr>
+		<td width=150 class='font2'>Flap Seconds:</td>
+		<td align=left >" . $defaults[server_flap_seconds] . "</font></td>  
 		<td>&nbsp;</td>         
 	</tr>
 	<tr>
