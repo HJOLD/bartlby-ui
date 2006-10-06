@@ -342,7 +342,9 @@ class BartlbyUi {
 				}
 			}
 		}
-		
+		if($auted == 0 && $_SESSION[username] != "") {
+			$this->redirectError("BARTLBY::LOGIN");
+		}
 		if ($auted==0) { 
 			
 			 session_destroy();
