@@ -15,6 +15,11 @@
 	
 	
 ?>
+
+<link rel="shortcut icon" href="favicon.ico" > 
+<link rel="stylesheet" id="CSS" type="text/css" href="images/btl.css"></link>
+<script type="text/javascript" src="images/btl.js"></script>
+
 <script language="JavaScript">
 <!-- begin hiding
 
@@ -52,10 +57,13 @@ function loadImages() {
 	}
 	checkLoad()
 }
+function showLoginMask() {
+		
+}
 function checkLoad() {
 	if (currCount == preImages.length-4) { 
-		alert("done");
-		location.replace(locationAfterPreload)
+		
+		showLoginMask();
 		return
 	}
 	for (i = 0; i <= preImages.length; i++) {
@@ -67,7 +75,7 @@ function checkLoad() {
 	}
 	timerID = setTimeout("checkLoad()",10) 
 }
-window.setTimeout("document.location.href='overview.php'", 2000);
+window.setTimeout("showLoginMask()", 2000);
 // end hiding -->
 
 </script>
@@ -93,6 +101,40 @@ if (document.images) {
 	document.write(preloadBar)
 	loadImages()
 }
-document.write('<font face="tahoma" size=1><p><small><a href="javascript:window.location=locationAfterPreload">Skip Preloading</a> &nbsp;</p>')
+document.write('<font face="tahoma" size=1><p><small>&nbsp;</p>')
 // end hiding -->
 </script>
+
+
+			<table class="nopad">
+				<tr>
+					<td class="box_left_corner_top">&nbsp;</td>
+					<td class="box_top_run">Login</td>
+					<td class="box_right_corner_top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="box_left_run">&nbsp;</td>
+					<td align=center class="box_content"><form method="POST" action="login.php">
+						<table width=100%>
+							<tr>
+								<td>Username:</td>
+								<td><input type=text name=login_name></td>
+							</tr>
+							<tr>
+								<td>Password:</td>
+								<td><input type=password name=login_password></td>
+							</tr>
+							<tr>
+								<td colspan=2 align=center><input type=submit value="login"></td>
+							</tr>
+						</table>
+						
+						</Form></td>
+					<td class="box_right_run">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="box_left_corner_bottom">&nbsp;</td>
+					<td class="box_bottom_run">&nbsp;</td>
+					<td class="box_right_corner_bottom">&nbsp;</td>
+				</tr>
+			</table>

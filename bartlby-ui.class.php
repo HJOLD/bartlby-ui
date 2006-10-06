@@ -1,4 +1,6 @@
 <?
+session_start();
+
 set_time_limit(0);
 set_magic_quotes_runtime(0);
 define("BARTLBY_UI_VERSION", "1.18");
@@ -328,7 +330,11 @@ class BartlbyUi {
 		} else {
 			
 			while(list($k, $v) = each($wrks)) {
-				
+				if($_SESSION[username] != "" && $_SESSION[password] != "") {
+					
+					$_SERVER[PHP_AUTH_USER]=$_SESSION[username];
+					$_SERVER[PHP_AUTH_PW]=$_SESSION[password];
+				}
 				if($_SERVER[PHP_AUTH_USER] == $v[name] && (md5($_SERVER[PHP_AUTH_PW]) == $v[password] || $_SERVER[PHP_AUTH_PW] == $v[password])) {
 					//FIXME: remove back. comp. to plain pass'es
 					$auted=1;
@@ -339,7 +345,7 @@ class BartlbyUi {
 		
 		if ($auted==0) { 
 			
-			
+			 session_destroy();
 	      		 @header("WWW-Authenticate: Basic realm=\"Bartlby Config Admin\"");	
 	      		 @Header("HTTP/1.0 401 Unauthorized");
 	      		 $this->_log("Login attempt from " . $_SERVER[REMOTE_ADDR] . " User: '" . $_SERVER[PHP_AUTH_USER] . "'  Pass: '" . $_SERVER[PHP_AUTH_PW] . "'"); 

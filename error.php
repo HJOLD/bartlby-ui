@@ -26,7 +26,7 @@ $layout->OUT .= "<script>
 	
 	switch ($_GET[msg]) {
 		case 'BARTLBY::LOGIN':
-			$omsg = "Login failed";
+			$omsg = "Login failed <br><a href='index.php'>Go to login page</A>";
 		break;
 		case 'BARTLBY::SHMCLEAN';
 			
