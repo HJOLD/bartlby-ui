@@ -46,7 +46,7 @@
 		<tr>
 			<td  class="bg_header"><a href='overview.php'><img border=0 src='images/btl-logo.gif'></A>
 			<div class="reload" id="reload"><input type=button style='width:155px' name="reload_button" value="reload" onClick="document.location.href='bartlby_action.php?action=reload';"></div>
-			<div class="ui_performance" id="reload"><a href='logout.php' ><font size=1>Logout</A><font size=1>UI-Version: <font size=1><!--UIVERSION--></font> Page Render:<!--BTUITIME--> secs &nbsp;&nbsp;&nbsp;&nbsp;<!--SERVERTIME--></div>
+			<div class="ui_performance" id="reload"><font size=1>UI-Version: <font size=1><!--UIVERSION--></font> Page Render:<!--BTUITIME--> secs &nbsp;&nbsp;&nbsp;&nbsp;<!--SERVERTIME--></div>
 			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Quick look<input onkeyup="quickSuggest('ajax_quick_look.php');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
 			<div class="help" id="help">
 				<!--<iframe height=768 width=245 src='http://bartlby.sf.net/help/'></iframe>-->
@@ -311,7 +311,17 @@
 									<td class="nav_place">&nbsp;</td>
 								</tr>
 							</table>
-							
+							<table class="nopad" id='session_sub' style='display:none;'>
+								<tr>
+									<td class="nav_sub"><a href='logout.php' class="sub">Logout</A></td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+								<tr>
+									<td class="nav_place">&nbsp;</td>
+								</tr>
+							</table>
 							<!--BTLEXTMENU-->
 							<table class="nopad">
 								<tr>

@@ -127,6 +127,9 @@ document.write('<font face="tahoma" size=1><p><small>&nbsp;</p>')
 							<tr>
 								<td colspan=2 align=center><input type=submit value="login"></td>
 							</tr>
+							<tr>
+								<td colspan=2 align=center><font size=1>to use browser based auth. leave the fields blank and click login</font></td>
+							</tr>
 						</table>
 						
 						</Form></td>
@@ -138,3 +141,14 @@ document.write('<font face="tahoma" size=1><p><small>&nbsp;</p>')
 					<td class="box_right_corner_bottom">&nbsp;</td>
 				</tr>
 			</table>
+			
+			<center>
+										<table>
+											<tr>
+												<td>
+													
+													<font style='font-family:tahoma; font-size:8pt; color:#ffffff'><a href='http://www.bartlby.org/' target='_blank'>bartlby</A> is a GPLv2 product of <a href='http://www.januschka.com/' target='_blank'>januschka.com</A></font>
+												</td>
+											</tr>
+										</table>
+										</center>
