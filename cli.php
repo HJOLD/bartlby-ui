@@ -1,8 +1,6 @@
 <?
 	$fp=fopen("/dev/stdin", "r");
-	echo "User:";	
 	$_SERVER[PHP_AUTH_USER]=trim(fgets($fp, 1024));
-	echo "Password:";
 	 $_SERVER[PHP_AUTH_PW]=trim(fgets($fp, 1024));
 	
 	
@@ -23,6 +21,7 @@ define("ENTER_KEY", 13);
 
 $start_from=0;
 $alerts_only=1;
+$show_downtimes=0;
 $ncurses_session = ncurses_init();
 $main = ncurses_newwin(0, 0, 0, 0); // main window
 ncurses_getmaxyx(&$main, $lines, $columns);
@@ -37,7 +36,7 @@ ncurses_init_pair(4,NCURSES_COLOR_WHITE,NCURSES_COLOR_BLACK);
 while(1){
 	ncurses_timeout(2);
 	$k = ncurses_getch();
-	if($k == ESCAPE_KEY) {
+	if($k == ESCAPE_KEY || $k == 113) {
 		ncurses_resetty();
        		ncurses_end();
 		exit(1);	
@@ -60,6 +59,13 @@ while(1){
 		} else {
 			$alerts_only=1;
 		}
+	}
+	if($k == 100) {
+		if($show_downtimes == 1)
+			$show_downtimes = 0;
+		else
+			$show_downtimes = 1;
+			
 	}
 	if($k == 259) {
 		if($start_from > 0) {
@@ -118,10 +124,13 @@ while(1){
 				//$out_str=sprintf("%s - %s", $servs[$x][service_name], );
 				$a++;
 				
-				if($a > $start_from && $y <= $lines-4) {
+				if($a > $start_from && $y <= $lines - 4) {
 					if($alerts_only == 1) {
 						if($servs[$x][current_state] == 0) {
 							continue;	
+						}
+						if($servs[$x][is_downtime] == 1 && $show_downtimes == 0) {
+							continue;
 						}
 					}
 					ncurses_move($y+1, 6);
@@ -130,7 +139,9 @@ while(1){
 					ncurses_addstr(sprintf("%10s", $btl->GetState($servs[$x][current_state])));
 					ncurses_move($y+1, 20);
 					ncurses_color_set(4);
-					ncurses_addstr($servs[$x][server_name] . ":" . $servs[$x][service_name] . str_repeat(" ", (strlen($servs[$x][service_name])+strlen($servs[$x][server_name]))));
+					//ncurses_addstr($servs[$x][server_name] . ":" . $servs[$x][service_name] . str_repeat(" ", (strlen($servs[$x][service_name])+strlen($servs[$x][server_name]))));
+					$ostr=sprintf("%-40s", $servs[$x][server_name] . ":" . $servs[$x][service_name]);
+					ncurses_addstr(substr($ostr,0,38));
 					
 					ncurses_addstr(substr(str_replace("\n", "", $servs[$x][new_server_text]), 0, 60));
 					ncurses_color_set(4);
@@ -159,7 +170,7 @@ while(1){
   		ncurses_mvaddstr($x+1,2,  $out_str);
   	}*/
   	
-  	for($tt=$y; $tt<$lines-5; $tt++) {
+  	for($tt=$y; $tt<$lines-2; $tt++) {
   		
   		ncurses_addstr(str_repeat(" ", $columns));
   		ncurses_move($tt+1, 3);	
