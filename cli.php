@@ -18,12 +18,12 @@
 	include "layout.class.php";
 	include "bartlby-ui.class.php";
 	$btl=new BartlbyUi($Bartlby_CONF, true);
-	$info=$btl->getInfo();
+	$info=@$btl->getInfo();
 	$layout= new Layout();
 	$layout->DisplayHelp(array(0=>"WARN|Welcome to BartlbyUI",1=>"INFO|This is the help screen"));
 	$layout->MetaRefresh(30);
 	$layout->Table("100%");
-	$lib=bartlby_lib_info($btl->CFG);
+	$lib=@bartlby_lib_info($btl->CFG);
 	
 // define some key constants.
 define("ESCAPE_KEY", 27);
@@ -34,6 +34,7 @@ $alerts_only=1;
 $show_downtimes=0;
 $selected_index=0;
 $reopen_service=false;
+$reopen_server=false;
 
 $ncurses_session = ncurses_init();
 $main = ncurses_newwin(0, 0, 0, 0); // main window
@@ -46,20 +47,44 @@ ncurses_init_pair(2,NCURSES_COLOR_BLACK,NCURSES_COLOR_YELLOW);
 ncurses_init_pair(3,NCURSES_COLOR_BLACK,NCURSES_COLOR_GREEN);
 
 
-ncurses_init_pair(4,NCURSES_COLOR_WHITE,NCURSES_COLOR_BLACK);
-ncurses_init_pair(5,NCURSES_COLOR_WHITE,NCURSES_COLOR_BLUE);
+ncurses_init_pair(4,NCURSES_COLOR_WHITE,NCURSES_COLOR_BLUE);
+ncurses_init_pair(5,NCURSES_COLOR_YELLOW,NCURSES_COLOR_BLUE);
+
+
 
 while(1){
+
 	ncurses_timeout(2);
 	$k = ncurses_getch();
+	$info = @bartlby_get_info($btl->CFG);
+	$ztx=0;
+	if($info[do_reload] == 1) {
+		while(1) {
+			
+			$info = @bartlby_get_info($btl->CFG);
+			if($info[do_reload] == 0) {
+				break;
+			}
+			$ztx++;
+		}
+	}
+
+	
+	
 	if($k == ESCAPE_KEY || $k == 113) {
 		ncurses_resetty();
        		ncurses_end();
 		exit(1);	
 	}
+	if($k == 104) {
+		disp_help();
+	}
 	
 	if($k == ENTER_KEY || $reopen_service == true) {
 		btl_disp_service();
+	}
+	if($k == 115 || $reopen_server == true) {
+		btl_disp_server();
 	}
 	
 	if($k == 258) {
@@ -107,8 +132,15 @@ while(1){
 	
 
  	// create a lower window which is dynamically sized...
+
+
 	
 
+ncurses_color_set(4);
+for($tt=0; $tt<$lines; $tt++) {
+	ncurses_addstr(str_repeat(" ", $columns));
+	ncurses_move($tt, 3);	
+}
        
         
         $y=2;
@@ -190,7 +222,8 @@ while(1){
 
 					mark_line($this_row_selected);
 					
-					ncurses_addstr("\n");
+					//ncurses_addstr("\n");
+					ncurses_move($y+3, 6);
 					ncurses_color_set(4);
 										
 					$y++;
@@ -199,10 +232,11 @@ while(1){
 				}
 			}
 	
-  	for($tt=$y; $tt<$lines-2; $tt++) {
-  		
+  	
+	
+  	for($tt=$y+1; $tt<$lines; $tt++) {
   		ncurses_addstr(str_repeat(" ", $columns));
-  		ncurses_move($tt+1, 3);	
+  		ncurses_move($tt, 3);	
   	}
 
 	ncurses_border(0,0, 0,0, 0,0, 0,0);
@@ -213,9 +247,19 @@ while(1){
 	ncurses_mvaddstr(0,1,"($selected_svc[service_id]) bartlby -> " . $btl->getRelease() . "\t" . date("d.m.Y H:i:s", time()) . " /" . $start_from . "-" . $btl->info[services]);
 	ncurses_attroff(NCURSES_A_REVERSE);
 
+	if($alerts_only == 1)
+		$only_errors="true";
+	else
+		$only_errors="false";
+
+	if($show_downtimes == 1)
+		$dts="true";
+	else
+		$dts="false";
+
 	ncurses_color_set(4);
 	ncurses_attron(NCURSES_A_REVERSE);
-	ncurses_mvaddstr($lines-1,1,"Status:\t OK:$oks Criticals: $crits Warnings: $warns");
+	ncurses_mvaddstr($lines-1,1,"Status:\t OK:$oks Criticals: $crits Warnings: $warns, only errors: $only_errors , downtimes: $dts ");
 	ncurses_attroff(NCURSES_A_REVERSE);
 
   	ncurses_refresh();
@@ -284,7 +328,13 @@ function btl_disp_service() {
 
 	
 	$w = ncurses_newwin(40,80, 2,2);
-	ncurses_wborder($w, 0,0, 0,0, 0,0, 0,0);
+	
+        ncurses_wcolor_set($w, 4);
+	for($tt=0; $tt<40; $tt++) {
+                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_wmove($w, $tt, 3);
+        }
+	
 	
 
 	window_td($w, 1,1, "Server:", $selected_svc[server_name] . "(" . $selected_svc[client_ip] . ")");
@@ -371,12 +421,13 @@ function btl_disp_service() {
 	ncurses_wattron($w, NCURSES_A_REVERSE);
  	ncurses_mvwaddstr($w, 22,1,"Last Output:");
 	ncurses_wattroff($w, NCURSES_A_REVERSE);
-        ncurses_mvwaddstr($w, 23,1,$defaults[new_server_text]);
+        ncurses_mvwaddstr($w, 23,1,str_replace("\dbr", "\n", $defaults[new_server_text]));
 
 
 	
 
 
+	ncurses_wborder($w, 0,0, 0,0, 0,0, 0,0);
 
 	ncurses_wattron($w, NCURSES_A_REVERSE);
  	ncurses_mvwaddstr($w, 0,1,"Service Detail:");
@@ -391,6 +442,7 @@ function btl_disp_service() {
 
 	
 	
+	
 
 	ncurses_wrefresh($w);
 	$k = ncurses_wgetch($w);
@@ -401,6 +453,10 @@ function btl_disp_service() {
 	} 
 	if($k == 99) {
 		window_disable_check();
+	}
+	if($k == 115) {
+		btl_disp_server();
+		btl_disp_service();
 	}
 	if($k == 102) {
 		window_force_check();
@@ -413,7 +469,7 @@ function btl_disp_service() {
 function window_force_check() {
 	global $selected_svc;
         global $lines, $columns, $btl;
-        global $reopen_service;
+        global $reopen_service,$reopen_server;
 
         $defaults=$selected_svc;
 
@@ -422,6 +478,43 @@ function window_force_check() {
         $reopen_service=true;
 
 }
+function window_disable_check_server() {
+        global $selected_svc;
+        global $lines, $columns, $btl;
+        global $reopen_service, $reopen_server;
+
+        $defaults=$selected_svc;
+	$x=bartlby_get_server_by_id($btl->CFG,$defaults[server_id]);
+
+        bartlby_toggle_server_active($btl->CFG, $x[server_shm_place], 1);
+
+        $reopen_server=true;
+
+
+
+
+
+
+}
+
+function window_disable_notification_server() {
+        global $selected_svc;
+        global $lines, $columns, $btl;
+        global $reopen_service, $reopen_server;
+
+        $defaults=$selected_svc;
+	$x=bartlby_get_server_by_id($btl->CFG,$defaults[server_id]);
+
+        bartlby_toggle_server_notify($btl->CFG, $x[server_shm_place], 1);
+        $reopen_server=true;
+
+
+
+
+
+
+}
+
 
 function window_disable_check() {
         global $selected_svc;
@@ -466,6 +559,209 @@ function dnl($i) {
         return sprintf("%02d", $i);
 }
 
+function btl_disp_server() {
+	global $selected_svc;
+	global $lines, $columns, $btl;
+	global $reopen_service, $reopen_server;
+	global $map;
+
+	$reopen_server=false;
+	
+	$defaults=$selected_svc;	
+	
+	$color=get_ncurses_color($defaults[current_state]);
+
+	
+	$w = ncurses_newwin(40,80, 2,2);
+
+        ncurses_wcolor_set($w, 4);
+	for($tt=0; $tt<40; $tt++) {
+                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_wmove($w, $tt, 3);
+        }
+	
+	
+
+	window_td($w, 1,1, "Name:", $selected_svc[server_name]);
+	
+	if($btl->isServerUp($defaults[server_id], $map)) {
+		
+
+        	ncurses_wcolor_set($w, 3);
+		$isup="UP";
+	} else {
+
+        	ncurses_wcolor_set($w, 1);
+		$isup="DOWN";
+	}
+	
+	window_td($w, 2,1, "Status:" , $isup);
+
+	ncurses_wcolor_set($w, 4);
+	window_td($w, 3,1, "IP:" ,  $selected_svc[client_ip] . " (" . gethostbyname( $selected_svc[client_ip]) . ")");
+
+	if($defaults["server_notify"]==1) {
+		$noti_en = "true";
+	} else {
+		$noti_en = "false";
+	}
+	if($defaults["server_enabled"]==1) {
+		$server_en="true";
+		
+	} else {
+		$server_en="false";
+	}
+        
+	window_td($w, 4,1, "Notifications:" , $noti_en);
+	
+	
+
+
+	window_td($w, 5,1, "Enabled:" , $server_en);
+	
+
+	window_td($w, 6,1, "Last Notify Send:" , date("d.m.Y H:i:s", $defaults[last_notify_send]));
+
+	window_td($w, 7,1, "flap seconds:" , $defaults[server_flap_seconds]);
+
+	window_td($w, 8,1, "Last Notify sent:" ,  date("d.m.Y H:i:s", $defaults[last_notify_send]));
+	
+
+	window_td($w, 9,1, "Location:" ,  getGeoip(gethostbyname($defaults[client_ip])));
+
+
+
+
+	ncurses_wborder($w, 0,0, 0,0, 0,0, 0,0);
+
+	ncurses_wattron($w, NCURSES_A_REVERSE);
+ 	ncurses_mvwaddstr($w, 0,1,"Server Detail:");
+	ncurses_wattroff($w, NCURSES_A_REVERSE);
+
+
+	ncurses_wcolor_set($w, 4);
+        ncurses_wattron($w, NCURSES_A_REVERSE);
+        ncurses_mvwaddstr($w, 39,1,"Keys:\t (c) disable/enable checkes, (n) enable/disable notifys");
+        ncurses_wattroff($w, NCURSES_A_REVERSE);
+	
+
+	
+	
+	
+
+	ncurses_wrefresh($w);
+	$k = ncurses_wgetch($w);
+
+	if($k == 110) {
+		window_disable_notification_server();
+			
+	} 
+	if($k == 99) {
+		window_disable_check_server();
+	}
+	ncurses_delwin($w);
+	
+	
+}
+function getGeoip($ip) {
+        $fp=popen("geoiplookup $ip", "r");
+        while(!feof($fp)) {
+                $rmsg .= fgets($fp, 1024);
+        }
+        $exi=pclose($fp);
+        if($exi == 127) {
+                return "(maybe you dont have 'geoiplookup' not installed or it is not in your PHP path)";
+        } else {
+                $a=explode(":",$rmsg);
+                return $a[1];
+        }
+
+}
+
+
+
+function disp_help() {
+	global $selected_svc;
+	global $lines, $columns, $btl;
+	global $reopen_service, $reopen_server;
+	global $map;
+	global $help;
+
+	$help = array(
+		
+		array(1, "h", "Display this Help"),
+
+		array(1, "<ENTER>", "open service detail"),
+		array(1, "s", "open server detail from selected service"),
+		array(1, "<UP>,<DOWN>", "scroll service list"),
+		array(1, "a" , "Only disable service wich arent OK"),
+		array(1, "d", "also show downtimed services"),
+		array(0, "Service Detail:"),
+		array(1, "f", "Force Check"),
+		array(1, "c", "Check enable/disable"),
+		array(1, "n", "Notification enable/disable"),
+	        array(1, "s", "Display server details"),
+		array(0, "Server Detail"),
+		array(1, "c", "Check enable/disable server"),
+		array(1, "n", "Notification enable/disable server"),
+
+		array(0, "Global"),
+		array(1, "q", "close window")
+		
+		
+		);
+
+	
+	$color=get_ncurses_color($defaults[current_state]);
+
+		
+	$w = ncurses_newwin(40,80, 2,$lines/2);
+
+        ncurses_wcolor_set($w, 4);
+	for($tt=0; $tt<40; $tt++) {
+                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_wmove($w, $tt, 3);
+        }
+	
+	
+	for($x=0; $x<count($help); $x++) {
+		if($help[$x][0] == 1) {
+			window_td($w, $x+1,1, $help[$x][1], $help[$x][2]);
+		} else {
+			
+			ncurses_wattron($w, NCURSES_A_REVERSE);
+ 			ncurses_mvwaddstr($w, $x+1,1,$help[$x][1]);
+			ncurses_wattroff($w, NCURSES_A_REVERSE);
+			
+		}
+	}
+	
+	ncurses_wborder($w, 0,0, 0,0, 0,0, 0,0);
+
+	ncurses_wattron($w, NCURSES_A_REVERSE);
+ 	ncurses_mvwaddstr($w, 0,1,"Help:");
+	ncurses_wattroff($w, NCURSES_A_REVERSE);
+
+
+
+	
+	
+	
+
+	ncurses_wrefresh($w);
+	$k = ncurses_wgetch($w);
+
+	if($k == 110) {
+		window_disable_notification_server();
+			
+	} 
+	if($k == 99) {
+		window_disable_check_server();
+	}
+	ncurses_delwin($w);
+	
+	
+}
 
 
 // the following are two helper functions for
