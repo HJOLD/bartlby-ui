@@ -1,22 +1,29 @@
 <?
 
 
-	$uname=getenv("BARTLBY_USER");
-	$pw=getenv("BARTLBY_PASSWORD");
-	if(!$uname && !$pw) {
-		$fp=fopen("/dev/stdin", "r");
-		$_SERVER[PHP_AUTH_USER]=trim(fgets($fp, 1024));
-	 	$_SERVER[PHP_AUTH_PW]=trim(fgets($fp, 1024));
-		fclose($fp);
-	} else {
-		$_SERVER[PHP_AUTH_USER]=$uname;
-		$_SERVER[PHP_AUTH_PW]=$pw;
-	}
 	
 	
 	include "config.php";
 	include "layout.class.php";
 	include "bartlby-ui.class.php";
+
+	$uname=getenv("BARTLBY_USER");
+        $pw=getenv("BARTLBY_PASSWORD");
+        if(!$uname && !$pw) {
+                $fp=fopen("/dev/stdin", "r");
+		echo "Username:";
+                $_SERVER[PHP_AUTH_USER]=trim(fgets($fp, 1024));
+		echo "Password";
+                $_SERVER[PHP_AUTH_PW]=trim(fgets($fp, 1024));
+                fclose($fp);
+        } else {
+                $_SERVER[PHP_AUTH_USER]=$uname;
+                $_SERVER[PHP_AUTH_PW]=$pw;
+        }
+
+
+
+	
 	$btl=new BartlbyUi($Bartlby_CONF, true);
 	$info=@$btl->getInfo();
 	$layout= new Layout();
@@ -48,7 +55,8 @@ ncurses_init_pair(3,NCURSES_COLOR_BLACK,NCURSES_COLOR_GREEN);
 
 
 ncurses_init_pair(4,NCURSES_COLOR_WHITE,NCURSES_COLOR_BLUE);
-ncurses_init_pair(5,NCURSES_COLOR_YELLOW,NCURSES_COLOR_BLUE);
+ncurses_init_pair(5,NCURSES_COLOR_BLACK,NCURSES_COLOR_WHITE);
+
 
 
 
@@ -124,6 +132,8 @@ while(1){
 			$selected_index--;
 		}
 	}
+
+	unset($map);
 	$map = @$btl->GetSVCMap();
 	$oks=0;
 	$warns=0;
@@ -147,6 +157,7 @@ for($tt=0; $tt<$lines; $tt++) {
 
 	$a=0;
 	@reset($map);
+	
 	unset($f);
 	while(list($k, $servs) = @each($map)) {
 		$displayed_servers++;
@@ -263,7 +274,7 @@ for($tt=0; $tt<$lines; $tt++) {
 	ncurses_attroff(NCURSES_A_REVERSE);
 
   	ncurses_refresh();
-  	usleep(2);
+  	usleep(20);
 
 
 }//end main while

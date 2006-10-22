@@ -1,3 +1,106 @@
+2006-10-22 21:49  hjanuschka
+
+	* cli.php: auto commit
+
+2006-10-22 12:27  hjanuschka
+
+	* cli.php: improved reload handling added help screen changed
+	  colors ;)
+
+2006-10-22 02:11  hjanuschka
+
+	* cli.php: major enhancments in cli.php
+
+	  scroll refined service detail force check enable/disable
+	  notify/check
+
+2006-10-21 18:59  hjanuschka
+
+	* cli.php: service detail
+
+2006-10-21 04:21  hjanuschka
+
+	* cli.php: fixed a formating fault in server name scroll should be
+	  fixed on large setups downtimes can be shown/hidden
+
+2006-10-06 03:16  hjanuschka
+
+	* index.php, template.html: auto commit
+
+2006-10-06 03:10  hjanuschka
+
+	* template.html: auto commit
+
+2006-10-06 03:07  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2006-10-06 03:04  hjanuschka
+
+	* bartlby-ui.class.php, error.php, index.php, logout.php,
+	  fin/BARTLBY_LOGIN, login.php: auto commit
+
+2006-10-06 02:35  hjanuschka
+
+	* services.php: auto commit
+
+2006-10-06 01:19  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_server.php,
+	  server_detail.php, service_detail.php,
+	  extensions/AgentSyncer/sync.php, extensions/BnR/do_restore.php,
+	  fin/disable_notify_server, fin/disable_server,
+	  fin/enable_notify_server, fin/enable_server: auto commit
+
+2006-10-04 16:07  hjanuschka
+
+	* report.php: fixed a bug with wrong state display in "output:"
+
+2006-09-28 21:56  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2006-09-28 19:22  hjanuschka
+
+	* bartlby-ui.class.php, logview.php: auto commit
+
+2006-09-25 02:28  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php: auto commit
+
+2006-09-24 21:06  hjanuschka
+
+	* extensions/DokuWiki/: DokuWiki.class.php, config.ini: auto commit
+
+2006-09-24 02:51  hjanuschka
+
+	* extensions/: DokuWiki.disabled, DokuWiki/DokuWiki.class.php,
+	  DokuWiki/config.ini: Dokuwiki
+
+2006-09-24 00:45  hjanuschka
+
+	* bartlby-ui.class.php, pkgs/default-pkg: auto commit
+
+2006-09-24 00:38  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, config.php,
+	  modify_service.php, modify_worker.php, service_detail.php,
+	  ui-extra.conf, extensions/AgentSyncer/sync.php,
+	  extensions/BnR/do_restore.php: auto commit
+
+2006-09-12 00:21  hjanuschka
+
+	* extensions/ServerGroups/ServerGroups.class.php: auto commit
+
+2006-09-11 23:59  hjanuschka
+
+	* template.html: auto commit
+
+2006-09-10 23:28  hjanuschka
+
+	* ChangeLog, bandwidth.php, layout.class.php, template.html: auto
+	  commit
+
 2006-09-10 03:24  hjanuschka
 
 	* ChangeLog: auto commit
