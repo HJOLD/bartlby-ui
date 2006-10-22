@@ -33,6 +33,7 @@ $start_from=0;
 $alerts_only=1;
 $show_downtimes=0;
 $selected_index=0;
+$reopen_service=false;
 
 $ncurses_session = ncurses_init();
 $main = ncurses_newwin(0, 0, 0, 0); // main window
@@ -57,21 +58,18 @@ while(1){
 		exit(1);	
 	}
 	
-	if($k == ENTER_KEY) {
+	if($k == ENTER_KEY || $reopen_service == true) {
 		btl_disp_service();
 	}
 	
 	if($k == 258) {
-		if($start_from+1-5 < $btl->info[services]) {
+		if($selected_pos > $lines/2) {
 			$start_from=$start_from+1;	
 		
 		} else {
 			$start_from=0;	
 		}
-		//echo $start_from;
-		if($selected_index+1 < $btl->info[services]) {
-			$selected_index++;
-		}
+		$selected_index++;
 	}
 	
 	if($k == 97) {
@@ -91,7 +89,7 @@ while(1){
 			
 	}
 	if($k == 259) {
-		if($start_from > 0) {
+		if($select_pos < 5) {
 			//$start_from--;	
 			$start_from=$start_from-1;	
 		} else {
@@ -116,6 +114,8 @@ while(1){
         $y=2;
 
 	$a=0;
+	@reset($map);
+	unset($f);
 	while(list($k, $servs) = @each($map)) {
 		$displayed_servers++;
 		
@@ -126,17 +126,14 @@ while(1){
 				switch($servs[$x][current_state]) {
 					case 0:
 						$oks++;
-						$cidx=3;
 						
 					break;	
 					case 1:
 						$warns++;
-						$cidx=2;
 						
 					break;
 					case 2:
 						$crits++;
-						$cidx=1;
 						
 					break;
 					default:
@@ -155,34 +152,40 @@ while(1){
 				//$out_str=sprintf("%s - %s", $servs[$x][service_name], );
 				if($a == $selected_index) {
 					$selected_svc=$servs[$x];
-					
-					$this_row_selected=true;
+					$selected_pos=$a;
+					$servs[$x][selected] = true;
 				} else {
-					$this_row_selected=false;
+					$servs[$x][selected] = false;
 
 				}
+				$f[$a] = $servs[$x];
 				$a++;
+			}	
+		}
+			$gservice_count=count($f);
+			for($z=0; $z<count($f); $z++) {
 				
-				if($a > $start_from && $y <= $lines - 4) {
+				if($z >= $start_from && $y <= $lines - 4) {
 					
+					$this_row_selected = $f[$z][selected];
 					ncurses_move($y+1, 6);
 					//ncurses_addstr($servs[$x][server_name] .  str_repeat(" ", 20-strlen($servs[$x][server_name])));
-					ncurses_color_set($cidx);
+					ncurses_color_set(get_ncurses_color($f[$z][current_state]));
 					
 
-					mark_line($this_row_selected);
+					//mark_line($this_row_selected);
 					 
 					
-					ncurses_addstr(sprintf("%-10s", $btl->GetState($servs[$x][current_state])));
+					ncurses_addstr(sprintf("%-10s", $btl->GetState($f[$z][current_state])));
 					ncurses_move($y+1, 20);
 					ncurses_color_set(4);
 
 					mark_line($this_row_selected);
 					
-					$ostr=sprintf("%-30s  ", $servs[$x][server_name] . ":" . $servs[$x][service_name]);
+					$ostr=sprintf("%-30s  ", $f[$z][server_name] . ":" . $f[$z][service_name]);
 					ncurses_addstr(substr($ostr,0,27));
 					
-					ncurses_addstr(substr(str_replace("dbr", "", str_replace("\n", "", $servs[$x][new_server_text])), 0, 60));
+					ncurses_addstr(substr(str_replace("dbr", "", str_replace("\n", "", $f[$z][new_server_text])), 0, 60));
 					ncurses_color_set(4);
 
 					mark_line($this_row_selected);
@@ -195,10 +198,6 @@ while(1){
 				
 				}
 			}
-		
-		
-		
-	}
 	
   	for($tt=$y; $tt<$lines-2; $tt++) {
   		
@@ -251,6 +250,9 @@ function get_ncurses_color($s) {
 function btl_disp_service() {
 	global $selected_svc;
 	global $lines, $columns, $btl;
+	global $reopen_service;
+
+	$reopen_service=false;
 	
 	$defaults=$selected_svc;	
 	
@@ -292,9 +294,7 @@ function btl_disp_service() {
 
 
         ncurses_wcolor_set($w, $color);
-        ncurses_wattron($w, NCURSES_A_REVERSE);
 	window_td($w, 4,1, "Current State:" , $btl->getState($defaults[current_state]));
-        ncurses_wattroff($w, NCURSES_A_REVERSE);
 	
 	ncurses_wcolor_set($w, 4);
 
@@ -374,17 +374,87 @@ function btl_disp_service() {
         ncurses_mvwaddstr($w, 23,1,$defaults[new_server_text]);
 
 
+	
+
+
 
 	ncurses_wattron($w, NCURSES_A_REVERSE);
  	ncurses_mvwaddstr($w, 0,1,"Service Detail:");
 	ncurses_wattroff($w, NCURSES_A_REVERSE);
+
+
+	ncurses_wcolor_set($w, 4);
+        ncurses_wattron($w, NCURSES_A_REVERSE);
+        ncurses_mvwaddstr($w, 39,1,"Keys:\t (c) disable/enable checkes, (n) enable/disable notifys, (f) force");
+        ncurses_wattroff($w, NCURSES_A_REVERSE);
+	
+
+	
 	
 
 	ncurses_wrefresh($w);
 	$k = ncurses_wgetch($w);
 
+	if($k == 110) {
+		window_disable_notification();
+			
+	} 
+	if($k == 99) {
+		window_disable_check();
+	}
+	if($k == 102) {
+		window_force_check();
+	}
 	ncurses_delwin($w);
 	
+	
+}
+
+function window_force_check() {
+	global $selected_svc;
+        global $lines, $columns, $btl;
+        global $reopen_service;
+
+        $defaults=$selected_svc;
+
+        bartlby_check_force($btl->CFG, $defaults[shm_place]);
+
+        $reopen_service=true;
+
+}
+
+function window_disable_check() {
+        global $selected_svc;
+        global $lines, $columns, $btl;
+        global $reopen_service;
+
+        $defaults=$selected_svc;
+
+        bartlby_toggle_service_active($btl->CFG, $defaults[shm_place], 1);
+
+        $reopen_service=true;
+
+
+
+
+
+
+}
+
+function window_disable_notification() {
+	global $selected_svc;
+        global $lines, $columns, $btl;
+	global $reopen_service;
+
+        $defaults=$selected_svc;
+	
+	bartlby_toggle_service_notify($btl->CFG, $defaults[shm_place], 1);
+	$reopen_service=true;
+
+
+	
+	
+
 	
 }
 function mark_line($tf) {
