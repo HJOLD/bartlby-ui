@@ -13,6 +13,8 @@
 
 */
 //Gets the browser specific XmlHttpRequest Object
+var ajax_timeout_id=-1;
+
 function getXmlHttpRequestObject() {
 	if (window.XMLHttpRequest) {
 		return new XMLHttpRequest();
@@ -29,20 +31,33 @@ var searchReq = getXmlHttpRequestObject();
 //Called from keyup on the search textbox.
 //Starts the AJAX request.
 function searchSuggest(urll) {
+	window.clearTimeout(ajax_timeout_id);
 	if (searchReq.readyState == 4 || searchReq.readyState == 0) {
 		var str = escape(document.getElementById('txtSearch').value);
 		searchReq.open("GET", urll + '?search=' + str, true);
 		searchReq.onreadystatechange = handleSearchSuggest; 
 		searchReq.send(null);
+	}else {
+		var ss = document.getElementById('search_suggest');
+		ss.innerHTML = "<a href=\"#\" onClick=\"javascript:document.getElementById('search_suggest').innerHTML=''\">X close</A><hr>";
+		
+		ajax_timeout_id=window.setTimeout("searchSuggest('" + urll + "')", 1000);
+			
 	}		
 }
 
 function quickSuggest(urll) {
+	window.clearTimeout(ajax_timeout_id);
 	if (searchReq.readyState == 4 || searchReq.readyState == 0) {
 		var str = escape(document.getElementById('qlook').value);
 		searchReq.open("GET", urll + '?search=' + str, true);
 		searchReq.onreadystatechange = handleQuickSuggest; 
 		searchReq.send(null);
+	} else {
+		var ss = document.getElementById('quick_suggest')
+		ss.innerHTML = "<font color=red>Loading...</font>";
+		
+		ajax_timeout_id=window.setTimeout("quickSuggest('" + urll + "')", 1000);	
 	}		
 }
 

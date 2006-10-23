@@ -3,7 +3,7 @@ session_start();
 
 set_time_limit(0);
 set_magic_quotes_runtime(0);
-define("BARTLBY_UI_VERSION", "1.18");
+define("BARTLBY_UI_VERSION", "1.19");
 
 if(!version_compare(phpversion(), "5.0.0", ">=")) {
 	echo "you should have at least a php5 series";
