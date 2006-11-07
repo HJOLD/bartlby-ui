@@ -1,3 +1,4 @@
+view_service_output=true
 super_user=true
 action.reload=true
 action.stop=false

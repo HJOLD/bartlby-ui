@@ -77,6 +77,7 @@ class AutoDiscoverAddons {
                         $r .= "<img onClick='updatePerfhandlerExt();' id='perfh" . $x . "' src='rrd/" . basename($fn) . "'><br>";
                         $x++;
                 }
+                
                 $r = "<div id=AutoDiscoverAddonsHide style='display:none'><font color='red'><img src='extensions/AutoDiscoverAddons/ajax-loader.gif'> reload in progress....</font></div><script>var maxExt = " . $x . ";</script><a href='javascript:updatePerfhandlerExt();'>Update Perfhandler data</A><br>" . $r;
                 return $r;
         }

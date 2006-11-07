@@ -476,7 +476,8 @@ class BartlbyUi {
 	}
 	function GetSVCMap($state=false) {
 		//array(2555, 3191,2558)
-		
+		#view_service_output
+		$has_right = $this->hasRight("view_service_output", false);
 		
 		$r=bartlby_svc_map($this->CFG, $this->rights[services], $this->rights[servers]);
         
@@ -489,7 +490,9 @@ class BartlbyUi {
         			$map[$r[$x][server_id]] = array();
         			
         		}
-        		
+        		if(!$has_right) {
+        			$r[$x][new_server_text] = "you are missing: view_service_output right";	
+        		}
         		array_push($map[$r[$x][server_id]], $r[$x]);
         	}
         	@ksort($map);

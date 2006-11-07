@@ -153,7 +153,7 @@ function translatedKey($k) {
 	$ar["action.modify_downtime"]="modify downtime";
 	$ar["main.services"]="can view service list";
 	$ar["sysmessages"]="system messages visible? in logview.";
-	
+	$ar["view_service_output"]="service output visible?";
 	
 	if(!$ar[$k]) {
 		return "Key ('$k') not translated";	

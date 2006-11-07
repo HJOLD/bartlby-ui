@@ -27,6 +27,10 @@ if(!$defaults) {
 	exit(1);	
 }
 
+if(!$btl->hasRight("view_service_output", false)) {
+	$defaults[new_server_text] = "you are missing: view_service_output right";	
+} 
+
 $layout->Table("100%");
 
 $svc_color=$btl->getColor($defaults[current_state]);
