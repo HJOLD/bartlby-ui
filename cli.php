@@ -68,12 +68,13 @@ while(1){
 	$ztx=0;
 	if($info[do_reload] == 1) {
 		while(1) {
-			
+			disp_reload_window();
 			$info = @bartlby_get_info($btl->CFG);
 			if($info[do_reload] == 0) {
 				break;
 			}
 			$ztx++;
+			sleep(1);
 		}
 	}
 
@@ -689,7 +690,65 @@ function getGeoip($ip) {
 
 }
 
+function disp_reload_window() {
+	global $selected_svc;
+        global $lines, $columns, $btl;
+        global $reopen_service, $reopen_server;
+        global $map;
+        global $help;
+	$help = array(
 
+                array(1, "", "Reload in progress .... please wait"),
+
+
+
+                );
+
+
+        $color=get_ncurses_color($defaults[current_state]);
+
+
+        $w = ncurses_newwin(5,80, 10,$lines/2);
+
+        ncurses_wcolor_set($w, 4);
+        for($tt=0; $tt<40; $tt++) {
+                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_wmove($w, $tt, 3);
+        }
+
+
+        for($x=0; $x<count($help); $x++) {
+                if($help[$x][0] == 1) {
+                        window_td($w, $x+1,1, $help[$x][1], $help[$x][2]);
+                } else {
+
+                        ncurses_wattron($w, NCURSES_A_REVERSE);
+                        ncurses_mvwaddstr($w, $x+1,1,$help[$x][1]);
+                        ncurses_wattroff($w, NCURSES_A_REVERSE);
+                }
+        }
+
+        ncurses_wborder($w, 0,0, 0,0, 0,0, 0,0);
+
+        ncurses_wattron($w, NCURSES_A_REVERSE);
+        ncurses_mvwaddstr($w, 0,1,"Reload in progress:");
+        ncurses_wattroff($w, NCURSES_A_REVERSE);
+
+
+
+
+
+
+
+        ncurses_wrefresh($w);
+        
+        ncurses_delwin($w);
+
+
+	
+
+	
+}
 
 function disp_help() {
 	global $selected_svc;
@@ -761,14 +820,6 @@ function disp_help() {
 
 	ncurses_wrefresh($w);
 	$k = ncurses_wgetch($w);
-
-	if($k == 110) {
-		window_disable_notification_server();
-			
-	} 
-	if($k == 99) {
-		window_disable_check_server();
-	}
 	ncurses_delwin($w);
 	
 	
