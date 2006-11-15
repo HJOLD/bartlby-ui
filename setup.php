@@ -1,5 +1,5 @@
 <?
-	$dirs = array("pkgs", "extensions", "rights", "comments");
+	$dirs = array("pkgs", "extensions", "rights", "comments", "store", "store/SMS");
 	$cfgs = array($Bartlby_CONF, "ui-extra.conf");
 	$rights = array("rights/admin.dat", "rights/template.dat");
 ?>

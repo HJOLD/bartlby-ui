@@ -4,6 +4,11 @@
 			$this->plugin_name=$plugin_name;
 			$this->base_dir="store";
 			$this->save_path=$this->base_dir . "/" . $this->plugin_name;
+			if(!is_dir($this->save_path)) {
+				if(!@mkdir($this->save_path)) {
+					return false;
+				}
+			}
 		}
 		function save_key($key, $value) {
 			$sk = md5($key);
@@ -16,7 +21,7 @@
 			return true;
 			
 		}
-		function load_key($key, $value) {
+		function load_key($key) {
 			$sk = md5($key);
 			if(!file_exists($this->save_path . "/" . $sk)) {
 				return false;
