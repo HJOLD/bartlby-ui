@@ -1,7 +1,6 @@
 <?
 set_time_limit(0);
-echo "<!---SMASH IE BUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFERBUFFER--->";
-flush();
+
 include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
