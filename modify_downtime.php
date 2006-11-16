@@ -6,11 +6,11 @@ $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 
-$layout->setTitle("Modify Downtime");
+$layout->setTitle("");
 
 $layout->set_menu("downtimes");
 
-$layout->Form("fm1", "bartlby_action.php");
+$ov .= $layout->Form("fm1", "bartlby_action.php", "GET", true);
 $layout->Table("100%");
 
 $default=false;
@@ -42,32 +42,32 @@ $btl->hasRight("action.modify_downtime");
 
 
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Reason",
 			1=>$layout->Field("downtime_notice", "text", $default[downtime_notice]) . $layout->Field("action", "hidden", "modify_downtime")
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"From",
 			1=>$layout->Field("downtime_from", "text", date("d.m.Y H:i", $default[downtime_from])) . $layout->Field("downtime_type", "hidden", $dt_hidden)
 		)
 	)
-);
+,true);
 
-$layout->Tr(
+$ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"To",
 			1=>$layout->Field("downtime_to", "text", date("d.m.Y H:i", $default[downtime_to])) . $layout->Field("downtime_id", "hidden", $_GET[downtime_id])
 		)
 	)
-);
-$layout->Tr(
+,true);
+$ov .= $layout->Tr(
 	$layout->Td(
 			Array(
 				0=>"Type",
@@ -75,7 +75,15 @@ $layout->Tr(
 			)
 		)
 
-);
+,true);
+
+$title="modify downtime";  
+$content = "<table>" . $ov . "</table>";
+$layout->push_outside($layout->create_box($title, $content));
+	
+
+$r=$btl->getExtensionsReturn("_PRE_modify_downtime", $layout);
+
 
 $layout->Tr(
 	$layout->Td(
@@ -88,7 +96,7 @@ $layout->Tr(
 			)
 		)
 
-);
+,false);
 
 
 $layout->TableEnd();
