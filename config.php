@@ -4,5 +4,5 @@
 		include("setup.php");
 		exit(1);	
 	}
-	
+	$_GET=array_merge($_GET, $_POST);
 ?>

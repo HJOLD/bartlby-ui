@@ -27,7 +27,7 @@ $layout->Table("100%");
 $layout->DisplayHelp(array(0=>"INFO|Pick a service From the Dropdown List"));
 
 
-$cur_box_content = "<table class='service_table' cellpadding=2><form action='bartlby_action.php'>";
+$cur_box_content = "<table class='service_table' cellpadding=2><form action='bartlby_action.php' method=POST>";
 $cur_box_content .= $layout->Tr(
 	$layout->Td(
 			Array(

@@ -17,8 +17,8 @@ $sfound=false;
 while(list($k, $v) = @each($servers)) {
 	
 	if(@preg_match("/" . $_GET[search] . "/i", $v[0][server_name])) {
-		$_GET[server_id]=$v[0][server_id];
-		$rq .= "<tr><td><a href='server_detail.php?server_id=" . $v[0][server_id] . "'><font size=1>" . $v[0][server_name] . "</font></A>(<a href='services.php?server_id=" . $v[0][server_id] . "'><font size=1>Services</font></A>)</td><td>" . $btl->getserveroptions(1,1) . "</td></tr>";	
+		
+		$rq .= "<tr><td><a href='server_detail.php?server_id=" . $v[0][server_id] . "'><font size=1>" . $v[0][server_name] . "</font></A>(<a href='services.php?server_id=" . $v[0][server_id] . "'><font size=1>Services</font></A>)</td><td>" . $btl->getserveroptions($v[0], $layout) . "</td></tr>";	
 		$sfound=true;
 	}
 	

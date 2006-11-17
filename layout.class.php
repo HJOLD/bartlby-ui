@@ -93,7 +93,7 @@ class Layout {
 	}
 	function Form($name,$action, $method='GET', $r = false) {
 		
-		$rr = "<form name='$name' action='$action' method=$method>\n";	
+		$rr = "<form name='$name' action='$action' method='POST'>\n";	
 		if($r) {
 			return $rr;	
 		} else {

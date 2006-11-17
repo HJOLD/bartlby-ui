@@ -106,7 +106,7 @@ $layout->Table("100%");
 	
 		<tr>
 			<td width=150 valign=top class='font2'>Max Num:</td>
-			<td><form name='f' action=statistic.php><input type=text name='maxn' value='$maxn'><input type='submit' value='Update..'><br>
+			<td><form name='f' action=statistic.php method=POST><input type=text name='maxn' value='$maxn'><input type='submit' value='Update..'><br>
 			<input type=radio name='sortorder' value='asc' $ascc >Ascending <input type=radio name='sortorder' value='desc' $descc >Descending
 			</form></td>
 		</tr>

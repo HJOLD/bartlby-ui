@@ -1178,9 +1178,9 @@ function create_package($package_name, $in_services = array(), $with_plugins, $w
 			return $re;	
 	}
 	function getserveroptions($defaults, $layout) {
-		$modify = "<a href='modify_server.php?server_id=" . $_GET[server_id] . "'><img src='images/modify.gif' title='Modify this server' border=0></A>";
-		$copy = "<a href='modify_server.php?copy=true&server_id=" . $_GET[server_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Server' border=0></A>";
-		$logview= "<a href='logview.php?server_id=" . $_GET[server_id]. "' ><font size=1><img  title='View Events for this Server' src='images/icon_view.gif' border=0></A>";
+		$modify = "<a href='modify_server.php?server_id=" . $defaults[server_id] . "'><img src='images/modify.gif' title='Modify this server' border=0></A>";
+		$copy = "<a href='modify_server.php?copy=true&server_id=" . $defaults[server_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Server' border=0></A>";
+		$logview= "<a href='logview.php?server_id=" . $defaults[server_id]. "' ><font size=1><img  title='View Events for this Server' src='images/icon_view.gif' border=0></A>";
 		
 		if($defaults[server_enabled] == 1) {
 			$check = "<a title='Disable Checks for this server' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_server'><img src='images/enabled.gif'  border=0></A>";

@@ -278,7 +278,7 @@ $layout->OUT .= "<script>
 		CheckTables();
 		</script>
 ";
-echo "<form name='fm1' action='bartlby_action.php' method=GET>\n";
+echo "<form name='fm1' action='bartlby_action.php' method=POST>\n";
 $layout->Table("100%");
 
 

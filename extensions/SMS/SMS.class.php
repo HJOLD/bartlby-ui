@@ -141,13 +141,13 @@ class SMS {
 	}
 	function _POST_modify_worker() {
 		global $layout, $_GET, $defaults, $btl;
-		$k = $btl->user . "_SMSextension_mobile_nr";
+		$k = $_GET[worker_name] . "_SMSextension_mobile_nr";
 		$this->storage->save_key($k, $_GET["SMSextension_mobile_nr"]);
 		return "Mobile number: <b>" . $_GET["SMSextension_mobile_nr"] . "</b> stored";		
 	}
 	function _PRE_modify_worker() {
 		global $layout, $_GET, $defaults, $btl;
-		$k = $btl->user . "_SMSextension_mobile_nr";
+		$k = $defaults[name] . "_SMSextension_mobile_nr";
 		$v = $this->storage->load_key($k);
 		
 		return $this->mobile_nr_field($v);	

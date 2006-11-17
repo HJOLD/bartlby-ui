@@ -349,7 +349,7 @@ if($defaults[service_type] == 2){
 	$info_box_title='Passive Service';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table  width='100%'>
-		<form name='pp' action='bartlby_action.php'>
+		<form name='pp' action='bartlby_action.php' method=POST>
 		<tr>
 			<td width=150 class='font2'>Timeout:</td>
 			<td align=left >" . $defaults[service_passive_timeout] . "</font></td>
