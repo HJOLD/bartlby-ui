@@ -128,31 +128,22 @@
 								"show"=>"<b><a href='services.php?expect_state=" . $servs[$x][current_state] . "'><font style='font-size:9px;'>" . $svc_state . "</A></b>",
 								'class'=>$svc_color . "_img"
 							   ),
-							
-							/*
-							0=>array(
-								show=>"<table><tr><td  width=96 class=" . $svc_color . "_box><b><a href='services.php?expect_state=" . $servs[$x][current_state] . "'><font style='font-size:9px;'>" . $svc_state . "</A></b></td></tr></table>"
-							   ),
-							   */
-							
 							1=>array(
 								"width"=>80,
 								"class"=>$class,
-								"show"=>"<font size=1>" . date("d.m.y H:i:s", $servs[$x][last_check]) . "<br>" . date("d.m.y H:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
+								"show"=>"<font size=1>" . date("d.m.y H:i:s", $servs[$x][last_check])
 							   ),
-							/*
 							2=>array(
 								"width"=>80,
 								"class"=>$class,
 								"show"=>"<font size=1>" .  date("d.m.y H:i:s", $servs[$x][last_check]+$servs[$x][check_interval])
 							   ),						
-							*/
-							2=>array(
+							3=>array(
 								"width"=>150,
 								"class"=>"header1",
 								"show"=>"<a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'><b>" . $servs[$x][service_name]  . "$working_on $flap_pic</b><br>" . "<br> " . $btl->getserviceOptions($servs[$x],$layout) . "</font>"
 							   ),
-							3=>array(
+							4=>array(
 								"width"=>450,
 								"class"=>$class,
 								"show"=>str_replace( "\\dbr", "<br>",nl2br($servs[$x][new_server_text]))
@@ -198,6 +189,29 @@
 			
 			
 		</tr>
+
+	
+		<tr>
+                        <td width=15><img src='images/force.gif'></td>
+                        <td align=left class='font2'>Force Check</td>
+
+                        <td width=15><img src='images/edit-copy.gif'></td>
+                        <td align=left class='font2'>Copy service</td>
+
+                        <td width=15><img src='images/create_report.gif'></td>
+                        <td align=left class='font2'>Create Report</td>
+
+
+
+                </tr>	
+		<tr>
+			<td width=15><img src='images/icon_stat.gif'></td>
+			<td align=left class='font2'>Update graph</td>
+			
+			<td width=15><img src='images/modify.gif'></td>
+                        <td  colspan=3 align=left class='font2'>Modify Service</td>
+
+		</tr>
 		
 	</table>";
 	
@@ -206,7 +220,7 @@
 	$layout->Td(
 			Array(
 				0=>Array(
-					'colspan'=> 5,
+					'colspan'=> 6,
 					'class'=>'header1',
 					'show'=>"Matching Servers: $displayed_servers Matching Services: $displayed_services"
 					)
