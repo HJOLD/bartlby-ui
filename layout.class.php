@@ -78,7 +78,7 @@ class Layout {
 			if (is_array($data[$x])) $disp=$data[$x]["show"];
 			
 			
-			$disp=htmlspecialchars($disp);			
+			//$disp=htmlspecialchars($disp);			
 			$r .= "<td $colspan  $align  valign=top $width $height $class>\n" . $disp . "\n</td>\n";	
 		}
 		return $r;
