@@ -141,7 +141,6 @@ if(is_int($defaults[service_ack]) && $defaults[service_ack] == 0) {
 
 
 
-//Types
 
 $types[7][c]="";
 $types[7][v]="1";
@@ -196,11 +195,11 @@ $types[0][c]="";
 $types[0][v]="8";
 $types[0][k]="AgentV2";
 if($defaults[service_type] == 8) {
-	$types[7][s]=1;
+	$types[0][s]=1;
 }
 
 if(!$defaults[service_type]) {
-	$types[7][s]=1;	
+	$types[0][s]=1;	
 }
 //Get plugins :))
 $layout->set_menu("services");
