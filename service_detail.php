@@ -252,7 +252,7 @@ $info_box_title='Last Output';
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 $core_content = "<table  width='100%'>
 	<tr>
-		<td>" . str_replace( "\\dbr", "<br>",nl2br($defaults[new_server_text])) . "</td> 
+		<td>" . str_replace( "\\dbr", "<br>",nl2br(htmlspecialchars($defaults[new_server_text]))) . "</td> 
 	</tr>
 	
 	
@@ -267,12 +267,12 @@ if($defaults[service_type] == 2 || $defaults[service_type] == 1 || $defaults[ser
 	$core_content = "<table  width='100%'>
 		<tr>
 			<td width=150 class='font2'>Plugin:</td>
-			<td align=left >" . $defaults[plugin] . "</font></td>
+			<td align=left >" . htmlspecialchars($defaults[plugin]) . "</font></td>
 			<td>&nbsp;</td>           
 		</tr>
 		<tr>
 			<td width=150 class='font2'>Plugin Arguments:</td>
-			<td align=left >" . $defaults[plugin_arguments] . "</font></td>
+			<td align=left >" . htmlspecialchars($defaults[plugin_arguments]) . "</font></td>
 			<td>&nbsp;</td>           
 		</tr>
 		<tr>

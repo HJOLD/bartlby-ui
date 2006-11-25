@@ -493,6 +493,7 @@ class BartlbyUi {
         		if(!$has_right) {
         			$r[$x][new_server_text] = "you are missing: view_service_output right";	
         		}
+        		
         		array_push($map[$r[$x][server_id]], $r[$x]);
         	}
         	@ksort($map);

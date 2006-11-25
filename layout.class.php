@@ -77,6 +77,8 @@ class Layout {
 			
 			if (is_array($data[$x])) $disp=$data[$x]["show"];
 			
+			
+			$disp=htmlspecialchars($disp);			
 			$r .= "<td $colspan  $align  valign=top $width $height $class>\n" . $disp . "\n</td>\n";	
 		}
 		return $r;
@@ -116,6 +118,7 @@ class Layout {
 	
 	function Field($name, $type='text', $value='',$L='', $chkBox='', $help = array()) {
 		$n="name='$name'";
+		$value=htmlspecialchars($value);
 		if($help) {
 			$hIcon="<a href='help.php?msg[0]=$help&msg[1]=NULL' target='unten'><img src='info.gif' border=0></A>";
 		}
@@ -222,6 +225,8 @@ class Layout {
 		} else {
 			$oid = "";	
 		}
+		
+		
 		$rr .= '
 			<table class="nopad" ' . $oid . '>
 				<tr>
