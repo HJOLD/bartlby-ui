@@ -144,10 +144,10 @@ if(is_int($defaults[service_ack]) && $defaults[service_ack] == 0) {
 //Types
 
 $types[7][c]="";
-$types[7][v]="8";
+$types[7][v]="1";
 $types[7][k]="Active (deprecated)";
 
-if($defaults[service_type] == 8) {
+if($defaults[service_type] == 1) {
 	$types[0][s]=1;
 }
 
@@ -193,9 +193,9 @@ if($defaults[service_type] == 7) {
 }
 
 $types[0][c]="";
-$types[0][v]="1";
+$types[0][v]="8";
 $types[0][k]="AgentV2";
-if($defaults[service_type] == 1) {
+if($defaults[service_type] == 8) {
 	$types[7][s]=1;
 }
 
