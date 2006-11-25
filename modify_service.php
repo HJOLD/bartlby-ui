@@ -143,11 +143,11 @@ if(is_int($defaults[service_ack]) && $defaults[service_ack] == 0) {
 
 //Types
 
-$types[0][c]="";
-$types[0][v]="1";
-$types[0][k]="Active";
+$types[7][c]="";
+$types[7][v]="8";
+$types[7][k]="Active (deprecated)";
 
-if($defaults[service_type] == 1) {
+if($defaults[service_type] == 8) {
 	$types[0][s]=1;
 }
 
@@ -192,6 +192,16 @@ if($defaults[service_type] == 7) {
 	$types[6][s]=1;
 }
 
+$types[0][c]="";
+$types[0][v]="1";
+$types[0][k]="AgentV2";
+if($defaults[service_type] == 1) {
+	$types[7][s]=1;
+}
+
+if(!$defaults[service_type]) {
+	$types[7][s]=1;	
+}
 //Get plugins :))
 $layout->set_menu("services");
 /*
@@ -261,7 +271,7 @@ $layout->OUT .= "<script>
 				GenericToggleFix(\"passive\", \"block\");
 				GenericToggleFix(\"active\", \"block\");
 			}
-			if(va == 1 || va == 6 || va == 7) {
+			if(va == 1 || va == 6 || va == 7 || va == 8) {
 				GenericToggleFix(\"active\", \"block\");
 			}
 			if(va == 3) {
