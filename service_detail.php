@@ -89,6 +89,14 @@ if($defaults["service_active"]==1) {
 }
 //echo $defaults[last_notify_send] . "<br>";
 
+if( $defaults[service_delay_sum] > 0 && $defaults[service_delay_count] > 0) {
+	$svcDEL=round($defaults[service_delay_sum] / $defaults[service_delay_count], 2);
+} else {
+	$svcDEL=0;	
+}
+
+
+
 if( $defaults[service_time_sum] > 0 && $defaults[service_time_count] > 0) {
 	$svcMS=round($defaults[service_time_sum] / $defaults[service_time_count], 2);
 } else {
@@ -152,6 +160,7 @@ $core_content = "<table  width='100%'>
 		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_check]+$defaults[check_interval]) . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
+	
 	<tr>
 		<td width=150 class='font2'>Check intervall:</td>
 		<td align=left >" . $defaults[check_interval] . "</font></td>
@@ -213,6 +222,11 @@ $core_content = "<table  width='100%'>
 	<tr>
 		<td width=150 class='font2'>Average Check Time:</td>
 		<td align=left >" .  $svcMS . " ms</font></td>
+		<td>&nbsp;</td>           
+	</tr>
+	<tr>
+		<td width=150 class='font2'>Average delay Time:</td>
+		<td align=left >" .  $svcDEL . " Seconds</font></td>
 		<td>&nbsp;</td>           
 	</tr>
 	
