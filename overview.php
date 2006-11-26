@@ -39,37 +39,7 @@
 		$rndMS=0;	
 	}
 	
-	$info_box_title='Core Information<div class="clock" nowrap>Time: ' . date("d.m.Y H:i:s") . '</div>';  
-	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
-	$core_content = "<table class='nopad' width='100%'>
-		<tr>
-			<td class='font1'>(Logged in as: <font class='font2'>" . $btl->user . "</font>)</td>
-			<td align=right class='font1'>Uptime:<font class='font2'>" . $btl->intervall(time()-$btl->info[startup_time]) . "</font></td>
-		</tr>
-		<tr>
-			<td class='font1'>Services: <font class='font2'>" . $info[services] . "&nbsp;&nbsp;&nbsp;&nbsp;Workers: " . $info[workers] . "&nbsp;&nbsp;&nbsp;&nbsp;Downtimes: " . $info[downtimes]. "&nbsp;&nbsp;&nbsp;&nbsp;Running: " . $info[current_running]  . "</font></td>
-			<td align=right class='font1'>Datalib:<font class='font2'>" . $lib[Name] . "-" . $lib[Version] . "</font></td>
-		</tr>
 		
-		<tr>
-			<td colspan=1 class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
-			<td align=right class='font1'>Avg Round Time:<font class='font2'>" . $rndMS . " ms</font></td>
-		</tr>
-		
-		
-		
-		<tr>
-			<td class='font1'>&nbsp;</td>
-			<td align=right class='font1'><font class='font2'>$sir</font></td>
-		</tr>
-	</table>";
-	$layout->push_outside($layout->create_box($info_box_title, $core_content));
-	
-	
-	
-	
-	
-	
 	
 	/*
 	$is_repl_on=bartlby_config($btl->CFG, "replication");
@@ -117,6 +87,8 @@
 	$services_downtime=0;
 	$all_services=0;
 	$acks_outstanding=0;
+	$gdelay_count = 0;
+	$gdelay_sum = 0;
 	
 	while(list($k,$v)=@each($servers)) {
 		$x=$k;
@@ -129,6 +101,12 @@
 		}
 		
 		for($y=0; $y<count($v); $y++) {
+			//service_delay_sum
+			$gdelay_sum += $v[$y][service_delay_sum];
+			$gdelay_count += $v[$y][service_delay_count];
+			
+			
+			
 			$qck[$v[$y][server_id]][$v[$y][current_state]]++;	
 			$qck[$v[$y][server_id]][10]=$v[$y][server_id];
 			$qck[$v[$y][server_id]][server_icon]=$v[$y][server_icon];
@@ -292,6 +270,45 @@
 		$qc="";
 		$qk="";
 	}
+	
+	
+	if($gdelay_count>0 && $gdelay_sum > 0) {
+		
+		$avgDEL = round($gdelay_sum/$gdelay_count,2);
+	} else {
+		$avgDEL = 0;	
+	}
+	
+	
+	$info_box_title='Core Information<div class="clock" nowrap>Time: ' . date("d.m.Y H:i:s") . '</div>';  
+	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
+	$core_content = "<table class='nopad' width='100%'>
+		<tr>
+			<td class='font1'>(Logged in as: <font class='font2'>" . $btl->user . "</font>)</td>
+			<td align=right class='font1'>Uptime:<font class='font2'>" . $btl->intervall(time()-$btl->info[startup_time]) . "</font></td>
+		</tr>
+		<tr>
+			<td class='font1'>Services: <font class='font2'>" . $info[services] . "&nbsp;&nbsp;&nbsp;&nbsp;Workers: " . $info[workers] . "&nbsp;&nbsp;&nbsp;&nbsp;Downtimes: " . $info[downtimes]. "&nbsp;&nbsp;&nbsp;&nbsp;Running: " . $info[current_running]  . "</font></td>
+			<td align=right class='font1'>Datalib:<font class='font2'>" . $lib[Name] . "-" . $lib[Version] . "</font></td>
+		</tr>
+		
+		<tr>
+			<td colspan=1 class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
+			<td align=right class='font1'>Avg Round Time:<font class='font2'>" . $rndMS . " ms / avg service delay: " . $avgDEL . " sec.</font></td>
+		</tr>
+		
+		
+		
+		<tr>
+			<td class='font1'>&nbsp;</td>
+			<td align=right class='font1'><font class='font2'>$sir</font></td>
+		</tr>
+	</table>";
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
+	
+	
+	
 	
 	$quick_view .= "</table>";
 	$tac_title='Tactical Overview<div class="clock"></div>';  

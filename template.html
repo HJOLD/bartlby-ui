@@ -36,6 +36,31 @@
 		//document.location.href='" . $_GET[script] . "?server_id=' + value;
 		document.getElementById('quick_suggest').innerHTML = '';
 	}
+	var QuickSearchOnKeyRequestBuffer = 
+	{
+	        bufferText: false,
+	        bufferTime: 500,
+	        
+	        modified : function(strId)
+	        {
+	                setTimeout('QuickSearchOnKeyRequestBuffer.compareBuffer("'+strId+'","'+document.getElementById("qlook").value+'");', this.bufferTime);
+	        },
+	        
+	        compareBuffer : function(strId, strText)
+	        {
+	            if (strText == document.getElementById("qlook").value && strText != this.bufferText)
+	            {
+	                this.bufferText = strText;
+	                QuickSearchOnKeyRequestBuffer.makeRequest(strId);
+	            }
+	        },
+	        
+	        makeRequest : function(strId)
+	        {
+	            quickSuggest('ajax_quick_look.php');
+	        }
+	}
+	
 
 </script>
 <script language='JavaScript' type='text/javascript' src='images/ajax_search.js'></script>
@@ -47,7 +72,7 @@
 			<td  class="bg_header"><a href='overview.php'><img border=0 src='images/btl-logo.gif'></A>
 			<div class="reload" id="reload"><input type=button style='width:155px' name="reload_button" value="reload" onClick="document.location.href='bartlby_action.php?action=reload';"></div>
 			<div class="ui_performance" id="reload"><font size=1>UI-Version: <font size=1><!--UIVERSION--></font> Page Render:<!--BTUITIME--> secs &nbsp;&nbsp;&nbsp;&nbsp;<!--SERVERTIME--></div>
-			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Quick look<input onkeyup="quickSuggest('ajax_quick_look.php');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
+			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Quick look<input onkeyup="QuickSearchOnKeyRequestBuffer.modified('qlook');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
 			<div class="help" id="help">
 				<!--<iframe height=768 width=245 src='http://bartlby.sf.net/help/'></iframe>-->
 			</div>

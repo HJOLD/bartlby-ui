@@ -46,6 +46,9 @@ function searchSuggest(urll) {
 	}		
 }
 
+
+
+
 function quickSuggest(urll) {
 	window.clearTimeout(ajax_timeout_id);
 	if (searchReq.readyState == 4 || searchReq.readyState == 0) {
@@ -53,12 +56,7 @@ function quickSuggest(urll) {
 		searchReq.open("GET", urll + '?search=' + str, true);
 		searchReq.onreadystatechange = handleQuickSuggest; 
 		searchReq.send(null);
-	} else {
-		var ss = document.getElementById('quick_suggest')
-		ss.innerHTML = "<font color=red>Loading...</font>";
-		
-		ajax_timeout_id=window.setTimeout("quickSuggest('" + urll + "')", 1000);	
-	}		
+	} 	
 }
 
 //Called when the AJAX response is returned.
