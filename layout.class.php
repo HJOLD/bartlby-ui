@@ -95,7 +95,7 @@ class Layout {
 	}
 	function Form($name,$action, $method='GET', $r = false) {
 		
-		$rr = "<form name='$name' action='$action' method='POST'>\n";	
+		$rr = "<form id='$name' name='$name' action='$action' method='POST'>\n";	
 		if($r) {
 			return $rr;	
 		} else {
@@ -117,7 +117,7 @@ class Layout {
 	}
 	
 	function Field($name, $type='text', $value='',$L='', $chkBox='', $help = array()) {
-		$n="name='$name'";
+		$n="name='$name' id='$name'";
 		$value=htmlspecialchars($value);
 		if($help) {
 			$hIcon="<a href='help.php?msg[0]=$help&msg[1]=NULL' target='unten'><img src='info.gif' border=0></A>";

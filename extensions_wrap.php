@@ -1,4 +1,6 @@
 <?
+	include "config.php";
+	
 	$e=explode("?", $_GET[script]);
 	$s = explode("&" , $e[1]);
 	for($x=0; $x<count($s); $x++) {

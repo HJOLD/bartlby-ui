@@ -2,9 +2,16 @@
 include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
+
+require_once ("xajax/xajax.inc.php");
+
 $btl=new BartlbyUi($Bartlby_CONF);
 
+$xajax = new xajax("formchecker.php");
+$xajax->registerFunction("AddModifyService");
+
 $layout= new Layout();
+$layout->OUT .= $xajax->printJavascript("xajax");
 $layout->setTitle("");
 function dnl($i) {
 	return sprintf("%02d", $i);
@@ -287,7 +294,7 @@ $layout->OUT .= "<script>
 		CheckTables();
 		</script>
 ";
-echo "<form name='fm1' action='bartlby_action.php' method=POST>\n";
+echo "<form id='fm1' name='fm1' action='bartlby_action.php' method=POST>\n";
 $layout->Table("100%");
 
 
@@ -607,7 +614,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->") . $layout->Field("service_id", "hidden", $_GET[service_id])
+					'show'=>$layout->Field("Subm", "button", "next->", "", " onClick='xajax_AddModifyService(xajax.getFormValues(\"fm1\"))'") . $layout->Field("service_id", "hidden", $_GET[service_id])
 					)
 			)
 		)
