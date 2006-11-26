@@ -12,7 +12,10 @@
 	closedir($dhl);
 	$str{strlen($str)-1} = ' ';
 	
-	
+	$https_check="";
+	if($_SERVER[SERVER_PROTOCOL] == "HTTP/1.1") {
+		$https_check = "<font color=red>You are using a unsecure http connection!!!</font>";	
+	}
 	
 ?>
 
@@ -125,7 +128,7 @@ document.write('<font face="tahoma" size=1><p><small>&nbsp;</p>')
 								<td><input type=password name=login_password></td>
 							</tr>
 							<tr>
-								<td colspan=2 align=center><input type=submit value="login"></td>
+								<td colspan=2 align=center><input type=submit value="login"><br><?=$https_check?></td>
 							</tr>
 							<tr>
 								<td colspan=2 align=center><font size=1>to use browser based auth. leave the fields blank and click login</font></td>
@@ -152,3 +155,4 @@ document.write('<font face="tahoma" size=1><p><small>&nbsp;</p>')
 											</tr>
 										</table>
 										</center>
+										
