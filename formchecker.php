@@ -12,11 +12,88 @@ require_once ("xajax/xajax.inc.php");
 
 $xajax = new xajax("formchecker.php");
 $xajax->registerFunction("AddModifyService");
+$xajax->registerFunction("AddModifyWorker");
 
+$xajax->registerFunction("AddModifyClient");
 
 $xajax->processRequests();
 
 
+function AddModifyClient($aFormValues) {
+	global $_GET, $_POST;
+	
+	$av = $aFormValues;
+	
+	$res = new xajaxResponse();
+	
+	
+	
+	$al="";
+	
+	if(!bartlbize_field($av[server_name]))
+		$al .= "Server name nasty!!\n";
+		
+	if(!bartlbize_field($av[server_ip]))
+		$al .= "server_ip nasty!!\n";
+		
+	if(!bartlbize_int($av[server_flap_seconds]))
+		$al .= "server_flap_seconds!!\n";
+	
+	
+	
+	if($al != "")  {
+		$res->AddAlert("Form errors:\n" . $al);
+	} else {
+		$res->addScript("document.fm1.submit()");
+	}
+	
+	return $res;	
+}
+
+
+function AddModifyWorker($aFormValues) {
+	global $_GET, $_POST;
+	
+	$av = $aFormValues;
+	
+	$res = new xajaxResponse();
+	
+	
+	
+	$al="";
+	
+	if(!bartlbize_field($av[worker_name]))
+		$al .= "Service name nasty!!\n";
+		
+	if(!bartlbize_field($av[worker_password]))
+		$al .= "Password nasty!!\n";
+	if($av[worker_password] != $av[worker_password1]) {
+		$al .= "Passwords dont match\n";
+	}
+	
+	if(!bartlbize_field($av[worker_mail], true))
+		$al .= "email nasty!!\n";
+	
+	if(!bartlbize_int($av[worker_icq], true))
+		$al .= "icq nasty!!\n";
+	
+	if(!bartlbize_int($av[escalation_limit]))
+		$al .= "escalation_limit!!\n";
+		
+		
+	if(!bartlbize_int($av[escalation_minutes]))
+		$al .= "escalation_minutes!!\n";
+	
+	
+	
+	if($al != "")  {
+		$res->AddAlert("Form errors:\n" . $al);
+	} else {
+		$res->addScript("document.fm1.submit()");
+	}
+	
+	return $res;	
+}
 
 function AddModifyService($aFormValues) {
 	global $_GET, $_POST;
@@ -112,11 +189,12 @@ function bartlbize_date($v) {
 	return true;
 	
 }
-function bartlbize_int($v) {
+function bartlbize_int($v, $n = false) {
 	if($v == "") {
-		return false;
+		return $n;
 	}
-	if(!preg_match("/[0-9]/i", $v)) {
+	
+	if(!preg_match("/^[0-9]+$/i", $v)) {
 		return false;	
 	}
 	return true;

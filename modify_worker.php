@@ -2,9 +2,17 @@
 include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
+
+require_once ("xajax/xajax.inc.php");
+
 $btl=new BartlbyUi($Bartlby_CONF);
 
+$xajax = new xajax("formchecker.php");
+$xajax->registerFunction("AddModifyWorker");
+
+
 $layout= new Layout();
+$layout->OUT .= $xajax->printJavascript("xajax");
 $layout->set_menu("worker");
 $layout->setTitle("Modify Worker");
 $defaults=@bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
@@ -152,6 +160,17 @@ $ov .= $layout->Tr(
 		)
 	)
 ,true);
+
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Repeat password:",
+			1=>$layout->Field("worker_password1", "password", "")
+		)
+	)
+,true);
+
+
 $ov .= $layout->Tr(
 	$layout->Td(
 		array(
@@ -253,7 +272,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->") . $layout->Field("worker_id", "hidden", $_GET[worker_id])
+					'show'=>$layout->Field("Subm", "button", "next->", "", " onClick='xajax_AddModifyWorker(xajax.getFormValues(\"fm1\"))'") . $layout->Field("worker_id", "hidden", $_GET[worker_id])
 					)
 			)
 		)

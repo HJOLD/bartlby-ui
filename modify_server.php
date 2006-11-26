@@ -2,11 +2,17 @@
 include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
+require_once ("xajax/xajax.inc.php");
+
+
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 
+$xajax = new xajax("formchecker.php");
+$xajax->registerFunction("AddModifyClient");
 
+$layout->OUT .= $xajax->printJavascript("xajax");
 
 $layout->set_menu("client");
 
@@ -245,7 +251,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->")
+					'show'=>$layout->Field("Subm", "button", "next->", "", " onClick='xajax_AddModifyClient(xajax.getFormValues(\"fm1\"))'")
 					)
 			)
 		)
