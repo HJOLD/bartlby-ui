@@ -76,6 +76,9 @@ if($defaults[service_type] == 7) {
 if($defaults[service_type] == 8) {
 	$svc_type="AgentV2";
 }
+if($defaults[service_type] == 9) {
+	$svc_type="AgentV2(no-SSL)";
+}
 
 if($defaults["notify_enabled"]==1) {
 	$noti_en="true";

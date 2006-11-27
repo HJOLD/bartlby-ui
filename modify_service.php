@@ -198,6 +198,13 @@ if($defaults[service_type] == 7) {
 	$types[6][s]=1;
 }
 
+$types[8][c]="";
+$types[8][v]="9";
+$types[8][k]="AgentV2(no-SSL)";
+if($defaults[service_type] == 9) {
+	$types[8][s]=1;
+}
+
 $types[0][c]="";
 $types[0][v]="8";
 $types[0][k]="AgentV2";
@@ -277,7 +284,7 @@ $layout->OUT .= "<script>
 				GenericToggleFix(\"passive\", \"block\");
 				GenericToggleFix(\"active\", \"block\");
 			}
-			if(va == 1 || va == 6 || va == 7 || va == 8) {
+			if(va == 1 || va == 6 || va == 7 || va == 8 ||  va == 9) {
 				GenericToggleFix(\"active\", \"block\");
 			}
 			if(va == 3) {
