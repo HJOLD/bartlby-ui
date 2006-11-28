@@ -166,7 +166,7 @@ $core_content = "<table  width='100%'>
 	
 	<tr>
 		<td width=150 class='font2'>Check intervall:</td>
-		<td align=left >" . $defaults[check_interval] . "</font></td>
+		<td align=left >" . $defaults[check_interval] . " / " . $defaults[check_interval_original] .  "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
 	<tr>
