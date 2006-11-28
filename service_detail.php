@@ -160,7 +160,7 @@ $core_content = "<table  width='100%'>
 	</tr>
 	<tr>
 		<td width=150 class='font2'>approx. next Check:</td>
-		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_check]+$defaults[check_interval]) . "</font></td>
+		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_check]+$defaults[check_interval_original]) . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
 	
