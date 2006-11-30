@@ -40,24 +40,24 @@
 	        bufferText: false,
 	        bufferTime: 500,
 	        
-	        modified : function(strId, fcn)
+	        modified : function(strId, fcn, scr)
 	        {
-	                setTimeout('buffer_suggest.compareBuffer("'+strId+'","'+document.getElementById(strId).value+'","'+ fcn +'");', this.bufferTime);
+	                setTimeout('buffer_suggest.compareBuffer("'+strId+'","'+document.getElementById(strId).value+'","'+ fcn +'", "'+scr+'");', this.bufferTime);
 	        },
 	        
-	        compareBuffer : function(strId, strText, fcn)
+	        compareBuffer : function(strId, strText, fcn, scr)
 	        {
 	            if (strText == document.getElementById(strId).value && strText != this.bufferText)
 	            {
 	                this.bufferText = strText;
-	                buffer_suggest.makeRequest(strId, fcn);
+	                buffer_suggest.makeRequest(strId, fcn, scr);
 	            }
 	        },
 	        
-	        makeRequest : function(strId, fcn)
+	        makeRequest : function(strId, fcn, scr)
 	        {
-	            
-	            eval(fcn + "(document.getElementById(strId).value)");
+	            	            
+	            eval(fcn + "(document.getElementById(strId).value, scr)");
 	        }
 	}
 	

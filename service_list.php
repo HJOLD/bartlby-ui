@@ -25,7 +25,7 @@ if($ajaxed == "true") {
 		<tr>
 			<td width=150 valign=top class='font2'>Search:</td>
 			<td>
-			<input type='text' onkeyup=\"buffer_suggest.modified('service_search', 'xajax_ServiceSearch');\" id=service_search autocomplete='off' /> (PREG syntax)
+			<input type='text' onkeyup=\"buffer_suggest.modified('service_search', 'xajax_ServiceSearch', '" . $_GET[script] . "');\" id=service_search autocomplete='off' /> (PREG syntax)
 				
 				<div style='background-color:#ffffff; position:absolute' id='service_search_suggest'>
 				</div>

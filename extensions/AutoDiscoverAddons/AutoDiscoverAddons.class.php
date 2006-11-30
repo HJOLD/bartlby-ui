@@ -58,6 +58,9 @@ class AutoDiscoverAddons {
         	  	
         	  	function updatePerfhandlerExt(cnt) {
         	  		as = document.getElementById('AutoDiscoverAddonsHide');
+        	  		if(as.style.display == 'block') {
+        	  			return;
+        	  		}
 				as.style.display = 'block';
 				xajax_updatePerfHandler(\"xajax_ExtensionAjax('AutoDiscoverAddons', 'xajax_update', '" . $defaults[service_id] . "')\", '" . $defaults[server_id] . "','" . $defaults[service_id] . "');
         	  		

@@ -79,6 +79,15 @@ $layout->Tr(
 		)
 
 );
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Overwrite existing package:",
+				1=>$layout->Field("package_overwrite", "checkbox", "checked")
+			)
+		)
+
+);
 
 $layout->Tr(
 	$layout->Td(
@@ -86,7 +95,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->") . $layout->Field("server_id", "hidden", $_GET[server_id])
+					'show'=>$layout->Field("Subm", "button", "next->", "" ," onClick='xajax_CreatePackage(xajax.getFormValues(\"fm1\"))'") . $layout->Field("server_id", "hidden", $_GET[server_id])
 					)
 			)
 		)

@@ -15,6 +15,19 @@ class BnR {
 		return "Backup and restore";
 			
 	}
+	function xajax_backup_form() {
+		global $xajax;
+		$res = new xajaxResponse();
+		$values = $xajax->_xmlToArray("xjxquery", $_GET[xajaxargs][2]);
+		
+		if($values[package_with_comment] == "") {
+			$res->addAssign("error_package_with_comment", "innerHTML", "required field");			
+		} else {
+			$res->AddScript("document.fm1.submit()");	
+		}
+		
+		return $res;
+	}
 	function _permissions() {
 		global $worker_rights;
 		//bnr.backup

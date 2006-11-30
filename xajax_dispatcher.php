@@ -40,13 +40,125 @@ function removeDIV($div) {
 	return $res;
 }
 
-function jumpToUserId($id) {
-	$res = new xajaxResponse();
-	$res->addScript("document.location.href='modify_worker.php?worker_id="  . $id . "'");
+
+function forceCheck($server, $service) {
+	global $btl;
+	$res = new xajaxresponse();
+	if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+		if($service) {
+			$btl->hasServerorServiceRight($_GET[service_id]);
+			$gsm=bartlby_get_service_by_id($btl->CFG, $service);
+			$idx=$btl->findSHMPlace($service);
+			
+			$cur=bartlby_check_force($btl->CFG, $idx);
+			$res->addAlert("immediate check scheduled for:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+			
+		} else {                                     
+		 	$res->addAlert("missing service_id");
+		}  
+	} else {
+	 	$res->addAlert("force check isnt possible on xml remote services");
+	}   
 	return $res;
 }
 
-function UserSearch($what) {
+function group_search($g) {
+	$res = new xajaxresponse();
+	$optind=0;
+	$y=0;
+	
+	
+	$optind=0;
+	$dh=opendir("extensions/ServerGroups/data/");
+	while ($file = readdir ($dh)) { 
+	   if ($file != "." && $file != "..") { 
+	   	clearstatcache();
+	   	$ta = explode(".",$file);
+	   	$unser = base64_decode($ta[0]);
+	   	
+	   	
+	   	if(preg_match("/" . $g . "/i", $unser)) {
+	     	$output .= "<a href=\"javascript:void(0);\" onClick=\"document.location.href='extensions_wrap.php?script=ServerGroups/edit.php&group_name=" . $file . "'\">$unser</a><br>";
+	     	$y++;
+	     }
+	       	
+	   }
+	   if($y>20) {
+			break 2;	
+		} 
+	}
+	closedir($dh); 
+	$output = "<a href='javascript:void(0);' onClick=\"xajax_removeDIV('group_search_suggest');\">close</A><br><br>" . $output;
+	$res->AddAssign("group_search_suggest", "innerHTML", $output);
+	
+	return $res;
+}
+function jumpToUserId($id, $script) {
+	$res = new xajaxResponse();
+	$res->addScript("document.location.href='$script?worker_id="  . $id . "'");
+	return $res;
+}
+function AddDowntime($av) {
+	$res = new xajaxResponse();
+	$al = "";
+	if(!bartlbize_field($av[downtime_notice])){
+		$al="1";
+		$res->addAssign("error_downtime_notice", "innerHTML", "required field");
+	} else {
+		$res->addAssign("error_downtime_notice", "innerHTML", "");
+	}
+	if(!bartlbize_field($av[downtime_from])){
+		$al="1";
+		$res->addAssign("error_downtime_from", "innerHTML", "required field");
+	} else {
+		$res->addAssign("error_downtime_from", "innerHTML", "");
+	}
+	if(!bartlbize_field($av[downtime_to])){
+		$al="1";
+		$res->addAssign("error_downtime_to", "innerHTML", "required field");
+	} else {
+		$res->addAssign("error_downtime_to", "innerHTML", "");
+	}
+	if($al == "") $res->AddScript("document.fm1.submit()");
+	return $res;
+}
+function CreatePackage($av) {
+	$res = new xajaxResponse();
+	
+	$al="";
+	
+	
+	if(!bartlbize_field($av[package_name])){
+		$al="1";
+		$res->addAssign("error_package_name", "innerHTML", "required field");
+	} else {
+		$res->addAssign("error_package_name", "innerHTML", "");
+		if(!$av[package_overwrite]) {
+			if(file_exists("pkgs/" . $av[package_name])) {
+				$res->addAssign("error_package_name", "innerHTML", "Package already exists");
+				$al="1";
+			} else {
+				$res->addAssign("error_package_name", "innerHTML", "");
+			}
+		}
+		
+	}
+	
+	
+	if(!is_array($av[services])) {
+		$al="1";
+		$res->addAssign("error_services[]", "innerHTML", "select services");
+	} else {
+		$res->addAssign("error_services[]", "innerHTML", "");
+	}	
+	
+	if($al=="")
+		$res->AddScript("document.fm1.submit()");
+	
+	return $res;	
+}
+
+function UserSearch($what, $script='modify_worker.php') {
 	global $btl;
 	$res = new xajaxResponse();
 	
@@ -57,7 +169,7 @@ function UserSearch($what) {
 		
 		if(preg_match("/" . $what . "/i", $v[name])) {
 			
-			$output .= "<a  href=\"javascript:void(0);\" onClick=\"xajax_jumpToUserId('" . $v[worker_id] . "');\">$v[name]</a><br>";
+			$output .= "<a  href=\"javascript:void(0);\" onClick=\"xajax_jumpToUserId('" . $v[worker_id] . "', '$script');\">$v[name]</a><br>";
 			$y++;
 		}
 		if($y>20) {
@@ -71,26 +183,27 @@ function UserSearch($what) {
 }
 
 
-function jumpToServiceId($id) {
+function jumpToServiceId($id, $script) {
 	$res = new xajaxResponse();
-	$res->addScript("document.location.href='modify_service.php?service_id="  . $id . "'");
+	$res->addScript("document.location.href='$script?service_id="  . $id . "'");
 	return $res;
 }
 
-function ServiceSearch($what) {
+function ServiceSearch($what, $script='modify_service.php') {
 	global $btl;
 	$res = new xajaxResponse();
 	
 	$map = $btl->GetSVCMap();
 	$optind=0;
 	$y=0;
+	
 	while(list($k, $servs) = @each($map)) {
 		$displayed_servers++;
 		
 		for($x=0; $x<count($servs); $x++) {
 			$ostr=$servs[$x][server_name] . "/" . $servs[$x][service_name];
 			if(preg_match("/" . $what . "/i", $ostr)) {
-				$output .= "<a href=\"javascript:void(0);\" onClick=\"xajax_jumpToServiceId('" . $servs[$x][service_id] . "');\">$ostr</a><br>";
+				$output .= "<a href=\"javascript:void(0);\" onClick=\"xajax_jumpToServiceId('" . $servs[$x][service_id] . "', '$script');\">$ostr</a><br>";
 				$y++;
 			}		
 			if($y>20) {
@@ -106,9 +219,9 @@ function ServiceSearch($what) {
 }
 
 
-function jumpToServerId($id) {
+function jumpToServerId($id, $script) {
 	$res = new xajaxResponse();
-	$res->addScript("document.location.href='modify_server.php?server_id="  . $id . "'");
+	$res->addScript("document.location.href='$script?server_id="  . $id . "'");
 	return $res;
 }
 
@@ -145,7 +258,7 @@ function PluginSearch($what) {
 	return $res;	
 }
 
-function ServerSearch($what) {
+function ServerSearch($what, $script='modify_server.php') {
 	global $btl;
 	$res = new xajaxResponse();
 	$servs=$btl->GetServers();
@@ -155,7 +268,7 @@ function ServerSearch($what) {
 	while(list($k, $v) = @each($servs)) {
 		
 		if(preg_match("/" . $what . "/i", $v)) {
-			$output .= "<a href=\"javascript:void(0);\" onClick=\"xajax_jumpToServerId('" . $k . "');\">$v</a><br>";
+			$output .= "<a href=\"javascript:void(0);\" onClick=\"xajax_jumpToServerId('" . $k . "', '$script');\">$v</a><br>";
 			$y++;
 		}
 		if($y>20) {
@@ -246,6 +359,43 @@ function QuickLook($what) {
 	$output = "<a href='javascript:void(0);' onClick=\"xajax_removeDIV('quick_suggest');\">close</A><br>" . $output;
 	$res->addAssign("quick_suggest", "innerHTML", $output);
 	return $res;	
+}
+function CreateReport($aFormValues) {
+	global $_GET, $_POST;
+	
+	$av = $aFormValues;
+	
+	$al="";
+	
+	$res = new xajaxResponse();
+	
+	if(!bartlbize_field($av[report_start])){
+		$al="1";
+		$res->addAssign("error_report_start", "innerHTML", "required field");
+	} else {
+		$res->addAssign("error_report_start", "innerHTML", "");
+	}
+	if(!bartlbize_field($av[report_end])){
+		$al="1";
+		$res->addAssign("error_report_end", "innerHTML", "required field");
+	} else {
+		$res->addAssign("error_report_end", "innerHTML", "");
+	}
+	if($av[report_service] == "") {
+		$al="1";
+		$res->addAssign("error_report_service", "innerHTML", "choose a service");
+	} else {
+		$res->addAssign("error_report_service", "innerHTML", "");
+	
+	}
+	if($al == "")  {
+		$res->addScript("document.fm1.submit()");
+	}
+	
+	return $res;	
+	
+	
+	
 }
 function AddModifyClient($aFormValues) {
 	global $_GET, $_POST;

@@ -84,7 +84,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->")
+					'show'=>$layout->Field("Subm", "button", "next->", "" ," onClick='xajax_AddDowntime(xajax.getFormValues(\"fm1\"))'")
 					)
 			)
 		)

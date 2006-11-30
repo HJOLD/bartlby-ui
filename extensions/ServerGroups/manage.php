@@ -23,17 +23,10 @@
 		<tr>
 			<td width=150 valign=top class='font2'>Search:</td>
 			<td>
-			<script>
-			function setSearch(value) {
-				document.location.href='extensions_wrap.php?script=ServerGroups/edit.php&group_name=' + value;
-				document.getElementById('search_suggest').innerHTML = '';
-			}
-			</script>
-				<input type='text' id='txtSearch' name='txtSearch' alt='Search Criteria' onkeyup=\"searchSuggest('extensions/ServerGroups/ajax_search.php');\" autocomplete='off' /> (PREG syntax)
+			<input type='text' onkeyup=\"buffer_suggest.modified('server_group_search', 'xajax_group_search', '" . $_GET[script] . "');\" id=server_group_search autocomplete='off' /> (PREG syntax)
 				
-				<div id='search_suggest'>
+				<div style='background-color:#ffffff; position:absolute' id='group_search_suggest'>
 				</div>
-			
 			
 			</td>
 		</tr>

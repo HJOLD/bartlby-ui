@@ -1267,7 +1267,7 @@ function create_package($package_name, $in_services = array(), $with_plugins, $w
 		}
 		
 		$modify = "<a href='modify_service.php?service_id=" . $defaults[service_id] . "'><img src='images/modify.gif' title='Modify this Service' border=0></A>";
-		$force = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=force_check'><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
+		$force = "<a href='javascript:void(0);' onClick=\"xajax_forceCheck('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
 		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
 		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
 		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.gif' border=0></A>";				

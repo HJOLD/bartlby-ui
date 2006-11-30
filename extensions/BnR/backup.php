@@ -75,7 +75,7 @@ $layout->Tr(
 				0=>Array(
 					'colspan'=> 2,
 					"align"=>"right",
-					'show'=>$layout->Field("Subm", "submit", "next->") . $layout->Field("server_id", "hidden", $_GET[server_id])
+					'show'=>$layout->Field("Subm", "button", "next->", "" ," onClick='xajax_ExtensionAjax(\"BnR\", \"xajax_backup_form\", xajax.getFormValues(\"fm1\"))'") . $layout->Field("server_id", "hidden", $_GET[server_id])
 					)
 			)
 		)
