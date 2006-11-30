@@ -20,6 +20,10 @@
 #//
 #//
 #////////////////////////////////////////////
+
+require_once ("xajax/xajax.inc.php");
+include("xajax.common.php");
+
 class Layout {
 	var $OUT;
 	var $template_file;
@@ -122,7 +126,7 @@ class Layout {
 		if($help) {
 			$hIcon="<a href='help.php?msg[0]=$help&msg[1]=NULL' target='unten'><img src='info.gif' border=0></A>";
 		}
-		$r="<input type='$type' value='$value' $n $chkBox>$hIcon\n";
+		$r="<input type='$type' value='$value' $n $chkBox>$hIcon<div style='color:#ff0000' id='error_" . $name . "'></div>\n";
 		if ($L) {
 			$this->OUT .= $r;
 		} else {
@@ -137,7 +141,7 @@ class Layout {
 			if ($options[$x][s] == 1) $sel="selected";
 			$r .= "<option style='background-color: " .  $options[$x][c] . "' value='" . $options[$x][v] . "' $sel>" . $options[$x][k] . "\n";	
 		}		
-		$r .= "</select>\n";
+		$r .= "</select><div style='color:#ff0000' id='error_" . $name . "'></div>\n";
 		return $r;
 	}
 	function setTitle($str) {
@@ -162,6 +166,8 @@ class Layout {
 	
 	function display($cr="") {
 		//global $BARTLBY_UI_VERSION;
+		global $xajax;
+		
 		if($this->menu_set == false) {
 			$this->set_menu("core");	
 			$this->set_menu("main");
@@ -209,7 +215,7 @@ class Layout {
 			$o = str_replace("<!--BTUITIME-->",round($diff,2),$o);
 			$o = str_replace("<!--BTLEXTMENU-->",$this->ext_menu,$o);
 			$o = str_replace("<!--SERVERTIME-->",date("d.m.Y H:i:s") ,$o);
-			
+			$o = str_replace("<!--XAJAX-->", $xajax->getJavascript("xajax"), $o);
 			$o = str_replace("<!--UIVERSION-->",BARTLBY_UI_VERSION ,$o);
 			echo $o; 	
 		}

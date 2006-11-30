@@ -60,36 +60,11 @@ switch($act) {
 	break;
 	case 'perfhandler_graph':
 		$btl->hasServerorServiceRight($_GET[service_id]);
-		$global_msg["output"]="";
+		$r=$btl->updatePerfHandler($_GET[server_id], $_GET[service_id]);
+		$r .='<br><br><span style="font-weight: bold;">Next Steps:<br /></span><ul><li><a href="service_detail.php?service_place=' . $svc[shm_place] . '">Back to the Service</a></li></ul>';
+		$global_msg["output"]=$r;
 		//get perfhandler_dir
-		$perf_dir=bartlby_config($btl->CFG,"performance_dir");
-		$btlhome=bartlby_config($btl->CFG, "basedir");
-		if(!$perf_dir) {
-			$global_msg["output"]="'performance_dir' not set in bartlby core config file";	
-		} else {
-			$idx=$btl->findSHMPlace($_GET[service_id]);
-			$global_msg[shm_place]=$idx;
-			$svc=bartlby_get_service($btl->CFG, $idx);
-			$cmd=$perf_dir . "/" . $svc[plugin];
-			if(!file_exists($cmd)) {
-				$output="Perfhandler '$cmd' does not exists";
-			} else {
-				
-				$exec="export BARTLBY_CURR_SERVICE=\"" . $svc[service_name] . "\"; export BARTLBY_CURR_HOST=\"" . $svc[server_name] . "\"; export BARTLBY_CURR_PLUGIN=\"" . $svc[plugin] . "\"; export BARTLBY_HOME=\"$btlhome\"; export BARTLBY_CONFIG=\"" . $btl->CFG . "\"; " . $cmd . "  graph " . $svc[service_id] . " 2>&1";
-				
-				$fp=popen($exec, "r");
-				$output="<hr><pre>";
-				while(!feof($fp)) {
-					$output .= fgets($fp);	
-				}	
-				pclose($fp);
-				$output .="</pre><hr>";
-				$output .= "<br> Perf handler called (see output above)";
-			}
-			$global_msg["output"]=$output;
-			
-			$global_msg["output"] .='<br><br><span style="font-weight: bold;">Next Steps:<br /></span><ul><li><a href="service_detail.php?service_place=' . $global_msg[shm_place] . '">Back to the Service</a></li></ul>';
-		}
+		
 		
 		
 	break;

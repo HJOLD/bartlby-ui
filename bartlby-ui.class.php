@@ -3,7 +3,7 @@ session_start();
 
 set_time_limit(0);
 set_magic_quotes_runtime(0);
-define("BARTLBY_UI_VERSION", "1.19");
+define("BARTLBY_UI_VERSION", "1.31");
 
 if(!version_compare(phpversion(), "5.0.0", ">=")) {
 	echo "you should have at least a php5 series";
@@ -1196,6 +1196,39 @@ function create_package($package_name, $in_services = array(), $with_plugins, $w
 		
 		
 		return $notifys . " " .  $check . " " . $modify . " " . $copy . " " . $logview;
+	}
+	function updatePerfHandler($srvId, $svcId) {
+		$perf_dir=bartlby_config($this->CFG,"performance_dir");
+		$btlhome=bartlby_config($this->CFG, "basedir");
+		
+		if(!$perf_dir) {
+			$r ="'performance_dir' not set in bartlby core config file";	
+		} else {
+			
+			$idx=$this->findSHMPlace($svcId);
+			$r=$idx;
+			$svc=bartlby_get_service($this->CFG, $idx);
+			$cmd=$perf_dir . "/" . $svc[plugin];
+			if(!file_exists($cmd)) {
+				$r="Perfhandler '$cmd' does not exists";
+			} else {
+				
+				$exec="export BARTLBY_CURR_SERVICE=\"" . $svc[service_name] . "\"; export BARTLBY_CURR_HOST=\"" . $svc[server_name] . "\"; export BARTLBY_CURR_PLUGIN=\"" . $svc[plugin] . "\"; export BARTLBY_HOME=\"$btlhome\"; export BARTLBY_CONFIG=\"" . $this->CFG . "\"; " . $cmd . "  graph " . $svc[service_id] . " 2>&1";
+				
+				$fp=popen($exec, "r");
+				$output="<hr><pre>";
+				while(!feof($fp)) {
+					$r .= nl2br(fgets($fp));	
+				}	
+				pclose($fp);
+				$r .="</pre><hr>";
+				$r .= "<br> Perf handler called (see output above)";
+			}
+			
+			
+			
+		}	
+		return $r;
 	}
 	function getserviceOptions($defaults, $layout) {
 		if($defaults[service_active] == 1) {

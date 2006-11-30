@@ -3,16 +3,12 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 
-require_once ("xajax/xajax.inc.php");
 
 $btl=new BartlbyUi($Bartlby_CONF);
 
-$xajax = new xajax("formchecker.php");
-$xajax->registerFunction("AddModifyService");
-
 $layout= new Layout();
-$layout->OUT .= $xajax->printJavascript("xajax");
 $layout->setTitle("");
+
 function dnl($i) {
 	return sprintf("%02d", $i);
 }
@@ -237,13 +233,6 @@ while ($file = readdir ($dh)) {
 }
 closedir($dh); 
 */
-$layout->OUT .= "<script language='JavaScript' type='text/javascript' src='images/ajax_search.js'></script>";
-$layout->OUT .= "<script>
-			function setSearch(value) {
-				document.getElementById('txtSearch').value=value;
-				document.getElementById('search_suggest').innerHTML = '';
-			}
-			</script>";
 
 $servs=$btl->GetServers();
 $optind=0;
@@ -441,7 +430,7 @@ $active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Plugin",
-			1=>"<input type='text' value='" . $defaults[plugin] . "' id='txtSearch' name='service_plugin' alt='Search Criteria' onclick=\"searchSuggest('ajax_plugin_search.php');\" onkeyup=\"searchSuggest('ajax_plugin_search.php');\" autocomplete='off' /> <div id='search_suggest'></div><a href='javascript:showPlgHelp();'>Show Help of Plugin</A>&nbsp;&nbsp;<a href='javascript:testPlg();'>Test It</A>"
+			1=>"<input type='text' value='" . $defaults[plugin] . "' id='service_plugin' onClick=\"buffer_suggest.makeRequest('service_plugin', 'xajax_PluginSearch');\" onkeyup=\"buffer_suggest.modified('service_plugin', 'xajax_PluginSearch');\"  name='service_plugin'  autocomplete='off' /> <div style='background-color:#ffffff; position:absolute' id='plugin_search_suggest'></div><a href='javascript:showPlgHelp();'>Show Help of Plugin</A>&nbsp;&nbsp;<a href='javascript:testPlg();'>Test It</A>"
 		)
 	)
 ,true);

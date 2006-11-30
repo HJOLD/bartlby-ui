@@ -3,16 +3,15 @@ include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
 
-require_once ("xajax/xajax.inc.php");
+
 
 $btl=new BartlbyUi($Bartlby_CONF);
 
-$xajax = new xajax("formchecker.php");
-$xajax->registerFunction("AddModifyWorker");
+
 
 
 $layout= new Layout();
-$layout->OUT .= $xajax->printJavascript("xajax");
+
 $layout->set_menu("worker");
 $layout->setTitle("Modify Worker");
 $defaults=@bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);

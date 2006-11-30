@@ -5,6 +5,9 @@
 <link rel="stylesheet" id="CSS" type="text/css" href="images/btl.css"></link>
 <script type="text/javascript" src="images/btl.js"></script>
 
+<!--XAJAX-->
+
+
 <script>
 	function GenericToggleFix(elID, st) {
 	//alert(elID);
@@ -32,38 +35,34 @@
 		
 	}
 
-	function setQuick(value) {
-		//document.location.href='" . $_GET[script] . "?server_id=' + value;
-		document.getElementById('quick_suggest').innerHTML = '';
-	}
-	var QuickSearchOnKeyRequestBuffer = 
+	var buffer_suggest = 
 	{
 	        bufferText: false,
 	        bufferTime: 500,
 	        
-	        modified : function(strId)
+	        modified : function(strId, fcn)
 	        {
-	                setTimeout('QuickSearchOnKeyRequestBuffer.compareBuffer("'+strId+'","'+document.getElementById("qlook").value+'");', this.bufferTime);
+	                setTimeout('buffer_suggest.compareBuffer("'+strId+'","'+document.getElementById(strId).value+'","'+ fcn +'");', this.bufferTime);
 	        },
 	        
-	        compareBuffer : function(strId, strText)
+	        compareBuffer : function(strId, strText, fcn)
 	        {
-	            if (strText == document.getElementById("qlook").value && strText != this.bufferText)
+	            if (strText == document.getElementById(strId).value && strText != this.bufferText)
 	            {
 	                this.bufferText = strText;
-	                QuickSearchOnKeyRequestBuffer.makeRequest(strId);
+	                buffer_suggest.makeRequest(strId, fcn);
 	            }
 	        },
 	        
-	        makeRequest : function(strId)
+	        makeRequest : function(strId, fcn)
 	        {
-	            quickSuggest('ajax_quick_look.php');
+	            
+	            eval(fcn + "(document.getElementById(strId).value)");
 	        }
 	}
 	
 
 </script>
-<script language='JavaScript' type='text/javascript' src='images/ajax_search.js'></script>
 </head>
 
 <body leftmargin=0 topmargin=0>
@@ -72,7 +71,7 @@
 			<td  class="bg_header"><a href='overview.php'><img border=0 src='images/btl-logo.gif'></A>
 			<div class="reload" id="reload"><input type=button style='width:155px' name="reload_button" value="reload" onClick="document.location.href='bartlby_action.php?action=reload';"></div>
 			<div class="ui_performance" id="reload"><font size=1>UI-Version: <font size=1><!--UIVERSION--></font> Page Render:<!--BTUITIME--> secs &nbsp;&nbsp;&nbsp;&nbsp;<!--SERVERTIME--></div>
-			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Quick look<input onkeyup="QuickSearchOnKeyRequestBuffer.modified('qlook');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
+			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Quick look<input onkeyup="buffer_suggest.modified('qlook', 'xajax_QuickLook');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
 			<div class="help" id="help">
 				<!--<iframe height=768 width=245 src='http://bartlby.sf.net/help/'></iframe>-->
 			</div>

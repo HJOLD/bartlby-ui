@@ -19,23 +19,16 @@ $optind=0;
 $ajaxed = bartlby_config("ui-extra.conf", "ajaxed");
 if($ajaxed == "true") {
 	$info_box_title="Extended Search";  
-	$core_content = "<script language='JavaScript' type='text/javascript' src='images/ajax_search.js'></script>
+	$core_content = "
 	<table  width='100%'>
 		
 		<tr>
 			<td width=150 valign=top class='font2'>Search:</td>
 			<td>
-			<script>
-			function setSearch(value) {
-				document.location.href='" . $_GET[script] . "?service_id=' + value;
-				document.getElementById('search_suggest').innerHTML = '';
-			}
-			</script>
-				<input type='text' id='txtSearch' name='txtSearch' alt='Search Criteria' onkeyup=\"searchSuggest('ajax_service_search.php');\" autocomplete='off' /> (PREG syntax)
+			<input type='text' onkeyup=\"buffer_suggest.modified('service_search', 'xajax_ServiceSearch');\" id=service_search autocomplete='off' /> (PREG syntax)
 				
-				<div id='search_suggest'>
+				<div style='background-color:#ffffff; position:absolute' id='service_search_suggest'>
 				</div>
-			
 			
 			</td>
 		</tr>

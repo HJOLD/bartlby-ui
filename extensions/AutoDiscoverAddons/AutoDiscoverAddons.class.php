@@ -38,47 +38,52 @@ class AutoDiscoverAddons {
                 return "";
         }
         */
-        function _globExt($svcid, $path) {
-        	  global $defaults;
-        	  $x = 0;
-        	  
-        	  $r = "<script language='JavaScript'>
+        function xajax_update() {
+        	global $_GET, $btl;
+        	$re = new XajaxResponse();
+        	$rrd_dir=bartlby_config($btl->CFG, "performance_rrd_htdocs");
+        	$svc_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $svcid . "_cnt");
+		if(!$svc_counter) {
+			$r = $this->_globExt($_GET[xajaxargs][2], $rrd_dir);
+			$re->addAssign("autodiscoveraddons_layer", "innerHTML", $r);
+			$re->addAssign("AutoDiscoverAddonsHide", "style.display", "none");
+		}
+        	
+        	
+        	return $re;	
+       }
+       function getJavascripts() {
+       	global $defaults;
+       	$r = "<script language='JavaScript'>
         	  	
         	  	function updatePerfhandlerExt(cnt) {
         	  		as = document.getElementById('AutoDiscoverAddonsHide');
-        	  		if(as.style.display == 'block') {
-        	  			return;
-        	  		}
- 				if (searchReq.readyState == 4 || searchReq.readyState == 0) {
-					searchReq.open('GET', 'bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph', true);
-					searchReq.onreadystatechange = redrawExt; 
-					searchReq.send(null);
-					
-					as.style.display = 'block';
-					
-				}		
+				as.style.display = 'block';
+				xajax_updatePerfHandler(\"xajax_ExtensionAjax('AutoDiscoverAddons', 'xajax_update', '" . $defaults[service_id] . "')\", '" . $defaults[server_id] . "','" . $defaults[service_id] . "');
+        	  		
         	  	}
-        	  	function redrawExt(cnt) {
-        	  		st = new Date();
-        	  		if (searchReq.readyState == 4) {
-        	  			if(maxExt == 0) document.location.reload();
-        	  			for(x=0; x<maxExt; x++) {
-        	  				el = document.getElementById('perfh' + x);
-        	  				el.src=el.src + '&a=1&a=' + st;
-        	  				//alert('updated: ' + x);
-        	  			}
-        	  			as = document.getElementById('AutoDiscoverAddonsHide');
-					as.style.display = 'none';
-        	  		}
-        	  	}
-        	  </script>";
-        	  
+        	  	
+        	  	
+        	  </script>
+        	  <div id=AutoDiscoverAddonsHide style='display:none'><font color='red'><img src='extensions/AutoDiscoverAddons/ajax-loader.gif'> reload in progress....</font></div><a href='javascript:updatePerfhandlerExt();'>Update Perfhandler data</A><br>
+        	  <div id='autodiscoveraddons_layer'>";
+        	  return $r;
+       }
+       function endScripts() {
+       	
+       	$r = "</div>";
+       	
+       	
+       	return $r;
+       }
+        function _globExt($svcid, $path) {
+        	  global $defaults, $xajax;
+        	  $x = 0;        	  
                 foreach(glob($path . "/" . $svcid . "_*.png") as $fn) {
                         $r .= "<img onClick='updatePerfhandlerExt();' id='perfh" . $x . "' src='rrd/" . basename($fn) . "?" . time() . "'><br>";
                         $x++;
                 }
-                $r = "<div id=AutoDiscoverAddonsHide style='display:none'><font color='red'><img src='extensions/AutoDiscoverAddons/ajax-loader.gif'> reload in progress....</font></div><script>var maxExt = " . $x . ";</script><a href='javascript:updatePerfhandlerExt();'>Update Perfhandler data</A><br>" . $r;
-                return $r;
+               return $r;
         }
 
         function _serviceDetail() {
@@ -90,8 +95,10 @@ class AutoDiscoverAddons {
                         	//see if someone has hardcoded some special_addon_stuff in ui config
                         	$svc_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $svcid . "_cnt");
                         	if(!$svc_counter) {
-                        	
-                            	    return $this->_globExt($svcid, $rrd_dir);
+                        		    $re = $this->getJavascripts();
+                        		    $re .= $this->_globExt($svcid, $rrd_dir);
+                        		    $re .= $this->endScripts();
+                            	    return $re;
                         	}
 
 

@@ -2,17 +2,13 @@
 include "layout.class.php";
 include "config.php";
 include "bartlby-ui.class.php";
-require_once ("xajax/xajax.inc.php");
+
 
 
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
 
-$xajax = new xajax("formchecker.php");
-$xajax->registerFunction("AddModifyClient");
-
-$layout->OUT .= $xajax->printJavascript("xajax");
 
 $layout->set_menu("client");
 
