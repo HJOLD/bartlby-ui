@@ -10,6 +10,13 @@ $xajax->registerFunction("QuickLook");
 $xajax->registerFunction("ServerSearch");
 $xajax->registerFunction("jumpToServerId");
 
+$xajax->registerFunction("toggle_service_check");
+$xajax->registerFunction("toggle_service_notify_check");
+
+$xajax->registerFunction("toggle_server_check");
+$xajax->registerFunction("toggle_extension");
+$xajax->registerFunction("toggle_server_notify_check");
+
 $xajax->registerFunction("ServiceSearch");
 $xajax->registerFunction("jumpToServiceId");
 

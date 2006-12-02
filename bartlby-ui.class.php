@@ -566,9 +566,9 @@ class BartlbyUi {
 							array_push($r, $ex);
 							
 							if(!file_exists("extensions/" . $file . ".disabled")) {
-								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=disable_extension&ext=$file' title='$file extension is enabled click to change'><img border=0 src='images/extension_enable.gif'></A></td></tr>";
+								$endis="<tr><td colspan=2 align=right><a href=\"javascript:void(0);\" onClick=\"xajax_toggle_extension('$file')\" title='$file extension is enabled click to change'><img id='extension_$file' border=0 src='images/extension_enable.gif'></A></td></tr>";
 							} else {
-								$endis="<tr><td colspan=2 align=right><a href='bartlby_action.php?action=enable_extension&ext=$file' title='$file extension is disabled click to change'><img border=0 src='images/extension_disable.gif'></A></td></tr>";	
+								$endis="<tr><td colspan=2 align=right><a href=\"javascript:void(0);\" onClick=\"xajax_toggle_extension('$file')\" title='$file extension is disabled click to change'><img id='extension_$file' border=0 src='images/extension_disable.gif'></A></td></tr>";	
 							}
 							
 							
@@ -1184,18 +1184,52 @@ function create_package($package_name, $in_services = array(), $with_plugins, $w
 		$logview= "<a href='logview.php?server_id=" . $defaults[server_id]. "' ><font size=1><img  title='View Events for this Server' src='images/icon_view.gif' border=0></A>";
 		
 		if($defaults[server_enabled] == 1) {
-			$check = "<a title='Disable Checks for this server' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_server'><img src='images/enabled.gif'  border=0></A>";
+			$check = "<a title='Disable Checks for this Server' href='javascript:void(0);' onClick=\"xajax_toggle_server_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img id='server_" . $defaults[server_id] . "' src='images/enabled.gif'  border=0></A>";
 		} else {
-			$check = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_server'><img src='images/diabled.gif' title='Enable  Checks for this server' border=0></A>";
+			$check = "<a href='javascript:void(0);' onClick=\"xajax_toggle_server_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img src='images/diabled.gif' id='server_" . $defaults[server_id] . "' title='Enable  Checks for this Service' border=0></A>";
 		}
 		if($defaults[server_notify] == 1) {
-			$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_notify_server'><img src='images/notrigger.gif' title='Disable Notifications for this Server' border=0></A>";
+			$notifys = "<a href='javascript:void(0);' onClick=\"xajax_toggle_server_notify_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img src='images/trigger.gif' id='trigger_" . $defaults[server_id] . "' title='Disable Notifications for this Service' border=0></A>";
 		} else {
-			$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify_server'><img src='images/trigger.gif' title='Enable Notifications for this Server' border=0></A>";
+			$notifys = "<a href='javascript:void(0);' onClick=\"xajax_toggle_server_notify_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img id='trigger_" . $defaults[server_id] . "' src='images/notrigger.gif' title='Enable Notifications for this Service' border=0></A>";
 		}
 		
 		
 		return $notifys . " " .  $check . " " . $modify . " " . $copy . " " . $logview;
+	}
+
+	function getserviceOptions($defaults, $layout) {
+		if($defaults[service_active] == 1) {
+			$check = "<a title='Disable Checks for this Service' href='javascript:void(0);' onClick=\"xajax_toggle_service_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img id='service_" . $defaults[service_id] . "' src='images/enabled.gif'  border=0></A>";
+		} else {
+			$check = "<a href='javascript:void(0);' onClick=\"xajax_toggle_service_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img src='images/diabled.gif' id='service_" . $defaults[service_id] . "' title='Enable  Checks for this Service' border=0></A>";
+		}
+		if($defaults[notify_enabled] == 1) {
+			$notifys = "<a href='javascript:void(0);' onClick=\"xajax_toggle_service_notify_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img src='images/trigger.gif' id='trigger_" . $defaults[service_id] . "' title='Disable Notifications for this Service' border=0></A>";
+		} else {
+			$notifys = "<a href='javascript:void(0);' onClick=\"xajax_toggle_service_notify_check('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img id='trigger_" . $defaults[service_id] . "' src='images/notrigger.gif' title='Enable Notifications for this Service' border=0></A>";
+		}
+		if($defaults[is_downtime] == 1) {
+			$downtime="<img src='images/icon_work.gif' title='Service is in downtime (" . date("d.m.Y H:i:s", $defaults[downtime_from])  . "-" . date("d.m.Y H:i:s", $servs[$x][downtime_to]) . "): " . $defaults[downtime_notice] . "'>";	
+		} else {
+			$downtime="&nbsp;";
+		}
+				
+		
+		$modify = "<a href='modify_service.php?service_id=" . $defaults[service_id] . "'><img src='images/modify.gif' title='Modify this Service' border=0></A>";
+		$force = "<a href='javascript:void(0);' onClick=\"xajax_forceCheck('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
+		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
+		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
+		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.gif' border=0></A>";				
+		if(file_exists($this->PERFDIR . "/" . $defaults[plugin])) {
+			$stat = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph'><img title='Graph collected perf handler data' src='images/icon_stat.gif' border=0></A>";				
+		} else {
+			$stat = "";
+		}
+		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Service' border=0></A>";				
+		$ret ="$notifys $check $logview $comments $modify $force $downtime $copy $reports $stat";
+		
+		return $ret;
 	}
 	function updatePerfHandler($srvId, $svcId) {
 		$perf_dir=bartlby_config($this->CFG,"performance_dir");
@@ -1229,57 +1263,6 @@ function create_package($package_name, $in_services = array(), $with_plugins, $w
 			
 		}	
 		return $r;
-	}
-	function getserviceOptions($defaults, $layout) {
-		if($defaults[service_active] == 1) {
-			$check = "<a title='Disable Checks for this Service' href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_service'><img src='images/enabled.gif'  border=0></A>";
-		} else {
-			$check = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_service'><img src='images/diabled.gif' title='Enable  Checks for this Service' border=0></A>";
-		}
-		if($defaults[notify_enabled] == 1) {
-			$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=disable_notify'><img src='images/notrigger.gif' title='Disable Notifications for this Service' border=0></A>";
-		} else {
-			$notifys = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=enable_notify'><img src='images/trigger.gif' title='Enable Notifications for this Service' border=0></A>";
-		}
-		if($defaults[is_downtime] == 1) {
-			$downtime="<img src='images/icon_work.gif' title='Service is in downtime (" . date("d.m.Y H:i:s", $defaults[downtime_from])  . "-" . date("d.m.Y H:i:s", $servs[$x][downtime_to]) . "): " . $defaults[downtime_notice] . "'>";	
-		} else {
-			$downtime="&nbsp;";
-		}
-		
-		
-		$special_menu = "<a href='javascript:void();' onClick=\"return dropdownmenu(this, event, menu" . $defaults[service_id] . ", '200px')\" onMouseout=\"delayhidemenu()\"><img title='Click to view special addons' src='images/icon_work1.gif' border=0></A>";
-		$layout->OUT .= "<script>var menu" . $defaults[service_id] . "=new Array();</script>";
-		$special_counter=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_cnt");
-		if($special_counter) {
-			$layout->OUT .= "<script>";
-			$fspc=0;
-			for($spc=0; $spc<$special_counter; $spc++) {
-				$spc_name=bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . ($spc+1) ."]_name");
-				$layout->OUT .= "menu" . $defaults[service_id] . "[" . $fspc . "]='<br>$spc_name<br>';\n";
-				$layout->OUT .= "menu" . $defaults[service_id] . "[" . ($fspc+1) . "]='" . str_replace("^", "=", bartlby_config("ui-extra.conf", "special_addon_ui_" . $defaults[service_id] . "_[" . ($spc+1) ."]")) . "';\n";
-				$fspc++;
-				$fspc++;
-			}
-			$layout->OUT .= "</script>";
-		} else {
-				$special_menu="";
-		}
-		
-		$modify = "<a href='modify_service.php?service_id=" . $defaults[service_id] . "'><img src='images/modify.gif' title='Modify this Service' border=0></A>";
-		$force = "<a href='javascript:void(0);' onClick=\"xajax_forceCheck('" . $defaults[server_id] . "', '" . $defaults[service_id] . "')\"><img title='Force an immediate Check' src='images/force.gif' border=0></A>";
-		$comments="<a href='view_comments.php?service_id=" . $defaults[service_id] . "'><img title='Comments for this Service' src='images/icon_comments.gif' border=0></A>";
-		$logview= "<a href='logview.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='View Events for this Service' src='images/icon_view.gif' border=0></A>";				
-		$reports = "<a href='create_report.php?service_id=" . $defaults[service_id]. "' ><font size=1><img  title='Create Report' src='images/create_report.gif' border=0></A>";				
-		if(file_exists($this->PERFDIR . "/" . $defaults[plugin])) {
-			$stat = "<a href='bartlby_action.php?service_id=" . $defaults[service_id] . "&server_id=" . $defaults[server_id] . "&action=perfhandler_graph'><img title='Graph collected perf handler data' src='images/icon_stat.gif' border=0></A>";				
-		} else {
-			$stat = "";
-		}
-		$copy = "<a href='modify_service.php?copy=true&service_id=" . $defaults[service_id] . "'><img src='images/edit-copy.gif' title='Copy (Create a similar) this Service' border=0></A>";				
-		$ret ="$notifys $check $logview $comments $modify $force $downtime $special_menu $copy $reports $stat";
-		
-		return $ret;
-	}
+	}	
 }
 ?>

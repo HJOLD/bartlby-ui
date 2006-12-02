@@ -12,6 +12,152 @@ $layout = new Layout();
 
 $xajax->processRequests();
 
+function toggle_extension($ext) {
+	$res=new xajaxResponse();
+	$fn = "extensions/" . $ext . ".disabled";
+	if(!file_exists($fn)) {
+		@touch($fn);
+		//enable	
+		$res->AddAssign("extension_" . $ext, "src", "images/extension_disable.gif");
+		$res->AddAssign("extension_" . $ext, "title", "enable extension");
+	} else {
+		@unlink($fn);
+		$res->AddAssign("extension_" . $ext, "src", "images/extension_enable.gif");
+		$res->AddAssign("extension_" . $ext, "title", "disable extension");
+		//disable extension_disable.gif
+	}
+	return $res;
+}
+function toggle_server_check($server_id, $service_id) {
+	global $btl;
+	$res = new xajaxresponse();
+	if(!preg_match("/^XML.*$/i", $server_id)) {
+		if($btl->hasServerorServiceRight($server_id, false)) {
+			$gsm=bartlby_get_server_by_id($btl->CFG, $server_id);
+			
+			$cur=bartlby_toggle_server_active($btl->CFG, $gsm[server_shm_place], 1);
+			
+			if($cur == 1) { //Active
+				//$res->addAlert("Check enabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+				$res->AddAssign("server_" . $server_id, "src", "images/enabled.gif");
+				$res->AddAssign("server_" . $server_id, "title", "Disable Checks");
+			} else {
+				//$res->addAlert("Check disabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);	
+				$res->AddAssign("server_" . $server_id, "src", "images/diabled.gif");
+				$res->AddAssign("server_" . $server_id, "title", "Enable Checks");
+			}
+			
+			
+			
+			
+		} else{
+			$res->addAlert("permission denied");
+		}
+	
+	} else {
+		 $res->addAlert("action not possible on xml remote instances");
+	}	
+	return $res;
+}
+
+
+
+
+function toggle_server_notify_check($server_id, $service_id) {
+	global $btl;
+	$res = new xajaxresponse();
+	if(!preg_match("/^XML.*$/i", $server_id)) {
+		if($btl->hasServerorServiceRight($server_id, false)) {
+			$gsm=bartlby_get_server_by_id($btl->CFG, $server_id);
+			
+			$cur=bartlby_toggle_server_notify($btl->CFG, $gsm[server_shm_place], 1);
+			
+			if($cur == 1) { //Active
+				//$res->addAlert("Check enabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+				$res->AddAssign("trigger_" . $server_id, "src", "images/trigger.gif");
+				$res->AddAssign("trigger_" . $server_id, "title", "disable notifications");
+			} else {
+				//$res->addAlert("Check disabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);	
+				$res->AddAssign("trigger_" . $server_id, "src", "images/notrigger.gif");
+				$res->AddAssign("trigger_" . $server_id, "title", "enable trigger");
+			}
+			
+			
+			
+			
+		} else{
+			$res->addAlert("permission denied");
+		}
+	
+	} else {
+		 $res->addAlert("action not possible on xml remote instances");
+	}	
+	return $res;
+}
+function toggle_service_notify_check($server_id, $service_id) {
+	global $btl;
+	$res = new xajaxresponse();
+	if(!preg_match("/^XML.*$/i", $service_id)) {
+		if($btl->hasServerorServiceRight($service_id, false)) {
+			$gsm=bartlby_get_service_by_id($btl->CFG, $service_id);
+			$idx=$btl->findSHMPlace($service_id);
+			$cur=bartlby_toggle_service_notify($btl->CFG, $idx, 1);
+			
+			if($cur == 1) { //Active
+				//$res->addAlert("Check enabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+				$res->AddAssign("trigger_" . $service_id, "src", "images/trigger.gif");
+				$res->AddAssign("trigger_" . $service_id, "title", "disable notifications");
+			} else {
+				//$res->addAlert("Check disabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);	
+				$res->AddAssign("trigger_" . $service_id, "src", "images/notrigger.gif");
+				$res->AddAssign("trigger_" . $service_id, "title", "enable trigger");
+			}
+			
+			
+			
+			
+		} else{
+			$res->addAlert("permission denied");
+		}
+	
+	} else {
+		 $res->addAlert("action not possible on xml remote instances");
+	}	
+	return $res;
+}
+
+function toggle_service_check($server_id, $service_id) {
+	global $btl;
+	$res = new xajaxresponse();
+	if(!preg_match("/^XML.*$/i", $service_id)) {
+		if($btl->hasServerorServiceRight($service_id, false)) {
+			$gsm=bartlby_get_service_by_id($btl->CFG, $service_id);
+			$idx=$btl->findSHMPlace($service_id);
+			$cur=bartlby_toggle_service_active($btl->CFG, $idx, 1);
+			
+			if($cur == 1) { //Active
+				//$res->addAlert("Check enabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+				$res->AddAssign("service_" . $service_id, "src", "images/enabled.gif");
+				$res->AddAssign("service_" . $service_id, "title", "Disable Checks");
+			} else {
+				//$res->addAlert("Check disabled on:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);	
+				$res->AddAssign("service_" . $service_id, "src", "images/diabled.gif");
+				$res->AddAssign("service_" . $service_id, "title", "Enable Checks");
+			}
+			
+			
+			
+			
+		} else{
+			$res->addAlert("permission denied");
+		}
+	
+	} else {
+		 $res->addAlert("action not possible on xml remote instances");
+	}	
+	return $res;
+}
+
 function updatePerfHandler($script_after, $srv_id, $svc_id) {
 	global $btl;
 	$res = new xajaxResponse();
@@ -44,15 +190,16 @@ function removeDIV($div) {
 function forceCheck($server, $service) {
 	global $btl;
 	$res = new xajaxresponse();
-	if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
+	if(!preg_match("/^XML.*$/i", $service)) {
 		if($service) {
-			$btl->hasServerorServiceRight($_GET[service_id]);
-			$gsm=bartlby_get_service_by_id($btl->CFG, $service);
-			$idx=$btl->findSHMPlace($service);
-			
-			$cur=bartlby_check_force($btl->CFG, $idx);
-			$res->addAlert("immediate check scheduled for:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
-			
+			if($btl->hasServerorServiceRight($service, false)) {
+				$gsm=bartlby_get_service_by_id($btl->CFG, $service);
+				$idx=$btl->findSHMPlace($service);
+				$cur=bartlby_check_force($btl->CFG, $idx);
+				$res->addAlert("immediate check scheduled for:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+			} else {
+				$res->addAlert("permission denied to force:" . $gsm[server_name] . ":" . $gsm[client_port] . "/" . $gsm[service_name]);
+			}
 		} else {                                     
 		 	$res->addAlert("missing service_id");
 		}  

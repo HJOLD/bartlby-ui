@@ -280,62 +280,7 @@ switch($act) {
 		 	$act="missing_param";
 		 }                            
 	break;
-	case 'disable_notify_server':
-	case 'enable_notify_server':
-		$layout->set_menu("main");
-		if(!preg_match("/^XML.*$/i", $_GET[server_id])) {
-			if($_GET[server_id]) {
-				$btl->hasServerRight($_GET[server_id]);
-				$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
-				$cur=bartlby_toggle_server_notify($btl->CFG, $global_msg[server_shm_place], 1);
-			
-			}else {                                     
-		 		$act="missing_param";
-		 	}     
-		 } else {
-		 	$act="xml_remote";	
-		 }
-		 
-	break;
-	case 'disable_server':
-	case 'enable_server':
-		$layout->set_menu("main");
-		if(!preg_match("/^XML.*$/i", $_GET[server_id])) {
-			if($_GET[server_id]) {
-				$btl->hasServerRight($_GET[server_id]);
-				$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
-				
-				
-				$cur=bartlby_toggle_server_active($btl->CFG, $global_msg[server_shm_place], 1);
-				
-			} else {                                     
-			 	$act="missing_param";
-			}  
-		} else {
-		 	$act="xml_remote";	
-		 }   
-		
-	break;
-	
-	case 'disable_service':
-	case 'enable_service':
-		$layout->set_menu("main");
-		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
-			if($_GET[service_id]) {
-				$btl->hasServerorServiceRight($_GET[service_id]);
-				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
-				$idx=$btl->findSHMPlace($_GET[service_id]);
-				
-				$cur=bartlby_toggle_service_active($btl->CFG, $idx, 1);
-				
-			} else {                                     
-			 	$act="missing_param";
-			}  
-		} else {
-		 	$act="xml_remote";	
-		 }   
-		
-	break;
+
 	case 'force_check':
 		$layout->set_menu("main");
 		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
@@ -365,27 +310,7 @@ switch($act) {
 	break;
 	
 
-	
-	case 'disable_notify':
-	case 'enable_notify':
-		$layout->set_menu("main");
-		if(!preg_match("/^XML.*$/i", $_GET[service_id])) {
-			if($_GET[service_id]) {
-				$btl->hasServerorServiceRight($_GET[service_id]);
-				$global_msg=bartlby_get_service_by_id($btl->CFG, $_GET[service_id]);
-				$idx=$btl->findSHMPlace($_GET[service_id]);
-			
-				$cur=bartlby_toggle_service_notify($btl->CFG, $idx, 1);
-			
-			}else {                                     
-		 		$act="missing_param";
-		 	}     
-		 } else {
-		 	$act="xml_remote";	
-		 }
-		 
-	break;
-	
+
 	case 'reload':
 		$layout->set_menu("core");
 		$btl->doReload();
