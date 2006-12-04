@@ -802,7 +802,7 @@ function AddModifyService($aFormValues) {
 	
 	
 	if($al == "")  {
-		//$res->addScript("document.fm1.submit()");
+		$res->addScript("document.fm1.submit()");
 	}
 	
 	return $res;	
