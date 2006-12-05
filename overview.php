@@ -279,7 +279,26 @@
 		$avgDEL = 0;	
 	}
 	
+	$max_running = bartlby_config($btl->CFG, "max_concurent_checks");
+	$max_load = bartlby_config($btl->CFG, "max_load");
+	$curr_load = my_sys_getloadavg();
+		
+	if($curr_load[0] > $max_load) {
+			
+		if($info[current_running] >= $max_running) {
+			$load_bar = "<font color=red>" . $info[current_running]  . " / " . $max_running  . " </font> Load: <font color=red> " . $curr_load[0] . " / " . $max_load . " </font>";
 	
+		} else if ($info[current_running] >= $max_running-2) {
+			$load_bar = "<font color=orange>" . $info[current_running]  . " / " . $max_running  . " </font> Load: <font color=orange> " . $curr_load[0] . " / " . $max_load . " </font>";			
+
+	
+		} else {
+			$load_bar = "<font color=green>" . $info[current_running]  . " / " . $max_running  . " </font> Load: <font color=green>" . $curr_load[0] . " / " . $max_load . " </font>";
+	
+		}
+	} else {
+		$load_bar = "<font color=green>" . $info[current_running]  . "</font> Load: <font color=green>" . $curr_load[0] . " / " . $max_load . " </font>";	
+	}
 	$info_box_title='Core Information<div class="clock" nowrap>Time: ' . date("d.m.Y H:i:s") . '</div>';  
 	// (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 	$core_content = "<table class='nopad' width='100%'>
@@ -288,13 +307,19 @@
 			<td align=right class='font1'>Uptime:<font class='font2'>" . $btl->intervall(time()-$btl->info[startup_time]) . "</font></td>
 		</tr>
 		<tr>
-			<td class='font1'>Services: <font class='font2'>" . $info[services] . "&nbsp;&nbsp;&nbsp;&nbsp;Workers: " . $info[workers] . "&nbsp;&nbsp;&nbsp;&nbsp;Downtimes: " . $info[downtimes]. "&nbsp;&nbsp;&nbsp;&nbsp;Running: " . $info[current_running]  . "</font></td>
+			<td class='font1'>Services: <font class='font2'>" . $info[services] . "&nbsp;&nbsp;&nbsp;&nbsp;Workers: " . $info[workers] . "&nbsp;&nbsp;&nbsp;&nbsp;Downtimes: " . $info[downtimes]. "&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td align=right class='font1'>Datalib:<font class='font2'>" . $lib[Name] . "-" . $lib[Version] . "</font></td>
+		</tr>
+		<tr>
+			<td class='font1' colspan=1>
+			Running: $load_bar
+			</td>
+			<td align=right class='font1'>Avg Round Time:<font class='font2'>" . $rndMS . " ms / avg service delay: " . $avgDEL . " sec.</font></td>
 		</tr>
 		
 		<tr>
-			<td colspan=1 class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
-			<td align=right class='font1'>Avg Round Time:<font class='font2'>" . $rndMS . " ms / avg service delay: " . $avgDEL . " sec.</font></td>
+			<td colspan=2 class='font1'>Version: <font class='font2'>" . $btl->getRelease() . "</font></td>
+			
 		</tr>
 		
 		
@@ -471,4 +496,12 @@
 	$layout->TableEnd();
 	$layout->display();
 	
+	
+function my_sys_getloadavg() {
+	$con = file_get_contents("/proc/loadavg");
+	$r = explode(" ", $con);
+	return $r;
+	
+	
+}
 ?>
