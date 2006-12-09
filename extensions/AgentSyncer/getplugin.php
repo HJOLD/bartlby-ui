@@ -13,5 +13,7 @@
 	
 	$plg = $plugin_root . "/" . $_GET[plugin];
 	
-	include $plg;	
+	$cnt = file_get_contents($plg);
+        echo $cnt;
+
 ?>
