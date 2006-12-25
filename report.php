@@ -151,8 +151,8 @@ if(!$_GET[report_service] || !$log_mask) {
 			
 			for($xy=0; $xy<count($state_array);$xy++) {
 					$o1 .= "<tr>";
-					$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][start]) . "</td>";
-					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][state]) . "'>" . $btl->getState($state_array[$xy][state]) . "</font></b></td>";
+					$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][end]) . "</td>";
+					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][lstate]) . "'>" . $btl->getState($state_array[$xy][lstate]) . "</font></b></td>";
 			
 					$o1 .= "<td>" . $state_array[$xy][msg] . "</td></tr>";
 				
