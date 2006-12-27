@@ -11,19 +11,7 @@
 	$btl->hasRight("main.services");
 	$map = $btl->GetSVCMap($_GET[service_state]);	
 
-	$sum=0;
-	$cs=0;
-	while(list($k,$v)=each($map)) {
-		for($x=0; $x<count($v);$x++) {
-			
-			$sum += $v[$x][check_interval];
-			$cs++;
-				
-		}
-	} 
-	echo "sum: " . $sum . " cnt: " . $cs . "<br>";
-	echo "avg: " . ($sum/$cs)/$cs . "<br>";
-	reset($map);
+
 	
 	$mode=bartlby_config("ui-extra.conf", "xml_remote_count");
 	$do_xml=true;

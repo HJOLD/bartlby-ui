@@ -50,7 +50,7 @@ switch($defaults[service_ack]) {
 
 
 if($defaults[service_type] == 1) {
-	$svc_type="Active (deprecated)";
+	$svc_type="Active";
 }
 
 if($defaults[service_type] == 2) {
