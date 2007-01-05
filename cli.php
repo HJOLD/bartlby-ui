@@ -42,6 +42,7 @@ $show_downtimes=0;
 $selected_index=0;
 $reopen_service=false;
 $reopen_server=false;
+$running_only=0;
 
 $ncurses_session = ncurses_init();
 $main = ncurses_newwin(0, 0, 0, 0); // main window
@@ -133,6 +134,13 @@ while(1){
 			$selected_index--;
 		}
 	}
+	if($k == 114) {
+		if($running_only == 0)
+			$running_only=1;
+		else
+			$running_only=0;
+			
+	}
 
 	unset($map);
 	$map = @$btl->GetSVCMap();
@@ -192,6 +200,10 @@ for($tt=0; $tt<$lines; $tt++) {
 					if($servs[$x][is_downtime] == 1 && $show_downtimes == 0) {
 						continue;
 					}
+				}
+				if($running_only == 1) {
+					if($servs[$x][check_starttime] == 0) 
+						continue;
 				}
 				//$out_str=sprintf("%s - %s", $servs[$x][service_name], );
 				if($a == $selected_index) {
@@ -271,11 +283,11 @@ for($tt=0; $tt<$lines; $tt++) {
 
 	ncurses_color_set(4);
 	ncurses_attron(NCURSES_A_REVERSE);
-	ncurses_mvaddstr($lines-1,1,"Status:\t OK:$oks Criticals: $crits Warnings: $warns, only errors: $only_errors , downtimes: $dts ");
+	ncurses_mvaddstr($lines-1,1,"Status:\t OK:$oks Criticals: $crits Warnings: $warns, only errors: $only_errors , downtimes: $dts , running: $running_only ");
 	ncurses_attroff(NCURSES_A_REVERSE);
 
   	ncurses_refresh();
-  	usleep(20);
+  	usleep(100000);
 
 
 }//end main while
@@ -766,6 +778,7 @@ function disp_help() {
 		array(1, "<UP>,<DOWN>", "scroll service list"),
 		array(1, "a" , "Only disable service wich arent OK"),
 		array(1, "d", "also show downtimed services"),
+		array(1, "r", "only show checks wich are currently running"),
 		array(0, "Service Detail:"),
 		array(1, "f", "Force Check"),
 		array(1, "c", "Check enable/disable"),

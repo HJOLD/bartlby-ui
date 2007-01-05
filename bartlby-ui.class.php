@@ -26,6 +26,48 @@ class BartlbyUi {
 			}
 		}
 	}
+	function setUIRight($k, $v, $user) {
+		if(!file_exists("rights/" . $user . ".dat")) {
+			copy("rights/template.dat", "rights/" . $user . ".dat");
+		}
+		if(file_exists("rights/" . $user . ".dat")) {
+			$orig = file_get_contents("rights/" . $user . ".dat");
+			
+			if(!preg_match("/" . $k . "=/", $orig)) {
+				$orig .= "\n" . $k . "=\n";	
+				
+			}
+			
+			
+			
+			//$new=preg_replace("/" . $k . "=.*$/", $k . "="  . $v . "\n", $orig);
+			$lines = preg_split("/[\n\r]/",$orig);
+			
+			$new ="";
+			for($x=0; $x<count($lines); $x++) {
+				$tt = explode("=", $lines[$x]);
+				if($tt[0] == $k) {
+					$new .= $k . "=" . $v . "\n";	
+				} else {
+					$new .= $lines[$x] . "\n";
+				}
+			}
+			
+			$fp = fopen("rights/" . $user . ".dat", "w");
+			fwrite($fp, $new);
+			fclose($fp);
+			
+			
+			
+			
+			
+		} else {
+			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
+				$this->redirectError("BARTLBY::RIGHT::FILE::NOT::FOUND::" . $user);
+				exit(1);	
+			}
+		}	
+	}
 	function resolveGroupString($str) {
 		$aa=explode("|", $str);
 		for($aax=0; $aax<count($aa); $aax++) {
@@ -240,19 +282,47 @@ class BartlbyUi {
 				$s1=explode("=", $v);
 				$r[$s1[0]]=explode(",", trim($s1[1]));
 				
+				
 			}
 			for($x=0; $x<count($r[services]); $x++) {
+					if($r[services][$x] == "") {
+						$r[services][$x]=-4;
+						continue;
+					}
+						
 					settype($r[services][$x], "integer");
 			}
 			for($x=0; $x<count($r[servers]); $x++) {
+					if($r[servers][$x] == "") {
+						$r[servers][$x]=-4;
+						continue;
+					}
 					settype($r[servers][$x], "integer");
 			}
+			
+			for($x=0; $x<count($r[selected_servers]); $x++) {
+					if($r[selected_servers][$x] == "") {
+						$r[selected_servers][$x]=-4;
+						continue;
+					}
+					settype($r[selected_servers][$x], "integer");
+			}
+			for($x=0; $x<count($r[selected_services]); $x++) {
+					if($r[selected_services][$x] == "") {
+						$r[selected_services][$x]=-4;
+						continue;
+					}
+					settype($r[selected_services][$x], "integer");
+			}
+			
+			
 		} else {
 			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {
 				$this->redirectError("BARTLBY::RIGHT::FILE::NOT::FOUND");
 				exit(1);	
 			}
 		}
+		
 		if($r[servers][0] == 0) {
 			$r[servers]=null;
 		}
@@ -262,26 +332,49 @@ class BartlbyUi {
 			$r[services]=null;
 		}
 		
+		
 		// if is super_user ALL services and servers are allowed
 		return $r;
 		
 	}
 	function loadRights() {
-		if(!file_exists("rights/" . $this->user . ".dat")) {
-			copy("rights/template.dat", "rights/" . $this->user . ".dat");
+		if(!file_exists("rights/" . $this->user_id . ".dat")) {
+			copy("rights/template.dat", "rights/" . $this->user_id . ".dat");
 		}
-		if(file_exists("rights/" . $this->user . ".dat")) {
-			$fa=file("rights/" . $this->user . ".dat");
+		if(file_exists("rights/" . $this->user_id . ".dat")) {
+			$fa=file("rights/" . $this->user_id . ".dat");
 			while(list($k, $v) = each($fa)) {
 				$s1=explode("=", $v);
 				$this->rights[$s1[0]]=explode(",", trim($s1[1]));
 				
 			}
 			for($x=0; $x<count($this->rights[services]); $x++) {
+					if($this->rights[services][$x] == "") {
+						$this->rights[services][$x]=-4;
+						continue;
+					}
 					settype($this->rights[services][$x], "integer");
 			}
 			for($x=0; $x<count($this->rights[servers]); $x++) {
+					if($this->rights[servers][$x] == "") {
+						$this->rights[servers][$x]=-4;
+						continue;
+					}
 					settype($this->rights[servers][$x], "integer");
+			}
+			for($x=0; $x<count($this->rights[selected_servers]); $x++) {
+					if($this->rights[selected_servers][$x] == "") {
+						$this->rights[selected_servers][$x]=-4;
+						continue;
+					}
+					settype($this->rights[selected_servers][$x], "integer");
+			}
+			for($x=0; $x<count($this->rights[selected_services]); $x++) {
+					if($this->rights[selected_services][$x] == "") {
+						$this->rights[selected_services][$x]=-4;
+						continue;
+					}
+					settype($this->rights[selected_services][$x], "integer");
 			}
 		} else {
 			if(!preg_match("/error.php/" , $_SERVER[SCRIPT_NAME])) {

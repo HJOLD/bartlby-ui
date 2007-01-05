@@ -18,8 +18,9 @@ if($defaults == false) {
 }
 
 $map = $btl->GetSVCMap();
-$worker_rights = $btl->loadForeignRights($defaults[name]);
+$worker_rights = $btl->loadForeignRights($defaults[worker_id]);
 $optind=0;
+
 while(list($k, $servs) = @each($map)) {
 
 	for($x=0; $x<count($servs); $x++) {
@@ -82,7 +83,7 @@ $ov .= $layout->Tr(
 
 $all_keys=$btl->loadForeignRights("template");
 while(list($k,$v) = each($all_keys)) {
-	if($k == "servers" || $k == "services") continue;
+	if($k == "servers" || $k == "services" || $k == "selected_servers" || $k == "selected_services") continue;
 	if($worker_rights[$k][0] && $worker_rights[$k][0] != "false") {
 		$checked="checked";
 	} else {

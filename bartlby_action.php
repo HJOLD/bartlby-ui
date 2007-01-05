@@ -30,13 +30,15 @@ switch($act) {
 				for($x=0; $x<count($_POST[worker_services]); $x++) {
 					if($_POST[worker_services][$x]{0} == 's') {
 						$cl = str_replace("s", "", $_POST[worker_services][$x]);
-						$servers .= $cl . ",";
+				
+						$servers .= "," . $cl;
 					} else {
-						$services .= $_POST[worker_services][$x] . ",";	
+						$services .= "," . $_POST[worker_services][$x];	
 					}
 				}
-				$new_file .= "services=" . $services . "\n";
-				$new_file .= "servers=" . $servers . "\n";
+				
+				$new_file .= "services=" . $services . ",\n";
+				$new_file .= "servers=" . $servers . ",\n";
 				continue;	
 			}
 			$nk = str_replace("action_", "action.", $k);
@@ -46,7 +48,7 @@ switch($act) {
 			$new_file .= $nk . "=true\n";	
 		}
 		$wk = bartlby_get_worker_by_id($btl->CFG, $_POST[worker_id]);
-		$fp = @fopen("rights/" . $wk[name] . ".dat", "w");
+		$fp = @fopen("rights/" . $wk[worker_id] . ".dat", "w");
 		@fwrite($fp, $new_file);
 		@fclose($fp);
 	break;
@@ -347,12 +349,24 @@ switch($act) {
 				}	
 			}
 			
+			$svcstr = "";
+			
+			$selected_servers="";
+			$selected_services="";
+			
 			for($x=0;$x<count($_GET[worker_services]); $x++) {
-				$svcstr .="" . $_GET[worker_services][$x] . "|";	
+				if($_GET[worker_services][$x]{0} == 's') {
+					$cl = str_replace("s", "", $_GET[worker_services][$x]);
+					$selected_servers .= "," . $cl;
+				} else {
+					$selected_services .= "," . $_GET[worker_services][$x];
+				}	
 			}
-			if($svcstr != "") {
-				$svcstr = "|"  . $svcstr;
-			}
+			$selected_servers .= ",";
+			$selected_services .= ",";
+			
+			
+			
 			for($x=0;$x<count($_GET[notify]); $x++) {
 				$notifystr .="" . $_GET[notify][$x] . "|";	
 			}
@@ -369,6 +383,8 @@ switch($act) {
 			
 			
 			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes]);
+			$btl->setUIRight("selected_servers", $selected_servers, $_GET[worker_name]);
+			$btl->setUIRight("selected_services", $selected_services, $_GET[worker_name]);
 			$layout->OUT .= "<script>doReloadButton();</script>";
 
 		} else {                                     

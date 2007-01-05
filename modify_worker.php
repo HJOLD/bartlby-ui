@@ -48,33 +48,48 @@ if(!$defaults) {
 }
 
 $map = $btl->GetSVCMap();
+$worker_rights=@$btl->loadForeignRights($defaults[worker_id]);
+
+
 $optind=0;
 while(list($k, $servs) = @each($map)) {
 
 	for($x=0; $x<count($servs); $x++) {
-		//$v1=bartlby_get_service_by_id($btl->CFG, $servs[$x][service_id]);
 		
+		if(!$worker_rights[super_user]) {
+			if(!@in_array($servs[$x][server_id], $worker_rights[servers]) && !@in_array($servs[$x][service_id], $worker_rights[services])) {
+				continue;	
+			}
+		}
+				
 		if($x == 0) {
 			//$isup=$btl->isServerUp($v1[server_id]);
 			//if($isup == 1 ) { $isup="UP"; } else { $isup="DOWN"; }
 			$servers[$optind][c]="";
-			$servers[$optind][v]="";	
+			$servers[$optind][v]="s" . $servs[$x][server_id];	
 			$servers[$optind][k]="[ $isup ]&raquo;" . $servs[$x][server_name] . "&laquo;";
+			
+			if(@in_array( $servs[$x][server_id], $worker_rights[selected_servers])) {
+				
+				$servers[$optind][s]=1;
+			}
 			$optind++;
 		} else {
 			
+		
+			$state=$btl->getState($servs[$x][current_state]);
+			$servers[$optind][c]="";
+			$servers[$optind][v]=$servs[$x][service_id];	
+			$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
+		
+		
+			if(@in_array($servs[$x][service_id], $worker_rights[selected_services])) {
+				$servers[$optind][s]=1;
+			}
+			$optind++;
 		}
-		$state=$btl->getState($servs[$x][current_state]);
-		$servers[$optind][c]="";
-		$servers[$optind][v]=$servs[$x][service_id];	
-		$servers[$optind][k]="&nbsp;[ $state ]&nbsp;" .  $servs[$x][service_name];
 		
 		
-		if(strstr((string)$defaults[services],"|" . $servs[$x][service_id] . "|")) {
-			$servers[$optind][s]=1;	
-		}
-		
-		$optind++;
 	}
 }
 $optind=0;
