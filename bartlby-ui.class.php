@@ -26,6 +26,117 @@ class BartlbyUi {
 			}
 		}
 	}
+	function do_report($start_in, $end_in, $state_in, $in_service) {
+		$state_array=array();
+		
+		$log_mask=bartlby_config($this->CFG, "logfile");
+		$date_start=explode(".", $start_in);
+		$date_end=explode(".", $end_in);
+		
+		$time_start=mktime(0,0,0, $date_start[1], $date_start[0], $date_start[2]);
+		$time_end=mktime(0,0,0, $date_end[1], $date_end[0], $date_end[2]);
+		
+		
+		$daycnt = $time_end-$time_start+86400;
+		
+		$day_x=$daycnt/86400;
+		$files_scanned=array();
+		
+		$work_on=$time_start;
+		for($x=0; $x<$day_x; $x++) {
+			$filename = $log_mask . "." . date("Y.m.d", $work_on);
+			$last_mark=$work_on;
+			
+			$work_on += 86400;
+			
+			$fdata=@file($filename);
+			$lines = count($fdata);
+			
+			array_push($files_scanned, array(0=>$filename, 1=>$lines));
+			
+			
+			$last_state=$state_in;
+			
+			$dig_map[$time_start]=$last_state;
+			while(list($k,$v) = @each($fdata)) {
+				$info_array=explode(";",$v);
+				
+				$log_detail_o=explode("@", $info_array[2]);
+				list($d, $m,$y, $h, $s, $i) = sscanf($info_array[0], "%d.%d.%d %d:%d:%d");
+				$log_stamp=mktime($h,$s,$i,$m,$d,$y);
+						
+				if($log_detail_o[1] == "LOG") {
+					$tmp=explode("|", $log_detail_o[2]);
+					$msg="";
+					for($z=3; $z<count($tmp);$z++) {
+						$msg .= $tmp[$z];	
+					}
+					
+					if($in_service && $tmp[0] != $in_service) {
+						
+						continue;	
+					}
+					
+					if($last_state != $tmp[1]) {
+						
+						
+						
+						$diff = $log_stamp - $last_mark;
+						//$out .= "State changed from " . $btl->getState($last_state) . " to " . $btl->getState($tmp[1]) . "<br>";	
+						//echo "Where " . $diff . " in " . $btl->getState($last_state) . "<br>"; 
+						array_push($state_array, array("start"=>$last_mark, "end"=>$log_stamp, "state"=>$last_state, "msg"=>$msg, "lstate"=>$tmp[1]));
+						
+						$svc[$last_state] += $diff;
+						
+						$last_state=$tmp[1];
+						$last_mark=$log_stamp;
+						$dig_map[$log_stamp]=$last_state;
+					}
+					
+					//$out = $tmp[2] . " changed to " . $btl->getState($tmp[1]) . "(" . $tmp[3] . ")";
+					
+				} else if($log_detail_o[1] == "NOT") {
+					$tmp=explode("|", $log_detail_o[2]);
+					if($in_service && $tmp[0] != $in_service) {
+					
+						continue;	
+					}
+					//$out .= "Done " . $tmp[3] . " for " . $tmp[4] . " Service:" .  $tmp[5] . " " . $btl->getState($tmp[2]);
+					if(!is_array($notify[$tmp[4]][$tmp[3]])) {
+						$notify[$tmp[4]][$tmp[3]]=array();
+					} 
+					$el[0]=$log_stamp;
+					$el[1]=$tmp[2];
+					array_push($notify[$tmp[4]][$tmp[3]], $el);
+				
+				} else {
+					continue;	
+				} 	
+			}
+			if($work_on > time()) {
+				$work_on=time();	
+			}
+			$diff = $work_on - $last_mark;
+			//$out .= "EOD: " . $diff . " " . $btl->getState($last_state) . "<br>";
+			$svc[$last_state] += $diff;
+			
+			
+			
+			
+				
+			
+		}	
+	
+		$r[svc]=$svc;
+		$r[state_array]=$state_array;
+		$r[notify]=$notify;
+		$r[files_scanned]=$files_scanned;
+		
+		return $r;
+		
+	
+		
+	}
 	function setUIRight($k, $v, $user) {
 		if(!file_exists("rights/" . $user . ".dat")) {
 			copy("rights/template.dat", "rights/" . $user . ".dat");

@@ -1,7 +1,7 @@
 <?
 
 include "config.php";
-include "bartlbystorage.class.php";
+include_once "bartlbystorage.class.php";
 
 class SMS {
         function SMS() {

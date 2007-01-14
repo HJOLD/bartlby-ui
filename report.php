@@ -37,99 +37,16 @@ if(!$_GET[report_service] || !$log_mask) {
 	$out ="You v choosen a server? or log file is not set";	
 } else {
 	$out = "creating report for service: $_GET[report_service] From: $_GET[report_start] To: $_GET[report_end]<br>";	
+	$ra=$btl->do_report($_GET[report_start], $_GET[report_end], $_GET[report_init], $_GET[report_service]);
 	
-	$date_start=explode(".", $_GET[report_start]);
-	$date_end=explode(".", $_GET[report_end]);
+	$svc=$ra[svc];
+	$state_array=$ra[state_array];
+	$notify=$ra[notify];
+	$files_scanned=$ra[files_scanned];
+		
 	
-	$time_start=mktime(0,0,0, $date_start[1], $date_start[0], $date_start[2]);
-	$time_end=mktime(0,0,0, $date_end[1], $date_end[0], $date_end[2]);
 	
 	
-	$daycnt = $time_end-$time_start+86400;
-	
-	$day_x=$daycnt/86400;
-	$files_scanned=array();
-	
-	$work_on=$time_start;
-	for($x=0; $x<$day_x; $x++) {
-		$filename = $log_mask . "." . date("Y.m.d", $work_on);
-		$last_mark=$work_on;
-		
-		$work_on += 86400;
-		
-		$fdata=@file($filename);
-		$lines = count($fdata);
-		
-		array_push($files_scanned, array(0=>$filename, 1=>$lines));
-		
-		
-		$last_state=$_GET[report_init];
-		
-		$dig_map[$time_start]=$last_state;
-		while(list($k,$v) = @each($fdata)) {
-			$info_array=explode(";",$v);
-			
-			$log_detail_o=explode("@", $info_array[2]);
-			list($d, $m,$y, $h, $s, $i) = sscanf($info_array[0], "%d.%d.%d %d:%d:%d");
-			$log_stamp=mktime($h,$s,$i,$m,$d,$y);
-					
-			if($log_detail_o[1] == "LOG") {
-				$tmp=explode("|", $log_detail_o[2]);
-				
-				if($_GET[report_service] && $tmp[0] != $_GET[report_service]) {
-					
-					continue;	
-				}
-				
-				if($last_state != $tmp[1]) {
-					
-					
-					
-					$diff = $log_stamp - $last_mark;
-					//$out .= "State changed from " . $btl->getState($last_state) . " to " . $btl->getState($tmp[1]) . "<br>";	
-					//echo "Where " . $diff . " in " . $btl->getState($last_state) . "<br>"; 
-					array_push($state_array, array("start"=>$last_mark, "end"=>$log_stamp, "state"=>$last_state, "msg"=>$tmp[3], "lstate"=>$tmp[1]));
-					
-					$svc[$last_state] += $diff;
-					
-					$last_state=$tmp[1];
-					$last_mark=$log_stamp;
-					$dig_map[$log_stamp]=$last_state;
-				}
-				
-				//$out = $tmp[2] . " changed to " . $btl->getState($tmp[1]) . "(" . $tmp[3] . ")";
-				
-			} else if($log_detail_o[1] == "NOT") {
-				$tmp=explode("|", $log_detail_o[2]);
-				if($_GET[report_service] && $tmp[0] != $_GET[report_service]) {
-				
-					continue;	
-				}
-				//$out .= "Done " . $tmp[3] . " for " . $tmp[4] . " Service:" .  $tmp[5] . " " . $btl->getState($tmp[2]);
-				if(!is_array($notify[$tmp[4]][$tmp[3]])) {
-					$notify[$tmp[4]][$tmp[3]]=array();
-				} 
-				$el[0]=$log_stamp;
-				$el[1]=$tmp[2];
-				array_push($notify[$tmp[4]][$tmp[3]], $el);
-			
-			} else {
-				continue;	
-			} 	
-		}
-		if($work_on > time()) {
-			$work_on=time();	
-		}
-		$diff = $work_on - $last_mark;
-		//$out .= "EOD: " . $diff . " " . $btl->getState($last_state) . "<br>";
-		$svc[$last_state] += $diff;
-		
-		
-		
-		
-			
-		
-	}
 		$out .= "<table width=100%>";
 		$out .= "<td colspan=3 class=header>Service Time</td>";
 		
