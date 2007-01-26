@@ -4,6 +4,15 @@ session_start();
 set_time_limit(0);
 set_magic_quotes_runtime(0);
 define("BARTLBY_UI_VERSION", "1.31");
+$wdays[0]="Sunday";
+$wdays[1]="Monday";
+$wdays[2]="Tuesday";
+$wdays[3]="Wednesday";
+$wdays[4]="Thursday";
+$wdays[5]="Friday";
+$wdays[6]="Saturday";
+
+
 
 if(!version_compare(phpversion(), "5.0.0", ">=")) {
 	echo "you should have at least a php5 series";
@@ -26,6 +35,63 @@ class BartlbyUi {
 			}
 		}
 	}
+	
+	function resolveServicePlan($str) {
+		global $wdays;
+		
+		$cur_wday = date("w");
+		
+		
+		if($str == "") {
+			return "24x7x365 <font size=1 color='blue'><i>currently in range</i></font>";	
+		}
+		$range_found = false;
+		$o = explode("|", $str);
+       	
+       	$cur_ts=time();
+       	
+		for($x=0; $x<count($o); $x++) {
+			$p = explode("=", $o[$x]);
+			$xx = explode(",", $p[1]);
+			for($y=0; $y<count($xx); $y++) {
+				list($h,$m, $h1, $m1) = sscanf($xx[$y], "%d:%d-%d:%d");
+				$t1 = mktime($h, $m);
+				$t2 = mktime($h1, $m1);
+				if($cur_ts >= $t1 &&  $cur_ts <= $t2 && $cur_wday == $x) {
+					$filled[$x] .= "<font color='blue'>" . $xx[$y] . ",</font>";	
+					$range_found = true;
+				} else {
+					$filled[$x]	.= $xx[$y] . ",";
+				}
+			}
+			$filled[$x]{strlen($filled[$x])-1} = " ";
+			
+		}
+		$plan_box = "<table>";
+		for($x=0; $x<=6; $x++) {
+			$chk="";
+			$vv = "<i>NO</i>";
+			if($filled[$x]) {
+				$chk="checked";
+				$vv = $filled[$x];
+			}
+			$cl = "";
+			if($cur_wday == $x) {
+				$cl = "color=blue";	
+			}
+			$plan_box .= "<tr><td><font size=1 " . $cl . ">" .  $wdays[$x] . "</font></td><td><font size=1>" . $vv . "</font></td></tr>";
+		}
+		
+		$plan_box .= "</table>";
+	       if($range_found == true) {
+	       	$plan_box .= "<font color='blue' size=1><i>currently in range</i></font>";	
+	       } else {
+	       	$plan_box .= "<font color='orange' size=1><i>currently not in range</i></font>";	
+	       }
+	       return $plan_box;
+		
+	}
+	
 	function do_report($start_in, $end_in, $state_in, $in_service) {
 		$state_array=array();
 		
@@ -835,14 +901,13 @@ class BartlbyUi {
 			for($x=0; $x<count($re); $x++) {
 				$msg .= "Installing Service: <b>" . $re[$x][service_name] . "</b><br>";	
 				
-				$tfrom=$this->dnl($re[$x][hour_from]) . ":" . $this->dnl($re[$x][min_from]) . ":00";
-				$tto=$this->dnl($re[$x][hour_to]) . ":" . $this->dnl($re[$x][min_to]) . ":00";
+				
 				
 				$msg .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
-				$msg .= str_repeat("&nbsp;", 20) . "Time: $tfrom - $tto / " . $re[$x][check_interval] . "<br>";	
+				$msg .= str_repeat("&nbsp;", 20) . "Check Plan: " . $this->resolveServicePlan($re[$x][exec_plan]) . "<br>";	
 				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
 				
-				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][hour_from], $re[$x][hour_to], $re[$x][min_from], $re[$x][min_to],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack], $re[$x][service_retain],$re[$x][service_snmp_community], $re[$x][service_snmp_objid],$re[$x][service_snmp_version],$re[$x][service_snmp_warning],$re[$x][service_snmp_critical],$re[$x][service_snmp_type], $re[$x][service_active], $re[$x][flap_seconds]);
+				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][exec_plan],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack], $re[$x][service_retain],$re[$x][service_snmp_community], $re[$x][service_snmp_objid],$re[$x][service_snmp_version],$re[$x][service_snmp_warning],$re[$x][service_snmp_critical],$re[$x][service_snmp_type], $re[$x][service_active], $re[$x][flap_seconds]);
 				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
 				
 				if($re[$x][__install_plugin]) {

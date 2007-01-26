@@ -242,8 +242,8 @@ switch($act) {
 				$svc=bartlby_get_service($btl->CFG, $y);
 				if($svc[server_id] == $_GET[server_id]) {
 					for($x=0; $x<count($re); $x++) {
-						//echo "if($svc[service_name] == " . $re[$x][service_name] . " && $svc[plugin] == " . $re[$x][plugin] . " && $svc[plugin_arguments] == " . $re[$x][plugin_arguments] . " && $svc[check_intervall] ==  $re[$x][check_interval] && $svc[service_type] == $re[$x][service_type] && $svc[hour_from] == $re[$x][hour_from] && $svc[hour_to] == $re[$x][hour_to] && $svc[min_from] == $re[$x][min_from] && $svc[min_to] == $re[$x][min_to]) {<br>";
-						if($svc[service_name] == $re[$x][service_name] && $svc[plugin] == $re[$x][plugin] && $svc[plugin_arguments] == $re[$x][plugin_arguments] && $svc[check_interval] ==  $re[$x][check_interval] && $svc[service_type] == $re[$x][service_type] && $svc[hour_from] == $re[$x][hour_from] && $svc[hour_to] == $re[$x][hour_to] && $svc[min_from] == $re[$x][min_from] && $svc[min_to] == $re[$x][min_to]) {
+						
+						if($svc[service_name] == $re[$x][service_name] && $svc[plugin] == $re[$x][plugin] && $svc[plugin_arguments] == $re[$x][plugin_arguments] && $svc[check_interval] ==  $re[$x][check_interval] && $svc[service_type] == $re[$x][service_type] && $svc[exec_plan] == $re[$x][exec_plan]) {
 							
 							$global_msg["package"] .= "Removing Service: <b>" . $re[$x][service_name] . "</b><br>";	
 							$global_msg["package"] .= str_repeat("&nbsp;", 20) . "Plugin:" . $re[$x][plugin] . "/'" . $re[$x][plugin_arguments] . " '<br>";	
@@ -453,11 +453,19 @@ switch($act) {
 		set_magic_quotes_runtime(0);
 		$layout->set_menu("services");
 		
-		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
+		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_interval]) {
 			$btl->hasServerorServiceRight($_GET[service_id]);
-			//echo "$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],1, dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout]);";
-			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], dnl(substr($_GET[service_time_from], 0, 2)), dnl(substr($_GET[service_time_to], 0, 2)), dnl(substr($_GET[service_time_from], 3, 2)), dnl(substr($_GET[service_time_to], 3, 2)),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type], $_GET[service_active], $_GET[flap_seconds]);
+			
+			$exec_plan = "";
+			while(list($k, $v) = each($_GET[wdays_plan])) {
+				$exec_plan .= $k . "=" . $v . "|";	
+			}
+			
+			
+			
+			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type], $_GET[service_active], $_GET[flap_seconds]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
+			$global_msg[exec_plan]=$btl->resolveServicePlan($exec_plan);
 			
 			if(strlen($_GET["unlock"]) > 0) {
 				bartlby_toggle_service_active($btl->CFG, $_GET["unlock"], 0);
@@ -476,14 +484,24 @@ switch($act) {
 	break;
 	case 'add_service': 
 		$layout->set_menu("services");
-		if($_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_time_from] &&  $_GET[service_time_to] && $_GET[service_interval]) {
-						//&bartlby_config, &server_id, &plugin,&service_name,&plugin_arguments,&notify_enabled,&hour_from,&hour_to,
+		if($_GET[service_server] && $_GET[service_type] &&  $_GET[service_name]  && $_GET[service_interval]) {
+						
 						//&min_from,
 						//&min_to,&check_interva	l, &service_type,&service_var,&service_passive_timeout
 			
 			set_magic_quotes_runtime(0);
-			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], substr($_GET[service_time_from], 0, 2), substr($_GET[service_time_to], 0, 2), substr($_GET[service_time_from], 3, 2), substr($_GET[service_time_to], 3, 2),$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type],$_GET[service_active], $_GET[flap_seconds]);
+			
+			$exec_plan = "";
+			while(list($k, $v) = each($_GET[wdays_plan])) {
+				$exec_plan .= $k . "=" . $v . "|";	
+			}
+			
+			
+			
+			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type],$_GET[service_active], $_GET[flap_seconds]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
+			$global_msg[exec_plan]=$btl->resolveServicePlan($exec_plan);
+			
 			$act="service_" . $_GET[service_type];
 			if($_GET[service_type] == 3) {
 				$global_msg[group_out] = $btl->resolveGroupString($_GET[service_var]);				

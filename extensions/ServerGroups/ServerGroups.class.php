@@ -1,6 +1,6 @@
 <?
 
-include "config.php";
+include_once "config.php";
 
 define(GROUPS_PER_ROW, 4);
 

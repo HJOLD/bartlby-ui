@@ -39,7 +39,7 @@
 				echo "ADDSERVER $add_server\n";
 				flush();
 				if(!$default_pkg) {
-					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1, 120);	
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, "" ,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1, 120);	
 					echo "SERVICEADD INIT\n";
 					flush();
 				} else {

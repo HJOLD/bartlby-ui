@@ -125,6 +125,12 @@ if($defaults[check_starttime] != 0) {
 	$currun="<i>Currently not running</i>";	
 }
 
+$plan_box = $btl->resolveServicePlan($defaults[exec_plan]);
+
+
+
+
+
 $info_box_title='Service Info';  
 // (<i>Logged in as:</i><font color="#000000"><b>' . $btl->user . '</b></font>) Uptime: <font color="#000000">' . $btl->intervall(time()-$btl->info[startup_time]) . '</font>'
 $core_content = "<table  width='100%'>
@@ -186,15 +192,11 @@ $core_content = "<table  width='100%'>
 		<td>&nbsp;</td>           
 	</tr>
 	<tr>
-		<td width=150 class='font2'>Check From:</td>
-		<td align=left >" . dnl($defaults[hour_from]) . ":" . dnl($defaults[min_from]) . ':00' . "</font></td>
+		<td width=150 class='font2' valign=top>Check Plan:</td>
+		<td align=left >" . $plan_box . "</td>
 		<td>&nbsp;</td>           
 	</tr>
-	<tr>
-		<td width=150 class='font2'>Check To:</td>
-		<td align=left >" . dnl($defaults[hour_to]) . ":" . dnl($defaults[min_to]) . ':00' . "</font></td>
-		<td>&nbsp;</td>           
-	</tr>
+	
 	<tr>
 		<td width=150 class='font2'>Flap count:</td>
 		<td align=left >" . $defaults[flap_count] . "</font></td>

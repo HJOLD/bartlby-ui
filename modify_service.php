@@ -4,6 +4,8 @@ include "config.php";
 include "bartlby-ui.class.php";
 
 
+
+
 $btl=new BartlbyUi($Bartlby_CONF);
 
 $layout= new Layout();
@@ -48,11 +50,7 @@ if($_GET["new"] == "true") {
 	$fm_action="add_service";
 	$btl->hasRight("action.add_service");
 	
-	$defaults["min_from"]="00";
-	$defaults["min_to"]="59";
-	$defaults["hour_from"]="00";
-	$defaults["hour_to"]="24";
-	
+	$defaults["exec_plan"] = "0=00:00-23:59|1=00:00-23:59|2=00:00-23:59|3=00:00-23:59|4=00:00-23:59|5=00:00-23:59|6=00:00-23:59";
 	$defaults["check_interval"]=bartlby_config("ui-extra.conf", "new.service.interval");
 	$defaults[service_type]=(int)bartlby_config("ui-extra.conf", "new.service.type");
 	$defaults[service_ack]=(int)bartlby_config("ui-extra.conf", "new.service.ack");
@@ -249,6 +247,15 @@ while(list($k, $v) = each($servs)) {
 }
 
 $layout->OUT .= "<script>
+
+		function modify_service_make_24() {
+			for(x=0; x<=6; x++) {
+				e = document.getElementById('wdays_plan[' + x + ']');
+				e.value='00:00-23:59';
+			}
+			
+		}
+	
 		function testPlg() {
 		plugin=document.fm1.service_plugin.value;
 		server=document.fm1.service_server.options[document.fm1.service_server.selectedIndex].value;
@@ -325,26 +332,38 @@ $active_box_out .= $layout->Tr(
 	)
 ,true);
 
+
+
+$o = explode("|", $defaults[exec_plan]);
+
+for($x=0; $x<count($o); $x++) {
+	$p = explode("=", $o[$x]);
+	$filled[$p[0]]=$p[1];
+	
+}
+$plan_box = "<table>";
+for($x=0; $x<=6; $x++) {
+	$chk="";
+	if($filled[$x])
+		$chk="checked";
+		
+	$plan_box .= "<tr><td><font size=1>" .  $wdays[$x] . "</font></td><td><input type=text id='wdays_plan[" . $x . "]'  name='wdays_plan[" . $x . "]' value='" . $filled[$x] . "' style='font-size:10px; width:200px; height:20px'></td></tr>";
+}
+$plan_box .= "<tr><td colspan=2><font size=1>Time ranges are seperated with ',' e.g.: 14:30-15:20,01:20-02:30 <a href='javascript:void(0);' onClick='modify_service_make_24();'>make 24h a day</a></font></td></tr>";
+$plan_box .= "</table>";
+
+
+
 $active_box_out .= $layout->Tr(
 	$layout->Td(
 		array(
-			0=>"Service Check From:",
-			1=>$layout->Field("service_time_from", "text", dnl($defaults[hour_from]) . ":" . dnl($defaults[min_from]) . ":00")
+			0=>"Service Check Plan:",
+			1=>$plan_box
 			
 		)
 	)
 , true);
 
-
-$active_box_out .= $layout->Tr(
-	$layout->Td(
-		array(
-			0=>"Service Check To:",
-			1=>$layout->Field("service_time_to", "text", dnl($defaults[hour_to]) . ":" . dnl($defaults[min_to]) . ":00")
-			
-		)
-	)
-, true);
 
 
 $active_box_out .= $layout->Tr(

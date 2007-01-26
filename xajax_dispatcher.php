@@ -701,19 +701,7 @@ function AddModifyService($aFormValues) {
 		$res->addAssign("error_flap_seconds", "innerHTML", "");
 	}
 	
-	if(!bartlbize_date($av[service_time_from])){
-		$res->addAssign("error_service_time_from", "innerHTML", "required field");
-		$al="1";
-	} else {
-		$res->addAssign("error_service_time_from", "innerHTML", "");
-	}
 	
-	if(!bartlbize_date($av[service_time_to])){
-		$res->addAssign("error_service_time_to", "innerHTML", "required field");
-		$al="1";
-	} else {
-		$res->addAssign("error_service_time_to", "innerHTML", "");
-	}
 	
 	switch($av[service_type]) {
 		case 1:
