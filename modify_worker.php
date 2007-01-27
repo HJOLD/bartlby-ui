@@ -45,6 +45,7 @@ if($defaults == false && $_GET["new"] != "true") {
 if(!$defaults) {
 	$defaults[escalation_limit]=50;
 	$defaults[escalation_minutes]=3;
+	$defaults["notify_plan"] = "0=00:00-23:59|1=00:00-23:59|2=00:00-23:59|3=00:00-23:59|4=00:00-23:59|5=00:00-23:59|6=00:00-23:59";
 }
 
 $map = $btl->GetSVCMap();
@@ -132,6 +133,13 @@ if($defaults[active] == 1) {
 }
 
 $layout->OUT .= "<script>
+		function modify_service_make_24() {
+			for(x=0; x<=6; x++) {
+				e = document.getElementById('wdays_plan[' + x + ']');
+				e.value='00:00-23:59';
+			}
+			
+		}
 		function simulateTriggers() {
 			wname=document.fm1.worker_name.value;
 			wmail=document.fm1.worker_mail.value;
@@ -206,7 +214,7 @@ $ov .= $layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Escalation",
-			1=>"<font size=1>" . $layout->Field("escalation_limit", "text", $defaults[escalation_limit]) . "notify's  per " . $layout->Field("escalation_minutes", "text", $defaults[escalation_minutes]) .  " minutes</font>"
+			1=>"<font size=1>" . $layout->Field("escalation_limit", "text", $defaults[escalation_limit]) . "notify's  per <br>" . $layout->Field("escalation_minutes", "text", $defaults[escalation_minutes]) .  " minutes</font>"
 		)
 	)
 ,true);
@@ -219,6 +227,41 @@ $ov .= $layout->Tr(
 		)
 	)
 ,true);
+
+
+$o = explode("|", $defaults[notify_plan]);
+
+for($x=0; $x<count($o); $x++) {
+	$p = explode("=", $o[$x]);
+	$filled[$p[0]]=$p[1];
+	
+}
+$plan_box = "<table>";
+for($x=0; $x<=6; $x++) {
+	$chk="";
+	if($filled[$x])
+		$chk="checked";
+		
+	$plan_box .= "<tr><td><font size=1>" .  $wdays[$x] . "</font></td><td><input type=text id='wdays_plan[" . $x . "]'  name='wdays_plan[" . $x . "]' value='" . $filled[$x] . "' style='font-size:10px; width:200px; height:20px'></td></tr>";
+}
+$plan_box .= "<tr><td colspan=2><font size=1>Time ranges are seperated with ',' e.g.: 14:30-15:20,01:20-02:30 <a href='javascript:void(0);' onClick='modify_service_make_24();'>make 24h a day</a></font></td></tr>";
+$plan_box .= "</table>";
+
+
+
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Notify Plan:",
+			1=>$plan_box
+			
+		)
+	)
+, true);
+
+
+
+
 $ov .= $layout->Tr(
 	$layout->Td(
 		array(
@@ -259,6 +302,9 @@ $ov .= $layout->Tr(
 		)
 	)
 ,true);
+
+
+
 
 $ov .= $layout->Tr(
 	$layout->Td(

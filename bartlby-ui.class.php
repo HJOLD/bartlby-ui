@@ -42,7 +42,7 @@ class BartlbyUi {
 		$cur_wday = date("w");
 		
 		
-		if($str == "") {
+		if(strlen($str) < 5) {
 			return "24x7x365 <font size=1 color='blue'><i>currently in range</i></font>";	
 		}
 		$range_found = false;

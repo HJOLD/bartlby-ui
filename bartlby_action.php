@@ -381,8 +381,20 @@ switch($act) {
 				$triggerstr = "|" . $triggerstr;
 			}
 			
+			$exec_plan = "";
+			$df=false;
+			while(list($k, $v) = each($_GET[wdays_plan])) {
+				if($v != "") {
+					$df = true;		
+				}
+				$exec_plan .= $k . "=" . $v . "|";	
+			}
 			
-			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes]);
+			if($df == false) {
+				$exec_plan="";	
+			}
+			
+			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes], $exec_plan);
 			$btl->setUIRight("selected_servers", $selected_servers, $_GET[worker_name]);
 			$btl->setUIRight("selected_services", $selected_services, $_GET[worker_name]);
 			$layout->OUT .= "<script>doReloadButton();</script>";
@@ -428,9 +440,21 @@ switch($act) {
 			if($triggerstr != "") {
 				$triggerstr = "|" . $triggerstr;
 			}
+			$exec_plan = "";
+			$df=false;
+			while(list($k, $v) = each($_GET[wdays_plan])) {
+				if($v != "") {
+					$df = true;		
+				}
+				$exec_plan .= $k . "=" . $v . "|";	
+			}
+			
+			if($df == false) {
+				$exec_plan="";	
+			}
 			
 			
-			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes]);
+			$add=bartlby_add_worker($btl->CFG, $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes], $exec_plan);
 			
 			$layout->OUT .= "<script>doReloadButton();</script>";
 			
@@ -455,14 +479,19 @@ switch($act) {
 		
 		if($_GET[service_id] != "" && $_GET[service_id] && $_GET[service_server] && $_GET[service_type] &&  $_GET[service_name] &&  $_GET[service_interval]) {
 			$btl->hasServerorServiceRight($_GET[service_id]);
-			
+			$df=false;
 			$exec_plan = "";
 			while(list($k, $v) = each($_GET[wdays_plan])) {
+				if($v != "") {
+					$df = true;		
+				}
 				$exec_plan .= $k . "=" . $v . "|";	
 			}
 			
 			
-			
+			if($df == false) {
+				$exec_plan="";	
+			}
 			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type], $_GET[service_active], $_GET[flap_seconds]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			$global_msg[exec_plan]=$btl->resolveServicePlan($exec_plan);
@@ -492,10 +521,17 @@ switch($act) {
 			set_magic_quotes_runtime(0);
 			
 			$exec_plan = "";
+			$df=false;
 			while(list($k, $v) = each($_GET[wdays_plan])) {
+				if($v != "") {
+					$df = true;		
+				}
 				$exec_plan .= $k . "=" . $v . "|";	
 			}
 			
+			if($df == false) {
+				$exec_plan="";	
+			}
 			
 			
 			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type],$_GET[service_active], $_GET[flap_seconds]);
