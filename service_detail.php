@@ -31,6 +31,7 @@ if(!$btl->hasRight("view_service_output", false)) {
 	$defaults[new_server_text] = "you are missing: view_service_output right";	
 } 
 
+$map=$btl->getSVCMap($btl->CFG, NULL, NULL);
 $layout->Table("100%");
 
 $svc_color=$btl->getColor($defaults[current_state]);
@@ -159,6 +160,12 @@ $core_content = "<table  width='100%'>
 		<td align=left><font color='$svc_color'>" . $svc_state . "</font></td> 
 		<td>&nbsp;</td>          
 	</tr>
+	<tr>
+		<td width=150 class='font2' Valign=top>Server Life Indicator:</td>
+		<td align=left>" . $btl->resolveDeadMarker($defaults[server_dead], $map) . "</td> 
+		<td>&nbsp;</td>          
+	</tr>
+	
 	<tr>
 		<td width=150 class='font2'>Last Check:</td>
 		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_check]) . "</font></td>

@@ -35,6 +35,70 @@ class BartlbyUi {
 			}
 		}
 	}
+	function resolveDeadMarker($start_id, $map) {
+		
+		$rr=0;
+		
+		
+		$cur_id=$start_id;
+		$l = 0;
+		
+		
+		while($cur_id != 0) {
+			if($l != 0 && $l == $cur_id) {
+				return $r;	
+			}
+			@reset($map);
+			while(@list($k, $v) = @each($map)) {
+				$f = false;
+				for($x=0; $x<count($v); $x++) {
+					
+					if($v[$x][service_id] == $cur_id) {
+												
+						$r .= str_repeat("&nbsp;&nbsp;&nbsp;", $rr) .  "<a href='service_detail.php?service_place=" . $v[$x][shm_place] . "'>" . $v[$x][server_name] . "/" . $v[$x][service_name] . "</A> (<font color='" .  $this->getColor($v[$x][current_state])  . "'>" . $this->getState($v[$x][current_state]) . "</font>)<br>";
+						
+						
+						$l = $cur_id;	
+						$cur_id = $v[$x][server_dead];
+						
+						if($v[$x][current_state] == 2) {
+							return $r;	
+						}
+						
+						if($cur_id <= 0) {
+							return $r;	
+						}
+						if($cur_id == $start_id ) {
+							return $r;	
+						}
+						
+						$rr++;
+						if($rr > 5) {
+							return $r;	
+						}
+						
+					}
+					
+					
+				}	
+			
+				
+				
+			}
+			if($cur_id == $start_id ) {
+				return $r;	
+			}
+			
+		}
+		return $r;
+		
+				
+	}
+	function service_selector($f, $v, $d, $d1) {
+		$mydiv="<div style='background-color:#ffffff; position:absolute' id='" . $d . "'></div>";
+		$r = "<input type=hidden id='text_" . $d . "'  name='text_" . $d . "' value='" . $d1 . "'><input type=text id='search_" . $d . "' name='search_" .  $d . "' value='" . $v . "' onkeyup=\"buffer_suggest.modified('search_" . $d . "', 'xajax_service_noaction', '" . $d . "');\">" . $mydiv;
+		return $r;	
+	}
 	
 	function resolveServicePlan($str) {
 		global $wdays;

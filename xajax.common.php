@@ -17,6 +17,10 @@ $xajax->registerFunction("toggle_server_check");
 $xajax->registerFunction("toggle_extension");
 $xajax->registerFunction("toggle_server_notify_check");
 
+$xajax->registerFunction("service_noaction");
+$xajax->registerFunction("set_service_search_noact");
+
+
 $xajax->registerFunction("ServiceSearch");
 $xajax->registerFunction("jumpToServiceId");
 

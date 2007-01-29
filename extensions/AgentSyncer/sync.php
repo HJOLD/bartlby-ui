@@ -35,7 +35,7 @@
 		
 		if($auto_reg == "true") {
 			if(!in_array($_GET[clientname], $exclude_list)) {
-				$add_server=bartlby_add_server($btl->CFG, $_GET[clientname],$_SERVER["REMOTE_ADDR"], 9030, "01generic.gif", 1, 1, 2000);
+				$add_server=bartlby_add_server($btl->CFG, $_GET[clientname],$_SERVER["REMOTE_ADDR"], 9030, "01generic.gif", 1, 1, 2000, 0);
 				echo "ADDSERVER $add_server\n";
 				flush();
 				if(!$default_pkg) {

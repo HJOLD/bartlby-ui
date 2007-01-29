@@ -62,7 +62,7 @@ if($_GET["new"] == "true") {
 	$defaults["min_to"]="59";
 	$defaults["hour_from"]="00";
 	$defaults["hour_to"]="24";
-	
+	$defaults["server_dead"] = "0";
 	
 	$defaults[server_port]=(int)bartlby_config("ui-extra.conf", "new.server.port");
 	$defaults[server_icon]=bartlby_config("ui-extra.conf", "new.server.icon");
@@ -196,6 +196,24 @@ $ov .= $layout->Tr(
 		)
 	)
 ,true);
+
+
+if(!$_GET["copy"] && !$_GET["new"]) {
+
+	if($defaults[server_dead]) {
+		$svc = bartlby_get_service_by_id($btl->CFG, $defaults[server_dead]);	
+	}
+$ov .= $layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Alive indicator",
+			1=>$btl->service_selector("dead_marker", $svc[server_name] . "/" . $svc[service_name] , "service_search1", $defaults[server_dead])
+		)
+	)
+,true);
+
+	
+}
 
 if($fm_action == "add_server") {
 	$ov .= $layout->Tr(

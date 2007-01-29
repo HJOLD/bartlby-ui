@@ -565,8 +565,8 @@ switch($act) {
 		$layout->set_menu("client");
 		if($_GET[server_id] && $_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
 				$btl->hasServerRight($_GET[server_id]);
-				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon], $_GET[server_enabled], $_GET[server_notify], $_GET[server_flap_seconds]);
-				
+				// text_service_search1 == dead marker
+				$mod_server=bartlby_modify_server($btl->CFG, $_GET[server_id], $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon], $_GET[server_enabled], $_GET[server_notify], $_GET[server_flap_seconds], $_GET["text_service_search1"]);
 				$defaults=bartlby_get_server_by_id($btl->CFG, $_GET[server_id]);
 				$layout->DisplayHelp(array(0=>"CRIT|You should restart bartlby for applieng changes "));
 				$layout->OUT .= "<script>doReloadButton();</script>";
@@ -578,7 +578,7 @@ switch($act) {
 		$layout->set_menu("client");
 			if($_GET[server_name] && $_GET[server_port] && $_GET[server_ip] && $_GET[server_icon]) {
 				
-				$add_server=bartlby_add_server($btl->CFG, $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon],$_GET[server_enabled], $_GET[server_notify], $_GET[server_flap_seconds]);
+				$add_server=bartlby_add_server($btl->CFG, $_GET[server_name], $_GET[server_ip], $_GET[server_port], $_GET[server_icon],$_GET[server_enabled], $_GET[server_notify], $_GET[server_flap_seconds], 0);
 				
 				$global_msg["package"]="";
 				$global_msg["init_service"]="";
@@ -587,7 +587,7 @@ switch($act) {
 				if($_GET[package_name] != "") {
 					$global_msg["package"].= "<br>" . $btl->installPackage($_GET[package_name], $add_server, NULL, NULL);	
 				} else {
-					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, 0,24,0,59,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1, 120);
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, "" ,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1, 120);
 					$global_msg["init_service"]="<li>Init";
 				}
 				

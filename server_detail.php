@@ -148,6 +148,12 @@ $core_content = "<table  width='100%'>
 		<td>&nbsp;</td>         
 	</tr>
 	
+	<tr>
+		<td width=150 class='font2' valign=top>Server Life indicator:</td>
+		<td align=left >" . $btl->resolveDeadMarker($defaults[server_dead], $map) . "</font></td>  
+		<td>&nbsp;</td>         
+	</tr>
+	
 	
 	
 </table>";

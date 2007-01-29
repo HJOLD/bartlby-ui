@@ -335,6 +335,52 @@ function jumpToServiceId($id, $script) {
 	$res->addScript("document.location.href='$script?service_id="  . $id . "'");
 	return $res;
 }
+function set_service_search_noact($d, $v) {
+	global $btl;
+	
+	$res = new xajaxResponse();
+		
+	$res->addAssign("text_" . $d, "value", $v);
+	
+	$svc = @bartlby_get_service_by_id($btl->CFG, $v);
+	
+	$res->addAssign("search_" . $d, "value", $svc[server_name] . "/" .  $svc[service_name]);
+	$res->addAssign($d, "innerHTML", "");
+	
+	return $res;
+	
+}
+function service_noaction($what, $d) {
+	global $btl;
+	$res = new xajaxResponse();
+	
+	
+	
+	$map = $btl->GetSVCMap();
+	$optind=0;
+	$y=0;
+	
+	while(list($k, $servs) = @each($map)) {
+		$displayed_servers++;
+		
+		for($x=0; $x<count($servs); $x++) {
+			$ostr=$servs[$x][server_name] . "/" . $servs[$x][service_name];
+			if(@preg_match("/" . $what . "/i", $ostr)) {
+				$output .= "<a href=\"javascript:void(0);\" onClick=\"xajax_set_service_search_noact('" . $d . "', '" . $servs[$x][service_id] . "');\">$ostr</a><br>";
+				$y++;
+			}		
+			if($y>20) {
+				break 2;	
+			}
+		}
+	}
+	
+	
+	$output = "<a href='javascript:void(0);' onClick=\"xajax_removeDIV('" . $d . "');\">close</A><br><br>" . $output;
+	$res->addAssign($d, "innerHTML", $output);
+	return $res;	
+}
+
 
 function ServiceSearch($what, $script='modify_service.php') {
 	global $btl;
