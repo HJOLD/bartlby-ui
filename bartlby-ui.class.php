@@ -3,7 +3,7 @@ session_start();
 
 set_time_limit(0);
 set_magic_quotes_runtime(0);
-define("BARTLBY_UI_VERSION", "1.31");
+define("BARTLBY_UI_VERSION", "1.42");
 $wdays[0]="Sunday";
 $wdays[1]="Monday";
 $wdays[2]="Tuesday";
@@ -742,6 +742,11 @@ class BartlbyUi {
 		return -1;	
 	}
 	function isServerUp($server_id, &$map) {
+		
+		if($map[$server_id][0][current_state] == -3) {
+			return false;	
+		}
+		
 		for($x=0; $x<count($map[$server_id]); $x++) {
 			if($map[$server_id][$x][current_state] == 0) {
 				return true;
@@ -840,6 +845,7 @@ class BartlbyUi {
 			case 0: return "green"; break;
 			case 1: return "orange"; break;
 			case 2: return "red"; break;
+			case -3: return "silver"; break;
 			
 			default:
 				return "silver";
@@ -858,6 +864,7 @@ class BartlbyUi {
 			case 4: return "INFO"; break;
 			case 5: return "TRIGGER"; break;
 			case 6: return "FLAPPING"; break;
+			case -3: return "S-DEAD"; break;
 			default:
 			return "UNKOWN($state)";
 			
