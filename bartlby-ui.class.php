@@ -44,17 +44,21 @@ class BartlbyUi {
 		$l = 0;
 		
 		
+		
 		while($cur_id != 0) {
 			if($l != 0 && $l == $cur_id) {
 				return $r;	
 			}
 			@reset($map);
+			
+			$f = false;
 			while(@list($k, $v) = @each($map)) {
-				$f = false;
+				
+				
 				for($x=0; $x<count($v); $x++) {
 					
 					if($v[$x][service_id] == $cur_id) {
-												
+						$f = true;					
 						$r .= str_repeat("&nbsp;&nbsp;&nbsp;", $rr) .  "<a href='service_detail.php?service_place=" . $v[$x][shm_place] . "'>" . $v[$x][server_name] . "/" . $v[$x][service_name] . "</A> (<font color='" .  $this->getColor($v[$x][current_state])  . "'>" . $this->getState($v[$x][current_state]) . "</font>)<br>";
 						
 						
@@ -62,30 +66,37 @@ class BartlbyUi {
 						$cur_id = $v[$x][server_dead];
 						
 						if($v[$x][current_state] == 2) {
+							
 							return $r;	
 						}
 						
 						if($cur_id <= 0) {
+							
 							return $r;	
 						}
 						if($cur_id == $start_id ) {
+							
 							return $r;	
 						}
 						
 						$rr++;
-						if($rr > 5) {
-							return $r;	
-						}
+						
 						
 					}
 					
 					
 				}	
+				
 			
 				
 				
 			}
+			if($f == false) {
+			
+				return $r . "<br>INDICATOR: " . $cur_id .  " not found";	
+			}
 			if($cur_id == $start_id ) {
+				echo "b";
 				return $r;	
 			}
 			
