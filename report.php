@@ -56,33 +56,11 @@ if(!$_GET[report_service] || !$log_mask) {
 		$flash[2]="0";
 		
 		//$img_file=$btl->create_report_img($state_array, $time_start, $time_end);
-		$o1 .= "<table width=100%>";
-		$o1 .= "<td colspan=3 class=header>Output:</td>";
+		
 		
 		
 		while(list($state, $time) = @each($svc)) {
-			$out .= "<script>";
-			$out .= "menu_state" . $state . "=new Array();\n";
-			
-			$menu_counter=1;
-			
-			for($xy=0; $xy<count($state_array);$xy++) {
-					$o1 .= "<tr>";
-					$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][end]) . "</td>";
-					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][lstate]) . "'>" . $btl->getState($state_array[$xy][lstate]) . "</font></b></td>";
-			
-					$o1 .= "<td>" . $state_array[$xy][msg] . "</td></tr>";
-				
-				if($state_array[$xy][state] == $state) {
-					
-					
-					
-					$out .= "menu_state" . $state . "[" . $menu_counter . "]='<font size=1>" . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][start]) . " - " . date("d.m.Y <b>H:i:s</b>", $state_array[$xy][end]) . " (<i>" . ($state_array[$xy][end]-$state_array[$xy][start]) . "</i>) </font><br>';\n";
-					$menu_counter++;
-				}
-			}
-			$out .= "menu_state" . $state . "[0]='<font size=1>Average State Time: <b>" . $btl->intervall(round($time/($menu_counter),2))  . "</b></font><br>';\n";
-			$out .= "</script>\n";
+						
 			
 			$perc =   (($hun-$time) * 100 / $hun);
 			$perc =100-$perc;
@@ -98,7 +76,7 @@ if(!$_GET[report_service] || !$log_mask) {
 			
 			
 		}
-		$o1 .= "</table>";
+		
 		for($x=0; $x<3; $x++) {
 			$nstate= $x+1;
 			$rstr .= "&text_" . $nstate . "=" . $btl->getState($x) . "&value_" . $nstate . "=" . $flash[$x];	
@@ -154,7 +132,21 @@ if(!$_GET[report_service] || !$log_mask) {
 			
 			$out .= "</tr>";
 		}
+		
 		$out .= "</table>";
+		
+		
+		$o1 .= "<table width=100%>";
+		$o1 .= "<td colspan=3 class=header>Output:</td>";
+		for($xy=0; $xy<count($state_array);$xy++) {
+					$o1 .= "<tr>";
+					$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][end]) . "</td>";
+					$o1 .= "<td valign=top width=200><b><font color='" . $btl->getColor($state_array[$xy][lstate]) . "'>" . $btl->getState($state_array[$xy][lstate]) . "</font></b></td>";
+			
+					$o1 .= "<td>" . $state_array[$xy][msg] . "</td></tr>";
+						
+		}
+		$o1 .= "</table>";
 		
 	
 }
