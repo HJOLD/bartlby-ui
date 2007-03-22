@@ -1,7 +1,7 @@
 <?
 
 
-	
+error_reporting(0);	
 	
 	include "config.php";
 	include "layout.class.php";
@@ -351,11 +351,11 @@ function btl_disp_service() {
 	$color=get_ncurses_color($defaults[current_state]);
 
 	
-	$w = ncurses_newwin(40,80, 2,2);
+	$w = ncurses_newwin(30,$columns/2, 2,20);
 	
         ncurses_wcolor_set($w, 4);
 	for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_waddstr($w, str_repeat(" ", $columns/2));
                 ncurses_wmove($w, $tt, 3);
         }
 	
@@ -596,11 +596,12 @@ function btl_disp_server() {
 	$color=get_ncurses_color($defaults[current_state]);
 
 	
-	$w = ncurses_newwin(40,80, 2,2);
+
+	$w = ncurses_newwin(20,$columns/2, 2,20);
 
         ncurses_wcolor_set($w, 4);
 	for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_waddstr($w, str_repeat(" ", $columns/2));
                 ncurses_wmove($w, $tt, 3);
         }
 	
@@ -722,6 +723,7 @@ function disp_reload_window() {
 
         $w = ncurses_newwin(5,80, 10,$lines/2);
 
+
         ncurses_wcolor_set($w, 4);
         for($tt=0; $tt<40; $tt++) {
                 ncurses_waddstr($w, str_repeat(" ", 80));
@@ -798,11 +800,11 @@ function disp_help() {
 	$color=get_ncurses_color($defaults[current_state]);
 
 		
-	$w = ncurses_newwin(40,80, 2,$lines/2);
+	$w = ncurses_newwin(20,$columns/2, 2,20);
 
         ncurses_wcolor_set($w, 4);
 	for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_waddstr($w, str_repeat(" ", $columns/2));
                 ncurses_wmove($w, $tt, 3);
         }
 	

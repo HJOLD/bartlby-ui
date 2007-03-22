@@ -222,7 +222,7 @@ $ov .= $layout->Tr(
 $ov .= $layout->Tr(
 	$layout->Td(
 		array(
-			0=>"Active?:",
+			0=>"Notifications:",
 			1=>$layout->DropDown("worker_active", $act)
 		)
 	)
