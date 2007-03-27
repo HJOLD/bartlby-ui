@@ -43,6 +43,7 @@ $selected_index=0;
 $reopen_service=false;
 $reopen_server=false;
 $running_only=0;
+$ticker="|";
 
 $ncurses_session = ncurses_init();
 $main = ncurses_newwin(0, 0, 0, 0); // main window
@@ -75,7 +76,8 @@ while(1){
 				break;
 			}
 			$ztx++;
-			sleep(1);
+			usleep(500000);
+			
 		}
 	}
 
@@ -241,7 +243,7 @@ for($tt=0; $tt<$lines; $tt++) {
 					$ostr=sprintf("%-30s  ", $f[$z][server_name] . ":" . $f[$z][service_name]);
 					ncurses_addstr(substr($ostr,0,27));
 					
-					ncurses_addstr(substr(str_replace("dbr", "", str_replace("\n", "", $f[$z][new_server_text])), 0, 60));
+					ncurses_addstr(substr(str_replace("dbr", "", str_replace("\n", "", $f[$z][new_server_text])), 0, $columns-50));
 					ncurses_color_set(4);
 
 					mark_line($this_row_selected);
@@ -287,7 +289,7 @@ for($tt=0; $tt<$lines; $tt++) {
 	ncurses_attroff(NCURSES_A_REVERSE);
 
   	ncurses_refresh();
-  	usleep(100000);
+  	usleep(200000);
 
 
 }//end main while
@@ -351,11 +353,11 @@ function btl_disp_service() {
 	$color=get_ncurses_color($defaults[current_state]);
 
 	
-	$w = ncurses_newwin(30,$columns/2, 2,20);
+	$w = ncurses_newwin($lines-8,$columns-8, 2,2);
 	
         ncurses_wcolor_set($w, 4);
-	for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", $columns/2));
+	for($tt=0; $tt<$lines-8; $tt++) {
+                ncurses_waddstr($w, str_repeat(" ", $columns-8));
                 ncurses_wmove($w, $tt, 3);
         }
 	
@@ -460,7 +462,7 @@ function btl_disp_service() {
 
 	ncurses_wcolor_set($w, 4);
         ncurses_wattron($w, NCURSES_A_REVERSE);
-        ncurses_mvwaddstr($w, 39,1,"Keys:\t (c) disable/enable checkes, (n) enable/disable notifys, (f) force");
+        ncurses_mvwaddstr($w, $lines-9,1,"Keys:\t (c) disable/enable checkes, (n) enable/disable notifys, (f) force");
         ncurses_wattroff($w, NCURSES_A_REVERSE);
 	
 
@@ -597,11 +599,11 @@ function btl_disp_server() {
 
 	
 
-	$w = ncurses_newwin(20,$columns/2, 2,20);
+	$w = ncurses_newwin($lines-8,$columns-8, 2,2);
 
         ncurses_wcolor_set($w, 4);
-	for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", $columns/2));
+	for($tt=0; $tt<$lines-8; $tt++) {
+                ncurses_waddstr($w, str_repeat(" ", $columns-8));
                 ncurses_wmove($w, $tt, 3);
         }
 	
@@ -666,7 +668,7 @@ function btl_disp_server() {
 
 	ncurses_wcolor_set($w, 4);
         ncurses_wattron($w, NCURSES_A_REVERSE);
-        ncurses_mvwaddstr($w, 39,1,"Keys:\t (c) disable/enable checkes, (n) enable/disable notifys");
+        ncurses_mvwaddstr($w, $lines-9,1,"Keys:\t (c) disable/enable checkes, (n) enable/disable notifys");
         ncurses_wattroff($w, NCURSES_A_REVERSE);
 	
 
@@ -704,11 +706,23 @@ function getGeoip($ip) {
 }
 
 function disp_reload_window() {
+	global $ticker;
 	global $selected_svc;
         global $lines, $columns, $btl;
         global $reopen_service, $reopen_server;
         global $map;
         global $help;
+        
+       	switch($ticker) {
+       		case '|':
+       			$ticker='/';
+       		break;	
+       		case '/':
+       			$ticker='|';
+       		break;
+       		
+       	}
+        
 	$help = array(
 
                 array(1, "", "Reload in progress .... please wait"),
@@ -721,12 +735,12 @@ function disp_reload_window() {
         $color=get_ncurses_color($defaults[current_state]);
 
 
-        $w = ncurses_newwin(5,80, 10,$lines/2);
+        $w = ncurses_newwin(5,$columns/2, 4,6);
 
 
         ncurses_wcolor_set($w, 4);
         for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", 80));
+                ncurses_waddstr($w, str_repeat(" ", $columns-8));
                 ncurses_wmove($w, $tt, 3);
         }
 
@@ -745,7 +759,7 @@ function disp_reload_window() {
         ncurses_wborder($w, 0,0, 0,0, 0,0, 0,0);
 
         ncurses_wattron($w, NCURSES_A_REVERSE);
-        ncurses_mvwaddstr($w, 0,1,"Reload in progress:");
+        ncurses_mvwaddstr($w, 0,0,"Wait " . $ticker);
         ncurses_wattroff($w, NCURSES_A_REVERSE);
 
 
@@ -800,11 +814,11 @@ function disp_help() {
 	$color=get_ncurses_color($defaults[current_state]);
 
 		
-	$w = ncurses_newwin(20,$columns/2, 2,20);
+	$w = ncurses_newwin($lines-8,$columns-8, 2,2);
 
         ncurses_wcolor_set($w, 4);
 	for($tt=0; $tt<40; $tt++) {
-                ncurses_waddstr($w, str_repeat(" ", $columns/2));
+                ncurses_waddstr($w, str_repeat(" ", $columns-8));
                 ncurses_wmove($w, $tt, 3);
         }
 	
