@@ -116,6 +116,9 @@ class Basket {
        	
        		
        }
+       function _logView() {
+       	return $this->_overview();	
+       }
        function _services() {
        	return $this->_overview();	
        }

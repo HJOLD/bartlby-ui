@@ -245,6 +245,7 @@
 	}
 	$layout->TableEnd();
 	$layout->FormEnd();
+	$r=$btl->getExtensionsReturn("_logView", $layout);
 	$layout->display("no");
 	
 	

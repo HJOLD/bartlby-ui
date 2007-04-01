@@ -82,7 +82,7 @@ if(!$_GET[report_service] || !$log_mask) {
 			$rstr .= "&text_" . $nstate . "=" . $btl->getState($x) . "&value_" . $nstate . "=" . $flash[$x];	
 		}
 		$idx=$btl->findSHMPlace($defaults[service_id]);
-		$svc_option_line="<a href='service_detail.php?service_place=$idx'>" . $defaults[server_name] . ":" . $defaults[client_port] . "/" . $defaults[service_name] . "</A>" . $btl->getServiceOptions($defaults, $layout);
+		$svc_option_line="<a href='service_detail.php?service_place=$idx'>" . $defaults[server_name] . ":" . $defaults[client_port] . "/" . $defaults[service_name] . "</A>" . $btl->getServiceOptions($defaults, $layout) . "<a href='print_report.php?report_start=" . $_GET[report_start] . "&report_end=" .  $_GET[report_end] . "&report_init=" . $_GET[report_init] . "&report_service=" . $_GET[report_service] . "' target='_blank'>Print</A>";
 		
 		$out .= "<tr>";
 		

@@ -335,7 +335,7 @@ switch($act) {
 	break;
 	case 'modify_worker':
 		$layout->set_menu("worker");
-		if($_GET[worker_id] >= 0 && $_GET[worker_name] && $_GET[worker_password]) {
+		if($_GET[worker_id] >= 0 && $_GET[worker_name]) {
 			
 			if(!$btl->isSuperUser() && $btl->user_id != $_GET[worker_id]) {
 				$btl->hasRight("modify_all_workers");
@@ -393,8 +393,15 @@ switch($act) {
 			if($df == false) {
 				$exec_plan="";	
 			}
+			$end_pw= md5($_GET[worker_password]);
 			
-			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name], md5($_GET[worker_password]), $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes], $exec_plan);
+			if(!$_GET[worker_password]) {
+					$wrk1 = bartlby_get_worker_by_id($btl->CFG, $_GET[worker_id]);
+					$end_pw=$wrk1[password];
+			}
+			
+			
+			$add=bartlby_modify_worker($btl->CFG,$_GET[worker_id],  $_GET[worker_mail], $_GET[worker_icq], $svcstr, $notifystr, $_GET[worker_active], $_GET[worker_name],$end_pw, $triggerstr, $_GET[escalation_limit], $_GET[escalation_minutes], $exec_plan);
 			$btl->setUIRight("selected_servers", $selected_servers, $_GET[worker_name]);
 			$btl->setUIRight("selected_services", $selected_services, $_GET[worker_name]);
 			$layout->OUT .= "<script>doReloadButton();</script>";
@@ -485,7 +492,12 @@ switch($act) {
 				if($v != "") {
 					$df = true;		
 				}
-				$exec_plan .= $k . "=" . $v . "|";	
+				if($_GET[wdays_inv][$k]) {
+					$sepa = "!";
+				} else {
+					$sepa = "=";	
+				}
+				$exec_plan .= $k . $sepa . $v . "|";	
 			}
 			
 			
@@ -526,7 +538,12 @@ switch($act) {
 				if($v != "") {
 					$df = true;		
 				}
-				$exec_plan .= $k . "=" . $v . "|";	
+				if($_GET[wdays_inv][$k]) {
+					$sepa = "!";
+				} else {
+					$sepa = "=";	
+				}
+				$exec_plan .= $k . $sepa . $v . "|";		
 			}
 			
 			if($df == false) {

@@ -336,18 +336,34 @@ $active_box_out .= $layout->Tr(
 
 $o = explode("|", $defaults[exec_plan]);
 
+
 for($x=0; $x<count($o); $x++) {
 	$p = explode("=", $o[$x]);
-	$filled[$p[0]]=$p[1];
+	
+	if(count($p) == 1) {
+		$p = explode("!", $o[$x]);
+		$filled[$p[0]][disabled]=1;
+		
+		
+	}
+	
+	
+	$filled[$p[0]][value]=$p[1];
+	
 	
 }
 $plan_box = "<table>";
 for($x=0; $x<=6; $x++) {
 	$chk="";
-	if($filled[$x])
-		$chk="checked";
+	
+	
+	$inv_check="";
+	if($filled[$x][disabled] == 1) {
+		$inv_check="checked";
+	}	
 		
-	$plan_box .= "<tr><td><font size=1>" .  $wdays[$x] . "</font></td><td><input type=text id='wdays_plan[" . $x . "]'  name='wdays_plan[" . $x . "]' value='" . $filled[$x] . "' style='font-size:10px; width:200px; height:20px'></td></tr>";
+	$plan_box .= "<tr><td><font size=1>" .  $wdays[$x] . "</font></td><td><input type=text id='wdays_plan[" . $x . "]'  name='wdays_plan[" . $x . "]' value='" . $filled[$x][value] . "' style='font-size:10px; width:200px; height:20px'><input type=checkbox id='wdays_inv[" . $x . "]'  name='wdays_inv[" . $x . "]' $inv_check> invert</td></tr>";
+	
 }
 $plan_box .= "<tr><td colspan=2><font size=1>Time ranges are seperated with ',' e.g.: 14:30-15:20,01:20-02:30 <a href='javascript:void(0);' onClick='modify_service_make_24();'>make 24h a day</a></font></td></tr>";
 $plan_box .= "</table>";

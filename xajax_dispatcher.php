@@ -648,20 +648,20 @@ function AddModifyWorker($aFormValues) {
 	$al="";
 	
 	if(!bartlbize_field($av[worker_name])){
-		$res->addAssign("error_worker_name", "innerHTML", "You must specify a correct service name");
+		$res->addAssign("error_worker_name", "innerHTML", "You must specify a correct worker name");
 		$al="1";
 	} else {
 		$res->addAssign("error_worker_name", "innerHTML", "");
 	}
-		
-		
-	if(!bartlbize_field($av[worker_password])){
-		$res->addAssign("error_worker_password", "innerHTML", "You must specify a correct service name");
-		$al="1";
-	} else {
-		$res->addAssign("error_worker_password", "innerHTML", "");
-	}
 	
+	if($av[action] == 'add_worker' || ($av[worker_password] != "" && $av[worker_password1] != "")) {	
+		if(!bartlbize_field($av[worker_password])){
+			$res->addAssign("error_worker_password", "innerHTML", "You must specify a correct password");
+			$al="1";
+		} else {
+			$res->addAssign("error_worker_password", "innerHTML", "");
+		}
+	}
 	
 	if($av[worker_password] != $av[worker_password1]) {
 		$res->addAssign("error_worker_password1", "innerHTML", "Passwords dont match");

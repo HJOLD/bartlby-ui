@@ -110,7 +110,129 @@ class BartlbyUi {
 		$r = "<input type=hidden id='text_" . $d . "'  name='text_" . $d . "' value='" . $d1 . "'><input autocomplete=off type=text id='search_" . $d . "' name='search_" .  $d . "' value='" . $v . "' onkeyup=\"buffer_suggest.modified('search_" . $d . "', 'xajax_service_noaction', '" . $d . "');\">" . $mydiv;
 		return $r;	
 	}
+	function format_report($rep, $type='html', $hdr) {
+		global $btl;
+		
+		
+		
+		$svc=$rep[svc];
+		$state_array=$rep[state_array];
+		$notify=$rep[notify];
+		$files_scanned=$rep[files_scanned];
+		
+		$hun=$svc[0]+$svc[1]+$svc[2];
+		
+		
+		
+		
+		switch($type) {
+			case 'html':
+				$rap ="<html><head><style>td{font-size:12px; font-family:tahoma}</style></head><body>";
+				$rap .= "<table width=100% border=3>";
+			break;	
+		}
+		switch($type) {
+			case 'html':
+				$rap .= "<tr><td colspan=3>" . $hdr . "</td></tr>";
+			break;	
+		}
+		
+		switch($type) {
+			case 'html':
+				$rap .= "<tr><td colspan=3><b>Service Availability</b></td></tr>";
+			break;	
+		}
+		
+		while(list($state, $time) = @each($svc)) {
+			
+								
+			$perc =   (($hun-$time) * 100 / $hun);
+			$perc =100-$perc;
+			
+			
+			switch($type) {
+				case 'html':
+					$rap .= "<tr>";
+					$rap .= "<td>";
+					$rap .= "<font color=" . $btl->getColor($state) . ">" . $btl->getState($state) . "</font>";
+					$rap .= "</td>";
+					$rap .= "<td>";
+					$rap .= $btl->intervall($time);
+					$rap .= "</td>";
+					$rap .= "<td>";
+					$rap .= round($perc,2);
+					$rap .= "%</td>";
+					$rap .= "</tr>";
+				break;	
+			}
+			
+			
+			
+			
+		}
+		
+		switch($type) {
+			case 'html':
+				$rap .= "<tr><td colspan=3><b>Notifications</b></td></tr>";
+			break;	
+		}
+		while(list($worker, $dd) = @each($notify)) {
+			
+			switch($type) {
+				case 'html':
+					$rap .= "<tr><td colspan=2>" . $worker . "</td><td>";
+				break;	
+			}
+			
+					
+			while(list($trigger, $dd1) = @each($dd)) {
+				$rap .= "\t" . $trigger . "<br>";
+				while(list($k, $ts) = @each($dd1)) {
+					
+					switch($type) {
+						case 'html':
+							$rap .= "<li>" . date("d.m.Y H:i:s", $ts[0]) . " (" . $btl->getState($ts[1]) . ")<br>";
+						break;	
+					}
+				}
+			}
+			switch($type) {
+				case 'html':
+					$rap .= "</td></tr>";
+				break;	
+			}
+						
+		}
+		switch($type) {
+			case 'html':
+				$rap .= "<tr><td colspan=3><b>Output</b></td></tr>";
+			break;	
+		}
+		for($xy=0; $xy<count($state_array);$xy++) {
+				switch($type) {
+					case 'html':
+						$o1 .= "<tr>";
+						$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][end]) . "</td>";
+						$o1 .= "<td>" .  $btl->getState($state_array[$xy][lstate]) . " </td>";
+						$o1 .= "<td>" . $state_array[$xy][msg] . " </td>";
+						$o1 .= "</tr>";
+					
+					break;	
+				}
+								
+		}
+		
+		$rap .= $o1;
+		
+		switch($type) {
+			case 'html':
+				$rap .= "</table></body></html>";
+			break;	
+		}
+		
+		return $rap;
 	
+	}
 	function resolveServicePlan($str) {
 		global $wdays;
 		
@@ -127,42 +249,63 @@ class BartlbyUi {
        	
 		for($x=0; $x<count($o); $x++) {
 			$p = explode("=", $o[$x]);
+			$inv=0;
+			if(count($p) == 1) {
+				$p = explode("!", $o[$x]);	
+				$inv=1;
+				$range_found = true;
+			}
 			$xx = explode(",", $p[1]);
 			for($y=0; $y<count($xx); $y++) {
 				list($h,$m, $h1, $m1) = sscanf($xx[$y], "%d:%d-%d:%d");
 				$t1 = mktime($h, $m);
 				$t2 = mktime($h1, $m1);
+				if($inv == 1) {
+					$filled[$x][disabled]=1;	
+				}
 				if($cur_ts >= $t1 &&  $cur_ts <= $t2 && $cur_wday == $x) {
-					$filled[$x] .= "<font color='blue'>" . $xx[$y] . ",</font>";	
-					$range_found = true;
+					
+					if($inv == 0) {
+						$cl = 'blue';	
+						$range_found = true;
+					} else {
+						$cl = 'grey';	
+						$range_found = false;
+						
+						
+					}
+					
+					$filled[$x][value] .= "<font color='$cl'>" . $xx[$y] . ",</font>";	
+					
 				} else {
-					$filled[$x]	.= $xx[$y] . ",";
+					$filled[$x][value]	.= $xx[$y] . ",";
 				}
 			}
-			$filled[$x]{strlen($filled[$x])-1} = " ";
+			$filled[$x]{strlen($filled[$x][value])-1} = " ";
 			
 		}
 		$plan_box = "<table>";
 		for($x=0; $x<=6; $x++) {
 			$chk="";
 			$vv = "<i>NO</i>";
-			if($filled[$x]) {
+			if($filled[$x][value]) {
 				$chk="checked";
-				$vv = $filled[$x];
+				$vv = $filled[$x][value];
 			}
 			$cl = "";
 			if($cur_wday == $x) {
 				$cl = "color=blue";	
 			}
-			$plan_box .= "<tr><td><font size=1 " . $cl . ">" .  $wdays[$x] . "</font></td><td><font size=1>" . $vv . "</font></td></tr>";
+			if($filled[$x][disabled] == 1) {
+				$invinfo="(inverted)";
+			} else {
+				$invinfo="";	
+			}
+			$plan_box .= "<tr><td><font size=1 " . $cl . ">" .  $wdays[$x] . $invinfo  . "</font></td><td><font size=1>" . $vv . "</font></td></tr>";
 		}
 		
 		$plan_box .= "</table>";
-	       if($range_found == true) {
-	       	$plan_box .= "<font color='blue' size=1><i>currently in range</i></font>";	
-	       } else {
-	       	$plan_box .= "<font color='orange' size=1><i>currently not in range</i></font>";	
-	       }
+	     
 	       return $plan_box;
 		
 	}

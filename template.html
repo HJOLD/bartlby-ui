@@ -9,6 +9,14 @@
 
 
 <script>
+	global_reload=1;
+	function toggleReload() {
+		if(global_reload == 1) {
+				global_reload=0;
+		} else {
+				global_reload=1;
+		}
+	}
 	function GenericToggleFix(elID, st) {
 	//alert(elID);
 	//alert(st);
@@ -19,6 +27,12 @@
 	function GenericToggle(elID) {
 		obj=document.getElementById(elID);
 		obj.style.display=!(obj.style.display=="block")? "block" : "none";  
+	}
+	function jsLogout() {
+		r=confirm("You really want to logout?");	
+		if(r == true) {
+			document.location.href='logout.php';	
+		}
 	}
 	function doToggle(elID) {
 		imgPlus='images/plus.gif';
@@ -70,8 +84,9 @@
 		<tr>
 			<td  class="bg_header"><a href='overview.php'><img border=0 src='images/btl-logo.gif'></A>
 			<div class="reload" id="reload"><input type=button style='width:155px' name="reload_button" value="reload" onClick="document.location.href='bartlby_action.php?action=reload';"></div>
-			<div class="ui_performance" id="reload"><font size=1>UI-Version: <font size=1><!--UIVERSION--></font> Page Render:<!--BTUITIME--> secs &nbsp;&nbsp;&nbsp;&nbsp;<!--SERVERTIME--></div>
-			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Quick look<input onkeyup="buffer_suggest.modified('qlook', 'xajax_QuickLook');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
+			<div class="ui_performance" id="reload"><font size=1>UI-Version: <font size=1><!--UIVERSION--></font> Page Render:<!--BTUITIME--> secs &nbsp;&nbsp;&nbsp;&nbsp;<!--SERVERTIME--> &nbsp;&nbsp;&nbsp;&nbsp;</div>
+			<div style='position: absolute; left:1050Px;top:80px;'><input type=button value=Logout  style='width:50px; font-size:10px; padding-top:0px; height:18px' onClick='jsLogout()'></div>
+			<div class="quick_look" id="quick_look" style="z-index:100"><font size=1>Auto Reload<input type='checkbox' checked onClick='toggleReload()' style='height:10px'>   Quick look<input onkeyup="buffer_suggest.modified('qlook', 'xajax_QuickLook');" id=qlook autocomplete='off' type=text name="qlook" style="border:solid black 1px;font-size:10px; height:17px"><div id='quick_suggest'></div></div>
 			<div class="help" id="help">
 				<!--<iframe height=768 width=245 src='http://bartlby.sf.net/help/'></iframe>-->
 			</div>
@@ -329,25 +344,7 @@
 									<td class="nav_place">&nbsp;</td>
 								</tr>
 							</table>
-							<table class="nopad">
-								<tr>
-									<td class="nav_main" onClick="doToggle('session')"><img id='session_plus' src='images/plus.gif' border=0> Session</td>
-								</tr>
-								<tr>
-									<td class="nav_place">&nbsp;</td>
-								</tr>
-							</table>
-							<table class="nopad" id='session_sub' style='display:none;'>
-								<tr>
-									<td class="nav_sub"><a href='logout.php' class="sub">Logout</A></td>
-								</tr>
-								<tr>
-									<td class="nav_place">&nbsp;</td>
-								</tr>
-								<tr>
-									<td class="nav_place">&nbsp;</td>
-								</tr>
-							</table>
+							
 							<!--BTLEXTMENU-->
 							<table class="nopad">
 								<tr>

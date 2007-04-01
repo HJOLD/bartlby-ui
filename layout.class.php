@@ -51,7 +51,13 @@ class Layout {
 		$this->OUT .= "<table border=$border width='$proz' cellpadding=0 cellspacing=0 border=0>";
 	}
 	function MetaRefresh($time=20) {
-		$this->OUT .= "<script>window.setTimeout('document.location.reload()', " . $time . "000);</script>";	
+		$this->OUT .= "<script>function ReloadME() {
+			if(global_reload == 1) {
+				document.location.reload();
+			}
+			window.setTimeout('ReloadME()', " . $time . "000);
+		}
+		window.setTimeout('ReloadME()', " . $time . "000);</script>";	
 	}
 	function TableEnd() {
 		$this->OUT .= "</table>";	
