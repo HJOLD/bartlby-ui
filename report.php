@@ -36,7 +36,12 @@ $log_mask=bartlby_config($btl->CFG, "logfile");
 if(!$_GET[report_service] || !$log_mask) {
 	$out ="You v choosen a server? or log file is not set";	
 } else {
-	$out = "creating report for service: $_GET[report_service] From: $_GET[report_start] To: $_GET[report_end]<br>";	
+	
+	if($_POST[report_rcpt]) {
+		
+		$out .= $btl->send_custom_report($_POST[report_rcpt], $_GET[report_service], $_GET[report_start], $_GET[report_end]);
+	}
+	$out .= "creating report for service: $_GET[report_service] From: $_GET[report_start] To: $_GET[report_end]<br>";	
 	$ra=$btl->do_report($_GET[report_start], $_GET[report_end], $_GET[report_init], $_GET[report_service]);
 	
 	$svc=$ra[svc];

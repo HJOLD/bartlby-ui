@@ -8,11 +8,34 @@ $btl=new BartlbyUi($Bartlby_CONF);
 $btl->hasright("log.report");
 $btl->hasServerorServiceRight($_GET[report_service]);
 
+
+echo "<form action=print_report.php method=get>";
+
+while(list($k, $v) = @each($_GET)) {
+	if($k != "sec_filter") {
+		echo "<input type=hidden name='$k' value='$v'>";	
+	}	
+}
+echo "<input type=text name='sec_filter' value=''>";
+echo "<input type=submit value='Apply Second Filter'>";
+
+
+
+
+echo "</form>";
+
 $defaults=bartlby_get_service_by_id($btl->CFG, $_GET[report_service]);
-$rap = "<a href='javascript:window.print();'>Print it</A><br>Report for: " . $defaults[server_name] . "/" . $defaults[service_name] . "\n";
+$rap = "Second filter: " . $_GET[sec_filter] . "<br><a href='javascript:window.print();'>Print it</A><br>Report for: " . $defaults[server_name] . "/" . $defaults[service_name] . "\n";
+
 $rep=$btl->do_report($_GET[report_start], $_GET[report_end], $_GET[report_init], $_GET[report_service]);
 $rap .= "FROM: " . $_GET[report_start] . " TO: " . $_GET[report_end] . "\n";
-$file =  $btl->format_report($rep, "html", $rap);
+
+$file .= $out;
+
+
+
+
+$file .=  $btl->format_report($rep, "html", $rap, true);
 
 $svc=$rep[svc];
 $state_array=$rep[state_array];
@@ -24,6 +47,8 @@ $flash[1]="0";
 $flash[2]="0";
 
 //$img_file=$btl->create_report_img($state_array, $time_start, $time_end);
+
+
 
 
 
@@ -62,17 +87,7 @@ $out .= '<td colspan=2 align=center>
 <!--http://actionscript.org/showMovie.php?id=483-->';
 
 
-$file .= $out;
 
-
-$btl->updatePerfHandler($defaults[server_id], $defaults[service_id]);
-$path=bartlby_config($btl->CFG, "performance_rrd_htdocs");
-foreach(glob($path . "/" . $_GET[report_service] . "_*.png") as $fn) {
-        //$mime->addAttachment($fn, "image/png", basename($fn), true, 'base64', 'inline');
-	
-	$file .= "<img src='rrd/" . basename($fn) . "'><br>";
-	
-}
 
 echo $file;
 					

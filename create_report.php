@@ -100,6 +100,15 @@ $layout->Tr(
 		)
 
 );
+$layout->Tr(
+	$layout->Td(
+			Array(
+				0=>"Email RCPT:",
+				1=>$layout->Field("report_rcpt", "text", "") 
+			)
+		)
+
+);
 
 $layout->Tr(
 	$layout->Td(

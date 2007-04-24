@@ -1,4 +1,6 @@
 <?
+include_once("bartlbystorage.class.php");
+
 session_start();
 
 set_time_limit(0);
@@ -20,7 +22,84 @@ if(!version_compare(phpversion(), "5.0.0", ">=")) {
 }
 
 class BartlbyUi {
+	
+	function send_custom_report($emails, $service_id, $from, $to) {
+		include_once "Mail.php";
+		include_once "Mail/mime.php";
 		
+		$storage = new BartlbyStorage("ArS");
+		$defaults=bartlby_get_service_by_id($this->CFG, $service_id);
+		$rap = "Report for: " . $defaults[server_name] . "/" . $defaults[service_name] . "\n";
+		$btl_subj = "Bartlby Custom report";
+		
+		$rap .= "DAILY REPORT:\n\n";
+		$rep = $this->do_report($from, $to, 0, $service_id);
+		
+		$rap .= "FROM: " . $from . " TO: " . $to . "\n";
+		$file =  $this->format_report($rep, "html", $rap);
+		
+		
+		
+		
+		
+		
+		$tmpfname = tempnam ("/tmp", "ArS");
+		
+		$fp = fopen($tmpfname, "w");
+		fwrite($fp, $file);
+		fclose($fp);
+		
+		copy($tmpfname, $tmpfname . ".html");
+		unlink($tmpfname);
+		
+		$mime = new Mail_Mime();
+		$mime->setTxtBody("see the attachment for details");
+		
+		$mime->addAttachment($tmpfname . ".html", "text/html", "report.html");
+		
+		
+		//update perf handler ;)
+		$this->updatePerfHandler($defaults[server_id], $defaults[service_id]);
+		$path=bartlby_config($this->CFG, "performance_rrd_htdocs");
+		foreach(glob($path . "/" . $service_id . "_*.png") as $fn) {
+		     	//$mime->addAttachment($fn, "image/png", basename($fn), true, 'base64', 'inline');
+		     	$mime->addHTMLImage($fn, "image/png", basename($fn), true);
+		     	$file .= "<img src='" . basename($fn) . "'><br>";
+		}
+		$mime->setHTMLBody($file);
+		$body=$mime->get();
+		
+		
+					   
+					   
+		
+		
+		$dd = explode(";", $emails);
+		for($x=0; $x<count($dd); $x++) {
+	
+			$headers = array('From' =>  $storage->load_key("ars_smtp_from") , 'To' => $dd[$x],
+				   'Subject' => $btl_subj);
+		
+			$smtp = Mail::factory('smtp',
+				array ('host' =>  $storage->load_key("ars_smtp_host"),
+		  			'auth' => false,
+			   		'timeout' => 10,
+					'debug' => false
+				));
+		
+				$hdrs=$mime->headers($headers);
+		
+		
+				$mail = $smtp->send($dd[$x], $hdrs, $body);
+				$r .= "Sent to: " . $dd[$x] . "<br>";
+		
+		}
+		
+		return $r;
+		
+		
+	}
+	
 	function doReload() {
 		bartlby_reload($this->CFG);
 		while(1) {
@@ -110,12 +189,14 @@ class BartlbyUi {
 		$r = "<input type=hidden id='text_" . $d . "'  name='text_" . $d . "' value='" . $d1 . "'><input autocomplete=off type=text id='search_" . $d . "' name='search_" .  $d . "' value='" . $v . "' onkeyup=\"buffer_suggest.modified('search_" . $d . "', 'xajax_service_noaction', '" . $d . "');\">" . $mydiv;
 		return $r;	
 	}
-	function format_report($rep, $type='html', $hdr) {
+	function format_report($rep, $type='html', $hdr, $do_perf=false) {
 		global $btl;
 		
 		
 		
 		$svc=$rep[svc];
+		$svc_id=$rep[service_id];
+		$srv_id=$rep[server_id];
 		$state_array=$rep[state_array];
 		$notify=$rep[notify];
 		$files_scanned=$rep[files_scanned];
@@ -171,6 +252,17 @@ class BartlbyUi {
 			
 		}
 		
+	if($do_perf == true) {
+		$this->updatePerfHandler($srv_id, $svc_id);
+		$path=bartlby_config($this->CFG, "performance_rrd_htdocs");
+
+		foreach(glob($path . "/" . $svc_id  . "_*.png") as $fn) {
+    	    //$mime->addAttachment($fn, "image/png", basename($fn), true, 'base64', 'inline');
+	
+				$rap .= "<tr><td colspan=3><img src='rrd/" . basename($fn) . "'><td></tr>";
+		}
+	}
+		
 		switch($type) {
 			case 'html':
 				$rap .= "<tr><td colspan=3><b>Notifications</b></td></tr>";
@@ -208,15 +300,49 @@ class BartlbyUi {
 				$rap .= "<tr><td colspan=3><b>Output</b></td></tr>";
 			break;	
 		}
-		for($xy=0; $xy<count($state_array);$xy++) {
+		$c1="#cccccc";
+		$c2="#eeeeee";
+		$cl = $c1;
+		$z=0;
+		for($xy=count($state_array)-1; $xy>=0;$xy=$xy-2) {
+			
 				switch($type) {
 					case 'html':
-						$o1 .= "<tr>";
-						$o1 .= "<td>" . date("d.m.Y H:i:s", $state_array[$xy][end]) . "</td>";
-						$o1 .= "<td>" .  $btl->getState($state_array[$xy][lstate]) . " </td>";
-						$o1 .= "<td>" . $state_array[$xy][msg] . " </td>";
-						$o1 .= "</tr>";
+					$stay_time="";
+					$stay_sec=$state_array[$xy][end]-$state_array[$xy][start];
 					
+						if($state_array[$xy][state] != 0) {
+							
+							
+							//if it was not ok we display the stay in time ;)
+							$stay_time="(" . $this->intervall($stay_sec) . ")";
+						}
+						if(!$_GET[sec_filter] ||  $stay_sec > $_GET[sec_filter]) {
+						
+							$o1 .= "<tr>";
+							$o1 .= "<td bgcolor='$cl'>" . date("d.m.Y H:i:s", $state_array[$xy][end]) . "</td>";
+							$o1 .= "<td bgcolor='$cl'>" .  $btl->getState($state_array[$xy][lstate]) . " </td>";
+							$o1 .= "<td bgcolor='$cl'>" . $state_array[$xy][msg] . " </td>";
+							$o1 .= "</tr>";
+						
+							$o1 .= "<tr>";
+							$o1 .= "<td bgcolor='$cl'>" . date("d.m.Y H:i:s", $state_array[$xy-1][end]) . "</td>";
+							$o1 .= "<td bgcolor='$cl'>" .  $btl->getState($state_array[$xy-1][lstate]) . " $stay_time </td>";
+							$o1 .= "<td bgcolor='$cl'>" . $state_array[$xy-1][msg] . " </td>";
+							$o1 .= "</tr>";
+						
+						
+							$z++;
+							$z++;
+							if($z == 2) {
+								if($cl == $c1 ){
+									$cl = $c2;
+								} else {
+									$cl = $c1;	
+								}	
+								$z=0;
+							}
+						}
 					break;	
 				}
 								
@@ -412,6 +538,7 @@ class BartlbyUi {
 		}	
 	
 		$r[svc]=$svc;
+		$r[service_id]=$in_service;
 		$r[state_array]=$state_array;
 		$r[notify]=$notify;
 		$r[files_scanned]=$files_scanned;
