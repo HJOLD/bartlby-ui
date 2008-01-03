@@ -12,6 +12,8 @@ $layout = new Layout();
 
 $xajax->processRequests();
 
+
+
 function toggle_extension($ext) {
 	$res=new xajaxResponse();
 	$fn = "extensions/" . $ext . ".disabled";
