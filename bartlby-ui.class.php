@@ -595,8 +595,14 @@ class BartlbyUi {
 		for($aax=0; $aax<count($aa); $aax++) {
 			$bb = explode("=", $aa[$aax]);
 			if($aa[$aax]) {
-				$svc = @bartlby_get_service_by_id($this->CFG, $aa[$aax]);
-				$r .= "Service: $svc[server_name]:$svc[client_port]/$svc[service_name] is not allowed to be in <font color=" . $this->getColor($bb[1]) . ">" . $this->getState($bb[1]) . "</font> (Current: <font color=" . $this->getColor($svc[current_state]) . ">" . $this->getState($svc[current_state]) . "</font>)<br>";
+				$idx=$this->findSHMPlace($aa[$aax]);
+                                $svc=bartlby_get_service($this->CFG, $idx);
+                                $dtemp="";
+                                if($svc[is_downtime] == 1) {
+                                        $dtemp="<i>DOWNTIME</i>";
+                                }
+
+				$r .= "Service: $svc[server_name]:$svc[client_port]/$svc[service_name] is not allowed to be in <font color=" . $this->getColor($bb[1]) . ">" . $this->getState($bb[1]) . "</font> (Current: <font color=" . $this->getColor($svc[current_state]) . ">" . $this->getState($svc[current_state]) . "</font>) $dtemp<br>";
 			}
 		}	
 		return $r;
