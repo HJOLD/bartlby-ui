@@ -63,6 +63,7 @@ array
 			$layout->Td(
 					Array(
 						0=>Array(
+							"width" => "900",
 							'colspan'=> 3,
 							"align"=>"left",
 							"show"=>  nl2br($v[$x][ocl_error_long])
@@ -80,6 +81,7 @@ array
 			$layout->Td(
 					Array(
 						0=>Array(
+							
 							'colspan'=> 3,
 							"align"=>"left",
 							"show"=>  "<hr noshade>"

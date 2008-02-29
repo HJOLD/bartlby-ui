@@ -127,10 +127,26 @@ class OcL {
 	}
 	
 	
-	/*
+	
 	function _overview() {
-		return "_overview";	
+		$identifier = date("m.Y",time());
+		$v=unserialize($this->storage->load_key($identifier));
+		$v=@array_reverse($v);
+		
+		if(count($v)==0) {
+			return "no entrys found";
+		}
+		$lm = "Latest 3 OcL entry's:";
+		
+		for($x=0; $x<=3; $x++) {
+			if($v[$x][ocl_subject]) {
+				$lm .= "<li> <a href='extensions_wrap.php?script=OcL/index.php'>" . $v[$x][ocl_subject] . "</b></A> by <i>" . $v[$x][ocl_poster] . "</i> on " . $v[$x][ocl_date];	
+			}
+		}
+		
+		return $lm;	
 	}
+	/*
 	function _services() {
 		return "_services";	
 	}
