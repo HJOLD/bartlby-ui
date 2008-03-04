@@ -1,6 +1,303 @@
-2006-10-22 21:49  hjanuschka
+2008-02-28 13:13  hjanuschka
+
+	* extensions/OcL/: OcL.class.php, add.php, csv.php, index.php,
+	  modify.php, ocl_shell.sh, save.php: auto commit
+
+2008-01-24 15:10  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2008-01-03 18:44  hjanuschka
+
+	* xajax.common.php, xajax_dispatcher.php: auto commit
+
+2007-04-24 21:25  hjanuschka
+
+	* bartlby-ui.class.php, create_report.php, print_report.php,
+	  report.php, template.html: auto commit
+
+2007-04-01 18:06  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, layout.class.php,
+	  logview.php, modify_service.php, print_report.php, report.php,
+	  template.html, xajax_dispatcher.php,
+	  extensions/Basket/Basket.class.php, images/agent_syncer.gif,
+	  rights/admin.dat, server_icons/vista.gif: auto commit
+
+2007-03-27 17:42  hjanuschka
 
 	* cli.php: auto commit
+
+2007-03-22 02:10  hjanuschka
+
+	* bartlby_action.php, cli.php, modify_worker.php, template.html,
+	  fin/delete_service: auto commit
+
+2007-02-15 21:46  hjanuschka
+
+	* service_detail.php: auto commit
+
+2007-02-06 18:17  hjanuschka
+
+	* extensions/AgentSyncer/status.php: [no log message]
+
+2007-02-02 21:56  hjanuschka
+
+	* report.php: auto commit
+
+2007-01-29 17:07  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2007-01-29 16:51  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2007-01-29 05:20  hjanuschka
+
+	* bartlby-ui.class.php: auto commit
+
+2007-01-29 05:04  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_server.php,
+	  server_detail.php, service_detail.php, xajax.common.php,
+	  xajax_dispatcher.php, extensions/AgentSyncer/sync.php,
+	  extensions/BnR/do_restore.php: auto commit
+
+2007-01-27 20:52  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_worker.php: auto
+	  commit
+
+2007-01-27 00:20  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_service.php,
+	  service_detail.php, xajax_dispatcher.php,
+	  extensions/AgentSyncer/sync.php,
+	  extensions/ServerGroups/ServerGroups.class.php, fin/add_service,
+	  fin/service_1, fin/service_2, fin/service_3, fin/service_4,
+	  fin/service_5, fin/service_6, fin/service_7, fin/service_8,
+	  fin/service_9, pkgs/default-pkg: auto commit
+
+2007-01-14 14:03  hjanuschka
+
+	* bartlby-ui.class.php, report.php, extensions/ArS.disabled,
+	  extensions/SMS/SMS.class.php: auto commit
+
+2007-01-05 02:49  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, cli.php,
+	  modify_worker.php, permission_worker.php, rights/admin.dat,
+	  rights/template.dat: auto commit
+
+2006-12-27 20:05  hjanuschka
+
+	* modify_service.php, service_detail.php, services.php: auto commit
+
+2006-12-25 03:09  hjanuschka
+
+	* report.php, services.php: auto commit
+
+2006-12-10 17:38  hjanuschka
+
+	* store/SMS/1: [no log message]
+
+2006-12-10 16:56  hjanuschka
+
+	* bandwidth.php, template.html, version.php: versioning
+
+2006-12-09 02:25  hjanuschka
+
+	* extensions/AgentSyncer/getplugin.php: auto commit
+
+2006-12-05 04:47  hjanuschka
+
+	* overview.php: auto commit
+
+2006-12-04 18:32  hjanuschka
+
+	* xajax_dispatcher.php: [no log message]
+
+2006-12-02 22:35  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, template.html,
+	  xajax.common.php, xajax_dispatcher.php,
+	  extensions/Basket.disabled, extensions/Basket/Basket.class.php:
+	  auto commit
+
+2006-12-01 00:59  hjanuschka
+
+	* extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php: [no
+	  log message]
+
+2006-12-01 00:54  hjanuschka
+
+	* add_downtime.php, bartlby-ui.class.php, create_report.php,
+	  modify_downtime.php, package_create.php, server_list.php,
+	  service_list.php, template.html, user_list.php, xajax.common.php,
+	  xajax_dispatcher.php, extensions/AgentSyncer/bartlby.cfg.default,
+	  extensions/BnR/BnR.class.php, extensions/BnR/backup.php,
+	  extensions/ServerGroups/manage.php: [no log message]
+
+2006-11-30 22:51  hjanuschka
+
+	* ajax_plugin_search.php, ajax_quick_look.php,
+	  ajax_server_search.php, ajax_service_search.php,
+	  ajax_worker_search.php, bartlby-ui.class.php, bartlby_action.php,
+	  formchecker.php, layout.class.php, modify_server.php,
+	  modify_service.php, modify_worker.php, server_list.php,
+	  service_detail.php, service_list.php, template.html,
+	  user_list.php, xajax.common.php, xajax_dispatcher.php, xml.php,
+	  extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php,
+	  extensions/PluginArgumentQuickLook/PluginArgumentQuickLook.class.php,
+	  images/ajax_search.js: [no log message]
+
+2006-11-30 17:37  hjanuschka
+
+	* fin/service_9: [no log message]
+
+2006-11-28 22:37  hjanuschka
+
+	* service_detail.php: auto commit
+
+2006-11-28 19:51  hjanuschka
+
+	* service_detail.php: auto commit
+
+2006-11-27 22:16  hjanuschka
+
+	* modify_service.php, service_detail.php: auto commit
+
+2006-11-26 23:45  hjanuschka
+
+	* overview.php, template.html, images/ajax_search.js: display avg
+	  check delay on overview.php
+
+2006-11-26 21:52  hjanuschka
+
+	* service_detail.php: auto commit
+
+2006-11-26 05:18  hjanuschka
+
+	* index.php: auto commit
+
+2006-11-26 05:10  hjanuschka
+
+	* formchecker.php, modify_server.php, modify_worker.php: xajax
+
+2006-11-26 04:45  hjanuschka
+
+	* config.php, extensions_wrap.php, formchecker.php,
+	  layout.class.php, modify_service.php, xajax/LICENSE.txt,
+	  xajax/README.txt, xajax/xajax.inc.php, xajax/xajaxCompress.php,
+	  xajax/xajaxResponse.inc.php, xajax/tests/HTTPStatusTest.php,
+	  xajax/tests/catchAllFunctionTest.php,
+	  xajax/tests/changeEventTest.php,
+	  xajax/tests/charEncodingTest.php, xajax/tests/confirmTest.php,
+	  xajax/tests/createFormInputTest.php,
+	  xajax/tests/customResponseClassTest.php,
+	  xajax/tests/disabledFormElementsTest.php,
+	  xajax/tests/errorHandlingTest.php,
+	  xajax/tests/eventHandlerTest.php,
+	  xajax/tests/formSubmissionTest.php,
+	  xajax/tests/includeExternalScriptTest.php, xajax/tests/index.php,
+	  xajax/tests/largeResponseTest.php,
+	  xajax/tests/myExternalFunction.php,
+	  xajax/tests/phpWhitespaceTest.php,
+	  xajax/tests/preFunctionTest.php, xajax/tests/redirectTest.php,
+	  xajax/tests/registerExternalFunctionTest.php,
+	  xajax/tests/scriptCallTest.php,
+	  xajax/tests/searchReplaceTest.php,
+	  xajax/tests/xajaxResponseTest.php, xajax/xajax_js/xajax.js,
+	  xajax/xajax_js/xajax_uncompressed.js: xajax framework added new
+	  ajax stuff will be based on it and hopefully old quicklook
+	  plugin/server search will also move over *fg*
+
+2006-11-25 23:01  hjanuschka
+
+	* layout.class.php: auto commit
+
+2006-11-25 13:31  hjanuschka
+
+	* bartlby-ui.class.php, layout.class.php, service_detail.php: auto
+	  commit
+
+2006-11-25 02:34  hjanuschka
+
+	* modify_service.php, pkgs/default-pkg: auto commit
+
+2006-11-25 02:16  hjanuschka
+
+	* modify_service.php: auto commit
+
+2006-11-25 01:54  hjanuschka
+
+	* modify_service.php, service_detail.php, fin/service_8: auto
+	  commit
+
+2006-11-20 12:58  hjanuschka
+
+	* services.php: legend update
+
+2006-11-17 20:24  hjanuschka
+
+	* ajax_quick_look.php, bartlby-ui.class.php, config.php,
+	  layout.class.php, modify_service.php, service_detail.php,
+	  statistic.php, view_comments.php, extensions/SMS/SMS.class.php:
+	  [no log message]
+
+2006-11-16 22:58  hjanuschka
+
+	* extensions/SMS.disabled: SMS is disabled by default
+
+2006-11-16 21:57  hjanuschka
+
+	* add_downtime.php, modify_downtime.php,
+	  extensions/SMS/SMS.class.php: auto commit
+
+2006-11-15 23:53  hjanuschka
+
+	* event_queue.php, report.php, statistic.php: auto commit
+
+2006-11-15 23:38  hjanuschka
+
+	* bartlbystorage.class.php, setup.php,
+	  extensions/SMS/SMS.class.php: auto commit
+
+2006-11-15 22:58  hjanuschka
+
+	* bartlbystorage.class.php, extensions/SMS/SMS.class.php: [no log
+	  message]
+
+2006-11-14 10:40  hjanuschka
+
+	* extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php: auto
+	  commit
+
+2006-11-13 17:59  hjanuschka
+
+	* cli.php: auto commit
+
+2006-11-08 00:49  hjanuschka
+
+	* bartlby-ui.class.php, permission_worker.php, service_detail.php,
+	  extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php,
+	  rights/template.dat: auto commit
+
+2006-11-05 21:33  hjanuschka
+
+	* extensions.php,
+	  extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php,
+	  extensions/AutoDiscoverAddons/ajax-loader.gif: auto commit
+
+2006-10-23 23:15  hjanuschka
+
+	* bartlby-ui.class.php, images/ajax_search.js: fixed quick look
+	  runaway chars ;)
+
+2006-10-22 21:49  hjanuschka
+
+	* cli.php, ChangeLog: auto commit
 
 2006-10-22 12:27  hjanuschka
 
@@ -278,7 +575,7 @@
 	  extensions/AutoDiscoverAddons/AutoDiscoverAddons.class.php,
 	  extensions/BnR/BnR.class.php, extensions/BnR/backup.php,
 	  extensions/BnR/do_backup.php, extensions/BnR/do_restore.php,
-	  extensions/BnR/restore.php, extensions/SSH/SSH.class.php,
+	  extensions/BnR/restore.php,
 	  extensions/ServerGroups/ServerGroups.class.php,
 	  extensions/ServerGroups/delete.php,
 	  extensions/ServerGroups/edit.php,
@@ -485,9 +782,9 @@
 
 	* bartlby-ui.class.php,
 	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
-	  extensions/SSH/SSH.class.php, images/barcode.gif,
-	  images/extension_disable.gif, images/extension_enable.gif,
-	  images/extensions.gif, images/keys.gif: [no log message]
+	  images/barcode.gif, images/extension_disable.gif,
+	  images/extension_enable.gif, images/extensions.gif,
+	  images/keys.gif: [no log message]
 
 2006-06-05 02:00  hjanuschka
 
@@ -524,11 +821,11 @@
 2006-05-20 22:26  hjanuschka
 
 	* add_service.php, bartlby-ui.class.php, bartlby_action.php,
-	  modify_service.php, service_detail.php,
-	  extensions/SSH/SSH.class.php: ui: add/modify server page rebrush
-	  (should be user-friendlier) core: snmp INTEGER greater, lower
-	  (warning,critical) (--enable-snmp=yes) core/lib mysql: SNMP
-	  functionality ui: add/modify_service SNMP php: SNMP functions
+	  modify_service.php, service_detail.php: ui: add/modify server
+	  page rebrush (should be user-friendlier) core: snmp INTEGER
+	  greater, lower (warning,critical) (--enable-snmp=yes) core/lib
+	  mysql: SNMP functionality ui: add/modify_service SNMP php: SNMP
+	  functions
 
 2006-05-19 00:17  hjanuschka
 
@@ -544,17 +841,11 @@
 
 	* report.php: little reporting tweak
 
-2006-05-14 21:53  hjanuschka
-
-	* extensions/SSH/SSH.class.php: SSH2 Extension capture LF
-
 2006-05-14 20:23  hjanuschka
 
 	* extensions.php, template.html,
-	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php,
-	  extensions/SSH/SSH.class.php, extensions/SSH/exec.php,
-	  extensions/SSH/index.php, extensions/SSH/save.php,
-	  extensions/SSH/data/1: SSH2 Extension
+	  extensions/Bartlby_Inventory/Bartlby_Inventory.class.php: SSH2
+	  Extension
 
 2006-05-14 16:50  hjanuschka
 
