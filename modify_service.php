@@ -62,6 +62,11 @@ if($_GET["new"] == "true") {
 	
 	$defaults[service_passive_timeout]=(int)bartlby_config("ui-extra.conf", "new.service.passive.timeout");
 	$defaults[flap_seconds]=(int)bartlby_config("ui-extra.conf", "new.service.flap_seconds");
+	
+	$defaults[escalate_seconds]=(int)bartlby_config("ui-extra.conf", "new.service.escalate_seconds");
+	$defaults[renotify_interval]=(int)bartlby_config("ui-extra.conf", "new.service.renotify_interval");
+	
+	
 }
 if($fm_action == "modify_service") {
 	$btl->hasRight("action.modify_service");
@@ -211,26 +216,6 @@ if(!$defaults[service_type]) {
 }
 //Get plugins :))
 $layout->set_menu("services");
-/*
-$optind=0;
-$plgs=bartlby_config($btl->CFG, "agent_plugin_dir");
-$dh=opendir($plgs);
-while ($file = readdir ($dh)) { 
-   if ($file != "." && $file != "..") { 
-   	clearstatcache();
-   	if((preg_match("/\.exe$/i", $file)) || (is_executable($plgs . "/" . $file) && !is_dir($plgs . "/" . $file))) {
-       		$plugins[$optind][c]="";
-       		$plugins[$optind][v]=$file;
-       		$plugins[$optind][k]=$file;
-       		if($defaults[plugin] == $file) {
-       			$plugins[$optind][s]=1;	
-       		}
-       		$optind++;
-       	}
-   } 
-}
-closedir($dh); 
-*/
 
 $servs=$btl->GetServers();
 $optind=0;
@@ -440,6 +425,27 @@ $active_box_out .=$layout->Tr(
 		array(
 			0=>"Service flap time threshold",
 			1=>$layout->Field("flap_seconds", "text", $defaults[flap_seconds]) . " seconds"
+			
+		)
+	)
+,true);
+
+
+$active_box_out .=$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service Re-Notification",
+			1=>$layout->Field("renotify_interval", "text", $defaults[renotify_interval]) . " seconds"
+			
+		)
+	)
+,true);
+
+$active_box_out .=$layout->Tr(
+	$layout->Td(
+		array(
+			0=>"Service escalate",
+			1=>$layout->Field("escalate_seconds", "text", $defaults[escalate_seconds]) . " runs"
 			
 		)
 	)

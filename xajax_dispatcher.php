@@ -749,6 +749,18 @@ function AddModifyService($aFormValues) {
 		$res->addAssign("error_flap_seconds", "innerHTML", "");
 	}
 	
+	if(!bartlbize_int($av[escalate_seconds])){
+		$res->addAssign("error_escalate_seconds", "innerHTML", "required field");
+		$al="1";
+	} else {
+		$res->addAssign("error_escalate_seconds", "innerHTML", "");
+	}
+	if(!bartlbize_int($av[renotify_interval])){
+		$res->addAssign("error_renotify_interval", "innerHTML", "required field");
+		$al="1";
+	} else {
+		$res->addAssign("error_renotify_interval", "innerHTML", "");
+	}
 	
 	
 	switch($av[service_type]) {

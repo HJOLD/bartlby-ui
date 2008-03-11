@@ -504,7 +504,9 @@ switch($act) {
 			if($df == false) {
 				$exec_plan="";	
 			}
-			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type], $_GET[service_active], $_GET[flap_seconds]);
+			echo "<pre>";
+			var_dump($_GET);
+			$ads=bartlby_modify_service($btl->CFG, $_GET[service_id] , $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type], $_GET[service_active], $_GET[flap_seconds], $_GET[renotify_interval], $_GET[escalate_seconds]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			$global_msg[exec_plan]=$btl->resolveServicePlan($exec_plan);
 			
@@ -549,7 +551,7 @@ switch($act) {
 			if($df == false) {
 				$exec_plan="";	
 			}
-			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type],$_GET[service_active], $_GET[flap_seconds]);
+			$ads=bartlby_add_service($btl->CFG, $_GET[service_server], $_GET[service_plugin],$_GET[service_name],$_GET[service_args],$_GET[notify_enabled], $exec_plan,$_GET[service_interval],$_GET[service_type],$_GET[service_var], $_GET[service_passive_timeout], $_GET[service_check_timeout], $_GET[service_ack], $_GET[service_retain], $_GET[service_snmp_community], $_GET[service_snmp_objid], $_GET[service_snmp_version], $_GET[service_snmp_warning], $_GET[service_snmp_critical], $_GET[service_snmp_type],$_GET[service_active], $_GET[flap_seconds],$_GET[renotify_interval], $_GET[escalate_seconds]);
 			$global_msg=bartlby_get_server_by_id($btl->CFG, $_GET[service_server]);
 			$global_msg[exec_plan]=$btl->resolveServicePlan($exec_plan);
 			
@@ -602,7 +604,7 @@ switch($act) {
 				if($_GET[package_name] != "") {
 					$global_msg["package"].= "<br>" . $btl->installPackage($_GET[package_name], $add_server, NULL, NULL);	
 				} else {
-					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, "" ,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1, 120);
+					$add_service=bartlby_add_service($btl->CFG, $add_server, "INIT", "Initial Check", "-h", 0, "" ,2000,1,"",200, 20, 0, 3, "", "", "", "", "", "", 1, 120,0,0);
 					$global_msg["init_service"]="<li>Init";
 				}
 				

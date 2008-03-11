@@ -129,6 +129,16 @@ if($defaults[check_starttime] != 0) {
 $plan_box = $btl->resolveServicePlan($defaults[exec_plan]);
 
 
+if($defaults[renotify_interval] != 0) {
+		$renot_en=$defaults[renotify_interval] . " seconds";
+} else {
+		$renot_en="not enabled";
+}
+if($defaults[escalate_seconds] != 0) {
+		$escal_en=$defaults[escalate_seconds] . " runs";
+} else {
+		$escal_en="not enabled";
+}
 
 
 
@@ -186,6 +196,18 @@ $core_content = "<table  width='100%'>
 		<td width=150 class='font2'>Last Notify Send:</td>
 		
 		<td align=left >" . date("d.m.Y H:i:s", $defaults[last_notify_send]) . "</font></td>
+		<td>&nbsp;</td>           
+	</tr>
+		<tr>
+		<td width=150 class='font2'>Re-Notification Interval</td>
+		
+		<td align=left >" .  $renot_en ."</font></td>
+		<td>&nbsp;</td>           
+	</tr>
+		<tr>
+		<td width=150 class='font2'>Escalate after:</td>
+		
+		<td align=left >" . $escal_en  . "</font></td>
 		<td>&nbsp;</td>           
 	</tr>
 	<tr>

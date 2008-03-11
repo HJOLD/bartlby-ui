@@ -131,6 +131,15 @@ $act[1][k]="Active";
 if($defaults[active] == 1) {
 	$act[1][s]=1;
 }
+$act[2][c]="";
+$act[2][v]="2";
+$act[2][k]="Standby";
+if($defaults[active] == 2) {
+	$act[2][s]=1;
+}
+
+
+
 
 $layout->OUT .= "<script>
 		function modify_service_make_24() {
