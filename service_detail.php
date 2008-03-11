@@ -130,12 +130,12 @@ $plan_box = $btl->resolveServicePlan($defaults[exec_plan]);
 
 
 if($defaults[renotify_interval] != 0) {
-		$renot_en="every " . $defaults[renotify_interval] . " runs";
+		$renot_en="every " . $defaults[renotify_interval] . " runs ( " . $btl->intervall(($defaults[check_interval]*$defaults[renotify_interval])) . ") ";
 } else {
 		$renot_en="not enabled";
 }
 if($defaults[escalate_divisor] != 0) {
-		$escal_en="every " . $defaults[escalate_divisor] . " runs";
+		$escal_en="every " . $defaults[escalate_divisor] . " runs (" . $btl->intervall(($defaults[check_interval]*$defaults[escalate_divisor])) . ")";
 } else {
 		$escal_en="not enabled";
 }

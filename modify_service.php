@@ -435,7 +435,7 @@ $active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service Re-Notification",
-			1=>$layout->Field("renotify_interval", "text", $defaults[renotify_interval]) . " seconds"
+			1=>$layout->Field("renotify_interval", "text", $defaults[renotify_interval]) . " runs"
 			
 		)
 	)
