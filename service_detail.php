@@ -134,8 +134,8 @@ if($defaults[renotify_interval] != 0) {
 } else {
 		$renot_en="not enabled";
 }
-if($defaults[escalate_seconds] != 0) {
-		$escal_en=$defaults[escalate_seconds] . " runs";
+if($defaults[escalate_divisor] != 0) {
+		$escal_en="every " . $defaults[escalate_divisor] . " runs";
 } else {
 		$escal_en="not enabled";
 }

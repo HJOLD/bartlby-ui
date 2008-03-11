@@ -1265,7 +1265,7 @@ class BartlbyUi {
 				$msg .= str_repeat("&nbsp;", 20) . "Check Plan: " . $this->resolveServicePlan($re[$x][exec_plan]) . "<br>";	
 				$msg .= str_repeat("&nbsp;", 20) . "Service Type: " . $re[$x][service_type] . "<br>";
 				
-				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][exec_plan],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack], $re[$x][service_retain],$re[$x][service_snmp_community], $re[$x][service_snmp_objid],$re[$x][service_snmp_version],$re[$x][service_snmp_warning],$re[$x][service_snmp_critical],$re[$x][service_snmp_type], $re[$x][service_active], $re[$x][flap_seconds],$re[$x][renotify_interval],$re[$x][escalate_seconds]);
+				$ads=bartlby_add_service($this->CFG, $server, $re[$x][plugin],$re[$x][service_name],$re[$x][plugin_arguments],$re[$x][notify_enabled],$re[$x][exec_plan],$re[$x][check_interval],$re[$x][service_type],$re[$x][service_var], $re[$x][service_passive_timeout], $re[$x][service_check_timeout], $re[$x][service_ack], $re[$x][service_retain],$re[$x][service_snmp_community], $re[$x][service_snmp_objid],$re[$x][service_snmp_version],$re[$x][service_snmp_warning],$re[$x][service_snmp_critical],$re[$x][service_snmp_type], $re[$x][service_active], $re[$x][flap_seconds],$re[$x][renotify_interval],$re[$x][escalate_divisor]);
 				$msg .= str_repeat("&nbsp;", 20) . "New id: " . $ads . "<br>";
 				
 				if($re[$x][__install_plugin]) {

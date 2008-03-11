@@ -63,7 +63,7 @@ if($_GET["new"] == "true") {
 	$defaults[service_passive_timeout]=(int)bartlby_config("ui-extra.conf", "new.service.passive.timeout");
 	$defaults[flap_seconds]=(int)bartlby_config("ui-extra.conf", "new.service.flap_seconds");
 	
-	$defaults[escalate_seconds]=(int)bartlby_config("ui-extra.conf", "new.service.escalate_seconds");
+	$defaults[escalate_divisor]=(int)bartlby_config("ui-extra.conf", "new.service.escalate_divisor");
 	$defaults[renotify_interval]=(int)bartlby_config("ui-extra.conf", "new.service.renotify_interval");
 	
 	
@@ -445,7 +445,7 @@ $active_box_out .=$layout->Tr(
 	$layout->Td(
 		array(
 			0=>"Service escalate",
-			1=>$layout->Field("escalate_seconds", "text", $defaults[escalate_seconds]) . " runs"
+			1=>$layout->Field("escalate_divisor", "text", $defaults[escalate_divisor]) . " runs"
 			
 		)
 	)
