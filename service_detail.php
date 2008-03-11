@@ -130,7 +130,7 @@ $plan_box = $btl->resolveServicePlan($defaults[exec_plan]);
 
 
 if($defaults[renotify_interval] != 0) {
-		$renot_en=$defaults[renotify_interval] . " seconds";
+		$renot_en="every " . $defaults[renotify_interval] . " runs";
 } else {
 		$renot_en="not enabled";
 }
