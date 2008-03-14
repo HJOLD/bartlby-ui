@@ -1053,6 +1053,7 @@ class BartlbyUi {
 				$x=0;
 				continue;	
 			}
+			$wrk[shm_place]=$x;
 			if($do_check == true) {
 				if($wrk[name] != $this->user && !$this->hasRight("modify_all_workers", false)) {
 					continue;

@@ -13,6 +13,7 @@
 		function save_key($key, $value) {
 			$sk = md5($key);
 			$fp = @fopen($this->save_path . "/" . $sk, "w");
+			
 			if(!$fp) {
 				return false;
 			}
