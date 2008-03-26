@@ -50,14 +50,26 @@ $layout->Table("100%");
 	
 	while(list($k, $servs) = @each($map)) {
 		for($x=0; $x<count($servs); $x++) {
+			
 			$check_sum +=$servs[$x][service_time_sum];
 			$check_count +=$servs[$x][service_time_count];
+			
+			$delay_sum += $servs[$x][service_delay_sum];
+			$delay_count += $servs[$x][service_delay_count];
+			
 			$plugin=$servs[$x][plugin];
 			if($servs[$x][service_time_count] > 0) {
 				$ms=@round($servs[$x][service_time_sum] / $servs[$x][service_time_count], 2);
 			} else {
 				$ms=0;	
 			}
+			
+			if($servs[$x][service_delay_count] > 0) {
+				$delay_ms=@round($servs[$x][service_delay_sum] / $servs[$x][service_delay_count], 2);
+			} else {
+				$delay_ms=0;	
+			}
+			
 			$service="<img src='server_icons/" . $servs[$x][server_icon] . "'><a href='service_detail.php?service_place=" . $servs[$x][shm_place] . "'>" .  $servs[$x][server_name] . "/" . $servs[$x][service_name] . "(" .   $servs[$x][plugin] . ")</A>";
 			$server="<img src='server_icons/" . $servs[$x][server_icon] . "'><a href='server_detail.php?server_id=" . $servs[$x][server_id] . "'>" . $servs[$x][server_name] . "</A>";
 			
@@ -78,7 +90,17 @@ $layout->Table("100%");
 			}
 			array_push($server_table[$server], $ms);
 			
+			//Delay Servcie Table
+			if(!is_array($delay_service_table[$service])) {
+				$delay_service_table[$service]=Array();
+			}
+			array_push($delay_service_table[$service], $delay_ms*1000);
 			
+			//Delay Table
+			if(!is_array($delay_server_table[$server])) {
+				$delay_server_table[$server]=Array();
+			}
+			array_push($delay_server_table[$server], $delay_ms*1000);
 		}	
 	}
 	$round_sum=$info[round_time_sum];
@@ -89,16 +111,22 @@ $layout->Table("100%");
 	
 	$check_avg=round($check_sum / $check_count,2);
 	$round_avg=round($round_sum / $round_count,2);
+	$delay_avg=round(($delay_sum / $delay_count)*1000, 2);
+	
 	
 	
 	//Make top 10 table plugins
 	//Table K1 == AVG == K2 VALUE == K3 MAX
+	$delay_service_sorted=sort_table($delay_service_table);
+	$delay_server_sorted=sort_table($delay_server_table);
 	$plugins_sorted=sort_table($plugin_table);
 	$server_sorted=sort_table($server_table);
 	$service_sorted=sort_table($service_table);
 	$plugin_html=make_html($plugins_sorted);
 	$service_html=make_html($service_sorted);
 	$server_html=make_html($server_sorted);
+	$delay_service_html=make_html($delay_service_sorted);
+	$delay_server_html=make_html($delay_server_sorted);
 	
 	
 	$info_box_title="Options:";  
@@ -143,6 +171,20 @@ $layout->Table("100%");
 	</table>";
 	
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
+	$info_box_title="Delay Time:";  
+	$core_content = "<table  width='100%'>
+		
+		<tr>
+			<td width=150 valign=top class='font2'>Average:</td>
+			<td>$delay_avg ms</td>
+		</tr>
+		
+		
+	</table>";
+	
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
 	$info_box_title="Plugins:";  
 	$core_content = "<table  width='100%'>
 		<tr>
@@ -181,6 +223,26 @@ $layout->Table("100%");
 	
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
 	
+	$info_box_title="Delay:";  
+	$core_content = "<table  width='100%'>
+		
+		<tr>
+			<td width=150 valign=top class='font2'>Delay:</td>
+			<td>
+				
+					$delay_service_html
+				
+			</td>
+		</tr>
+		
+		
+	</table>";
+	
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
+	
+	
+	
 	
 	
 	$info_box_title="Servers:";  
@@ -197,8 +259,25 @@ $layout->Table("100%");
 		
 		
 	</table>";
+	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	$info_box_title="Delay:";  
+	$core_content = "<table  width='100%'>
+		
+		<tr>
+			<td width=150 valign=top class='font2'>Delay:</td>
+			<td>
+				
+					$delay_server_html
+				
+			</td>
+		</tr>
+		
+		
+	</table>";
 	
 	$layout->push_outside($layout->create_box($info_box_title, $core_content));
+	
+	
 	
 
 	$layout->Tr(
