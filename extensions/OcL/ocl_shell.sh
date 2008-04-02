@@ -1,6 +1,6 @@
 #!/bin/sh
-BARTLBY_HTDOCS="/var/www/htdocs/bartlby.krone.at/";
-
+BARTLBY_HTDOCS="/var/www/htdocs/dev.bartlby.org/bartlby-ui/";
+BARTLBY_HOST="http://dev.bartlby.org/bartlby-ui/";
 
 cd $BARTLBY_HTDOCS/extensions/
 
@@ -40,4 +40,17 @@ I_ERROR_LONG="$(</dev/stdin)"
 
 
 echo "----------------------------------------";
-php automated.php username=$I_USER password=$I_PW script=OcL/save.php ocl_date="$I_DATE" ocl_subject="$I_SUBJ" ocl_duration="$I_DURA" ocl_caller="$I_CALLER" ocl_error_long="$I_ERROR_LONG" ocl_service_var= ocl_type="$I_TYPE" 2>&1>/dev/null;
+echo -ne "Transfer via HTTP?(Default: n)";
+read I_HTTP;
+
+if [ "x$I_HTTP" = "x" ];
+then
+	php automated.php username=$I_USER password=$I_PW script=OcL/save.php ocl_date="$I_DATE" ocl_subject="$I_SUBJ" ocl_duration="$I_DURA" ocl_caller="$I_CALLER" ocl_error_long="$I_ERROR_LONG" ocl_service_var= ocl_type="$I_TYPE" 2>&1>/dev/null;
+
+else
+	#call via http
+	wget -O /dev/null --http-user="$I_USER" --http-password="$I_PW" --post-data="script=OcL/save.php&ocl_date=${I_DATE}&ocl_subject=${I_SUBJ}&ocl_duration=${I_DURA}&ocl_caller=${I_CALLER}&ocl_error_long=${I_ERROR_LONG}&ocl_service_var=&ocl_type=${I_TYPE}" "$BARTLBY_HOST/extensions_wrap.php?script=OcL/save.php"
+
+fi;
+
+
