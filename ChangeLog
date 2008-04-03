@@ -1,3 +1,49 @@
+2008-04-02 23:19  hjanuschka
+
+	* extensions/OcL/ocl_shell.sh: ocl via http as suggested
+
+2008-03-26 17:43  hjanuschka
+
+	* statistic.php: delay time added per server and service in process
+	  info
+
+2008-03-14 02:11  hjanuschka
+
+	* bartlby-ui.class.php, bartlbystorage.class.php,
+	  extensions/OcL/OcL.class.php, extensions/OcL/bsp.css,
+	  extensions/OcL/bsp.html, extensions/OcL/bsp.js,
+	  extensions/OcL/bsp.php, extensions/OcL/bsp_run.php,
+	  extensions/OcL/ocl_bsp_run.sh, rights/admin.dat: auto commit
+
+2008-03-12 00:02  hjanuschka
+
+	* service_detail.php: auto commit
+
+2008-03-11 23:58  hjanuschka
+
+	* bartlby_action.php, modify_service.php, service_detail.php: auto
+	  commit
+
+2008-03-11 21:49  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_service.php,
+	  service_detail.php, xajax_dispatcher.php: auto commit
+
+2008-03-11 21:35  hjanuschka
+
+	* bartlby-ui.class.php, bartlby_action.php, modify_service.php,
+	  modify_worker.php, service_detail.php, xajax_dispatcher.php,
+	  rights/admin.dat: auto commit
+
+2008-03-04 12:41  hjanuschka
+
+	* ChangeLog: auto commit
+
+2008-02-29 15:41  hjanuschka
+
+	* extensions/OcL/: OcL.class.php, index.php: layout changes in
+	  index.php added last 3 entrys to _overview hook
+
 2008-02-28 13:13  hjanuschka
 
 	* extensions/OcL/: OcL.class.php, add.php, csv.php, index.php,
